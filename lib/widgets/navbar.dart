@@ -1,9 +1,11 @@
-import 'package:alkoholicy/utils/theming.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../utils/theming.dart';
+
 class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+  final double bottomMargin;
+  const NavBar({required this.bottomMargin, super.key});
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -11,68 +13,109 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   late int selectedIndex;
-  late Alignment bgAlignment;
+  late Size navBarSize;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    navBarSize = Size(
+      MediaQuery.of(context).size.width - 30 * 2,
+      70,
+    );
+
+    return Container(
+      height: navBarSize.height,
+      width: navBarSize.width,
+      margin: EdgeInsets.only(bottom: widget.bottomMargin),
+      padding: const EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        color: Theming.primaryColor,
+        borderRadius: BorderRadius.circular(100),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 15,
+            color: Theming.primaryColor.withOpacity(0.6),
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            width: navBarSize.width / 3 - 14,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.linearToEaseOut,
+            margin: EdgeInsets.only(
+              left: selectedIndex * (navBarSize.width / 3),
+            ),
+            decoration: BoxDecoration(
+              color: Theming.bgColor,
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _navItem(
+                0,
+                context,
+                caption: "Home",
+                route: "/",
+              ),
+              const SizedBox(width: 14),
+              _navItem(
+                1,
+                context,
+                caption: "Parties",
+                route: "/parties",
+              ),
+              const SizedBox(width: 14),
+              _navItem(
+                2,
+                context,
+                caption: "Profile",
+                route: "/profile",
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _navItem(
     int index,
     BuildContext ctx, {
-    required Size navSize,
     required String caption,
     required String route,
   }) {
     return GestureDetector(
-      ///If items behind [NavBar] also receive events then change to [HitTestBehavior.opaque]
       behavior: HitTestBehavior.translucent,
       onTap: () {
         setState(() {
           selectedIndex = index;
         });
-        ctx.push(route);
+        ctx.go(route);
       },
-      child: SizedBox(
-        height: navSize.height,
-        width: navSize.width / 3,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              caption,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-                color: selectedIndex == index
-                    ? Colors.white
-                    : Colors.grey.shade900,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      margin: const EdgeInsets.only(bottom: 40),
-      width: 340,
-      height: 66,
-      decoration: BoxDecoration(color: Theming.primaryColor, borderRadius: BorderRadius.circular(100)),
-      child: Stack(children: [
-        Align(
-          alignment: bgAlignment,
-          child: AnimatedContainer(
-            margin: EdgeInsets.all(),
-            width: 300/3,
-            duration: const Duration(milliseconds: 300),
-            decoration: BoxDecoration(
-              color: Theming.bgColor,
-              borderRadius: BorderRadius.circular(100),
-            ),
+      child: Container(
+        height: navBarSize.height,
+        width: navBarSize.width / 3 - 14,
+        alignment: Alignment.center,
+        child: AnimatedOpacity(
+          curve: Curves.linearToEaseOut,
+          opacity: selectedIndex == index ? 1.0 : 0.8,
+          duration: const Duration(milliseconds: 200),
+          child: Text(
+            caption,
+            style: Styles.navBarText,
           ),
         ),
-      ]),
+      ),
     );
   }
 }

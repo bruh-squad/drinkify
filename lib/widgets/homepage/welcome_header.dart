@@ -16,7 +16,7 @@ class WelcomeHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
                 Text(
-                  'Siema, Adam',
+                  'Siema, Oliwier',
                   style: TextStyle(
                     fontSize: 32,
                     color: Theming.whiteTone,
@@ -38,7 +38,7 @@ class WelcomeHeader extends StatelessWidget {
                 "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
               ),
               backgroundColor: Colors.lightGreen,
-              radius: 32,
+              radius: 36,
             )
           ],
         ),

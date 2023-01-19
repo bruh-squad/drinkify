@@ -1,6 +1,9 @@
-import 'package:alkoholicy/routes/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../routes/home_page.dart';
+import '../routes/parties_page.dart';
+import '../routes/profile_page.dart';
 import '../widgets/navbar.dart';
 
 GoRouter router = GoRouter(
@@ -17,13 +20,22 @@ GoRouter router = GoRouter(
             return const MaterialPage(child: HomePage());
           },
         ),
-        // GoRoute(path: "/parties"),
-        // GoRoute(path: "/profile"),
+        GoRoute(
+          path: "/parties",
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: PartiesPage());
+          },
+        ),
+        GoRoute(
+          path: "/profile",
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: ProfilePage());
+          },
+        ),
       ],
     ),
   ],
 );
-
 
 class _ScaffoldWithNavBar extends StatelessWidget {
   final Widget child;
@@ -35,9 +47,11 @@ class _ScaffoldWithNavBar extends StatelessWidget {
       body: Stack(
         children: [
           child,
-          const Align(
+          Align(
             alignment: Alignment.bottomCenter,
-            child: NavBar(),
+            child: NavBar(
+              bottomMargin: 40 + MediaQuery.of(context).padding.bottom,
+            ),
           ),
         ],
       ),

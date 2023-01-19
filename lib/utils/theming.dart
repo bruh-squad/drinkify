@@ -10,7 +10,35 @@ class Theming {
 
 class Styles {
   Styles._();
-  //TODO: tutaj będą style do np. tekstu takich jak header, 
-  //żeby np rozmiar czcionki był taki sam a nie różny dla tekstu
+  
+  static const navBarText = TextStyle(
+    color: Theming.whiteTone,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const categoryText = TextStyle(
+    color: Theming.whiteTone,
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
+
+  static final smallTextButton = TextStyle(
+    color: Theming.whiteTone.withOpacity(0.7),
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const dateBoxText = TextStyle(
+    color: Theming.whiteTone,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
+
+  static final emptyListText = TextStyle(
+    color: Theming.whiteTone.withOpacity(0.7),
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
 
 }
