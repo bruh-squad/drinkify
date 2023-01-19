@@ -20,13 +20,15 @@ class WelcomeHeader extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 32,
                     color: Theming.whiteTone,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   "Masz 5 powiadomień!",
                   style: TextStyle(
                     color: Theming.primaryColor,
-                    fontSize: 14,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
                 )
               ],
