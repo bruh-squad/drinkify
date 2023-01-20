@@ -41,4 +41,9 @@ class Styles {
     fontWeight: FontWeight.bold,
   );
 
+  static const hintTextSearchBar = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
+  );
+
 }

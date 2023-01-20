@@ -39,8 +39,8 @@ class _NavBarState extends State<NavBar> {
         boxShadow: [
           BoxShadow(
             blurRadius: 15,
-            color: Theming.primaryColor.withOpacity(0.6),
-            offset: const Offset(0, 4),
+            color: Theming.primaryColor.withOpacity(0.4),
+            offset: const Offset(0, 10),
           ),
         ],
       ),

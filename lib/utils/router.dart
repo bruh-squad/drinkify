@@ -44,13 +44,14 @@ class _ScaffoldWithNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           child,
-          Align(
+          const Align(
             alignment: Alignment.bottomCenter,
             child: NavBar(
-              bottomMargin: 40 + MediaQuery.of(context).padding.bottom,
+              bottomMargin: 80,
             ),
           ),
         ],
