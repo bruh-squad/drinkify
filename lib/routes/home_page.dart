@@ -15,14 +15,19 @@ class HomePage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top + 20,
-          right: 30,
-          left: 30,
         ),
         child: Column(
           children: const [
-            WelcomeHeader(),
-            DateRow(),
-            PartyList(),
+            //Had to use so many paddings to make the DateRow boxes look better
+            Padding(
+              padding: EdgeInsets.only(right: 30, left: 30),
+              child: WelcomeHeader(),
+            ),
+            DateRow(textPadding: EdgeInsets.only(right: 30, left: 30)),
+            Padding(
+              padding: EdgeInsets.only(right: 30, left: 30),
+              child: PartyList(),
+            ),
           ],
         ),
       ),

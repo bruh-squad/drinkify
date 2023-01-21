@@ -7,8 +7,9 @@ import './utils/theming.dart';
 void main() {
   runApp(const App());
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Theming.bgColor,
+    SystemUiOverlayStyle(
+      statusBarColor: Theming.bgColor.withOpacity(0.002),
+      statusBarIconBrightness: Brightness.light,
       systemNavigationBarColor: Theming.bgColor,
     ),
   );
@@ -23,13 +24,18 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(
-        fontFamily: 'Nunito',
-        useMaterial3: true,
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: MaterialApp.router(
+        theme: ThemeData(
+          fontFamily: 'Nunito',
+          useMaterial3: true,
+        ),
+        debugShowCheckedModeBanner: false,
+        routerConfig: router,
       ),
-      debugShowCheckedModeBanner: false,
-      routerConfig: router,
     );
   }
 }
