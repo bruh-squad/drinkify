@@ -12,6 +12,7 @@ class PartiesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       resizeToAvoidBottomInset: false,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(
           bottom: 120,
