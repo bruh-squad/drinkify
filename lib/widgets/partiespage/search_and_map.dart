@@ -80,6 +80,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
           ),
 
           const SizedBox(height: 20),
+
           //Category roll
           Row(
             children: [

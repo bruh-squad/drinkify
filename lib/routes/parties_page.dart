@@ -14,8 +14,9 @@ class PartiesPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 120,
+        padding: EdgeInsets.only(
+          //NavBar bottom margin + 60
+          bottom: MediaQuery.of(context).padding.bottom + 40 + 60,
           right: 14,
         ),
         child: FloatingActionButton(

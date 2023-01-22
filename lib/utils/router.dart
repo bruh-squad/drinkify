@@ -48,10 +48,10 @@ class _ScaffoldWithNavBar extends StatelessWidget {
       body: Stack(
         children: [
           child,
-          const Align(
+          Align(
             alignment: Alignment.bottomCenter,
             child: NavBar(
-              bottomMargin: 80,
+              bottomMargin: MediaQuery.of(context).padding.bottom + 40,
             ),
           ),
         ],
