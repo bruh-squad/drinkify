@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
+import '/utils/ext.dart';
 import '/utils/theming.dart';
 
 class DateRow extends StatefulWidget {
@@ -17,27 +20,30 @@ class _DateRowState extends State<DateRow> {
   void initState() {
     super.initState();
     selectedIndex = 0;
+    initializeDateFormatting();
   }
 
+  List<String> months = const [
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień",
+  ];
+
   Map<String, String> get monthAndYear {
-    late String currentMonth;
-    int dtMonth = DateTime.now().month;
-
-    if (dtMonth == 1) currentMonth = "Styczeń";
-    if (dtMonth == 2) currentMonth = "Luty";
-    if (dtMonth == 3) currentMonth = "Marzec";
-    if (dtMonth == 4) currentMonth = "Kwiecień";
-    if (dtMonth == 5) currentMonth = "Maj";
-    if (dtMonth == 6) currentMonth = "Czerwiec";
-    if (dtMonth == 7) currentMonth = "Lipiec";
-    if (dtMonth == 8) currentMonth = "Sierpień";
-    if (dtMonth == 9) currentMonth = "Wrzesień";
-    if (dtMonth == 10) currentMonth = "Październik";
-    if (dtMonth == 11) currentMonth = "Listopad";
-    if (dtMonth == 12) currentMonth = "Grudzień";
-
     return {
-      "month": currentMonth,
+      "month": DateFormat("MMMM", "pl")
+          .format(DateTime.now())
+          .toString()
+          .capitalize(),
       "year": DateTime.now().year.toString(),
     };
   }
@@ -63,18 +69,68 @@ class _DateRowState extends State<DateRow> {
                     context: context,
                     backgroundColor: Theming.bgColor,
                     useRootNavigator: true,
+                    enableDrag: false,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                     builder: (context) {
-
-                      //TODO implement scrolling vertically so you can change month/year
                       return SizedBox(
-                        height: 300,
+                        height: 340,
                         child: Center(
-                          child: Text(
-                            "${monthAndYear["month"]} ${monthAndYear["year"]}",
-                            style: Styles.categoryText,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 150,
+                                width: 150,
+                                child: ListWheelScrollView(
+                                  itemExtent: 60,
+                                  physics: const FixedExtentScrollPhysics(),
+                                  diameterRatio: 4,
+                                  onSelectedItemChanged: (val) {},
+                                  children: [
+                                    for (final i in months)
+                                      Text(i, style: Styles.dateTextSelected),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 40),
+                              SizedBox(
+                                height: 150,
+                                width: 150,
+                                child: ListWheelScrollView(
+                                  itemExtent: 60,
+                                  physics: const FixedExtentScrollPhysics(),
+                                  diameterRatio: 4,
+                                  children: [
+                                    Text(
+                                      monthAndYear["year"]!,
+                                      style: Styles.dateTextSelected,
+                                    ),
+                                    Text(
+                                      monthAndYear["year"]!,
+                                      style: Styles.dateTextSelected,
+                                    ),
+                                    Text(
+                                      monthAndYear["year"]!,
+                                      style: Styles.dateTextSelected,
+                                    ),
+                                    Text(
+                                      monthAndYear["year"]!,
+                                      style: Styles.dateTextSelected,
+                                    ),
+                                    Text(
+                                      monthAndYear["year"]!,
+                                      style: Styles.dateTextSelected,
+                                    ),
+                                    Text(
+                                      monthAndYear["year"]!,
+                                      style: Styles.dateTextSelected,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );
@@ -97,7 +153,7 @@ class _DateRowState extends State<DateRow> {
               child: Row(
                 children: [
                   const SizedBox(width: 30),
-                  for (int i = 0; i < 10; i++)
+                  for (int i = 1; i < 10; i++)
                     _dateBox(i, dayOfWeek: "Pon.", numberOfDay: i),
                 ],
               ),
@@ -148,9 +204,7 @@ class _DateRowState extends State<DateRow> {
       child: Container(
         height: 90,
         width: 80,
-        margin: const EdgeInsets.only(
-          right: 20,
-        ),
+        margin: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
           color: Theming.primaryColor,
           borderRadius: BorderRadius.circular(20),

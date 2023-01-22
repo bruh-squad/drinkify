@@ -25,10 +25,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MaterialApp.router(
+        title: "Alkoholicy",
         theme: ThemeData(
           fontFamily: 'Nunito',
           useMaterial3: true,
