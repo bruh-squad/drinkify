@@ -46,4 +46,16 @@ class Styles {
     fontSize: 16,
   );
 
+  static const dateTextSelected = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 24,
+    color: Theming.primaryColor,
+  );
+
+  static const dateTextUnselected = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 20,
+    color: Theming.whiteTone,
+  );
+
 }
