@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../routes/left_menu.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
 import '../widgets/navbar.dart';
+
+var controller = PageController(initialPage: 1);
 
 GoRouter router = GoRouter(
   initialLocation: "/",
@@ -17,19 +20,38 @@ GoRouter router = GoRouter(
         GoRoute(
           path: "/",
           pageBuilder: (context, state) {
-            return const MaterialPage(child: HomePage());
+            return pageTransition(
+              context: context,
+              state: state,
+              child: PageView(
+                controller: controller,
+                physics: const ClampingScrollPhysics(),
+                children: const [
+                  LeftMenu(),
+                  HomePage(),
+                ],
+              ),
+            );
           },
         ),
         GoRoute(
           path: "/parties",
           pageBuilder: (context, state) {
-            return const MaterialPage(child: PartiesPage());
+            return pageTransition(
+              context: context,
+              state: state,
+              child: const PartiesPage(),
+            );
           },
         ),
         GoRoute(
           path: "/profile",
           pageBuilder: (context, state) {
-            return const MaterialPage(child: ProfilePage());
+            return pageTransition(
+              context: context,
+              state: state,
+              child: const ProfilePage(),
+            );
           },
         ),
       ],
@@ -58,4 +80,19 @@ class _ScaffoldWithNavBar extends StatelessWidget {
       ),
     );
   }
+}
+
+CustomTransitionPage pageTransition({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 170),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(opacity: animation, child: child);
+    },
+  );
 }
