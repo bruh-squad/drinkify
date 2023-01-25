@@ -15,36 +15,27 @@ class DateRow extends StatefulWidget {
 
 class _DateRowState extends State<DateRow> {
   late int selectedIndex;
+  late int numOfDaysInMonth;
 
   @override
   void initState() {
     super.initState();
-    selectedIndex = 0;
+    selectedIndex = DateTime.now().day;
+    numOfDaysInMonth = DateTime(
+      DateTime.now().year,
+      DateTime.now().month + 1,
+      0,
+    ).day;
     initializeDateFormatting();
   }
 
-  List<String> months = const [
-    "Styczeń",
-    "Luty",
-    "Marzec",
-    "Kwiecień",
-    "Maj",
-    "Czerwiec",
-    "Lipiec",
-    "Sierpień",
-    "Wrzesień",
-    "Październik",
-    "Listopad",
-    "Grudzień",
-  ];
-
-  Map<String, String> get monthAndYear {
+  Map<String, Object> get currentMonthAndYear {
     return {
       "month": DateFormat("MMMM", "pl")
           .format(DateTime.now())
           .toString()
           .capitalize(),
-      "year": DateTime.now().year.toString(),
+      "year": DateTime.now().year,
     };
   }
 
@@ -60,7 +51,7 @@ class _DateRowState extends State<DateRow> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${monthAndYear["month"]} ${monthAndYear["year"]}",
+                "${currentMonthAndYear["month"]} ${currentMonthAndYear["year"]}",
                 style: Styles.categoryText,
               ),
               TextButton(
@@ -77,58 +68,62 @@ class _DateRowState extends State<DateRow> {
                       return SizedBox(
                         height: 340,
                         child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: Column(
                             children: [
-                              SizedBox(
-                                height: 150,
-                                width: 150,
-                                child: ListWheelScrollView(
-                                  itemExtent: 60,
-                                  physics: const FixedExtentScrollPhysics(),
-                                  diameterRatio: 4,
-                                  onSelectedItemChanged: (val) {},
-                                  children: [
-                                    for (final i in months)
-                                      Text(i, style: Styles.dateTextSelected),
-                                  ],
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  height: 40,
+                                  width: 100,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Theming.primaryColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Text(
+                                    "Zapisz",
+                                    style: Styles.dateSaveText,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(width: 40),
-                              SizedBox(
-                                height: 150,
-                                width: 150,
-                                child: ListWheelScrollView(
-                                  itemExtent: 60,
-                                  physics: const FixedExtentScrollPhysics(),
-                                  diameterRatio: 4,
-                                  children: [
-                                    Text(
-                                      monthAndYear["year"]!,
-                                      style: Styles.dateTextSelected,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 150,
+                                    width: 150,
+                                    child: ListWheelScrollView(
+                                      itemExtent: 60,
+                                      physics: const FixedExtentScrollPhysics(),
+                                      diameterRatio: 4,
+                                      onSelectedItemChanged: (val) {},
+                                      children: [
+                                        for (int i = 0; i < 12; i++)
+                                          const Text(
+                                            "Styczeń",
+                                            style: Styles.dateTextSelected,
+                                          ),
+                                      ],
                                     ),
-                                    Text(
-                                      monthAndYear["year"]!,
-                                      style: Styles.dateTextSelected,
+                                  ),
+                                  const SizedBox(width: 40),
+                                  SizedBox(
+                                    height: 150,
+                                    width: 150,
+                                    child: ListWheelScrollView(
+                                      itemExtent: 60,
+                                      physics: const FixedExtentScrollPhysics(),
+                                      diameterRatio: 4,
+                                      children: [
+                                        for (int i = 0; i < 10; i++)
+                                          Text(
+                                            "${(currentMonthAndYear["year"] as int) + i}",
+                                            style: Styles.dateTextSelected,
+                                          ),
+                                      ],
                                     ),
-                                    Text(
-                                      monthAndYear["year"]!,
-                                      style: Styles.dateTextSelected,
-                                    ),
-                                    Text(
-                                      monthAndYear["year"]!,
-                                      style: Styles.dateTextSelected,
-                                    ),
-                                    Text(
-                                      monthAndYear["year"]!,
-                                      style: Styles.dateTextSelected,
-                                    ),
-                                    Text(
-                                      monthAndYear["year"]!,
-                                      style: Styles.dateTextSelected,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -153,7 +148,7 @@ class _DateRowState extends State<DateRow> {
               child: Row(
                 children: [
                   const SizedBox(width: 30),
-                  for (int i = 1; i < 10; i++)
+                  for (int i = 1; i <= numOfDaysInMonth; i++)
                     _dateBox(i, dayOfWeek: "Pon.", numberOfDay: i),
                 ],
               ),
@@ -197,16 +192,24 @@ class _DateRowState extends State<DateRow> {
     required String dayOfWeek,
     required int numberOfDay,
   }) {
+    bool isSelected = selectedIndex == index;
+
     return GestureDetector(
       onTap: () {
         setState(() => selectedIndex = index);
       },
-      child: Container(
-        height: 90,
+      child: AnimatedContainer(
+        height: 94,
         width: 80,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.linearToEaseOut,
         margin: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: Theming.primaryColor,
+          color: isSelected ? Theming.bgColor : Theming.primaryColor,
+          border: Border.all(
+            color: isSelected ? Theming.primaryColor : Colors.transparent,
+            width: 4,
+          ),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -215,12 +218,16 @@ class _DateRowState extends State<DateRow> {
             children: [
               Text(
                 dayOfWeek,
-                style: Styles.dateBoxText,
+                style: isSelected
+                    ? Styles.dateBoxTextSelected
+                    : Styles.dateBoxTextUnselected,
               ),
               const SizedBox(height: 4),
               Text(
                 "$numberOfDay",
-                style: Styles.dateBoxText,
+                style: isSelected
+                    ? Styles.dateBoxTextSelected
+                    : Styles.dateBoxTextUnselected,
               ),
             ],
           ),

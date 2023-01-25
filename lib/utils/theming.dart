@@ -10,7 +10,7 @@ class Theming {
 
 class Styles {
   Styles._();
-  
+
   static const navBarText = TextStyle(
     color: Theming.whiteTone,
     fontSize: 18,
@@ -29,8 +29,14 @@ class Styles {
     fontWeight: FontWeight.bold,
   );
 
-  static const dateBoxText = TextStyle(
+  static const dateBoxTextUnselected = TextStyle(
     color: Theming.whiteTone,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const dateBoxTextSelected = TextStyle(
+    color: Theming.primaryColor,
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
@@ -46,6 +52,12 @@ class Styles {
     fontSize: 16,
   );
 
+  static const dateSaveText = TextStyle(
+    color: Theming.bgColor,
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+
   static const dateTextSelected = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 24,
@@ -57,5 +69,4 @@ class Styles {
     fontSize: 20,
     color: Theming.whiteTone,
   );
-
 }
