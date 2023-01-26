@@ -5,6 +5,7 @@ import '../routes/left_menu.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
+import '../routes/map_page.dart';
 import '../widgets/navbar.dart';
 
 var controller = PageController(initialPage: 1);
@@ -55,6 +56,16 @@ GoRouter router = GoRouter(
           },
         ),
       ],
+    ),
+    GoRoute(
+      path: "/map",
+      pageBuilder: (context, state) {
+        return pageTransition(
+          context: context,
+          state: state,
+          child: const MapPage(),
+        );
+      },
     ),
   ],
 );
