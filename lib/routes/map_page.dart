@@ -4,6 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
 
+import '../widgets/mappage/party_header.dart';
+import '../widgets/mappage/party_desc.dart';
 import '../utils/theming.dart';
 
 class MapPage extends StatefulWidget {
@@ -20,6 +22,45 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theming.bgColor,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 14, bottom: 25),
+        child: GestureDetector(
+          onTap: () {
+            if (!showMore) return;
+            //Some code
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.linearToEaseOut,
+            decoration: BoxDecoration(
+              color: showMore ? Theming.primaryColor : Colors.transparent,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [
+                BoxShadow(
+                  color: showMore
+                      ? Colors.black.withOpacity(0.6)
+                      : Colors.transparent,
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
+            child: Text(
+              "Dołącz",
+              style: TextStyle(
+                color: showMore ? Theming.whiteTone : Colors.transparent,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Column(
@@ -65,7 +106,7 @@ class _MapPageState extends State<MapPage> {
                         TileLayer(
                           urlTemplate:
                               "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                          userAgentPackageName: "com.example.byledoimprezy",
+                          userAgentPackageName: "com.example.alkoholicy",
                         ),
                         MarkerLayer(
                           markers: [
@@ -104,7 +145,7 @@ class _MapPageState extends State<MapPage> {
                     },
                     child: AnimatedContainer(
                       height: 60,
-                      width: MediaQuery.of(context).size.width - 100,
+                      width: MediaQuery.of(context).size.width - 80,
                       alignment: Alignment.center,
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linearToEaseOut,
@@ -137,7 +178,7 @@ class _MapPageState extends State<MapPage> {
                     child: GestureDetector(
                       onTap: () {
                         if (showMore) return;
-                        context.go("/parties");
+                        context.go("/");
                       },
                       child: AnimatedContainer(
                         height: 40,
@@ -173,31 +214,17 @@ class _MapPageState extends State<MapPage> {
                 ),
               ],
             ),
-            Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height -
-                        120 -
-                        MediaQuery.of(context).padding.bottom,
-                    width: double.infinity,
-                    child: ListView(
-                      padding: const EdgeInsets.all(0),
-                      physics: showMore
-                          ? const AlwaysScrollableScrollPhysics()
-                          : const NeverScrollableScrollPhysics(),
-                      children: [
-                        for (int i = 0; i < 100; i++)
-                          const Text(
-                            "Siema",
-                            style: TextStyle(color: Theming.whiteTone),
-                          )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            const SizedBox(height: 40),
+
+            //Party info
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Stack(
+                children: const [
+                  PartyDesc(),
+                  PartyHeader(),
+                ],
+              ),
             ),
           ],
         ),

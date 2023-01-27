@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../routes/left_menu.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
 import '../routes/map_page.dart';
 import '../widgets/navbar.dart';
 
-var controller = PageController(initialPage: 1);
+final GlobalKey<NavigatorState> _rootKey =
+    GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellKey =
+    GlobalKey<NavigatorState>();
 
 GoRouter router = GoRouter(
+  navigatorKey: _rootKey,
   initialLocation: "/",
   routes: [
     ShellRoute(
+      navigatorKey: _shellKey,
       builder: (context, state, child) {
         return _ScaffoldWithNavBar(child);
       },
@@ -22,16 +26,8 @@ GoRouter router = GoRouter(
           path: "/",
           pageBuilder: (context, state) {
             return pageTransition(
-              context: context,
               state: state,
-              child: PageView(
-                controller: controller,
-                physics: const ClampingScrollPhysics(),
-                children: const [
-                  LeftMenu(),
-                  HomePage(),
-                ],
-              ),
+              childWidget: const HomePage(),
             );
           },
         ),
@@ -39,9 +35,8 @@ GoRouter router = GoRouter(
           path: "/parties",
           pageBuilder: (context, state) {
             return pageTransition(
-              context: context,
               state: state,
-              child: const PartiesPage(),
+              childWidget: const PartiesPage(),
             );
           },
         ),
@@ -49,9 +44,8 @@ GoRouter router = GoRouter(
           path: "/profile",
           pageBuilder: (context, state) {
             return pageTransition(
-              context: context,
               state: state,
-              child: const ProfilePage(),
+              childWidget: const ProfilePage(),
             );
           },
         ),
@@ -61,14 +55,30 @@ GoRouter router = GoRouter(
       path: "/map",
       pageBuilder: (context, state) {
         return pageTransition(
-          context: context,
           state: state,
-          child: const MapPage(),
+          childWidget: const MapPage(),
         );
       },
     ),
   ],
 );
+
+CustomTransitionPage pageTransition({
+  required GoRouterState state,
+  required Widget childWidget,
+}) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: childWidget,
+    transitionDuration: const Duration(milliseconds: 120),
+    transitionsBuilder: (_, animation, __, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  );
+}
 
 class _ScaffoldWithNavBar extends StatelessWidget {
   final Widget child;
@@ -91,19 +101,4 @@ class _ScaffoldWithNavBar extends StatelessWidget {
       ),
     );
   }
-}
-
-CustomTransitionPage pageTransition({
-  required BuildContext context,
-  required GoRouterState state,
-  required Widget child,
-}) {
-  return CustomTransitionPage(
-    key: state.pageKey,
-    child: child,
-    transitionDuration: const Duration(milliseconds: 120),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      return FadeTransition(opacity: animation, child: child);
-    },
-  );
 }

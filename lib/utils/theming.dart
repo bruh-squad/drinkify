@@ -69,4 +69,21 @@ class Styles {
     fontSize: 20,
     color: Theming.whiteTone,
   );
+
+  static const partyHeaderTitle = TextStyle(
+    color: Theming.whiteTone,
+    fontWeight: FontWeight.bold,
+    fontSize: 24,
+  );
+
+  static const partyHeaderLocation = TextStyle(
+    color: Theming.primaryColor,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const partyHeaderInfo = TextStyle(
+    color: Theming.whiteTone,
+    fontWeight: FontWeight.bold,
+  );
+
 }
