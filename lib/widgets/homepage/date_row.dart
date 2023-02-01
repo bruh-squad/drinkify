@@ -199,17 +199,15 @@ class _DateRowState extends State<DateRow> {
         setState(() => selectedIndex = index);
       },
       child: AnimatedContainer(
-        height: 94,
+        height: 90,
         width: 80,
-        duration: const Duration(milliseconds: 350),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.linearToEaseOut,
         margin: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: isSelected ? Theming.bgColor : Theming.primaryColor,
-          border: Border.all(
-            color: isSelected ? Theming.primaryColor : Colors.transparent,
-            width: 4,
-          ),
+          color: isSelected
+              ? Theming.primaryColor
+              : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -218,16 +216,12 @@ class _DateRowState extends State<DateRow> {
             children: [
               Text(
                 dayOfWeek,
-                style: isSelected
-                    ? Styles.dateBoxTextSelected
-                    : Styles.dateBoxTextUnselected,
+                style: Styles.dateBoxText,
               ),
               const SizedBox(height: 4),
               Text(
                 "$numberOfDay",
-                style: isSelected
-                    ? Styles.dateBoxTextSelected
-                    : Styles.dateBoxTextUnselected,
+                style: Styles.dateBoxText,
               ),
             ],
           ),

@@ -20,10 +20,7 @@ void main() {
   );
 
   //Push notifications
-  OneSignal.shared.setLogLevel(
-    OSLogLevel.verbose,
-    OSLogLevel.none,
-  );
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setAppId("6acf6444-70f3-40a6-9338-34e07e9e26cf");
 }
 

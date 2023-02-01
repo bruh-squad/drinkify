@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class Theming {
   Theming._();
 
+  // static const Color primaryColor = Color(0xFF918AE2);
   static const Color primaryColor = Color(0xFF0EB1D2);
   static const Color bgColor = Color(0xFF011936);
   static const Color whiteTone = Color(0xFFF7F4F3);
@@ -29,14 +30,8 @@ class Styles {
     fontWeight: FontWeight.bold,
   );
 
-  static const dateBoxTextUnselected = TextStyle(
+  static const dateBoxText = TextStyle(
     color: Theming.whiteTone,
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-  );
-
-  static const dateBoxTextSelected = TextStyle(
-    color: Theming.primaryColor,
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );

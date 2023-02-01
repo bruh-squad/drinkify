@@ -34,12 +34,23 @@ class PartyHeader extends StatelessWidget {
             onTap: () {
               openMap(lat: 51.40253, lng: 21.14714);
             },
-            child: const Text(
-              "Radom, ul. chuj wie gdzie 69",
-              style: Styles.partyHeaderLocation,
+            child: Row(
+              children: [
+                const Text(
+                  "Radom, ul. chuj wie gdzie 69",
+                  style: Styles.partyHeaderLocation,
+                ),
+                const SizedBox(width: 5),
+                Icon(
+                  Icons.link_sharp,
+                  color: Theming.whiteTone.withOpacity(0.6),
+                  size: 18,
+                )
+              ],
             ),
           ),
           const SizedBox(height: 15),
+          //Party info (date, time, number of people)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

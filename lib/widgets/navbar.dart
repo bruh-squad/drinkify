@@ -36,14 +36,6 @@ class _NavBarState extends State<NavBar> {
       decoration: BoxDecoration(
         color: Theming.primaryColor,
         borderRadius: BorderRadius.circular(100),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            blurRadius: 20,
-            spreadRadius: 1,
-            offset: const Offset(0, 7),
-          ),
-        ],
       ),
       child: Stack(
         children: [
