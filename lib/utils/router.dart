@@ -7,10 +7,8 @@ import '../routes/profile_page.dart';
 import '../routes/map_page.dart';
 import '../widgets/navbar.dart';
 
-final GlobalKey<NavigatorState> _rootKey =
-    GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellKey =
-    GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellKey = GlobalKey<NavigatorState>();
 
 GoRouter router = GoRouter(
   navigatorKey: _rootKey,
@@ -70,7 +68,7 @@ CustomTransitionPage pageTransition({
   return CustomTransitionPage(
     key: state.pageKey,
     child: childWidget,
-    transitionDuration: const Duration(milliseconds: 120),
+    transitionDuration: const Duration(milliseconds: 100),
     transitionsBuilder: (_, animation, __, child) {
       return FadeTransition(
         opacity: animation,
@@ -86,6 +84,7 @@ class _ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -94,7 +93,7 @@ class _ScaffoldWithNavBar extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: NavBar(
-              bottomMargin: MediaQuery.of(context).padding.bottom + 40,
+              bottomMargin: bottomPadding + 40,
             ),
           ),
         ],

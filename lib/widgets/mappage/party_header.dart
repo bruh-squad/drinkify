@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
+import '/utils/ext.dart' show openMap;
 
 class PartyHeader extends StatelessWidget {
   const PartyHeader({super.key});
@@ -29,9 +30,14 @@ class PartyHeader extends StatelessWidget {
             style: Styles.partyHeaderTitle,
             maxLines: 1,
           ),
-          const Text(
-            "Radom, ul. chuj wie gdzie 69",
-            style: Styles.partyHeaderLocation,
+          GestureDetector(
+            onTap: () {
+              openMap(lat: 51.40253, lng: 21.14714);
+            },
+            child: const Text(
+              "Radom, ul. chuj wie gdzie 69",
+              style: Styles.partyHeaderLocation,
+            ),
           ),
           const SizedBox(height: 15),
           Row(

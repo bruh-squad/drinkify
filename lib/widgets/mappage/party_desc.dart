@@ -13,7 +13,7 @@ class PartyDesc extends StatelessWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(0),
         children: const [
-          SizedBox(height: 140),
+          SizedBox(height: 145),
           Text(
             '''
 okeokeokeokeokeokokeokeokeokeokeok

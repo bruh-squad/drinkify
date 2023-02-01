@@ -4,8 +4,8 @@ class Theming {
   Theming._();
 
   static const Color primaryColor = Color(0xFF0EB1D2);
-  static const Color bgColor = Color.fromARGB(255, 1, 25, 54);
-  static const Color whiteTone = Color.fromARGB(255, 247, 244, 243);
+  static const Color bgColor = Color(0xFF011936);
+  static const Color whiteTone = Color(0xFFF7F4F3);
 }
 
 class Styles {

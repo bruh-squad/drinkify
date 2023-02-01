@@ -38,9 +38,10 @@ class _NavBarState extends State<NavBar> {
         borderRadius: BorderRadius.circular(100),
         boxShadow: [
           BoxShadow(
-            blurRadius: 15,
-            color: Theming.primaryColor.withOpacity(0.4),
-            offset: const Offset(0, 10),
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 20,
+            spreadRadius: 1,
+            offset: const Offset(0, 7),
           ),
         ],
       ),

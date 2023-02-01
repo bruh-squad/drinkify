@@ -71,8 +71,9 @@ class _MapPageState extends State<MapPage> {
                 //Map
                 AnimatedContainer(
                   width: double.infinity,
-                  height:
-                      showMore ? 100 : MediaQuery.of(context).size.height - 150,
+                  height: showMore
+                      ? 140 // Map shrinked size
+                      : MediaQuery.of(context).size.height - 150,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.linearToEaseOut,
                   decoration: BoxDecoration(
@@ -151,7 +152,7 @@ class _MapPageState extends State<MapPage> {
                       curve: Curves.linearToEaseOut,
                       margin: EdgeInsets.only(
                         top: showMore
-                            ? 70
+                            ? 110 //Map page shrinked size - 30
                             : MediaQuery.of(context).size.height - 180,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),

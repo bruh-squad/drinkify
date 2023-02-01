@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '/utils/ext.dart';
+import '/utils/ext.dart' show Capitalize;
 import '/utils/theming.dart';
 
 class DateRow extends StatefulWidget {
