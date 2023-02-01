@@ -215,7 +215,7 @@ class _MapPageState extends State<MapPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 38),
 
             //Party info
             Padding(

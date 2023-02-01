@@ -90,9 +90,7 @@ class _NavBarState extends State<NavBar> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
+        setState(() => selectedIndex = index);
         ctx.go(route);
       },
       child: Container(

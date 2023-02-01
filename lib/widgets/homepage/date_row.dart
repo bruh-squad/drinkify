@@ -65,69 +65,8 @@ class _DateRowState extends State<DateRow> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                     builder: (context) {
-                      return SizedBox(
+                      return const SizedBox(
                         height: 340,
-                        child: Center(
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  height: 40,
-                                  width: 100,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Theming.primaryColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Text(
-                                    "Zapisz",
-                                    style: Styles.dateSaveText,
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 150,
-                                    width: 150,
-                                    child: ListWheelScrollView(
-                                      itemExtent: 60,
-                                      physics: const FixedExtentScrollPhysics(),
-                                      diameterRatio: 4,
-                                      onSelectedItemChanged: (val) {},
-                                      children: [
-                                        for (int i = 0; i < 12; i++)
-                                          const Text(
-                                            "Styczeń",
-                                            style: Styles.dateTextSelected,
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 40),
-                                  SizedBox(
-                                    height: 150,
-                                    width: 150,
-                                    child: ListWheelScrollView(
-                                      itemExtent: 60,
-                                      physics: const FixedExtentScrollPhysics(),
-                                      diameterRatio: 4,
-                                      children: [
-                                        for (int i = 0; i < 10; i++)
-                                          Text(
-                                            "${(currentMonthAndYear["year"] as int) + i}",
-                                            style: Styles.dateTextSelected,
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
                       );
                     },
                   );
@@ -149,7 +88,14 @@ class _DateRowState extends State<DateRow> {
                 children: [
                   const SizedBox(width: 30),
                   for (int i = 1; i <= numOfDaysInMonth; i++)
-                    _dateBox(i, dayOfWeek: "Pon.", numberOfDay: i),
+                    _dateBox(
+                      i,
+                      date: DateTime(
+                        currentMonthAndYear["year"] as int,
+                        DateTime.now().month,
+                        i,
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -189,10 +135,14 @@ class _DateRowState extends State<DateRow> {
 
   Widget _dateBox(
     int index, {
-    required String dayOfWeek,
-    required int numberOfDay,
+    required DateTime date,
   }) {
     bool isSelected = selectedIndex == index;
+    String dayOfWeek = DateFormat("EEE", "pl").format(date);
+
+    if (dayOfWeek.length > 3) {
+      dayOfWeek.substring(0, 3);
+    }
 
     return GestureDetector(
       onTap: () {
@@ -215,12 +165,14 @@ class _DateRowState extends State<DateRow> {
           child: Column(
             children: [
               Text(
-                dayOfWeek,
+                dayOfWeek.length > 4
+                    ? dayOfWeek.replaceRange(4, null, ".")
+                    : dayOfWeek,
                 style: Styles.dateBoxText,
               ),
               const SizedBox(height: 4),
               Text(
-                "$numberOfDay",
+                "${date.day}",
                 style: Styles.dateBoxText,
               ),
             ],
