@@ -36,13 +36,6 @@ class _NavBarState extends State<NavBar> {
       decoration: BoxDecoration(
         color: Theming.primaryColor,
         borderRadius: BorderRadius.circular(100),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 15,
-            color: Theming.primaryColor.withOpacity(0.4),
-            offset: const Offset(0, 10),
-          ),
-        ],
       ),
       child: Stack(
         children: [
@@ -97,9 +90,7 @@ class _NavBarState extends State<NavBar> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
+        setState(() => selectedIndex = index);
         ctx.go(route);
       },
       child: Container(

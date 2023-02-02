@@ -1,16 +1,20 @@
-# alkoholicy
+# Alkoholicy W Okolicy
 
-A new Flutter project.
+A mobile app that will help you find a party in your area.
 
-## Getting Started
+## Before you install
+This repository does NOT contain **.dart_tool**.
+If you don't have this folder, make sure to run the command below while being in the app's directory.
+```
+flutter create .
+```
+Now delete **test** folder since this repository does not contain one.
+Leaving this folder undeleted will cause errors.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Installation
+Make sure you have have enabled USB debugging in developer options and your device is being detected.
+If so run the commands below.
+```
+flutter build apk --release
+flutter install
+```

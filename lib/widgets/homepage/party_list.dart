@@ -10,17 +10,15 @@ class PartyList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width - 30 * 2,
+        const SizedBox(
+          height: 35,
         ),
         const Text(
           "Imprezy",
           style: Styles.categoryText,
         ),
         const SizedBox(height: 100),
-        Align(
-          alignment: Alignment.center,
+        Center(
           child: Text(
             "Brak imprez",
             style: Styles.emptyListText,

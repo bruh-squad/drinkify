@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import './utils/router.dart';
 import './utils/theming.dart';
@@ -17,6 +18,10 @@ void main() {
     SystemUiMode.edgeToEdge,
     overlays: [SystemUiOverlay.top],
   );
+
+  //Push notifications
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  OneSignal.shared.setAppId("6acf6444-70f3-40a6-9338-34e07e9e26cf");
 }
 
 class App extends StatelessWidget {
