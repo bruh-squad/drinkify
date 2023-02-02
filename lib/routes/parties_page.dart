@@ -12,7 +12,6 @@ class PartiesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       resizeToAvoidBottomInset: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
         padding: EdgeInsets.only(
           //NavBar bottom margin + 60

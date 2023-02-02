@@ -54,7 +54,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
               //Search bar
               Container(
                 height: 55,
-                width: 270,
+                width: MediaQuery.of(context).size.width - 55 - 60 - 20,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(

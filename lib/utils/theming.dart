@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 
 class Theming {
   Theming._();
-
-  static const Color primaryColor = Color.fromARGB(255, 246, 70, 64);
-  static const Color bgColor = Color.fromARGB(255, 1, 25, 54);
-  static const Color whiteTone = Color.fromARGB(255, 247, 244, 243);
+  //0xFF0EE416
+  //0xFF21A179
+  //0xFFEE6352
+  //0xFFCEFF1A tak
+  //0xFF0EB1D2 2 tak
+  //0xFF7D01B3 0.75 tak
+  static const Color primaryColor = Color(0xFF0EB1D2);
+  static const Color bgColor = Color(0xFF011936);
+  static const Color whiteTone = Color.fromARGB(255, 255, 255, 255);
 }
 
 class Styles {
@@ -38,7 +43,7 @@ class Styles {
   static final emptyListText = TextStyle(
     color: Theming.whiteTone.withOpacity(0.7),
     fontSize: 24,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.bold
   );
 
   static const hintTextSearchBar = TextStyle(
@@ -57,5 +62,4 @@ class Styles {
     fontSize: 20,
     color: Theming.whiteTone,
   );
-
 }
