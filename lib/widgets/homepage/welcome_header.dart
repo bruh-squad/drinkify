@@ -37,7 +37,7 @@ class WelcomeHeader extends StatelessWidget {
               backgroundImage: NetworkImage(
                 "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
               ),
-              backgroundColor: Colors.lightGreen,
+              backgroundColor: Theming.primaryColorLight,
               radius: 36,
             )
           ],

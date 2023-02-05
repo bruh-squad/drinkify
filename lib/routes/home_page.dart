@@ -1,6 +1,6 @@
-import 'package:alkoholicy/utils/theming.dart';
 import 'package:flutter/material.dart';
 
+import '/utils/theming.dart';
 import '../widgets/homepage/welcome_header.dart';
 import '../widgets/homepage/date_row.dart';
 import '../widgets/homepage/party_list.dart';

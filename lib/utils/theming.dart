@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class Theming {
   Theming._();
 
-  // static const Color primaryColor = Color(0xFF918AE2);
   static const Color primaryColor = Color(0xFF0EB1D2);
+  static const Color primaryColorLight = Color.fromARGB(255, 0, 40, 89);
   static const Color bgColor = Color(0xFF011936);
   static const Color whiteTone = Color(0xFFF7F4F3);
 }

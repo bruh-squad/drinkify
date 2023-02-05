@@ -5,16 +5,16 @@ import '/utils/theming.dart';
 import '/utils/ext.dart' show openMap;
 
 class PartyHeader extends StatelessWidget {
-  final String party_name;
+  final String partyName;
   final String localisation;
-  final DateTime start_time;
-  final int participants_count;
+  final DateTime startTime;
+  final int participantsCount;
   const PartyHeader({
     super.key,
-    required this.party_name,
+    required this.partyName,
     required this.localisation,
-    required this.start_time,
-    required this.participants_count,
+    required this.startTime,
+    required this.participantsCount,
   });
 
   @override
@@ -37,13 +37,28 @@ class PartyHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            party_name,
+            partyName,
             style: Styles.partyHeaderTitle,
             maxLines: 1,
           ),
-          Text(
-            localisation,
-            style: Styles.partyHeaderLocation,
+          GestureDetector(
+            onTap: () {
+              openMap(lat: 51.40253, lng: 21.14714);
+            },
+            child: Row(
+              children: [
+                Text(
+                  localisation,
+                  style: Styles.partyHeaderLocation,
+                ),
+                const SizedBox(width: 5),
+                Icon(
+                  Icons.link_sharp,
+                  color: Theming.whiteTone.withOpacity(0.6),
+                  size: 18,
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 15),
           //Party info (date, time, number of people)
@@ -53,10 +68,15 @@ class PartyHeader extends StatelessWidget {
               //Date
               Row(
                 children: [
-                  const Icon(Icons.date_range_outlined,
-                      color: Theming.primaryColor),
+                  const Icon(
+                    Icons.date_range_outlined,
+                    color: Theming.primaryColor,
+                  ),
                   const SizedBox(width: 5),
-                  Text(DateFormat.yMd().format(start_time), style: Styles.partyHeaderInfo)
+                  Text(
+                    DateFormat.yMd().format(startTime),
+                    style: Styles.partyHeaderInfo,
+                  )
                 ],
               ),
 
@@ -65,7 +85,8 @@ class PartyHeader extends StatelessWidget {
                 children: [
                   const Icon(Icons.timelapse, color: Theming.primaryColor),
                   const SizedBox(width: 5),
-                  Text(DateFormat.Hm().format(start_time), style: Styles.partyHeaderInfo),
+                  Text(DateFormat.Hm().format(startTime),
+                      style: Styles.partyHeaderInfo),
                 ],
               ),
 
@@ -74,7 +95,8 @@ class PartyHeader extends StatelessWidget {
                 children: [
                   const Icon(Icons.group_outlined, color: Theming.primaryColor),
                   const SizedBox(width: 5),
-                  Text(participants_count.toString(), style: Styles.partyHeaderInfo),
+                  Text(participantsCount.toString(),
+                      style: Styles.partyHeaderInfo),
                 ],
               ),
             ],
