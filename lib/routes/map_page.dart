@@ -1,4 +1,3 @@
-import 'package:alkoholicy/widgets/homepage/party_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 // ignore: depend_on_referenced_packages
@@ -41,7 +40,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    getJsonData();
+    //getJsonData();
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
@@ -252,12 +251,12 @@ class _MapPageState extends State<MapPage> {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Stack(
                 children: [
-                  PartyDesc(description: ListOfParties[0].description),
+                  PartyDesc(description: listOfParties[0].description),
                   PartyHeader(
-                    party_name: ListOfParties[0].name,
-                    localisation: ListOfParties[0].localisation,
-                    participants_count: ListOfParties[0].participants.length,
-                    start_time: ListOfParties[0].start_time,
+                    partyName: listOfParties[0].name,
+                    localisation: listOfParties[0].localisation,
+                    participantsCount: listOfParties[0].participants.length,
+                    startTime: listOfParties[0].startTime,
                   ),
                 ],
               ),

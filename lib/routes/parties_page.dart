@@ -12,22 +12,6 @@ class PartiesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       resizeToAvoidBottomInset: false,
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(
-          //NavBar bottom margin + 60
-          bottom: MediaQuery.of(context).padding.bottom + 40 + 60,
-          right: 14,
-        ),
-        child: FloatingActionButton(
-          backgroundColor: Theming.primaryColor,
-          onPressed: () {},
-          child: const Icon(
-            Icons.add_rounded,
-            color: Theming.whiteTone,
-            size: 32,
-          ),
-        ),
-      ),
       body: Padding(
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top + 20,

@@ -1,4 +1,4 @@
-# Alkoholicy W Okolicy
+# Drinkify
 
 A mobile app that will help you find a party in your area.
 

@@ -18,8 +18,9 @@ class PartyDesc extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         children: [
           const SizedBox(height: 145),
-          Text(description,
-            style: TextStyle(color: Theming.whiteTone),
+          Text(
+            description,
+            style: const TextStyle(color: Theming.whiteTone),
           ),
           const SizedBox(height: 120),
         ],

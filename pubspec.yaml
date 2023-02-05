@@ -1,4 +1,4 @@
-name: alkoholicy
+name: drinkify
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -44,6 +44,8 @@ dependencies:
   flutter_dotenv: ^5.0.2
   http: ^0.13.5
   latlong2: ^0.8.1
+  rename: ^2.1.1
+  map_launcher: ^2.4.0
 
 dev_dependencies:
   flutter_test:
