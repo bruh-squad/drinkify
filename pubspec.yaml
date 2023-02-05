@@ -1,5 +1,5 @@
 name: drinkify
-description: A new Flutter project.
+description: An app that will help you find a party in your area.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

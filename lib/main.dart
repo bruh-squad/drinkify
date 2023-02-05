@@ -32,7 +32,7 @@ class App extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MaterialApp.router(
-        title: "Alkoholicy",
+        title: "Drinkify",
         theme: ThemeData(
           fontFamily: 'Nunito',
           useMaterial3: true,

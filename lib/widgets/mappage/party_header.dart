@@ -76,7 +76,7 @@ class PartyHeader extends StatelessWidget {
                   Text(
                     DateFormat.yMd().format(startTime),
                     style: Styles.partyHeaderInfo,
-                  )
+                  ),
                 ],
               ),
 
@@ -85,8 +85,10 @@ class PartyHeader extends StatelessWidget {
                 children: [
                   const Icon(Icons.timelapse, color: Theming.primaryColor),
                   const SizedBox(width: 5),
-                  Text(DateFormat.Hm().format(startTime),
-                      style: Styles.partyHeaderInfo),
+                  Text(
+                    DateFormat.Hm().format(startTime),
+                    style: Styles.partyHeaderInfo,
+                  ),
                 ],
               ),
 
@@ -95,8 +97,10 @@ class PartyHeader extends StatelessWidget {
                 children: [
                   const Icon(Icons.group_outlined, color: Theming.primaryColor),
                   const SizedBox(width: 5),
-                  Text(participantsCount.toString(),
-                      style: Styles.partyHeaderInfo),
+                  Text(
+                    participantsCount.toString(),
+                    style: Styles.partyHeaderInfo,
+                  ),
                 ],
               ),
             ],

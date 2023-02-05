@@ -11,6 +11,13 @@ flutter create .
 Now delete **test** folder since this repository does not contain one.
 Leaving this folder undeleted will cause errors.
 
+To make maps work properly you need to set up a **.env** file.
+Example:
+```
+APIKEY = "Your API key to openrouteservice.org"
+```
+Without this API key app won't be able to draw a path to selected location.
+
 ## Installation
 Make sure you have have enabled USB debugging in developer options and your device is being detected.
 If so run the commands below.

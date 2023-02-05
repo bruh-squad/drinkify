@@ -110,24 +110,20 @@ class _DateRowState extends State<DateRow> {
   Widget _sideShadow(Alignment alignment) {
     return Align(
       alignment: alignment,
-      child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 80),
-        opacity: 1,
-        child: Container(
-          height: 90,
-          width: 50,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Theming.bgColor,
-                blurRadius: 15,
-                spreadRadius: 20,
-                offset: alignment == Alignment.centerRight
-                    ? const Offset(45, 0)
-                    : const Offset(-45, 0),
-              ),
-            ],
-          ),
+      child: Container(
+        height: 90,
+        width: 50,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Theming.bgColor,
+              blurRadius: 15,
+              spreadRadius: 20,
+              offset: alignment == Alignment.centerRight
+                  ? const Offset(45, 0)
+                  : const Offset(-45, 0),
+            ),
+          ],
         ),
       ),
     );

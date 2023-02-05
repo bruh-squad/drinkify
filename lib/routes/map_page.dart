@@ -19,28 +19,29 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   bool showMore = false;
-  var data;
+  late dynamic data;
   final List<LatLng> polyPoints = [];
   void getJsonData() async {
     try {
       data = await getData(51.40253, 21.14714);
 
-      LineString ls =
-          LineString(data['features'][0]['geometry']['coordinates']);
+      LineString ls = LineString(
+        data['features'][0]['geometry']['coordinates'],
+      );
       for (int i = 0; i < ls.lineString.length; i++) {
         polyPoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
       }
       if (polyPoints.length == ls.lineString.length) {
-        print(ls);
+        //print(ls);
       }
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //getJsonData();
+    getJsonData();
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
@@ -120,15 +121,14 @@ class _MapPageState extends State<MapPage> {
                       options: MapOptions(
                         center: LatLng(51.40253, 21.14714),
                         zoom: 15,
-                        interactiveFlags: InteractiveFlag.all -
-                            InteractiveFlag.doubleTapZoom -
-                            InteractiveFlag.rotate,
+                        interactiveFlags:
+                            InteractiveFlag.all - InteractiveFlag.doubleTapZoom,
                       ),
                       children: [
                         TileLayer(
                           urlTemplate:
                               "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                          userAgentPackageName: "com.example.alkoholicy",
+                          userAgentPackageName: "app.example.drinkify",
                         ),
                         MarkerLayer(
                           markers: [
@@ -154,9 +154,10 @@ class _MapPageState extends State<MapPage> {
                         PolylineLayer(
                           polylines: [
                             Polyline(
-                                points: polyPoints,
-                                strokeWidth: 4.0,
-                                color: Colors.purple),
+                              points: polyPoints,
+                              strokeWidth: 4.0,
+                              color: Colors.purple,
+                            ),
                           ],
                         ),
                       ],
