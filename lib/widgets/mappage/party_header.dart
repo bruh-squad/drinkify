@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '/utils/theming.dart';
 import '/utils/ext.dart' show openMap;
 
 class PartyHeader extends StatelessWidget {
-  const PartyHeader({super.key});
+  final String party_name;
+  final String localisation;
+  final DateTime start_time;
+  final int participants_count;
+  const PartyHeader({
+    super.key,
+    required this.party_name,
+    required this.localisation,
+    required this.start_time,
+    required this.participants_count,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +36,14 @@ class PartyHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "18 Kamila",
+          Text(
+            party_name,
             style: Styles.partyHeaderTitle,
             maxLines: 1,
           ),
-          GestureDetector(
-            onTap: () {
-              openMap(lat: 51.40253, lng: 21.14714);
-            },
-            child: Row(
-              children: [
-                const Text(
-                  "Radom, ul. chuj wie gdzie 69",
-                  style: Styles.partyHeaderLocation,
-                ),
-                const SizedBox(width: 5),
-                Icon(
-                  Icons.link_sharp,
-                  color: Theming.whiteTone.withOpacity(0.6),
-                  size: 18,
-                )
-              ],
-            ),
+          Text(
+            localisation,
+            style: Styles.partyHeaderLocation,
           ),
           const SizedBox(height: 15),
           //Party info (date, time, number of people)
@@ -56,28 +52,29 @@ class PartyHeader extends StatelessWidget {
             children: [
               //Date
               Row(
-                children: const [
-                  Icon(Icons.date_range_outlined, color: Theming.primaryColor),
-                  SizedBox(width: 5),
-                  Text("28.01.2023", style: Styles.partyHeaderInfo)
+                children: [
+                  const Icon(Icons.date_range_outlined,
+                      color: Theming.primaryColor),
+                  const SizedBox(width: 5),
+                  Text(DateFormat.yMd().format(start_time), style: Styles.partyHeaderInfo)
                 ],
               ),
 
               //Time
               Row(
-                children: const [
-                  Icon(Icons.timelapse, color: Theming.primaryColor),
-                  SizedBox(width: 5),
-                  Text("12:00", style: Styles.partyHeaderInfo),
+                children: [
+                  const Icon(Icons.timelapse, color: Theming.primaryColor),
+                  const SizedBox(width: 5),
+                  Text(DateFormat.Hm().format(start_time), style: Styles.partyHeaderInfo),
                 ],
               ),
 
               //Number of people participating
               Row(
-                children: const [
-                  Icon(Icons.group_outlined, color: Theming.primaryColor),
-                  SizedBox(width: 5),
-                  Text("21", style: Styles.partyHeaderInfo),
+                children: [
+                  const Icon(Icons.group_outlined, color: Theming.primaryColor),
+                  const SizedBox(width: 5),
+                  Text(participants_count.toString(), style: Styles.partyHeaderInfo),
                 ],
               ),
             ],

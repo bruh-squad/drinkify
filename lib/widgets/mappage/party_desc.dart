@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import '/utils/theming.dart';
 
 class PartyDesc extends StatelessWidget {
-  const PartyDesc({super.key});
+  final String description;
+  const PartyDesc({
+    super.key,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,57 +16,12 @@ class PartyDesc extends StatelessWidget {
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(0),
-        children: const [
-          SizedBox(height: 145),
-          Text(
-            '''
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokvokeokeokeokeokeok
-okeokeokeokeokeokvjasdasdaokeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokeokokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeookeokeokeokeokeokkeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-okeokeokeokeokeokokeokeokeokeokeok
-            ''',
+        children: [
+          const SizedBox(height: 145),
+          Text(description,
             style: TextStyle(color: Theming.whiteTone),
           ),
-          SizedBox(height: 120),
+          const SizedBox(height: 120),
         ],
       ),
     );
