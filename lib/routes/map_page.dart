@@ -9,6 +9,7 @@ import '../widgets/mappage/party_header.dart';
 import '../widgets/mappage/party_desc.dart';
 import '../utils/theming.dart';
 import '../models/party_model.dart';
+import '../api/directions.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -19,9 +20,28 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   bool showMore = false;
+  var data;
+  final List<LatLng> polyPoints = [];
+  void getJsonData() async {
+    try {
+      data = await getData(51.40253, 21.14714);
+
+      LineString ls =
+          LineString(data['features'][0]['geometry']['coordinates']);
+      for (int i = 0; i < ls.lineString.length; i++) {
+        polyPoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
+      }
+      if (polyPoints.length == ls.lineString.length) {
+        print(ls);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    getJsonData();
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
@@ -132,6 +152,14 @@ class _MapPageState extends State<MapPage> {
                             ),
                           ],
                         ),
+                        PolylineLayer(
+                          polylines: [
+                            Polyline(
+                                points: polyPoints,
+                                strokeWidth: 4.0,
+                                color: Colors.purple),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -239,4 +267,9 @@ class _MapPageState extends State<MapPage> {
       ),
     );
   }
+}
+
+class LineString {
+  LineString(this.lineString);
+  List<dynamic> lineString;
 }
