@@ -6,7 +6,8 @@ import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
 import '../routes/selected_party_page.dart';
 import '../widgets/navbar.dart';
-import 'package:drinkify/models/party_model.dart';
+
+import '../models/party_model.dart';
 
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellKey = GlobalKey<NavigatorState>();

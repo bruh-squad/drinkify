@@ -14,9 +14,13 @@ Leaving this folder undeleted will cause errors.
 To make maps work properly you need to set up a **.env** file.
 Example:
 ```
-APIKEY = "Your API key to openrouteservice.org"
+OPENROUTESERVICE_APIKEY = "Your API key to openrouteservice.org"
+ONESIGNAL_APIKEY = "Your API key to onesignal.com"
 ```
-Without this API key app won't be able to draw a path to selected location.
+
+Without those API keys app won't be able to:
+> draw a path to selected location
+> send push notifications.
 
 ## Installation
 Make sure you have have enabled USB debugging in developer options and your device is being detected.

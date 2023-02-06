@@ -4,8 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
 
-import '../widgets/mappage/party_header.dart';
-import '../widgets/mappage/party_desc.dart';
+import '../widgets/selectedpartypage/party_header.dart';
+import '../widgets/selectedpartypage/party_desc.dart';
 import '../utils/theming.dart';
 import '../models/party_model.dart';
 import '../api/directions.dart';
@@ -22,15 +22,21 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
   bool showMore = false;
   late dynamic data;
   final List<LatLng> polyPoints = [];
-  void getJsonData() async {
+
+  void getDirectionsData() async {
     try {
-      data = await getData(widget.party.lnglat.longitude, widget.party.lnglat.latitude);
+      data = await getData(
+        widget.party.lnglat.longitude,
+        widget.party.lnglat.latitude,
+      );
 
       LineString ls = LineString(
         data['features'][0]['geometry']['coordinates'],
       );
       for (int i = 0; i < ls.lineString.length; i++) {
-        polyPoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
+        polyPoints.add(
+          LatLng(ls.lineString[i][1], ls.lineString[i][0]),
+        );
       }
       if (polyPoints.length == ls.lineString.length) {
         //print(ls);
@@ -119,7 +125,10 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     ),
                     child: FlutterMap(
                       options: MapOptions(
-                        center: LatLng(widget.party.lnglat.latitude, widget.party.lnglat.longitude),
+                        center: LatLng(
+                          widget.party.lnglat.latitude,
+                          widget.party.lnglat.longitude,
+                        ),
                         zoom: 15,
                         interactiveFlags:
                             InteractiveFlag.all - InteractiveFlag.doubleTapZoom,
@@ -133,19 +142,15 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: LatLng(widget.party.lnglat.latitude, widget.party.lnglat.longitude),
+                              point: LatLng(
+                                widget.party.lnglat.latitude,
+                                widget.party.lnglat.longitude,
+                              ),
                               builder: (ctx) {
-                                return IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      showMore = true;
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.location_on,
-                                    color: Theming.bgColor,
-                                    size: 36,
-                                  ),
+                                return const Icon(
+                                  Icons.location_pin,
+                                  color: Color.fromARGB(255, 233, 30, 98),
+                                  size: 36,
                                 );
                               },
                             ),
@@ -156,7 +161,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                             Polyline(
                               points: polyPoints,
                               strokeWidth: 4.0,
-                              color: Colors.purple,
+                              color: Theming.primaryColor,
                             ),
                           ],
                         ),
@@ -203,87 +208,29 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 ),
 
                 //Back button
-                Align(
+                _mapButton(
                   alignment: Alignment.topLeft,
-                  child: SafeArea(
-                    child: GestureDetector(
-                      onTap: () {
-                        if (showMore) return;
-                        context.go("/parties");
-                      },
-                      child: AnimatedContainer(
-                        height: 40,
-                        width: 40,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.linearToEaseOut,
-                        margin: const EdgeInsets.only(top: 30, left: 30),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: showMore
-                              ? Colors.transparent
-                              : Theming.primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: showMore
-                                  ? Colors.transparent
-                                  : Colors.black.withOpacity(0.6),
-                              blurRadius: 10,
-                              spreadRadius: 1,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.arrow_back_rounded,
-                          color:
-                              showMore ? Colors.transparent : Theming.whiteTone,
-                        ),
-                      ),
-                    ),
-                  ),
+                  margin: const EdgeInsets.only(top: 30, left: 30),
+                  icon: Icons.arrow_back_rounded,
+                  onClick: () {
+                    if (showMore) return;
+                    context.go("/");
+                  },
                 ),
-                Align(
+
+                //Get Path to location button
+                _mapButton(
                   alignment: Alignment.topRight,
-                  child: SafeArea(
-                    child: GestureDetector(
-                      onTap: () {
-                        getJsonData();
-                      },
-                      child: AnimatedContainer(
-                        height: 40,
-                        width: 40,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.linearToEaseOut,
-                        margin: const EdgeInsets.only(top: 30, right: 10),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: showMore
-                              ? Colors.transparent
-                              : Theming.primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: showMore
-                                  ? Colors.transparent
-                                  : Colors.black.withOpacity(0.6),
-                              blurRadius: 10,
-                              spreadRadius: 1,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.pin_drop_sharp,
-                          color:
-                              showMore ? Colors.transparent : Theming.whiteTone,
-                        ),
-                      ),
-                    ),
-                  ),
+                  margin: const EdgeInsets.only(top: 30, right: 30),
+                  icon: Icons.roundabout_right_outlined,
+                  onClick: () {
+                    if (showMore) return;
+                    getDirectionsData();
+                  },
                 ),
               ],
             ),
+
             const SizedBox(height: 38),
 
             //Party info
@@ -306,9 +253,51 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
       ),
     );
   }
+
+  Widget _mapButton({
+    required Alignment alignment,
+    required EdgeInsets margin,
+    required IconData icon,
+    required VoidCallback onClick,
+  }) {
+    return Align(
+      alignment: alignment,
+      child: SafeArea(
+        child: GestureDetector(
+          onTap: onClick,
+          child: AnimatedContainer(
+            height: 40,
+            width: 40,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.linearToEaseOut,
+            margin: margin,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: showMore ? Colors.transparent : Theming.primaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: showMore
+                      ? Colors.transparent
+                      : Colors.black.withOpacity(0.6),
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Icon(
+              icon,
+              color: showMore ? Colors.transparent : Theming.whiteTone,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class LineString {
-  LineString(this.lineString);
   List<dynamic> lineString;
+  LineString(this.lineString);
 }

@@ -31,7 +31,7 @@ Future<dynamic> getData(double lng, double lat) async {
   await dotenv.load(fileName: ".env");
 
   final String url =
-      'https://api.openrouteservice.org/v2/directions/driving-car?api_key=${dotenv.env["APIKEY"]}&start=${21.200197},${51.414912}&end=$lat,$lng';
+      'https://api.openrouteservice.org/v2/directions/driving-car?api_key=${dotenv.env["OPENROUTESERVICE_APIKEY"]}&start=${21.200197},${51.414912}&end=$lat,$lng';
 
   http.Response response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
@@ -41,5 +41,4 @@ Future<dynamic> getData(double lng, double lat) async {
     // print(response.statusCode);
   }
 }
-
 

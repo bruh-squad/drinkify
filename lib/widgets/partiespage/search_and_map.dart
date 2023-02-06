@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 
@@ -29,14 +28,13 @@ class _SearchAndMapState extends State<SearchAndMap> {
       ),
       child: Column(
         children: [
-          //Search bar and map button
+          //Searchbar and add party button
           Row(
             children: [
               //Map button
               GestureDetector(
                 onTap: () {
                   //! Dodawanie imprezy
-                  null;
                 },
                 child: Container(
                   height: 55,
@@ -46,7 +44,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Icons.add,
+                    Icons.location_pin,
                     size: 32,
                     color: Theming.whiteTone,
                   ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './utils/router.dart';
 import './utils/theming.dart';
 
-void main() {
+void main() async {
   runApp(const App());
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -18,10 +19,11 @@ void main() {
     SystemUiMode.edgeToEdge,
     overlays: [SystemUiOverlay.top],
   );
+  await dotenv.load(fileName: ".env");
 
   //Push notifications
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId("6acf6444-70f3-40a6-9338-34e07e9e26cf");
+  OneSignal.shared.setAppId("${dotenv.env["ONESIGNAL_APIKEY"]}");
 }
 
 class App extends StatelessWidget {

@@ -6,7 +6,6 @@ extension Capitalize on String {
   }
 }
 
-
 Future<void> openMap({
   String? adress,
   double lat = 0,
@@ -20,5 +19,9 @@ Future<void> openMap({
       coords: Coords(lat, lng),
       title: "",
     );
+    return;
   }
+
+  // If installedMaps is empty show a pop-up message
+  // that used doesn't have any maps installed
 }

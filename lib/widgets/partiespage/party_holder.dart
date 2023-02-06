@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:drinkify/models/party_model.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../utils/theming.dart';
+import '/models/party_model.dart';
+
+import '/utils/theming.dart';
 
 class PartyHolder extends StatefulWidget {
   final List<Party> partyList;
-  const PartyHolder({super.key, required this.partyList});
+  const PartyHolder({required this.partyList, super.key});
 
   @override
   State<PartyHolder> createState() => _PartyHolderState();
@@ -17,7 +18,7 @@ class _PartyHolderState extends State<PartyHolder> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 540,
-      child: (widget.partyList.isNotEmpty)
+      child: widget.partyList.isNotEmpty
           ? ListView.builder(
               itemCount: widget.partyList.length,
               itemBuilder: (context, index) {
@@ -43,7 +44,7 @@ class _PartyHolderState extends State<PartyHolder> {
 
   Widget _partyListItem(int idx) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theming.primaryColor,

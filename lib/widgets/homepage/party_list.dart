@@ -10,9 +10,7 @@ class PartyList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: 35,
-        ),
+        const SizedBox(height: 35),
         const Text(
           "Imprezy",
           style: Styles.categoryText,
