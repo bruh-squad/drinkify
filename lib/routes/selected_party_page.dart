@@ -10,20 +10,21 @@ import '../utils/theming.dart';
 import '../models/party_model.dart';
 import '../api/directions.dart';
 
-class MapPage extends StatefulWidget {
-  const MapPage({Key? key}) : super(key: key);
+class SelectedPartyPage extends StatefulWidget {
+  final Party party;
+  const SelectedPartyPage({Key? key, required this.party}) : super(key: key);
 
   @override
-  State<MapPage> createState() => _MapPageState();
+  State<SelectedPartyPage> createState() => _SelectedPartyPage();
 }
 
-class _MapPageState extends State<MapPage> {
+class _SelectedPartyPage extends State<SelectedPartyPage> {
   bool showMore = false;
   late dynamic data;
   final List<LatLng> polyPoints = [];
   void getJsonData() async {
     try {
-      data = await getData(51.40253, 21.14714);
+      data = await getData(widget.party.lnglat.longitude, widget.party.lnglat.latitude);
 
       LineString ls = LineString(
         data['features'][0]['geometry']['coordinates'],
@@ -41,7 +42,6 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    getJsonData();
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
@@ -119,7 +119,7 @@ class _MapPageState extends State<MapPage> {
                     ),
                     child: FlutterMap(
                       options: MapOptions(
-                        center: LatLng(51.40253, 21.14714),
+                        center: LatLng(widget.party.lnglat.latitude, widget.party.lnglat.longitude),
                         zoom: 15,
                         interactiveFlags:
                             InteractiveFlag.all - InteractiveFlag.doubleTapZoom,
@@ -133,7 +133,7 @@ class _MapPageState extends State<MapPage> {
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: LatLng(51.40253, 21.14714),
+                              point: LatLng(widget.party.lnglat.latitude, widget.party.lnglat.longitude),
                               builder: (ctx) {
                                 return IconButton(
                                   onPressed: () {
@@ -209,7 +209,7 @@ class _MapPageState extends State<MapPage> {
                     child: GestureDetector(
                       onTap: () {
                         if (showMore) return;
-                        context.go("/");
+                        context.go("/parties");
                       },
                       child: AnimatedContainer(
                         height: 40,
@@ -243,6 +243,45 @@ class _MapPageState extends State<MapPage> {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: SafeArea(
+                    child: GestureDetector(
+                      onTap: () {
+                        getJsonData();
+                      },
+                      child: AnimatedContainer(
+                        height: 40,
+                        width: 40,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.linearToEaseOut,
+                        margin: const EdgeInsets.only(top: 30, right: 10),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: showMore
+                              ? Colors.transparent
+                              : Theming.primaryColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: showMore
+                                  ? Colors.transparent
+                                  : Colors.black.withOpacity(0.6),
+                              blurRadius: 10,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.pin_drop_sharp,
+                          color:
+                              showMore ? Colors.transparent : Theming.whiteTone,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 38),
@@ -252,12 +291,12 @@ class _MapPageState extends State<MapPage> {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Stack(
                 children: [
-                  PartyDesc(description: listOfParties[0].description),
+                  PartyDesc(description: widget.party.description),
                   PartyHeader(
-                    partyName: listOfParties[0].name,
-                    localisation: listOfParties[0].localisation,
-                    participantsCount: listOfParties[0].participants.length,
-                    startTime: listOfParties[0].startTime,
+                    partyName: widget.party.name,
+                    localisation: widget.party.localisation,
+                    participantsCount: widget.party.participants.length,
+                    startTime: widget.party.startTime,
                   ),
                 ],
               ),

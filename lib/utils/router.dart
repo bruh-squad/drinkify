@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
-import '../routes/map_page.dart';
+import '../routes/selected_party_page.dart';
 import '../widgets/navbar.dart';
+import 'package:drinkify/models/party_model.dart';
 
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellKey = GlobalKey<NavigatorState>();
@@ -50,11 +51,12 @@ GoRouter router = GoRouter(
       ],
     ),
     GoRoute(
-      path: "/map",
+      path: "/party",
       pageBuilder: (context, state) {
+        Party p = state.extra as Party;
         return pageTransition(
           state: state,
-          childWidget: const MapPage(),
+          childWidget: SelectedPartyPage(party: p),
         );
       },
     ),

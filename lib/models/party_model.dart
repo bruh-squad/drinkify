@@ -1,3 +1,5 @@
+import 'package:latlong2/latlong.dart';
+
 enum PrivacyStatus {
   private,
   public,
@@ -11,7 +13,7 @@ class Party {
   final String description;
   final List<String> participants;
   final String localisation;
-  final Map<double, double> lnglat;
+  final LatLng lnglat;
   final DateTime startTime;
   final DateTime endTime;
 
@@ -28,8 +30,6 @@ class Party {
   });
 }
 
-final Map<double, double> testLngLat = {12.3333: 13.33333};
-
 final List<Party> listOfParties = [
   Party(
     owner: 'Kamil',
@@ -38,7 +38,40 @@ final List<Party> listOfParties = [
     description: "Podstawowy opis imprezy",
     participants: ['Szymon', 'Oliwier', 'Bartek'],
     localisation: 'ul. Bakałarza 15A',
-    lnglat: testLngLat,
+    lnglat: LatLng(51.40253, 21.14714),
+    startTime: DateTime.now(),
+    endTime: DateTime.now(),
+  ),
+  Party(
+    owner: 'Oliwier',
+    name: '18 Oliwiera',
+    privacyStatus: PrivacyStatus.public,
+    description: "Podstawowy opis imprezy",
+    participants: ['Szymon', 'Oliwier', 'Bartek'],
+    localisation: 'ul. Bakałarza 15A',
+    lnglat: LatLng(51.40253, 21.14714),
+    startTime: DateTime.now(),
+    endTime: DateTime.now(),
+  ),
+  Party(
+    owner: 'Adam',
+    name: '18 Adama',
+    privacyStatus: PrivacyStatus.public,
+    description: "2 Podstawowy opis imprezy",
+    participants: ['Szymon', 'Oliwier', 'Bartek'],
+    localisation: 'ul. Malarza 15A',
+    lnglat: LatLng(51.40253, 21.14714),
+    startTime: DateTime.now(),
+    endTime: DateTime.now(),
+  ),
+  Party(
+    owner: 'Szymon',
+    name: '18 Szymona',
+    privacyStatus: PrivacyStatus.public,
+    description: "2 Podstawowy opis imprezy",
+    participants: ['Szymon', 'Oliwier', 'Bartek'],
+    localisation: 'ul. Malarza 15A',
+    lnglat: LatLng(51.40253, 21.14714),
     startTime: DateTime.now(),
     endTime: DateTime.now(),
   ),

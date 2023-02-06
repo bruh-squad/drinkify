@@ -35,7 +35,8 @@ class _SearchAndMapState extends State<SearchAndMap> {
               //Map button
               GestureDetector(
                 onTap: () {
-                  context.go("/map");
+                  //! Dodawanie imprezy
+                  null;
                 },
                 child: Container(
                   height: 55,
@@ -45,7 +46,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Icons.location_on_outlined,
+                    Icons.add,
                     size: 32,
                     color: Theming.whiteTone,
                   ),
