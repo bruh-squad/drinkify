@@ -24,12 +24,10 @@ class _PartyHolderState extends State<PartyHolder> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: _partyListItem(index),
-                  onTap: () {
-                    return context.go(
-                      '/party',
-                      extra: widget.partyList[index],
-                    );
-                  },
+                  onTap: () => context.go(
+                    '/party',
+                    extra: widget.partyList[index],
+                  ),
                 );
               },
             )

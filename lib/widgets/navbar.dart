@@ -28,13 +28,13 @@ class _NavBarState extends State<NavBar> {
       70,
     );
 
-    return Container(
+    return Container( //TODO: Make the bg glass morphism
       height: navBarSize.height,
       width: navBarSize.width,
       margin: EdgeInsets.only(bottom: widget.bottomMargin),
       padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
-        color: Theming.primaryColor,
+        color: Theming.whiteTone.withOpacity(0.1),
         borderRadius: BorderRadius.circular(100),
       ),
       child: Stack(
@@ -47,7 +47,7 @@ class _NavBarState extends State<NavBar> {
               left: selectedIndex * (navBarSize.width / 3),
             ),
             decoration: BoxDecoration(
-              color: Theming.bgColor,
+              color: Theming.primaryColor,
               borderRadius: BorderRadius.circular(50),
             ),
           ),
@@ -99,7 +99,7 @@ class _NavBarState extends State<NavBar> {
         alignment: Alignment.center,
         child: AnimatedOpacity(
           curve: Curves.linearToEaseOut,
-          opacity: selectedIndex == index ? 1.0 : 0.8,
+          opacity: selectedIndex == index ? 1.0 : 0.7,
           duration: const Duration(milliseconds: 200),
           child: Text(
             caption,

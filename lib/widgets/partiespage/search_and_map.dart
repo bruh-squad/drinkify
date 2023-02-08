@@ -40,13 +40,13 @@ class _SearchAndMapState extends State<SearchAndMap> {
                   height: 55,
                   width: 55,
                   decoration: BoxDecoration(
-                    color: Theming.primaryColor,
+                    color: Theming.whiteTone.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Icons.location_pin,
+                    Icons.location_on_outlined,
                     size: 32,
-                    color: Theming.whiteTone,
+                    color: Theming.primaryColor,
                   ),
                 ),
               ),
@@ -100,6 +100,8 @@ class _SearchAndMapState extends State<SearchAndMap> {
     int index, {
     required String caption,
   }) {
+    bool isSelected = selectedIndex == index;
+
     return GestureDetector(
       onTap: () {
         setState(() => selectedIndex = index);
@@ -112,9 +114,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
         ),
         margin: const EdgeInsets.only(right: 15),
         decoration: BoxDecoration(
-          color: Theming.primaryColor.withOpacity(
-            selectedIndex == index ? 1.0 : 0.5,
-          ),
+          color: isSelected
+              ? Theming.primaryColor.withOpacity(0.5)
+              : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(

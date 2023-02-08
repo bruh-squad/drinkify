@@ -19,7 +19,7 @@ ONESIGNAL_APIKEY = "Your API key to onesignal.com"
 ```
 
 Without those API keys app won't be able to:
-> draw a path to selected location
+> draw a path to selected location\
 > send push notifications.
 
 ## Installation
