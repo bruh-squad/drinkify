@@ -23,5 +23,5 @@ Future<void> openMap({
   }
 
   // If installedMaps is empty show a pop-up message
-  // that used doesn't have any maps installed
+  // that user doesn't have any maps installed
 }

@@ -26,8 +26,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
   void getDirectionsData() async {
     try {
       data = await getData(
-        widget.party.lnglat.longitude,
-        widget.party.lnglat.latitude,
+        widget.party.latlng.longitude,
+        widget.party.latlng.latitude,
       );
 
       LineString ls = LineString(
@@ -126,8 +126,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     child: FlutterMap(
                       options: MapOptions(
                         center: LatLng(
-                          widget.party.lnglat.latitude,
-                          widget.party.lnglat.longitude,
+                          widget.party.latlng.latitude,
+                          widget.party.latlng.longitude,
                         ),
                         zoom: 15,
                         interactiveFlags:
@@ -143,8 +143,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                           markers: [
                             Marker(
                               point: LatLng(
-                                widget.party.lnglat.latitude,
-                                widget.party.lnglat.longitude,
+                                widget.party.latlng.latitude,
+                                widget.party.latlng.longitude,
                               ),
                               builder: (ctx) {
                                 return const Icon(
@@ -225,7 +225,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   icon: Icons.roundabout_right_outlined,
                   onClick: () {
                     if (showMore) return;
-                    getDirectionsData();
+                    // getDirectionsData();
                   },
                 ),
               ],
@@ -239,12 +239,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
               child: Stack(
                 children: [
                   PartyDesc(description: widget.party.description),
-                  PartyHeader(
-                    partyName: widget.party.name,
-                    localisation: widget.party.localisation,
-                    participantsCount: widget.party.participants.length,
-                    startTime: widget.party.startTime,
-                  ),
+                  PartyHeader(party: widget.party),
                 ],
               ),
             ),

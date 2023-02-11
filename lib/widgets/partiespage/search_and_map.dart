@@ -22,76 +22,87 @@ class _SearchAndMapState extends State<SearchAndMap> {
   Widget build(BuildContext context) {
     return Container(
       height: 75 + MediaQuery.of(context).padding.top,
-      width: MediaQuery.of(context).size.width - 30 * 2,
+      width: double.infinity,
       decoration: const BoxDecoration(
         color: Theming.bgColor,
+        boxShadow: [
+          BoxShadow(
+            color: Theming.bgColor,
+            offset: Offset(0, 5),
+            spreadRadius: 15,
+            blurRadius: 15,
+          ),
+        ],
       ),
-      child: Column(
-        children: [
-          //Searchbar and add party button
-          Row(
-            children: [
-              //Map button
-              GestureDetector(
-                onTap: () {
-                  //! Dodawanie imprezy
-                },
-                child: Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                    color: Theming.whiteTone.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(
-                    Icons.location_on_outlined,
-                    size: 32,
-                    color: Theming.primaryColor,
-                  ),
-                ),
-              ),
-
-              const Spacer(),
-
-              //Search bar
-              Container(
-                height: 55,
-                width: MediaQuery.of(context).size.width - 55 - 60 - 20,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Theming.whiteTone,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const TextField(
-                  cursorColor: Theming.primaryColor,
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                  decoration: InputDecoration(
-                    hintText: "Gdzie szukasz imprezy?",
-                    hintStyle: Styles.hintTextSearchBar,
-                    border: InputBorder.none,
-                    icon: Icon(
-                      Icons.search,
-                      color: Theming.primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          children: [
+            //Searchbar and add party button
+            Row(
+              children: [
+                //Map button
+                GestureDetector(
+                  onTap: () {
+                    //TODO: Dodawanie imprezy
+                  },
+                  child: Container(
+                    height: 55,
+                    width: 55,
+                    decoration: BoxDecoration(
+                      color: Theming.whiteTone.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.location_on_outlined,
                       size: 32,
+                      color: Theming.primaryColor,
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 20),
-
-          //Category roll
-          Row(
-            children: [
-              _categoryItem(0, caption: "W okolicy"),
-              _categoryItem(1, caption: "Znajomi"),
-              _categoryItem(2, caption: "Losowe"),
-            ],
-          ),
-        ],
+      
+                const Spacer(),
+      
+                //Search bar
+                Container(
+                  height: 55,
+                  width: MediaQuery.of(context).size.width - 55 - 60 - 20,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Theming.whiteTone,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const TextField(
+                    cursorColor: Theming.primaryColor,
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                    decoration: InputDecoration(
+                      hintText: "Gdzie szukasz imprezy?",
+                      hintStyle: Styles.hintTextSearchBar,
+                      border: InputBorder.none,
+                      icon: Icon(
+                        Icons.search,
+                        color: Theming.primaryColor,
+                        size: 32,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+      
+            const SizedBox(height: 20),
+      
+            //Category roll
+            Row(
+              children: [
+                _categoryItem(0, caption: "Imprezy"),
+                _categoryItem(1, caption: "Znajomi"),
+                _categoryItem(2, caption: "W okolicy"),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

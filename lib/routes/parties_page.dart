@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../widgets/partiespage/search_and_map.dart';
 import '../widgets/partiespage/party_holder.dart';
 
 import '../utils/theming.dart';
-import 'package:drinkify/models/party_model.dart';
+import '/models/party_model.dart';
 
 class PartiesPage extends StatelessWidget {
   const PartiesPage({super.key});
@@ -17,13 +18,38 @@ class PartiesPage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top + 20,
-          right: 30,
-          left: 30,
         ),
-        child: Column(
+        child: Stack(
           children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 135),
+                    for (int i = 0; i < 5; i++)
+                      PartyHolder(
+                        party: Party(
+                          owner: "",
+                          name: "Example party",
+                          privacyStatus: PrivacyStatus.public,
+                          description: "",
+                          participants: [
+                            "oke",
+                          ],
+                          localisation: "test street",
+                          latlng: LatLng(0, 0),
+                          date: DateTime.now(),
+                          startTime: DateTime.now(),
+                          endTime: DateTime.now(),
+                        ),
+                      ),
+                    const SizedBox(height: 200),
+                  ],
+                ),
+              ),
+            ),
             const SearchAndMap(),
-            PartyHolder(partyList: listOfParties),
           ],
         ),
       ),
