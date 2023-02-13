@@ -5,9 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // ignore: unused_element
 Future<Position> _getCurrentLocation() async {
-  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
 
-  if (!serviceEnabled) return Future.error('Location service are disabled');
+  if (!isServiceEnabled) return Future.error('Location service are disabled');
 
   LocationPermission permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {

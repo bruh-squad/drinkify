@@ -137,7 +137,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                         TileLayer(
                           urlTemplate:
                               "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                          userAgentPackageName: "app.example.drinkify",
+                          userAgentPackageName: "app.drinkify",
                         ),
                         MarkerLayer(
                           markers: [

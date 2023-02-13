@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../routes/login_page.dart' show LoginPage;
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
@@ -58,6 +59,15 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: SelectedPartyPage(party: p),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/login",
+      pageBuilder: (context, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const LoginPage(),
         );
       },
     ),
