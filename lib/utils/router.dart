@@ -1,3 +1,4 @@
+import 'package:drinkify/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,7 +11,10 @@ import '../widgets/navbar.dart';
 
 import '../models/party_model.dart';
 
+//Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
+
+//Use this for all routes needing NavBar
 final GlobalKey<NavigatorState> _shellKey = GlobalKey<NavigatorState>();
 
 GoRouter router = GoRouter(
@@ -25,6 +29,7 @@ GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: "/",
+          parentNavigatorKey: _shellKey,
           pageBuilder: (context, state) {
             return pageTransition(
               state: state,
@@ -34,6 +39,7 @@ GoRouter router = GoRouter(
         ),
         GoRoute(
           path: "/parties",
+          parentNavigatorKey: _shellKey,
           pageBuilder: (context, state) {
             return pageTransition(
               state: state,
@@ -43,10 +49,11 @@ GoRouter router = GoRouter(
         ),
         GoRoute(
           path: "/profile",
+          parentNavigatorKey: _shellKey,
           pageBuilder: (context, state) {
             return pageTransition(
               state: state,
-              childWidget: const ProfilePage(),
+              childWidget: ProfilePage(User()),
             );
           },
         ),
@@ -54,6 +61,7 @@ GoRouter router = GoRouter(
     ),
     GoRoute(
       path: "/party",
+      parentNavigatorKey: _rootKey,
       pageBuilder: (context, state) {
         Party p = state.extra as Party;
         return pageTransition(
@@ -64,6 +72,7 @@ GoRouter router = GoRouter(
     ),
     GoRoute(
       path: "/login",
+      parentNavigatorKey: _rootKey,
       pageBuilder: (context, state) {
         return pageTransition(
           state: state,
@@ -82,6 +91,7 @@ CustomTransitionPage pageTransition({
     key: state.pageKey,
     child: childWidget,
     transitionDuration: const Duration(milliseconds: 100),
+    reverseTransitionDuration: const Duration(milliseconds: 100),
     transitionsBuilder: (_, animation, __, child) {
       return FadeTransition(
         opacity: animation,

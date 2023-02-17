@@ -27,12 +27,9 @@ class _LoginFormState extends State<LoginForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: [
+              children: const [
                 //Return button
-                Container(
-                  child: const Icon(Icons.arrow_back_ios),
-                ),
-                const Text(
+                Text(
                   "Zaloguj się",
                   style: TextStyle(
                     color: Theming.whiteTone,

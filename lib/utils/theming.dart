@@ -91,4 +91,28 @@ class Styles {
     color: Theming.bgColor,
     fontSize: 18,
   );
+
+  static const buttonTextLight = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Theming.whiteTone,
+    fontSize: 18,
+  );
+
+  static const appBarTitle = TextStyle(
+    color: Theming.whiteTone,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
+
+  static final userInfoType = TextStyle(
+    color: Theming.whiteTone.withOpacity(0.5),
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const userInfoStatistic = TextStyle(
+    color: Theming.whiteTone,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
 }
