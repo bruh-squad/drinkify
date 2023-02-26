@@ -101,7 +101,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   width: double.infinity,
                   height: showMore
                       ? 140 // Map shrinked size
-                      : MediaQuery.of(context).size.height - 150,
+                      : MediaQuery.of(context).size.height - 130,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.linearToEaseOut,
                   decoration: BoxDecoration(
@@ -130,8 +130,9 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                           widget.party.latlng.longitude,
                         ),
                         zoom: 15,
-                        interactiveFlags:
-                            InteractiveFlag.all - InteractiveFlag.doubleTapZoom,
+                        interactiveFlags: InteractiveFlag.all -
+                            InteractiveFlag.doubleTapZoom -
+                            InteractiveFlag.rotate,
                       ),
                       children: [
                         TileLayer(
@@ -188,7 +189,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       margin: EdgeInsets.only(
                         top: showMore
                             ? 110 //Map page shrinked size - 30
-                            : MediaQuery.of(context).size.height - 180,
+                            : MediaQuery.of(context).size.height - 160,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(

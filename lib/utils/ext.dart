@@ -14,12 +14,11 @@ Future<void> openMap({
   final List<AvailableMap> installedMaps = await MapLauncher.installedMaps;
 
   if (installedMaps.isNotEmpty) {
-    MapLauncher.showMarker(
+    return MapLauncher.showMarker(
       mapType: installedMaps[0].mapType,
       coords: Coords(lat, lng),
       title: "",
     );
-    return;
   }
 
   // If installedMaps is empty show a pop-up message

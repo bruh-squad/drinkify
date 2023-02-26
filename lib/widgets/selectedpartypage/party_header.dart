@@ -7,10 +7,7 @@ import '/utils/ext.dart' show openMap;
 
 class PartyHeader extends StatelessWidget {
   final Party party;
-  const PartyHeader({
-    super.key,
-    required this.party
-  });
+  const PartyHeader({super.key, required this.party});
 
   @override
   Widget build(BuildContext context) {
