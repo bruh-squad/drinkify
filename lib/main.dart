@@ -12,7 +12,7 @@ void main() async {
     SystemUiOverlayStyle(
       statusBarColor: Theming.bgColor.withOpacity(0.002),
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.black.withOpacity(0.002)
+      systemNavigationBarColor: Theming.bgColor,
     ),
   );
   SystemChrome.setEnabledSystemUIMode(

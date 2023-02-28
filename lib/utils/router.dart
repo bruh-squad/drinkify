@@ -1,4 +1,3 @@
-import 'package:drinkify/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,7 +7,9 @@ import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
 import '../routes/selected_party_page.dart';
 import '../widgets/navbar.dart';
+import '../routes/notifications_page.dart';
 
+import '../models/user_model.dart';
 import '../models/party_model.dart';
 
 //Use this for all routes that does not need NavBar
@@ -77,6 +78,16 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: const LoginPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/notifications",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (context, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const NotificationsPage(),
         );
       },
     ),

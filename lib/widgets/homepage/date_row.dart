@@ -120,8 +120,8 @@ class _DateRowState extends State<DateRow> {
               blurRadius: 15,
               spreadRadius: 20,
               offset: alignment == Alignment.centerRight
-                  ? const Offset(45, 0)
-                  : const Offset(-45, 0),
+                  ? const Offset(50, 0)
+                  : const Offset(-50, 0),
             ),
           ],
         ),

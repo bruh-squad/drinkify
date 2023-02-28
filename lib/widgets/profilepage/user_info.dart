@@ -78,9 +78,7 @@ class _UserInfoState extends State<UserInfo> {
         //Bio
         GestureDetector(
           onTap: () {
-            setState(() {
-              showMoreDesc = !showMoreDesc;
-            });
+            setState(() => showMoreDesc = !showMoreDesc);
           },
           child: Text(
             "Współczesny artysta estradowy, showman, erudyta, omnibus, polihistor, geniusz, muzyk, artysta, filantrop, wizjoner, komentator e-sportowy, osoba nieszablonowa, posiadacz nadzwyczajnie dużego ilorazu inteligencji oraz człowiek sukcesu który przeszedł grę zwaną życiem.",
