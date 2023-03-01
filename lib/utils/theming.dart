@@ -60,7 +60,7 @@ class Styles {
 
   static const dateTextUnselected = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 20,
+    fontSize: 18,
     color: Theming.whiteTone,
   );
 

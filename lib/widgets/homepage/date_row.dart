@@ -14,13 +14,15 @@ class DateRow extends StatefulWidget {
 }
 
 class _DateRowState extends State<DateRow> {
-  late int selectedIndex;
+  late int selectedDayIndex;
   late int numOfDaysInMonth;
+  late int selectedMonthIndex;
 
   @override
   void initState() {
     super.initState();
-    selectedIndex = DateTime.now().day;
+    selectedDayIndex = DateTime.now().day;
+    selectedMonthIndex = DateTime.now().month;
     numOfDaysInMonth = DateTime(
       DateTime.now().year,
       DateTime.now().month + 1,
@@ -65,8 +67,40 @@ class _DateRowState extends State<DateRow> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                     builder: (context) {
-                      return const SizedBox(
-                        height: 340,
+                      var monthCtrl = FixedExtentScrollController(
+                        initialItem: selectedMonthIndex,
+                      );
+
+                      return StatefulBuilder(
+                        builder: (context, setState) => SizedBox(
+                          height: 400,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: RotatedBox(
+                                  quarterTurns: -1,
+                                  child: ListWheelScrollView(
+                                    controller: monthCtrl,
+                                    itemExtent: 160,
+                                    physics: const FixedExtentScrollPhysics(),
+                                    perspective: 0.00000001,
+                                    onSelectedItemChanged: (value) {
+                                      setState(() {
+                                        selectedMonthIndex = value;
+                                      });
+                                    },
+                                    children: [
+                                      for (int i = 0; i < 12; i++)
+                                        _datePickerItem(i),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   );
@@ -107,6 +141,26 @@ class _DateRowState extends State<DateRow> {
     );
   }
 
+  Widget _datePickerItem(int index) {
+    bool isSelected = selectedMonthIndex == index;
+
+    return Center(
+      child: RotatedBox(
+        quarterTurns: 1,
+        child: Text(
+          DateFormat("MMMM", "pl").format(
+            DateTime(
+              DateTime.now().year,
+              index + 1,
+            ),
+          ),
+          style:
+              isSelected ? Styles.dateTextSelected : Styles.dateTextUnselected,
+        ),
+      ),
+    );
+  }
+
   Widget _sideShadow(Alignment alignment) {
     return Align(
       alignment: alignment,
@@ -133,12 +187,12 @@ class _DateRowState extends State<DateRow> {
     int index, {
     required DateTime date,
   }) {
-    bool isSelected = selectedIndex == index;
+    bool isSelected = selectedDayIndex == index;
     String dayOfWeek = DateFormat("EEE", "pl").format(date);
 
     return GestureDetector(
       onTap: () {
-        setState(() => selectedIndex = index);
+        setState(() => selectedDayIndex = index);
       },
       child: AnimatedContainer(
         height: 90,
