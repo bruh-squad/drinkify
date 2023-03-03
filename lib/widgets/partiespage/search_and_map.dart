@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 
@@ -43,9 +44,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
               children: [
                 //Map button
                 GestureDetector(
-                  onTap: () {
-                    //TODO: Dodawanie imprezy
-                  },
+                  onTap: () => context.push("/create-party"),
                   child: Container(
                     height: 55,
                     width: 55,

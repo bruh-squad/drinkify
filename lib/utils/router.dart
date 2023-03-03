@@ -5,32 +5,36 @@ import '../routes/login_page.dart' show LoginPage;
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
+import '../routes/edit_profile_page.dart';
+import '../routes/create_party_page.dart';
 import '../routes/selected_party_page.dart';
-import '../widgets/navbar.dart';
+import '../routes/settings_page.dart';
 import '../routes/notifications_page.dart';
 
-import '../models/user_model.dart';
+import '../widgets/navbar.dart';
+
 import '../models/party_model.dart';
+import '../models/user_model.dart';
 
 //Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 
 //Use this for all routes needing NavBar
-final GlobalKey<NavigatorState> _shellKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _navBarKey = GlobalKey<NavigatorState>();
 
 GoRouter router = GoRouter(
   navigatorKey: _rootKey,
   initialLocation: "/",
   routes: [
     ShellRoute(
-      navigatorKey: _shellKey,
+      navigatorKey: _navBarKey,
       builder: (context, state, child) {
         return _ScaffoldWithNavBar(child);
       },
       routes: [
         GoRoute(
           path: "/",
-          parentNavigatorKey: _shellKey,
+          parentNavigatorKey: _navBarKey,
           pageBuilder: (context, state) {
             return pageTransition(
               state: state,
@@ -40,7 +44,7 @@ GoRouter router = GoRouter(
         ),
         GoRoute(
           path: "/parties",
-          parentNavigatorKey: _shellKey,
+          parentNavigatorKey: _navBarKey,
           pageBuilder: (context, state) {
             return pageTransition(
               state: state,
@@ -49,12 +53,12 @@ GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: "/profile",
-          parentNavigatorKey: _shellKey,
+          path: "/edit-profile",
+          parentNavigatorKey: _navBarKey,
           pageBuilder: (context, state) {
             return pageTransition(
               state: state,
-              childWidget: ProfilePage(User()),
+              childWidget: const EditProfile(),
             );
           },
         ),
@@ -68,6 +72,26 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: SelectedPartyPage(party: p),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/profile",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (context, state) {
+        return pageTransition(
+          state: state,
+          childWidget: ProfilePage(User()),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/create-party",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (context, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const CreatePartyPage(),
         );
       },
     ),
@@ -88,6 +112,16 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: const NotificationsPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/settings",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (context, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const SettingsPage(),
         );
       },
     ),
