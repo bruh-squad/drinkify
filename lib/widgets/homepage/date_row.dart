@@ -81,8 +81,8 @@ class _DateRowState extends State<DateRow> {
                       borderRadius: BorderRadius.circular(30.0),
                     ),
                     builder: (_) => DatePicker(
-                      selectedMonthIndex: selectedMonthIndex,
-                      selectedYearIndex: selectedYearIndex,
+                      monthIndex: selectedMonthIndex,
+                      yearIndex: selectedYearIndex,
                       onSelect: (year, month) {
                         setState(() {
                           date[0] = year + DateTime.now().year;

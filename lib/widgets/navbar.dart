@@ -75,7 +75,7 @@ class _NavBarState extends State<NavBar> {
                       2,
                       context,
                       caption: "Profile",
-                      route: "/edit-profile",
+                      route: "/profile",
                     ),
                   ],
                 ),

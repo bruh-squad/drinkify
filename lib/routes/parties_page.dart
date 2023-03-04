@@ -33,7 +33,7 @@ class PartiesPage extends StatelessWidget {
                           owner: "",
                           name: "Example party",
                           privacyStatus: PrivacyStatus.public,
-                          description: "",
+                          description: "Example description of a party",
                           participants: [
                             "oke",
                           ],

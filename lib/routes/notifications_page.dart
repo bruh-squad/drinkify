@@ -1,4 +1,5 @@
 import 'package:drinkify/utils/theming.dart';
+import 'package:drinkify/widgets/custom_floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,20 +32,18 @@ class NotificationsPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 20,
-          right: 10,
-        ),
-        child: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Theming.primaryColor,
-          child: const Icon(
-            Icons.visibility,
+      floatingActionButton: CustomFloatingButton(
+        caption: const Text(
+          "Oznacz jako przeczytane",
+          style: TextStyle(
             color: Theming.whiteTone,
-            size: 30,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
+        backgroundColor: Theming.primaryColor,
+        shadowColor: Colors.black.withOpacity(0.3),
+        onTap: () {},
       ),
 
       // Notification list
@@ -53,7 +52,7 @@ class NotificationsPage extends StatelessWidget {
           children: [
             for (int i = 0; i < 12; i++) _notificationItem(context),
             const SizedBox(
-              height: 100,
+              height: 150,
             ),
           ],
         ),

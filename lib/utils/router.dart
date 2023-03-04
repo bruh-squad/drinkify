@@ -53,12 +53,12 @@ GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: "/edit-profile",
+          path: "/profile",
           parentNavigatorKey: _navBarKey,
           pageBuilder: (context, state) {
             return pageTransition(
               state: state,
-              childWidget: const EditProfile(),
+              childWidget: ProfilePage(User()),
             );
           },
         ),
@@ -76,12 +76,12 @@ GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: "/profile",
+      path: "/edit-profile",
       parentNavigatorKey: _rootKey,
       pageBuilder: (context, state) {
         return pageTransition(
           state: state,
-          childWidget: ProfilePage(User()),
+          childWidget: const EditProfilePage(),
         );
       },
     ),

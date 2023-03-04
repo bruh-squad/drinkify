@@ -29,7 +29,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
         boxShadow: [
           BoxShadow(
             color: Theming.bgColor,
-            offset: Offset(0, 5),
+            offset: Offset(0, 0),
             spreadRadius: 15,
             blurRadius: 15,
           ),
