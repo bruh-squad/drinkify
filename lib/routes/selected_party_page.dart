@@ -241,7 +241,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   PartyDesc(description: widget.party.description),
                   PartyHeader(
                     partyName: widget.party.name,
-                    localisation: widget.party.localisation,
+                    localisation widget.party.localisation,
                     participantsCount: widget.party.participants.length,
                     startTime: widget.party.startTime,
                   ),
