@@ -5,7 +5,7 @@ import '../widgets/partiespage/search_and_map.dart';
 import '../widgets/partiespage/party_holder.dart';
 
 import '../utils/theming.dart';
-import '/models/party_model.dart';
+import '../models/party_model.dart';
 
 class PartiesPage extends StatelessWidget {
   const PartiesPage({super.key});
@@ -26,7 +26,7 @@ class PartiesPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
-                    const SizedBox(height: 135),
+                    const SizedBox(height: 130),
                     for (int i = 0; i < 5; i++)
                       PartyHolder(
                         party: Party(

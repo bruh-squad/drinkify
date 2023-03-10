@@ -33,17 +33,14 @@ class NotificationsPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: CustomFloatingButton(
-        caption: const Text(
-          "Oznacz jako przeczytane",
-          style: TextStyle(
-            color: Theming.whiteTone,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
         backgroundColor: Theming.primaryColor,
         shadowColor: Colors.black.withOpacity(0.3),
         onTap: () {},
+        child: const Icon(
+          Icons.visibility_outlined,
+          color: Theming.whiteTone,
+          size: 28,
+        ),
       ),
 
       // Notification list
@@ -66,7 +63,7 @@ class NotificationsPage extends StatelessWidget {
         //TODO on click show more information about the notification
         showModalBottomSheet(
           context: ctx,
-          builder: (context) {
+          builder: (_) {
             return const SizedBox();
           },
         );

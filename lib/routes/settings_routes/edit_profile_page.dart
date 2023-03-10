@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_floating_button.dart';
+import '/widgets/custom_floating_button.dart';
 
-import '../utils/theming.dart';
+import '/utils/theming.dart';
 
 class EditProfilePage extends StatelessWidget {
   const EditProfilePage({super.key});
@@ -12,7 +12,10 @@ class EditProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: CustomFloatingButton(
-        caption: const Text(
+        backgroundColor: Theming.primaryColor,
+        shadowColor: Colors.black.withOpacity(0.3),
+        onTap: () {},
+        child: const Text(
           "Zapisz",
           style: TextStyle(
             color: Theming.whiteTone,
@@ -20,9 +23,6 @@ class EditProfilePage extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        backgroundColor: Theming.primaryColor,
-        shadowColor: Colors.black.withOpacity(0.3),
-        onTap: () {},
       ),
       body: Column(
         children: const [],

@@ -37,9 +37,10 @@ class Styles {
   );
 
   static final emptyListText = TextStyle(
-      color: Theming.whiteTone.withOpacity(0.7),
-      fontSize: 24,
-      fontWeight: FontWeight.bold);
+    color: Theming.whiteTone.withOpacity(0.7),
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
 
   static const hintTextSearchBar = TextStyle(
     fontWeight: FontWeight.bold,

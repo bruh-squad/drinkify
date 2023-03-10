@@ -53,6 +53,7 @@ class _DatePickerState extends State<DatePicker> {
                 yearCtrl.selectedItem,
                 monthCtrl.selectedItem + 1,
               );
+              Navigator.pop(context);
             },
             child: Container(
               width: double.infinity,

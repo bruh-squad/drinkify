@@ -55,7 +55,13 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: CustomFloatingButton(
-        caption: Text(
+        backgroundColor: showMore ? Theming.primaryColor : Colors.transparent,
+        shadowColor:
+            showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
+        onTap: () {
+          if (!showMore) return;
+        },
+        child: Text(
           "Dołącz",
           style: TextStyle(
             color: showMore ? Theming.whiteTone : Colors.transparent,
@@ -63,12 +69,6 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
             fontSize: 18,
           ),
         ),
-        backgroundColor: showMore ? Theming.primaryColor : Colors.transparent,
-        shadowColor:
-            showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
-        onTap: () {
-          if (!showMore) return;
-        },
       ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -80,9 +80,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 //Map
                 AnimatedContainer(
                   width: double.infinity,
-                  height: showMore
-                      ? mapShrinkedSize
-                      : mapFullSize,
+                  height: showMore ? mapShrinkedSize : mapFullSize,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.linearToEaseOut,
                   decoration: BoxDecoration(
@@ -168,9 +166,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linearToEaseOut,
                       margin: EdgeInsets.only(
-                        top: showMore
-                            ? mapShrinkedSize - 30
-                            : mapFullSize - 30,
+                        top: showMore ? mapShrinkedSize - 30 : mapFullSize - 30,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(

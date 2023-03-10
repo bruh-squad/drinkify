@@ -22,14 +22,14 @@ class _SearchAndMapState extends State<SearchAndMap> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75 + MediaQuery.of(context).padding.top,
+      height: 110,
       width: double.infinity,
       decoration: const BoxDecoration(
         color: Theming.bgColor,
         boxShadow: [
           BoxShadow(
             color: Theming.bgColor,
-            offset: Offset(0, 0),
+            offset: Offset(0, 5),
             spreadRadius: 15,
             blurRadius: 15,
           ),
@@ -59,9 +59,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
                     ),
                   ),
                 ),
-      
+
                 const Spacer(),
-      
+
                 //Search bar
                 Container(
                   height: 55,
@@ -89,9 +89,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
                 ),
               ],
             ),
-      
-            const SizedBox(height: 20),
-      
+
+            const SizedBox(height: 15),
+
             //Category roll
             Row(
               children: [

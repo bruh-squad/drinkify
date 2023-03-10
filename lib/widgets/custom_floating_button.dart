@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomFloatingButton extends StatelessWidget {
-  final Text caption;
+  final Widget child;
   final Color backgroundColor;
   final VoidCallback onTap;
   final Color shadowColor;
   const CustomFloatingButton({
-    required this.caption,
+    required this.child,
     required this.backgroundColor,
     required this.onTap,
     required this.shadowColor,
@@ -38,7 +38,7 @@ class CustomFloatingButton extends StatelessWidget {
             vertical: 10,
             horizontal: 20,
           ),
-          child: caption,
+          child: child,
         ),
       ),
     );

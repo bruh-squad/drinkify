@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../routes/login_page.dart' show LoginPage;
+import '../routes/login_page.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
-import '../routes/edit_profile_page.dart';
 import '../routes/create_party_page.dart';
 import '../routes/selected_party_page.dart';
-import '../routes/settings_page.dart';
 import '../routes/notifications_page.dart';
+import '../routes/settings_page.dart';
+import '../routes/settings_routes/edit_profile_page.dart';
+import '../routes/settings_routes/languages_page.dart';
+import '../routes/settings_routes/privacy_page.dart';
+import '../routes/settings_routes/organization_page.dart';
 
 import '../widgets/navbar.dart';
 
@@ -28,14 +31,12 @@ GoRouter router = GoRouter(
   routes: [
     ShellRoute(
       navigatorKey: _navBarKey,
-      builder: (context, state, child) {
-        return _ScaffoldWithNavBar(child);
-      },
+      builder: (_, __, child) => _ScaffoldWithNavBar(child),
       routes: [
         GoRoute(
           path: "/",
           parentNavigatorKey: _navBarKey,
-          pageBuilder: (context, state) {
+          pageBuilder: (_, state) {
             return pageTransition(
               state: state,
               childWidget: const HomePage(),
@@ -45,7 +46,7 @@ GoRouter router = GoRouter(
         GoRoute(
           path: "/parties",
           parentNavigatorKey: _navBarKey,
-          pageBuilder: (context, state) {
+          pageBuilder: (_, state) {
             return pageTransition(
               state: state,
               childWidget: const PartiesPage(),
@@ -55,7 +56,7 @@ GoRouter router = GoRouter(
         GoRoute(
           path: "/profile",
           parentNavigatorKey: _navBarKey,
-          pageBuilder: (context, state) {
+          pageBuilder: (_, state) {
             return pageTransition(
               state: state,
               childWidget: ProfilePage(User()),
@@ -67,7 +68,7 @@ GoRouter router = GoRouter(
     GoRoute(
       path: "/party",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         Party p = state.extra as Party;
         return pageTransition(
           state: state,
@@ -76,19 +77,9 @@ GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: "/edit-profile",
-      parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
-        return pageTransition(
-          state: state,
-          childWidget: const EditProfilePage(),
-        );
-      },
-    ),
-    GoRoute(
       path: "/create-party",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const CreatePartyPage(),
@@ -98,7 +89,7 @@ GoRouter router = GoRouter(
     GoRoute(
       path: "/login",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const LoginPage(),
@@ -108,7 +99,7 @@ GoRouter router = GoRouter(
     GoRoute(
       path: "/notifications",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const NotificationsPage(),
@@ -118,10 +109,50 @@ GoRouter router = GoRouter(
     GoRoute(
       path: "/settings",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const SettingsPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/edit-profile",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const EditProfilePage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/organization",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const OrganizationPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/languages",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const LanguagesPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/privacy",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const PrivacyPage(),
         );
       },
     ),

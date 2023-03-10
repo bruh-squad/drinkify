@@ -15,6 +15,7 @@ class PartyList extends StatelessWidget {
           "Imprezy",
           style: Styles.categoryText,
         ),
+
         //Display if there are no parties
         AspectRatio(
           aspectRatio: 1 / 1,

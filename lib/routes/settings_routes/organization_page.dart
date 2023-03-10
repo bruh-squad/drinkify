@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
 
-class AppIntro extends StatelessWidget {
-  const AppIntro({super.key});
+class OrganizationPage extends StatelessWidget {
+  const OrganizationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
