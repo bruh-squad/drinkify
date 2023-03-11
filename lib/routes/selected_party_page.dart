@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../widgets/selectedpartypage/party_header.dart';
 import '../widgets/selectedpartypage/party_desc.dart';
-import '../widgets/custom_floating_button.dart';
 import '../utils/theming.dart';
 import '../models/party_model.dart';
 import '../api/directions.dart';
@@ -21,6 +20,7 @@ class SelectedPartyPage extends StatefulWidget {
 
 class _SelectedPartyPage extends State<SelectedPartyPage> {
   bool showMore = false;
+
   late dynamic data;
   final List<LatLng> polyPoints = [];
 
@@ -54,19 +54,42 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      floatingActionButton: CustomFloatingButton(
-        backgroundColor: showMore ? Theming.primaryColor : Colors.transparent,
-        shadowColor:
-            showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
-        onTap: () {
-          if (!showMore) return;
-        },
-        child: Text(
-          "Dołącz",
-          style: TextStyle(
-            color: showMore ? Theming.whiteTone : Colors.transparent,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 14, bottom: 25),
+        child: GestureDetector(
+          onTap: () {
+            if (!showMore) return;
+            //Some code
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.linearToEaseOut,
+            decoration: BoxDecoration(
+              color: showMore ? Theming.primaryColor : Colors.transparent,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [
+                BoxShadow(
+                  color: showMore
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.transparent,
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
+            child: Text(
+              "Dołącz",
+              style: TextStyle(
+                color: showMore ? Theming.whiteTone : Colors.transparent,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
           ),
         ),
       ),
@@ -209,7 +232,11 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
               ],
             ),
 
-            const SizedBox(height: 38),
+            AnimatedContainer(
+              height: showMore ? 38 : 78,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.linearToEaseOut,
+            ),
 
             //Party info
             Padding(

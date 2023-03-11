@@ -1,9 +1,10 @@
-import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '/routes/settings_routes/log_out_page.dart';
-import '/routes/settings_routes/change_theme.dart';
+import '../routes/settings_routes/log_out_page.dart';
+import '../routes/settings_routes/change_theme.dart';
+
+import '../widgets/glass_morphism.dart';
 
 import '../utils/theming.dart';
 

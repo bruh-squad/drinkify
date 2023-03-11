@@ -6,10 +6,8 @@ Drinkify is a mobile app that helps you plan parties and discover new ones in yo
 This repository does NOT contain **.dart_tool**.
 If you don't have this folder, make sure to run the command below while being in the app's directory.
 ```
-flutter create .
+flutter pub get
 ```
-Now delete **test** folder since this repository does not contain one.
-Leaving this folder undeleted will cause errors.
 
 To make maps work properly you need to set up a **.env** file.
 Example:

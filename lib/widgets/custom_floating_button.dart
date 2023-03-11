@@ -4,42 +4,34 @@ class CustomFloatingButton extends StatelessWidget {
   final Widget child;
   final Color backgroundColor;
   final VoidCallback onTap;
-  final Color shadowColor;
   const CustomFloatingButton({
     required this.child,
     required this.backgroundColor,
     required this.onTap,
-    required this.shadowColor,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 14, bottom: 25),
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.linearToEaseOut,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(100),
-            boxShadow: [
-              BoxShadow(
-                color: shadowColor,
-                blurRadius: 10,
-                spreadRadius: 1,
-                offset: const Offset(0, 5),
-              ),
-            ],
+    ///To make this button work add [FloatingActionButtonLocation.centerDocked] your Scaffold
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 60,
+        width: double.infinity,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 20,
-          ),
-          child: child,
         ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 20,
+        ),
+        child: child,
       ),
     );
   }

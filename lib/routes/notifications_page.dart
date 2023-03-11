@@ -10,6 +10,7 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theming.bgColor,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
         backgroundColor: Theming.bgColor,
         centerTitle: true,
@@ -34,12 +35,14 @@ class NotificationsPage extends StatelessWidget {
       ),
       floatingActionButton: CustomFloatingButton(
         backgroundColor: Theming.primaryColor,
-        shadowColor: Colors.black.withOpacity(0.3),
         onTap: () {},
-        child: const Icon(
-          Icons.visibility_outlined,
-          color: Theming.whiteTone,
-          size: 28,
+        child: const Text(
+          "Oznacz jako przeczytane",
+          style: TextStyle(
+            color: Theming.whiteTone,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
       ),
 

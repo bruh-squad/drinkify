@@ -133,7 +133,8 @@ class _UserInfoState extends State<UserInfo> {
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).padding.bottom),
+                            bottom: MediaQuery.of(context).padding.bottom,
+                          ),
                           child: Text(
                             "Pusto tutaj :(",
                             style: Styles.emptyListText,
