@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../routes/login_page.dart';
+import '../routes/register_page.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
@@ -93,6 +94,16 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: const LoginPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/register",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const RegisterPage(),
         );
       },
     ),

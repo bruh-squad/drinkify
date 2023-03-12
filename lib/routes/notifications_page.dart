@@ -20,24 +20,12 @@ class NotificationsPage extends StatelessWidget {
             onPressed: () => context.pop(),
             icon: const Icon(
               Icons.arrow_back_ios_rounded,
-              color: Theming.primaryColor,
+              color: Theming.whiteTone,
             ),
           ),
         ),
         title: const Text(
-          "12 powiadomień",
-          style: TextStyle(
-            color: Theming.primaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-      ),
-      floatingActionButton: CustomFloatingButton(
-        backgroundColor: Theming.primaryColor,
-        onTap: () {},
-        child: const Text(
-          "Oznacz jako przeczytane",
+          "Powiadomienia",
           style: TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
@@ -47,15 +35,31 @@ class NotificationsPage extends StatelessWidget {
       ),
 
       // Notification list
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            for (int i = 0; i < 12; i++) _notificationItem(context),
-            const SizedBox(
-              height: 150,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                for (int i = 0; i < 12; i++) _notificationItem(context),
+                const SizedBox(
+                  height: 150,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          CustomFloatingButton(
+            backgroundColor: Theming.primaryColor,
+            onTap: () {},
+            child: const Text(
+              "Oznacz jako przeczytane",
+              style: TextStyle(
+                color: Theming.whiteTone,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

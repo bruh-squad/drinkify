@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 
@@ -25,7 +26,7 @@ class LogoutPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () => context.go("/login"),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
