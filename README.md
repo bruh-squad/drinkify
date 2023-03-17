@@ -1,29 +1,27 @@
-# Drinkify
 
-Drinkify is a mobile app that helps you plan parties and discover new ones in your area. 
+# LiquorLovers - Party Planning App
+LiquorLovers is a Flutter-based party planning app that communicates with a Django API to help you organize and plan the perfect party with your friends. With LiquorLovers, you can search for and find the best parties in your area, create a guest list and plan your party with ease.
 
-## Before you install
-This repository does NOT contain **.dart_tool**.
-If you don't have this folder, make sure to run the command below while being in the app's directory.
+## Installation
+
+To get started with LiquorLovers, clone this repository to your local machine and open it in your preferred IDE or code editor. Then, run the following command in your terminal to install all required dependencies:
 ```
 flutter pub get
 ```
 
-To make maps work properly you need to set up a **.env** file.
-Example:
+
+## Running the App
+
+Once all dependencies have been installed, run the following command to start the app:
+
 ```
-OPENROUTESERVICE_APIKEY = "Your API key to openrouteservice.org"
-ONESIGNAL_APIKEY = "Your API key to onesignal.com"
+flutter run
 ```
 
-Without those API keys app won't be able to:
-> draw a path to selected location\
-> send push notifications.
+## Contributing
 
-## Installation
-Make sure you have have enabled USB debugging in developer options and your device is being detected.
-If so run the commands below.
-```
-flutter build apk --release
-flutter install
-```
+Contributions to LiquorLovers are always welcome and appreciated! If you would like to contribute, please fork this repository and submit a pull request with your changes. 
+
+## License
+
+LiquorLovers is distributed under the GNU General Public License v3.0. See LICENSE for more information.
