@@ -35,7 +35,5 @@ class OrganizationPage extends StatelessWidget {
     );
   }
 
-  Widget _partyItem() {
-    return Container();
-  }
+  //TODO create party element
 }

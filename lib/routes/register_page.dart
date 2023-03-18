@@ -130,6 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   icon: Icons.lock_outline,
                   placeholder: "Podaj hasło",
                   ctrl: passwordCtrl,
+                  isPassword: true,
                 ),
                 _editField(
                   5,
@@ -137,6 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   icon: Icons.lock_outline,
                   placeholder: "Podaj hasło",
                   ctrl: passwordConfirmCtrl,
+                  isPassword: true,
                 ),
                 Center(
                   child: GestureDetector(

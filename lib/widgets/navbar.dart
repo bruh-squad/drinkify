@@ -19,7 +19,7 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     super.initState();
-    selectedIndex = 0;
+    selectedIndex = 1;
   }
 
   @override
@@ -60,15 +60,15 @@ class _NavBarState extends State<NavBar> {
                     _navItem(
                       0,
                       context,
-                      caption: "Home",
-                      route: "/",
+                      caption: "Parties",
+                      route: "/parties",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
                       1,
                       context,
-                      caption: "Parties",
-                      route: "/parties",
+                      caption: "Home",
+                      route: "/",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
@@ -94,6 +94,7 @@ class _NavBarState extends State<NavBar> {
     required String caption,
     required String route,
   }) {
+    bool isSelected = selectedIndex == index;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -106,7 +107,7 @@ class _NavBarState extends State<NavBar> {
         alignment: Alignment.center,
         child: AnimatedOpacity(
           curve: Curves.linearToEaseOut,
-          opacity: selectedIndex == index ? 1.0 : 0.7,
+          opacity: isSelected ? 1.0 : 0.7,
           duration: const Duration(milliseconds: 200),
           child: Text(
             caption,

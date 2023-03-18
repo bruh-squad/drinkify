@@ -6,7 +6,6 @@ import '../routes/register_page.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
-import '../routes/create_party_page.dart';
 import '../routes/selected_party_page.dart';
 import '../routes/notifications_page.dart';
 import '../routes/settings_page.dart';
@@ -14,6 +13,7 @@ import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/languages_page.dart';
 import '../routes/settings_routes/privacy_page.dart';
 import '../routes/settings_routes/organization_page.dart';
+import '../routes/choose_location.dart';
 
 import '../widgets/navbar.dart';
 
@@ -74,16 +74,6 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: SelectedPartyPage(party: p),
-        );
-      },
-    ),
-    GoRoute(
-      path: "/create-party",
-      parentNavigatorKey: _rootKey,
-      pageBuilder: (_, state) {
-        return pageTransition(
-          state: state,
-          childWidget: const CreatePartyPage(),
         );
       },
     ),
@@ -164,6 +154,16 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: const PrivacyPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/choose-location",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const ChooseLocationPage(),
         );
       },
     ),

@@ -1,5 +1,5 @@
+import 'package:drinkify/routes/create_party_page.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 
@@ -44,7 +44,18 @@ class _SearchAndMapState extends State<SearchAndMap> {
               children: [
                 //Map button
                 GestureDetector(
-                  onTap: () => context.push("/create-party"),
+                  onTap: () {
+                    showDialog(
+                      barrierColor: Colors.black.withOpacity(0.5),
+                      useRootNavigator: true,
+                      useSafeArea: true,
+                      barrierDismissible: true,
+                      context: context,
+                      builder: (ctx) {
+                        return const CreatePartyPage();
+                      },
+                    );
+                  },
                   child: Container(
                     height: 55,
                     width: 55,
