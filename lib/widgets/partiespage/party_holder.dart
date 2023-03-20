@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 
-import '/models/party_model.dart';
+import '../../models/party.dart';
 
 import '/utils/theming.dart';
 
@@ -87,7 +87,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.yMd().format(party.date),
+                            DateFormat.yMd().format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],
@@ -117,7 +117,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            "${party.participants.length}",
+                            "${party.participants?.length}",
                             style: Styles.partyHeaderInfo,
                           ),
                         ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
-import '/models/user_model.dart';
+import '../../models/user.dart';
 
 class UserInfo extends StatefulWidget {
   final User user;

@@ -41,7 +41,7 @@ class ChooseLocationPage extends StatelessWidget {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width -
                         (MediaQuery.of(context).size.width - 100),
-                    child: _mapButton(
+                    child: _returnButton(
                       icon: Icons.arrow_back_rounded,
                       onClick: () => context.pop(),
                     ),
@@ -83,8 +83,30 @@ class ChooseLocationPage extends StatelessWidget {
               ],
             ),
           ),
-
-          //TODO: fix text
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 95 + MediaQuery.of(context).padding.bottom,
+              width: double.infinity,
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+                color: Theming.bgColor.withOpacity(0.6),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                ),
+              ),
+              child: const Text(
+                "Lubelska 91a",
+                style: TextStyle(
+                  color: Theming.whiteTone,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
           CustomFloatingButton(
             backgroundColor: Theming.primaryColor,
             onTap: () {},
@@ -102,7 +124,7 @@ class ChooseLocationPage extends StatelessWidget {
     );
   }
 
-  Widget _mapButton({
+  Widget _returnButton({
     required IconData icon,
     required VoidCallback onClick,
   }) {

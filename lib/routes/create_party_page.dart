@@ -1,4 +1,6 @@
-import 'package:drinkify/models/user_model.dart';
+// ignore_for_file: unused_element
+
+import 'package:drinkify/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
@@ -22,11 +24,34 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
     selectedIndex = 0;
   }
 
+  Widget get _subPage {
+    switch (selectedIndex) {
+      case 0:
+        return _dateAndTimePage();
+      case 1:
+        return _peopleCountPage();
+      default:
+        return _partyPivacyPage();
+    }
+  }
+
+  String get _subPageTitle {
+    switch (selectedIndex) {
+      case 0:
+        return "Data i godzina";
+      case 1:
+        return "Liczba osób";
+      default:
+        return "Status imprezy";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Theming.bgColor,
       insetPadding: const EdgeInsets.all(25),
+      insetAnimationDuration: const Duration(days: 360),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
@@ -79,53 +104,15 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
               ),
               const SizedBox(height: 30),
 
-              //Friends, Description, People limit
-              Row(
-                children: [
-                  _categoryText("Zaproś znajomych"),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      if (selectedIndex <= 0) return;
-                      setState(() {
-                        selectedIndex--;
-                      });
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: selectedIndex != 0
-                          ? Theming.primaryColor
-                          : Colors.transparent,
-                    ),
-                  ),
-                  Text(
-                    "${selectedIndex + 1} / 3",
-                    style: TextStyle(
-                      color: Theming.whiteTone.withOpacity(0.5),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (selectedIndex >= 2) return;
-                      setState(() {
-                        selectedIndex++;
-                      });
-                    },
-                    child: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: selectedIndex != 2
-                          ? Theming.primaryColor
-                          : Colors.transparent,
-                    ),
-                  ),
-                ],
-              ),
+              _pageSwitcher(),
+
               const SizedBox(height: 10),
-              for (int i = 0; i < 4; i++)
-                _friendPlaceholder(
-                  i,
-                  user: User(),
-                ),
+              SizedBox(
+                height: 240,
+                width: double.infinity,
+                child: _subPage,
+              ),
+              const SizedBox(height: 20),
               _categoryText("Lokalizacja"),
               SizedBox(
                 width: double.infinity,
@@ -136,10 +123,8 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
                     options: MapOptions(
                       center: LatLng(0, 80),
                       zoom: 0,
-                      interactiveFlags: InteractiveFlag.all -
-                          InteractiveFlag.doubleTapZoom -
-                          InteractiveFlag.rotate -
-                          InteractiveFlag.pinchZoom,
+                      interactiveFlags:
+                          InteractiveFlag.all - InteractiveFlag.all,
                     ),
                     children: [
                       GestureDetector(
@@ -190,6 +175,49 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
     );
   }
 
+  Widget _pageSwitcher() {
+    const int maxPages = 3;
+    return Row(
+      children: [
+        _categoryText(_subPageTitle),
+        const Spacer(),
+        GestureDetector(
+          onTap: () {
+            if (selectedIndex <= 0) return;
+            setState(() {
+              selectedIndex--;
+            });
+          },
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color:
+                selectedIndex != 0 ? Theming.primaryColor : Colors.transparent,
+          ),
+        ),
+        Text(
+          "${selectedIndex + 1} / $maxPages",
+          style: TextStyle(
+            color: Theming.whiteTone.withOpacity(0.5),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            if (selectedIndex >= maxPages - 1) return;
+            setState(() {
+              selectedIndex++;
+            });
+          },
+          child: Icon(
+            Icons.arrow_forward_ios_rounded,
+            color: selectedIndex != maxPages - 1
+                ? Theming.primaryColor
+                : Colors.transparent,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _friendPlaceholder(
     int index, {
     required User user,
@@ -234,5 +262,32 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
         ],
       ),
     );
+  }
+
+  Widget _inviteFriendsPage() {
+    return ListView(
+      children: [
+        for (int i = 0; i < 7; i++)
+          _friendPlaceholder(
+            i,
+            user: User(
+              dateOfBirth: DateTime.now(),
+              password: "",
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _dateAndTimePage() {
+    return const SizedBox();
+  }
+
+  Widget _peopleCountPage() {
+    return const SizedBox();
+  }
+
+  Widget _partyPivacyPage() {
+    return const SizedBox();
   }
 }

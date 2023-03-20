@@ -13,12 +13,12 @@ import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/languages_page.dart';
 import '../routes/settings_routes/privacy_page.dart';
 import '../routes/settings_routes/organization_page.dart';
-import '../routes/choose_location.dart';
+import '../routes/choose_location_page.dart';
 
 import '../widgets/navbar.dart';
 
-import '../models/party_model.dart';
-import '../models/user_model.dart';
+import '../models/party.dart';
+import '../models/user.dart';
 
 //Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
@@ -60,7 +60,12 @@ GoRouter router = GoRouter(
           pageBuilder: (_, state) {
             return pageTransition(
               state: state,
-              childWidget: ProfilePage(User()),
+              childWidget: ProfilePage(
+                User(
+                  dateOfBirth: DateTime.now(),
+                  password: "",
+                ),
+              ),
             );
           },
         ),

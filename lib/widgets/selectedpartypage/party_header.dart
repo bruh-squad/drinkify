@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '/models/party_model.dart';
+import '../../models/party.dart';
 import '/utils/theming.dart';
 import '/utils/ext.dart' show openMap;
 
@@ -35,12 +35,14 @@ class PartyHeader extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              openMap(lat: party.latlng.latitude, lng: party.latlng.longitude);
+              openMap(
+                  lat: party.location.latitude, lng: party.location.longitude);
             },
             child: Row(
               children: [
                 Text(
-                  party.localisation,
+                  //TODO later change it to actual location
+                  "${party.location}",
                   style: Styles.partyHeaderLocation,
                 ),
                 const SizedBox(width: 5),
@@ -96,7 +98,7 @@ class PartyHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    party.participants.length.toString(),
+                    "${party.participants?.length}",
                     style: Styles.partyHeaderInfo,
                   ),
                 ],

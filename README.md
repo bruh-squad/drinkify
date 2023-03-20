@@ -9,6 +9,12 @@ To get started with Drinkify, clone this repository to your local machine and op
 flutter pub get
 ```
 
+## Example .env
+```
+URL="Server URL eg. 127.0.0.1:8000"
+OPENROUTESERVICE_APIKEY = "Your API key to openrouteservice.org"
+ONESIGNAL_APIKEY = "Your API key to onesignal.com"
+```
 
 ## Running the App
 

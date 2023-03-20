@@ -13,7 +13,6 @@ class CustomFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///To make this button work add [FloatingActionButtonLocation.centerDocked] your Scaffold
     return Align(
       alignment: Alignment.bottomCenter,
       child: GestureDetector(
@@ -21,7 +20,7 @@ class CustomFloatingButton extends StatelessWidget {
         child: Container(
           height: 55 + MediaQuery.of(context).padding.bottom,
           width: double.infinity,
-          alignment: Alignment.center,
+          alignment: Alignment.topCenter,
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: const BorderRadius.only(
@@ -29,11 +28,12 @@ class CustomFloatingButton extends StatelessWidget {
               topRight: Radius.circular(25),
             ),
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 20,
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 20,
+            right: 20,
           ),
-          child: SafeArea(child: child),
+          child: child,
         ),
       ),
     );

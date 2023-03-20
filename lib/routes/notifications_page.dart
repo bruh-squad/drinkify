@@ -1,7 +1,9 @@
-import 'package:drinkify/utils/theming.dart';
-import 'package:drinkify/widgets/custom_floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../utils/theming.dart';
+
+import '../widgets/custom_floating_button.dart';
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
@@ -66,11 +68,11 @@ class NotificationsPage extends StatelessWidget {
   Widget _notificationItem(BuildContext ctx) {
     return InkWell(
       onTap: () {
-        //TODO on click show more information about the notification
+        ///TODO on click show [Dialog] with information about the notification
         showModalBottomSheet(
           context: ctx,
           builder: (_) {
-            return const SizedBox();
+            return const Dialog();
           },
         );
       },

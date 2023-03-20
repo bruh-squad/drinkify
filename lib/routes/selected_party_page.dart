@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../widgets/selectedpartypage/party_header.dart';
 import '../widgets/selectedpartypage/party_desc.dart';
 import '../utils/theming.dart';
-import '../models/party_model.dart';
+import '../models/party.dart';
 import '../api/directions.dart';
 
 class SelectedPartyPage extends StatefulWidget {
@@ -27,8 +27,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
   void getDirectionsData() async {
     try {
       data = await getData(
-        widget.party.latlng.longitude,
-        widget.party.latlng.latitude,
+        widget.party.location.longitude,
+        widget.party.location.latitude,
       );
 
       LineString ls = LineString(
@@ -128,8 +128,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     child: FlutterMap(
                       options: MapOptions(
                         center: LatLng(
-                          widget.party.latlng.latitude,
-                          widget.party.latlng.longitude,
+                          widget.party.location.latitude,
+                          widget.party.location.longitude,
                         ),
                         zoom: 15,
                         interactiveFlags: InteractiveFlag.all -
@@ -146,8 +146,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                           markers: [
                             Marker(
                               point: LatLng(
-                                widget.party.latlng.latitude,
-                                widget.party.latlng.longitude,
+                                widget.party.location.latitude,
+                                widget.party.location.longitude,
                               ),
                               builder: (ctx) {
                                 return const Icon(

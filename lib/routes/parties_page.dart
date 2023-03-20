@@ -1,3 +1,4 @@
+import 'package:drinkify/models/friend.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -5,7 +6,7 @@ import '../widgets/partiespage/search_and_map.dart';
 import '../widgets/partiespage/party_holder.dart';
 
 import '../utils/theming.dart';
-import '../models/party_model.dart';
+import '../models/party.dart';
 
 class PartiesPage extends StatelessWidget {
   const PartiesPage({super.key});
@@ -30,18 +31,17 @@ class PartiesPage extends StatelessWidget {
                     for (int i = 0; i < 5; i++)
                       PartyHolder(
                         party: Party(
-                          owner: "",
+                          owner: null,
+                          ownerPublicId: "",
                           name: "Example party",
                           privacyStatus: PrivacyStatus.public,
                           description: "Example description of a party",
                           participants: [
-                            "oke",
+                            Friend(),
                           ],
-                          localisation: "test street",
-                          latlng: LatLng(0, 0),
-                          date: DateTime.now(),
+                          location: LatLng(0, 0),
                           startTime: DateTime.now(),
-                          endTime: DateTime.now(),
+                          stopTime: DateTime.now(),
                         ),
                       ),
                     const SizedBox(height: 200),
