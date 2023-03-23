@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './utils/router.dart';
@@ -20,10 +19,6 @@ void main() async {
     overlays: [SystemUiOverlay.top],
   );
   await dotenv.load(fileName: ".env");
-
-  //Push notifications
-  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId("${dotenv.env["ONESIGNAL_APIKEY"]}");
 }
 
 class App extends StatelessWidget {

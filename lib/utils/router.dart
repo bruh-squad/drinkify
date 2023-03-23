@@ -13,7 +13,7 @@ import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/languages_page.dart';
 import '../routes/settings_routes/privacy_page.dart';
 import '../routes/settings_routes/organization_page.dart';
-import '../routes/choose_location_page.dart';
+import '../routes/create_party_routes/choose_location_page.dart';
 
 import '../widgets/navbar.dart';
 
@@ -168,7 +168,9 @@ GoRouter router = GoRouter(
       pageBuilder: (_, state) {
         return pageTransition(
           state: state,
-          childWidget: const ChooseLocationPage(),
+          childWidget: ChooseLocationPage(
+            onSave: (location) {},
+          ),
         );
       },
     ),

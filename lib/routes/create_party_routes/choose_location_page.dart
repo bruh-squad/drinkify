@@ -4,18 +4,25 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../utils/theming.dart';
+import '../../utils/theming.dart';
 
 class ChooseLocationPage extends StatelessWidget {
-  const ChooseLocationPage({super.key});
+  final Function(LatLng) onSave;
+  const ChooseLocationPage({
+    required this.onSave,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    var mapCtrl = MapController();
+
     return Scaffold(
       backgroundColor: Theming.bgColor,
       body: Stack(
         children: [
           FlutterMap(
+            mapController: mapCtrl,
             options: MapOptions(
               center: LatLng(52.237049, 21.017532),
               zoom: 15,
@@ -109,7 +116,9 @@ class ChooseLocationPage extends StatelessWidget {
           ),
           CustomFloatingButton(
             backgroundColor: Theming.primaryColor,
-            onTap: () {},
+            onTap: () {
+              context.pop();
+            },
             child: const Text(
               "Zapisz",
               style: TextStyle(

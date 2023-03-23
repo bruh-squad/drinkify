@@ -10,6 +10,11 @@ import '../utils/theming.dart';
 import '../models/party.dart';
 import '../api/directions.dart';
 
+class LineString {
+  List<dynamic> lineString;
+  LineString(this.lineString);
+}
+
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
   const SelectedPartyPage({Key? key, required this.party}) : super(key: key);
@@ -295,9 +300,4 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
       ),
     );
   }
-}
-
-class LineString {
-  List<dynamic> lineString;
-  LineString(this.lineString);
 }

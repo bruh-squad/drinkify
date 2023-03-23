@@ -13,7 +13,6 @@ flutter pub get
 ```
 URL="Server URL eg. 127.0.0.1:8000"
 OPENROUTESERVICE_APIKEY = "Your API key to openrouteservice.org"
-ONESIGNAL_APIKEY = "Your API key to onesignal.com"
 ```
 
 ## Running the App
