@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
 
-class DateAndTimePage extends StatelessWidget {
+final Color errorColor = Colors.red.withOpacity(0.3);
+
+class DateAndTimePage extends StatefulWidget {
   //start time, stop time, next page index
   final Function(DateTime, DateTime, int) onNext;
 
@@ -14,6 +16,25 @@ class DateAndTimePage extends StatelessWidget {
     required this.onNext,
     super.key,
   });
+
+  @override
+  State<DateAndTimePage> createState() => _DateAndTimePageState();
+}
+
+class _DateAndTimePageState extends State<DateAndTimePage> {
+  DateTime? startDate;
+  TimeOfDay? startTime;
+
+  DateTime? stopDate;
+  TimeOfDay? stopTime;
+
+  late List<int> errorFields;
+
+  @override
+  void initState() {
+    super.initState();
+    errorFields = [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +71,47 @@ class DateAndTimePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
                     _categoryText("Wybierz datę i godzinę"),
+                    const SizedBox(height: 50),
+                    Center(
+                      child: Column(
+                        children: [
+                          _dateOrTimeButton(
+                            context,
+                            0,
+                            textValue: startDate,
+                            isStart: true,
+                            isDate: true,
+                          ),
+                          _dateOrTimeButton(
+                            context,
+                            1,
+                            textValue: startTime,
+                            isStart: true,
+                            isDate: false,
+                          ),
+                          const Text(
+                            "do",
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
+                          _dateOrTimeButton(
+                            context,
+                            2,
+                            textValue: stopDate,
+                            isStart: false,
+                            isDate: true,
+                          ),
+                          _dateOrTimeButton(
+                            context,
+                            3,
+                            textValue: stopTime,
+                            isStart: false,
+                            isDate: false,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -79,11 +141,10 @@ class DateAndTimePage extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  onTap: () => onPrevious(1),
+                  onTap: () => widget.onPrevious(1),
                 ),
                 _navButton(
-                  context,
-                  topLeftRightPadding,
+                  context, topLeftRightPadding,
                   backgroundColor: Theming.primaryColor,
                   text: const Text(
                     "Dalej",
@@ -93,11 +154,41 @@ class DateAndTimePage extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  onTap: () => onNext(
-                    DateTime.now(),
-                    DateTime.now(),
-                    3,
-                  ),
+
+                  //TODO finish this
+                  onTap: () {
+                    setState(() => errorFields = []);
+                    final List<dynamic> fields = [
+                      startDate,
+                      startTime,
+                      stopDate,
+                      stopTime,
+                    ];
+                    for (int i = 0; i < fields.length; i++) {
+                      if (fields[i] == null) {
+                        setState(() => errorFields.add(i));
+                      }
+                    }
+                    if (errorFields.isNotEmpty) return;
+
+                    widget.onNext(
+                      DateTime(
+                        startDate!.year,
+                        startDate!.month,
+                        startDate!.day,
+                        startTime!.hour,
+                        startTime!.minute,
+                      ),
+                      DateTime(
+                        stopDate!.year,
+                        stopDate!.month,
+                        stopDate!.day,
+                        stopTime!.hour,
+                        stopTime!.minute,
+                      ),
+                      3,
+                    );
+                  },
                 ),
               ],
             ),
@@ -136,6 +227,88 @@ class DateAndTimePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
         ),
         child: text,
+      ),
+    );
+  }
+
+  Widget _dateOrTimeButton(
+    BuildContext ctx,
+    int index, {
+    required dynamic textValue,
+    required bool isStart,
+    required bool isDate,
+  }) {
+    bool isError = false;
+    for (final i in errorFields) {
+      if (i == index) {
+        setState(() => isError = true);
+        break;
+      }
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: GestureDetector(
+        onTap: () {
+          if (isDate) {
+            showDatePicker(
+              context: ctx,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(DateTime.now().year),
+              lastDate: DateTime(DateTime.now().year + 14),
+              useRootNavigator: true,
+            ).then((date) {
+              if (isStart) {
+                setState(() => startDate = date!);
+              } else {
+                setState(() => stopDate = date!);
+              }
+            });
+          } else {
+            showTimePicker(
+              context: context,
+              initialTime: TimeOfDay(
+                hour: DateTime.now().hour,
+                minute: DateTime.now().minute,
+              ),
+            ).then((time) {
+              if (isStart) {
+                setState(() => startTime = time!);
+              } else {
+                setState(() => stopTime = time!);
+              }
+            });
+          }
+        },
+        child: Container(
+          width: (MediaQuery.of(ctx).size.width - 25 * 2) / 2,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+            color: isError ? errorColor : Theming.whiteTone.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                isDate
+                    ? Icons.calendar_month_outlined
+                    : Icons.watch_later_outlined,
+                color: Theming.primaryColor,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                textValue != null
+                    ? isDate
+                        ? textValue.toString().split(" ")[0]
+                        : "${(textValue).hour}:${(textValue).minute}"
+                    : "${isDate ? "Data" : "Czas"} ${isStart ? "rozpoczęcia" : "zakończenia"}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

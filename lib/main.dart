@@ -33,6 +33,7 @@ class App extends StatelessWidget {
         theme: ThemeData(
           fontFamily: 'Nunito',
           useMaterial3: true,
+          brightness: Brightness.dark,
         ),
         debugShowCheckedModeBanner: false,
         routerConfig: router,

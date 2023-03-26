@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../utils/theming.dart';
 
+final _descriptionCtrl = TextEditingController();
+
 class DescriptionPage extends StatelessWidget {
   //description, index
   final Function(TextEditingController, int) onNext;
@@ -18,8 +20,6 @@ class DescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double topLeftRightPadding = 25;
-
-    var descriptionCtrl = TextEditingController();
 
     return Stack(
       children: [
@@ -43,17 +43,49 @@ class DescriptionPage extends StatelessWidget {
                 horizontal: 30,
                 vertical: 10,
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: _categoryText("Stwórz imprezę"),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: TextField(
+                      maxLines: null,
+                      style: const TextStyle(color: Theming.whiteTone),
+                      cursorColor: Theming.primaryColor,
+                      decoration: InputDecoration(
+                        hintText: "Opis imprezy (opcjonalny)",
+                        hintStyle: TextStyle(
+                          color: Theming.whiteTone.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      controller: _descriptionCtrl,
                     ),
-                    const SizedBox(height: 30),
-                    _categoryText("Opis imprezy"),
-                  ],
-                ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: _categoryText("Stwórz imprezę"),
+                        ),
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _categoryText("Opis imprezy"),
+                            TextButton(
+                              onPressed: () => _descriptionCtrl.clear(),
+                              child: Text(
+                                "Wyczyść",
+                                style: Styles.smallTextButton,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -95,7 +127,7 @@ class DescriptionPage extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  onTap: () => onNext(descriptionCtrl, 2),
+                  onTap: () => onNext(_descriptionCtrl, 2),
                 ),
               ],
             ),

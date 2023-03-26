@@ -85,7 +85,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
                   ),
                   child: const TextField(
                     cursorColor: Theming.primaryColor,
-                    style: TextStyle(fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
                     decoration: InputDecoration(
                       hintText: "Gdzie szukasz imprezy?",
                       hintStyle: Styles.hintTextSearchBar,

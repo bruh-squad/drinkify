@@ -20,7 +20,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
 
   var partyTitle = TextEditingController();
   var partyPeopleCount = TextEditingController();
-  int partyStatusNumber = 0;
+  int partyStatusNumber = 1;
   var partyDescription = TextEditingController();
   DateTime startTime = DateTime.now();
   DateTime stopTime = DateTime.now();

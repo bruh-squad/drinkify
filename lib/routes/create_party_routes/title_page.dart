@@ -5,6 +5,8 @@ import 'package:latlong2/latlong.dart';
 
 import '/utils/theming.dart';
 
+final Color errorColor = Colors.red.withOpacity(0.3);
+
 typedef TEC = TextEditingController;
 
 class TitlePage extends StatefulWidget {
@@ -20,15 +22,24 @@ class TitlePage extends StatefulWidget {
 }
 
 class _TitlePageState extends State<TitlePage> {
+  late List<int> errorFields;
+
   int subPageIndex = 0;
 
   var titleCtrl = TextEditingController();
   var peopleCountCtrl = TextEditingController();
   int partyStatus = 1; //1: private  2: public  3: secret
+
+  @override
+  void initState() {
+    super.initState();
+    errorFields = [];
+  }
+
   Widget get _subPage {
     switch (subPageIndex) {
       case 0:
-        return _peopleCountPage();
+        return _peopleCountPage(1);
       default:
         return _partyPivacyPage();
     }
@@ -87,29 +98,9 @@ class _TitlePageState extends State<TitlePage> {
 
                     //Title
                     _categoryText("Tytuł"),
-                    Container(
-                      width: double.infinity,
-                      height: 60,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Theming.whiteTone.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: TextField(
-                        controller: titleCtrl,
-                        style: const TextStyle(
-                          color: Theming.whiteTone,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: "Dodaj tytuł imprezy",
-                          hintStyle: TextStyle(
-                            color: Theming.whiteTone.withOpacity(0.5),
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
+
+                    _titleField(0),
+
                     const SizedBox(height: 30),
 
                     _pageSwitcher(),
@@ -147,7 +138,6 @@ class _TitlePageState extends State<TitlePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 25),
                   ],
                 ),
               ),
@@ -162,36 +152,93 @@ class _TitlePageState extends State<TitlePage> {
               right: 25,
               bottom: 40,
             ),
-            child: GestureDetector(
-              onTap: () {
-                widget.onNext(
-                  titleCtrl,
-                  peopleCountCtrl,
-                  partyStatus,
-                  1,
-                );
-              },
-              child: Container(
-                height: 70,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Theming.primaryColor,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: const Text(
-                  "Dalej",
-                  style: TextStyle(
-                    color: Theming.whiteTone,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _navButton(
+                  context,
+                  topLeftRightPadding,
+                  backgroundColor: Theming.whiteTone,
+                  text: const Text(
+                    "Zamknij",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
+                  onTap: () => Navigator.pop(context),
                 ),
-              ),
+                _navButton(
+                  context,
+                  topLeftRightPadding,
+                  backgroundColor: Theming.primaryColor,
+                  text: const Text(
+                    "Dalej",
+                    style: TextStyle(
+                      color: Theming.whiteTone,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() => errorFields = []);
+                    final List<TextEditingController> fields = [
+                      titleCtrl,
+                      peopleCountCtrl,
+                    ];
+                    for (int i = 0; i < fields.length; i++) {
+                      if (fields[i].text == "") {
+                        setState(() => errorFields.add(i));
+                      }
+                    }
+                    if (errorFields.isNotEmpty) return;
+                    widget.onNext(
+                      titleCtrl,
+                      peopleCountCtrl,
+                      partyStatus,
+                      1,
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _titleField(int index) {
+    bool isError = false;
+    for (final i in errorFields) {
+      if (i == index) {
+        setState(() => isError = true);
+        break;
+      }
+    }
+    return Container(
+      width: double.infinity,
+      height: 60,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      decoration: BoxDecoration(
+        color: isError ? errorColor : Theming.whiteTone.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: TextField(
+        controller: titleCtrl,
+        style: const TextStyle(
+          color: Theming.whiteTone,
+        ),
+        decoration: InputDecoration(
+          hintText: "Dodaj tytuł imprezy",
+          hintStyle: TextStyle(
+            color: Theming.whiteTone.withOpacity(0.5),
+          ),
+          border: InputBorder.none,
+        ),
+      ),
     );
   }
 
@@ -245,19 +292,28 @@ class _TitlePageState extends State<TitlePage> {
     );
   }
 
-  Widget _peopleCountPage() {
+  Widget _peopleCountPage(int index) {
+    bool isError = false;
+    for (final i in errorFields) {
+      if (i == index) {
+        setState(() => isError = true);
+        break;
+      }
+    }
     return Center(
       child: Container(
         height: 60,
-        width: MediaQuery.of(context).size.width - 25 * 2 - 30 * 2 - 60,
-        padding: const EdgeInsets.only(right: 15),
+        width: MediaQuery.of(context).size.width - 25 * 2 - 30 * 2 - 150,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+        ),
         decoration: BoxDecoration(
-          color: Theming.whiteTone.withOpacity(0.1),
+          color: isError ? errorColor : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
         ),
-        alignment: Alignment.center,
         child: TextField(
           controller: peopleCountCtrl,
+          cursorColor: Theming.primaryColor,
           keyboardType: const TextInputType.numberWithOptions(
             signed: false,
             decimal: true,
@@ -266,11 +322,6 @@ class _TitlePageState extends State<TitlePage> {
             hintText: "Liczba osób",
             hintStyle: TextStyle(
               color: Theming.whiteTone.withOpacity(0.5),
-            ),
-            prefixIcon: const Icon(
-              Icons.people_rounded,
-              color: Theming.primaryColor,
-              size: 32,
             ),
             border: InputBorder.none,
           ),
@@ -321,6 +372,28 @@ class _TitlePageState extends State<TitlePage> {
             fontSize: 16,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _navButton(
+    BuildContext ctx,
+    double padding, {
+    required Color backgroundColor,
+    required Text text,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 70,
+        width: (MediaQuery.of(ctx).size.width - padding * 2) / 2 - 10,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: text,
       ),
     );
   }

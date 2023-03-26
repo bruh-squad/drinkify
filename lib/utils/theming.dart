@@ -44,6 +44,7 @@ class Styles {
 
   static const hintTextSearchBar = TextStyle(
     fontWeight: FontWeight.bold,
+    color: Theming.bgColor,
     fontSize: 16,
   );
 

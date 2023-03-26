@@ -183,9 +183,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   alignment: Alignment.topCenter,
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        showMore = !showMore;
-                      });
+                      setState(() => showMore = !showMore);
                     },
                     child: AnimatedContainer(
                       height: 60,

@@ -41,7 +41,7 @@ class PartyHeader extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  //TODO later change it to actual location
+                  //TODO later change it to an actual location
                   "${party.location}",
                   style: Styles.partyHeaderLocation,
                 ),

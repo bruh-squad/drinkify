@@ -6,7 +6,10 @@ import '../utils/theming.dart';
 
 class NavBar extends StatefulWidget {
   final double bottomMargin;
-  const NavBar({required this.bottomMargin, super.key});
+  const NavBar({
+    required this.bottomMargin,
+    super.key,
+  });
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -95,6 +98,7 @@ class _NavBarState extends State<NavBar> {
     required String route,
   }) {
     bool isSelected = selectedIndex == index;
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {

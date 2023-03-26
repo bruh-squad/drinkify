@@ -1,3 +1,4 @@
+import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/user.dart';
@@ -42,17 +43,62 @@ class InviteFriendsPage extends StatelessWidget {
                 horizontal: 30,
                 vertical: 10,
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: _categoryText("Stwórz imprezę"),
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 80),
+                        for (int i = 0; i < 20; i++)
+                          _friendPlaceholder(
+                            i,
+                            user: User(
+                              password: "asdasd",
+                              dateOfBirth: DateTime.now(),
+                            ),
+                          ),
+                      ],
                     ),
-                    const SizedBox(height: 30),
-                    _categoryText("Zaproś znajomych"),
-                  ],
-                ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        GlassMorphism(
+                          blur: 30,
+                          opacity: 0.1,
+                          borderRadius: BorderRadius.circular(100),
+                          child: Container(
+                            height: 50,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: TextField(
+                              style: const TextStyle(
+                                color: Theming.whiteTone,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Wyszukaj znajomego",
+                                hintStyle: TextStyle(
+                                  color: Theming.whiteTone.withOpacity(0.5),
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.search_rounded,
+                                  color: Theming.primaryColor,
+                                  size: 34,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -105,17 +151,6 @@ class InviteFriendsPage extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _categoryText(String caption) {
-    return Text(
-      caption,
-      style: const TextStyle(
-        color: Theming.whiteTone,
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-      ),
     );
   }
 

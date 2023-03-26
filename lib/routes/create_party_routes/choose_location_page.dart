@@ -1,12 +1,13 @@
-import 'package:drinkify/widgets/custom_floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
+// import 'package:geolocator/geolocator.dart';
 
-import '../../utils/theming.dart';
+import '/widgets/custom_floating_button.dart';
+import '/utils/theming.dart';
 
-class ChooseLocationPage extends StatelessWidget {
+class ChooseLocationPage extends StatefulWidget {
   final Function(LatLng) onSave;
   const ChooseLocationPage({
     required this.onSave,
@@ -14,9 +15,25 @@ class ChooseLocationPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    var mapCtrl = MapController();
+  State<ChooseLocationPage> createState() => _ChooseLocationPageState();
+}
 
+class _ChooseLocationPageState extends State<ChooseLocationPage> {
+  final mapCtrl = MapController();
+  LatLng selPoint = LatLng(0, 0);
+
+  String countryAndCity = "";
+  String adress = "";
+  late String formattedPoint;
+
+  @override
+  void initState() {
+    super.initState();
+    formattedPoint = "POINT(${selPoint.latitude} ${selPoint.longitude})";
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       body: Stack(
@@ -24,6 +41,10 @@ class ChooseLocationPage extends StatelessWidget {
           FlutterMap(
             mapController: mapCtrl,
             options: MapOptions(
+              onTap: (_, point) {
+                setState(() => selPoint = point);
+                formattedPoint = "POINT(${point.latitude} ${point.longitude})";
+              },
               center: LatLng(52.237049, 21.017532),
               zoom: 15,
               interactiveFlags: InteractiveFlag.all -
@@ -34,6 +55,20 @@ class ChooseLocationPage extends StatelessWidget {
               TileLayer(
                 urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 userAgentPackageName: "app.drinkify",
+              ),
+              MarkerLayer(
+                markers: [
+                  Marker(
+                    point: selPoint,
+                    builder: (ctx) {
+                      return const Icon(
+                        Icons.location_pin,
+                        color: Color.fromARGB(255, 233, 30, 98),
+                        size: 36,
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
