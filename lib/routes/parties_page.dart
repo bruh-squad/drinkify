@@ -39,7 +39,7 @@ class PartiesPage extends StatelessWidget {
                           participants: [
                             Friend(),
                           ],
-                          location: LatLng(0, 0),
+                          location: LatLng(52.237049, 21.017532),
                           startTime: DateTime.now(),
                           stopTime: DateTime.now(),
                         ),

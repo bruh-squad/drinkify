@@ -11,7 +11,7 @@ flutter pub get
 
 ## Example .env
 ```
-URL="Server URL eg. 127.0.0.1:8000"
+URL = "Server URL eg. 127.0.0.1:8000"
 OPENROUTESERVICE_APIKEY = "Your API key to openrouteservice.org"
 ```
 

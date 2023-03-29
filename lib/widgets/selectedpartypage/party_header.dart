@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../models/party.dart';
 import '/utils/theming.dart';
@@ -8,6 +9,11 @@ import '/utils/ext.dart' show openMap;
 class PartyHeader extends StatelessWidget {
   final Party party;
   const PartyHeader({super.key, required this.party});
+
+  //TODO make it work
+  String _getActualLocation(LatLng latLng) {
+    return "Polska, Warszawa";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +42,14 @@ class PartyHeader extends StatelessWidget {
           GestureDetector(
             onTap: () {
               openMap(
-                  lat: party.location.latitude, lng: party.location.longitude);
+                lat: party.location.latitude,
+                lng: party.location.longitude,
+              );
             },
             child: Row(
               children: [
                 Text(
-                  //TODO later change it to an actual location
-                  "${party.location}",
+                  _getActualLocation(party.location),
                   style: Styles.partyHeaderLocation,
                 ),
                 const SizedBox(width: 5),

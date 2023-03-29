@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-// ignore: depend_on_referenced_packages
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location/location.dart';
 
 import '../widgets/selectedpartypage/party_header.dart';
 import '../widgets/selectedpartypage/party_desc.dart';
 import '../utils/theming.dart';
 import '../models/party.dart';
-import '../api/directions.dart';
-
-class LineString {
-  List<dynamic> lineString;
-  LineString(this.lineString);
-}
 
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
@@ -24,32 +18,47 @@ class SelectedPartyPage extends StatefulWidget {
 }
 
 class _SelectedPartyPage extends State<SelectedPartyPage> {
-  bool showMore = false;
+  late bool showMore;
+  late LatLng userLocation;
+  bool showUserLocation = false;
 
-  late dynamic data;
-  final List<LatLng> polyPoints = [];
+  Future<void> _getUserLocation() async {
+    late bool serviceEnabled;
+    late PermissionStatus permissionGranted;
+    Location location = Location();
 
-  void getDirectionsData() async {
-    try {
-      data = await getData(
-        widget.party.location.longitude,
-        widget.party.location.latitude,
-      );
-
-      LineString ls = LineString(
-        data['features'][0]['geometry']['coordinates'],
-      );
-      for (int i = 0; i < ls.lineString.length; i++) {
-        polyPoints.add(
-          LatLng(ls.lineString[i][1], ls.lineString[i][0]),
-        );
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
       }
-      if (polyPoints.length == ls.lineString.length) {
-        //print(ls);
-      }
-    } catch (e) {
-      //print(e);
     }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    final LocationData posData = await location.getLocation();
+    setState(() {
+      userLocation = LatLng(
+        posData.latitude!,
+        posData.longitude!,
+      );
+      showUserLocation = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    showMore = false;
+    userLocation = LatLng(52.237049, 18.017532);
+    _getUserLocation();
   }
 
   @override
@@ -150,26 +159,30 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                         MarkerLayer(
                           markers: [
                             Marker(
+                              point: userLocation,
+                              builder: (_) {
+                                return Visibility(
+                                  visible: showUserLocation,
+                                  child: const Icon(
+                                    Icons.person_pin_circle,
+                                    color: Theming.primaryColor,
+                                    size: 36,
+                                  ),
+                                );
+                              },
+                            ),
+                            Marker(
                               point: LatLng(
                                 widget.party.location.latitude,
                                 widget.party.location.longitude,
                               ),
-                              builder: (ctx) {
+                              builder: (_) {
                                 return const Icon(
                                   Icons.location_pin,
-                                  color: Color.fromARGB(255, 233, 30, 98),
+                                  color: Theming.primaryColor,
                                   size: 36,
                                 );
                               },
-                            ),
-                          ],
-                        ),
-                        PolylineLayer(
-                          polylines: [
-                            Polyline(
-                              points: polyPoints,
-                              strokeWidth: 4.0,
-                              color: Theming.primaryColor,
                             ),
                           ],
                         ),
@@ -221,22 +234,11 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     context.pop();
                   },
                 ),
-
-                //Get Path to location button
-                _mapButton(
-                  alignment: Alignment.topRight,
-                  margin: const EdgeInsets.only(top: 30, right: 30),
-                  icon: Icons.roundabout_right_outlined,
-                  onClick: () {
-                    if (showMore) return;
-                    // getDirectionsData();
-                  },
-                ),
               ],
             ),
 
             AnimatedContainer(
-              height: showMore ? 38 : 78,
+              height: showMore ? 38 : 83,
               duration: const Duration(milliseconds: 500),
               curve: Curves.linearToEaseOut,
             ),
