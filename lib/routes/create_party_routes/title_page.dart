@@ -78,42 +78,43 @@ class _TitlePageState extends State<TitlePage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 30,
-                vertical: 10,
+                vertical: 15,
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Center(
-                      child: Text(
-                        "Stwórz imprezę",
-                        style: TextStyle(
-                          color: Theming.whiteTone,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Center(
+                    child: Text(
+                      "Stwórz imprezę",
+                      style: TextStyle(
+                        color: Theming.whiteTone,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                  ),
+                  const SizedBox(height: 20),
 
-                    //Title
-                    _categoryText("Tytuł"),
+                  //Title
+                  _categoryText("Tytuł"),
 
-                    _titleField(0),
+                  Flexible(
+                    flex: 0,
+                    child: _titleField(0),
+                  ),
+                  const SizedBox(height: 40),
 
-                    const SizedBox(height: 30),
+                  _pageSwitcher(),
 
-                    _pageSwitcher(),
+                  Flexible(
+                    flex: 2,
+                    child: _subPage,
+                  ),
 
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: 240,
-                      width: double.infinity,
-                      child: _subPage,
-                    ),
-                    const SizedBox(height: 20),
-                    _categoryText("Lokalizacja"),
-                    SizedBox(
+                  _categoryText("Lokalizacja"),
+                  Flexible(
+                    flex: 0,
+                    child: SizedBox(
                       width: double.infinity,
                       height: 90,
                       child: ClipRRect(
@@ -138,8 +139,8 @@ class _TitlePageState extends State<TitlePage> {
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

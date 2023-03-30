@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
-// import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 import '/widgets/custom_floating_button.dart';
 import '/utils/theming.dart';
@@ -19,17 +19,48 @@ class ChooseLocationPage extends StatefulWidget {
 }
 
 class _ChooseLocationPageState extends State<ChooseLocationPage> {
-  final mapCtrl = MapController();
-  LatLng selPoint = LatLng(0, 0);
-
-  String countryAndCity = "";
-  String adress = "";
-  late String formattedPoint;
+  final MapController mapCtrl = MapController();
+  LatLng selectedPoint = LatLng(
+    53.3439,
+    23.0622,
+  ); // Centre of Europe
 
   @override
   void initState() {
     super.initState();
-    formattedPoint = "POINT(${selPoint.latitude} ${selPoint.longitude})";
+    _getUserLocation();
+  }
+
+  //TODO set center to your location
+
+  Future<void> _getUserLocation() async {
+    late bool serviceEnabled;
+    late PermissionStatus permissionGranted;
+    Location location = Location();
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    final LocationData posData = await location.getLocation();
+    setState(() {
+      selectedPoint = LatLng(
+        posData.latitude!,
+        posData.longitude!,
+      );
+    });
   }
 
   @override
@@ -42,10 +73,9 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
             mapController: mapCtrl,
             options: MapOptions(
               onTap: (_, point) {
-                setState(() => selPoint = point);
-                formattedPoint = "POINT(${point.latitude} ${point.longitude})";
+                setState(() => selectedPoint = point);
               },
-              center: LatLng(52.237049, 21.017532),
+              center: selectedPoint,
               zoom: 15,
               interactiveFlags: InteractiveFlag.all -
                   InteractiveFlag.doubleTapZoom -
@@ -59,7 +89,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
               MarkerLayer(
                 markers: [
                   Marker(
-                    point: selPoint,
+                    point: selectedPoint,
                     builder: (ctx) {
                       return const Icon(
                         Icons.location_pin,

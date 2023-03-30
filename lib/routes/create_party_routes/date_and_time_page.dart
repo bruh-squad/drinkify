@@ -62,18 +62,19 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                 horizontal: 30,
                 vertical: 10,
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: _categoryText("Stwórz imprezę"),
-                    ),
-                    const SizedBox(height: 30),
-                    _categoryText("Wybierz datę i godzinę"),
-                    const SizedBox(height: 50),
-                    Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: _categoryText("Stwórz imprezę"),
+                  ),
+                  const SizedBox(height: 30),
+                  _categoryText("Wybierz datę i godzinę"),
+                  Expanded(
+                    flex: 6,
+                    child: Center(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _dateOrTimeButton(
                             context,
@@ -112,8 +113,8 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
