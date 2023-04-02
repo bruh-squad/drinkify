@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
-import '../../models/user.dart';
+import '/models/user.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class UserInfo extends StatefulWidget {
   final User user;
@@ -27,8 +30,14 @@ class _UserInfoState extends State<UserInfo> {
               width: 100,
               child: Column(
                 children: [
-                  const Text("10", style: Styles.userInfoStatistic),
-                  Text("Imprez", style: Styles.userInfoType),
+                  const Text(
+                    "10",
+                    style: Styles.userInfoStatistic,
+                  ),
+                  Text(
+                    transl.partiesProfile1,
+                    style: Styles.userInfoType,
+                  ),
                 ],
               ),
             ),
@@ -65,8 +74,14 @@ class _UserInfoState extends State<UserInfo> {
               width: 100,
               child: Column(
                 children: [
-                  const Text("420", style: Styles.userInfoStatistic),
-                  Text("Znajomych", style: Styles.userInfoType),
+                  const Text(
+                    "420",
+                    style: Styles.userInfoStatistic,
+                  ),
+                  Text(
+                    transl.friendsProfile,
+                    style: Styles.userInfoType,
+                  ),
                 ],
               ),
             ),
@@ -106,8 +121,8 @@ class _UserInfoState extends State<UserInfo> {
                   color: Theming.primaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Text(
-                  "Dodaj znajomego",
+                child: Text(
+                  transl.addAFriend,
                   style: Styles.buttonTextLight,
                 ),
               ),
@@ -136,7 +151,7 @@ class _UserInfoState extends State<UserInfo> {
                             bottom: MediaQuery.of(context).padding.bottom,
                           ),
                           child: Text(
-                            "Pusto tutaj :(",
+                            transl.emptyHere,
                             style: Styles.emptyListText,
                           ),
                         ),

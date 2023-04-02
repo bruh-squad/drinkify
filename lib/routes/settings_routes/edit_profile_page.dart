@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import '/widgets/custom_floating_button.dart';
 
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -43,9 +46,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ),
         ),
-        title: const Text(
-          "Edytuj profil",
-          style: TextStyle(
+        title: Text(
+          transl.editProfilePage,
+          style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -76,9 +79,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                       _editField(
                         0,
-                        caption: "Nazwa użytkownika",
+                        caption: transl.username,
                         icon: Icons.verified_user_outlined,
-                        placeholder: "Podaj nazwę użytkownika",
+                        placeholder: transl.usernameField,
                         ctrl: usernameCtrl,
                         isUsername: true,
                       ),
@@ -87,23 +90,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   const SizedBox(height: 30),
                   _editField(
                     1,
-                    caption: "E-mail",
+                    caption: transl.email,
                     icon: Icons.email_outlined,
-                    placeholder: "Podaj e-mail",
+                    placeholder: transl.emailField,
                     ctrl: emailCtrl,
                   ),
                   _editField(
                     2,
-                    caption: "Imię",
+                    caption: transl.firstName,
                     icon: Icons.person_pin_rounded,
-                    placeholder: "Podaj imię",
+                    placeholder: transl.firstNameField,
                     ctrl: firstNameCtrl,
                   ),
                   _editField(
                     3,
-                    caption: "Nazwisko",
+                    caption: transl.lastName,
                     icon: Icons.person_pin_rounded,
-                    placeholder: "Podaj nazwisko",
+                    placeholder: transl.lastNameField,
                     ctrl: lastNameCtrl,
                   ),
                   GestureDetector(
@@ -127,17 +130,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 children: [
                                   _editField(
                                     4,
-                                    caption: "Stare hasło",
+                                    caption: transl.oldPassword,
                                     icon: Icons.lock_outline,
-                                    placeholder: "Podaj stare hasło",
+                                    placeholder: transl.oldPasswordField,
                                     isPassword: true,
                                     ctrl: oldPasswordCtrl,
                                   ),
                                   _editField(
                                     5,
-                                    caption: "Nowe hasło",
+                                    caption: transl.newPassword,
                                     icon: Icons.lock_outline,
-                                    placeholder: "Podaj nowe hasło",
+                                    placeholder: transl.newPasswordField,
                                     isPassword: true,
                                     ctrl: newPasswordNameCtrl,
                                   ),
@@ -153,9 +156,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         borderRadius:
                                             BorderRadius.circular(100),
                                       ),
-                                      child: const Text(
-                                        "Zmień hasło",
-                                        style: TextStyle(
+                                      child: Text(
+                                        transl.changePassword,
+                                        style: const TextStyle(
                                           color: Theming.whiteTone,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
@@ -178,9 +181,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         color: const Color(0x9F000E1F),
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: const Text(
-                        "Zmień hasło",
-                        style: TextStyle(
+                      child: Text(
+                        transl.changePassword,
+                        style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -196,9 +199,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           CustomFloatingButton(
             backgroundColor: Theming.primaryColor,
             onTap: () {},
-            child: const Text(
-              "Zapisz",
-              style: TextStyle(
+            child: Text(
+              transl.save,
+              style: const TextStyle(
                 color: Theming.whiteTone,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,

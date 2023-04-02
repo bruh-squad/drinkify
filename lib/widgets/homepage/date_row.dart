@@ -4,8 +4,11 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '/utils/ext.dart' show Capitalize;
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
 
 import './date_picker.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class DateRow extends StatefulWidget {
   final EdgeInsets textPadding;
@@ -104,7 +107,7 @@ class _DateRowState extends State<DateRow> {
                   );
                 },
                 child: Text(
-                  "Wybierz datę",
+                  transl.pickADate,
                   style: Styles.smallTextButton,
                 ),
               ),

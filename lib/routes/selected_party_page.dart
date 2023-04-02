@@ -8,6 +8,9 @@ import '../widgets/selectedpartypage/party_header.dart';
 import '../widgets/selectedpartypage/party_desc.dart';
 import '../utils/theming.dart';
 import '../models/party.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
@@ -97,7 +100,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
               horizontal: 20,
             ),
             child: Text(
-              "Dołącz",
+              transl.join,
               style: TextStyle(
                 color: showMore ? Theming.whiteTone : Colors.transparent,
                 fontWeight: FontWeight.bold,
@@ -213,7 +216,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                         borderRadius: BorderRadius.circular(60),
                       ),
                       child: Text(
-                        showMore ? "Pokaż mniej" : "Zobacz więcej",
+                        showMore ? transl.showLess : transl.showMore,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.w700,

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class LogoutPage extends StatelessWidget {
   const LogoutPage({super.key});
@@ -13,9 +16,9 @@ class LogoutPage extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 20),
-          const Text(
-            "Wylogować cię?",
-            style: TextStyle(
+          Text(
+            transl.doYouWantToLogOut,
+            style: const TextStyle(
               color: Theming.whiteTone,
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -36,9 +39,9 @@ class LogoutPage extends StatelessWidget {
                     color: Theming.primaryColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    "Tak",
-                    style: TextStyle(
+                  child: Text(
+                    transl.yes,
+                    style: const TextStyle(
                       color: Theming.bgColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -54,9 +57,9 @@ class LogoutPage extends StatelessWidget {
                     horizontal: 10,
                     vertical: 5,
                   ),
-                  child: const Text(
-                    "Nie",
-                    style: TextStyle(
+                  child: Text(
+                    transl.no,
+                    style: const TextStyle(
                       color: Theming.primaryColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,

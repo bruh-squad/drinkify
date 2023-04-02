@@ -7,6 +7,9 @@ import '../routes/settings_routes/change_theme.dart';
 import '../widgets/glass_morphism.dart';
 
 import '../utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -25,20 +28,20 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Ustawienia",
-                style: TextStyle(
+              Text(
+                transl.settings,
+                style: const TextStyle(
                   color: Theming.whiteTone,
                   fontWeight: FontWeight.bold,
                   fontSize: 38,
                 ),
               ),
               _settingsItem(
-                caption: "Edytuj profil",
+                caption: transl.editProfile,
                 onTap: () => context.push("/edit-profile"),
               ),
               _settingsItem(
-                caption: "Zmień motyw",
+                caption: transl.changeTheme,
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
@@ -49,19 +52,19 @@ class SettingsPage extends StatelessWidget {
                 },
               ),
               _settingsItem(
-                caption: "Organizacja",
+                caption: transl.organization,
                 onTap: () => context.push("/organization"),
               ),
               _settingsItem(
-                caption: "Język",
+                caption: transl.language,
                 onTap: () => context.push("/languages"),
               ),
               _settingsItem(
-                caption: "Prywatność",
+                caption: transl.privacy,
                 onTap: () => context.push("/privacy"),
               ),
               _settingsItem(
-                caption: "Wyloguj się",
+                caption: transl.logOut,
                 onTap: () {
                   showModalBottomSheet(
                     context: context,

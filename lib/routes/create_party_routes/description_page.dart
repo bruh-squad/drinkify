@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/theming.dart';
+import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 final _descriptionCtrl = TextEditingController();
 
@@ -41,7 +44,7 @@ class DescriptionPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 30,
-                vertical: 10,
+                vertical: 15,
               ),
               child: Stack(
                 children: [
@@ -52,7 +55,7 @@ class DescriptionPage extends StatelessWidget {
                       style: const TextStyle(color: Theming.whiteTone),
                       cursorColor: Theming.primaryColor,
                       decoration: InputDecoration(
-                        hintText: "Opis imprezy (opcjonalny)",
+                        hintText: transl.descOptional,
                         hintStyle: TextStyle(
                           color: Theming.whiteTone.withOpacity(0.5),
                           fontWeight: FontWeight.bold,
@@ -66,17 +69,17 @@ class DescriptionPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Center(
-                          child: _categoryText("Stwórz imprezę"),
+                          child: _categoryText(transl.createAParty),
                         ),
                         const SizedBox(height: 30),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _categoryText("Opis imprezy"),
+                            _categoryText(transl.description),
                             TextButton(
                               onPressed: () => _descriptionCtrl.clear(),
                               child: Text(
-                                "Wyczyść",
+                                transl.clear,
                                 style: Styles.smallTextButton,
                               ),
                             ),
@@ -105,9 +108,9 @@ class DescriptionPage extends StatelessWidget {
                   context,
                   topLeftRightPadding,
                   backgroundColor: Theming.whiteTone,
-                  text: const Text(
-                    "Wstecz",
-                    style: TextStyle(
+                  text: Text(
+                    transl.back,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -119,9 +122,9 @@ class DescriptionPage extends StatelessWidget {
                   context,
                   topLeftRightPadding,
                   backgroundColor: Theming.primaryColor,
-                  text: const Text(
-                    "Dalej",
-                    style: TextStyle(
+                  text: Text(
+                    transl.next,
+                    style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,

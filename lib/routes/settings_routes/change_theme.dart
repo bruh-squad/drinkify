@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class ChangeThemePage extends StatelessWidget {
   const ChangeThemePage({super.key});
@@ -12,9 +15,9 @@ class ChangeThemePage extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 20),
-          const Text(
-            "Wybierz motyw",
-            style: TextStyle(
+          Text(
+            transl.changeTheme,
+            style: const TextStyle(
               color: Theming.whiteTone,
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -37,9 +40,9 @@ class ChangeThemePage extends StatelessWidget {
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    "Ciemny",
-                    style: TextStyle(
+                  child: Text(
+                    transl.darkTheme,
+                    style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -61,9 +64,9 @@ class ChangeThemePage extends StatelessWidget {
                     color: Theming.whiteTone,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    "Jasny",
-                    style: TextStyle(
+                  child: Text(
+                    transl.lightTheme,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 25,

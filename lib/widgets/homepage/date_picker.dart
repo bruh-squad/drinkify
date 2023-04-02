@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import '/utils/ext.dart' show Capitalize;
 
+import '/utils/ext.dart' show Capitalize;
+import '/utils/locale_support.dart';
 import '/utils/theming.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class DatePicker extends StatefulWidget {
   final int monthIndex;
@@ -70,9 +73,9 @@ class _DatePickerState extends State<DatePicker> {
                   bottomRight: Radius.circular(10),
                 ),
               ),
-              child: const Text(
-                "Wybierz",
-                style: TextStyle(
+              child: Text(
+                transl.select,
+                style: const TextStyle(
                   color: Theming.bgColor,
                   fontWeight: FontWeight.bold,
                 ),

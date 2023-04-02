@@ -1,19 +1,22 @@
-import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/user.dart';
+import '/widgets/glass_morphism.dart';
+import '/models/user.dart';
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class InviteFriendsPage extends StatelessWidget {
   //list of invited users, index
-  final Function(List<User>, int) onNext;
+  final Function(List<User>, int) onCreate;
 
   //index
   final Function(int) onPrevious;
 
   const InviteFriendsPage({
     required this.onPrevious,
-    required this.onNext,
+    required this.onCreate,
     super.key,
   });
 
@@ -41,7 +44,7 @@ class InviteFriendsPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 30,
-                vertical: 10,
+                vertical: 15,
               ),
               child: Stack(
                 children: [
@@ -82,7 +85,7 @@ class InviteFriendsPage extends StatelessWidget {
                               ),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Wyszukaj znajomego",
+                                hintText: transl.searchAFriend,
                                 hintStyle: TextStyle(
                                   color: Theming.whiteTone.withOpacity(0.5),
                                 ),
@@ -118,9 +121,9 @@ class InviteFriendsPage extends StatelessWidget {
                   context,
                   topLeftRightPadding,
                   backgroundColor: Theming.whiteTone,
-                  text: const Text(
-                    "Wstecz",
-                    style: TextStyle(
+                  text: Text(
+                    transl.back,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -132,16 +135,16 @@ class InviteFriendsPage extends StatelessWidget {
                   context,
                   topLeftRightPadding,
                   backgroundColor: Theming.primaryColor,
-                  text: const Text(
-                    "Stwórz",
-                    style: TextStyle(
+                  text: Text(
+                    transl.create,
+                    style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
                   //TODO make this working
-                  onTap: () => onNext(
+                  onTap: () => onCreate(
                     [],
                     3,
                   ),

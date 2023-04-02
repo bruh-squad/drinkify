@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class OrganizationPage extends StatelessWidget {
   const OrganizationPage({super.key});
@@ -22,9 +25,9 @@ class OrganizationPage extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text(
-          "Twoje imprezy",
-          style: TextStyle(
+        title: Text(
+          transl.yourParties,
+          style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
             fontSize: 18,

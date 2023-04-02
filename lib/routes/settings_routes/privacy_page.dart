@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class PrivacyPage extends StatelessWidget {
   const PrivacyPage({super.key});
@@ -22,9 +25,9 @@ class PrivacyPage extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text(
-          "Polityka prywatności",
-          style: TextStyle(
+        title: Text(
+          transl.privacyPolicy,
+          style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
             fontSize: 18,

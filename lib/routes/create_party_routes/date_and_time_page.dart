@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 final Color errorColor = Colors.red.withOpacity(0.3);
+
+//Moved outside the class to let the values stay after the page switch
+DateTime? startDate;
+TimeOfDay? startTime;
+DateTime? stopDate;
+TimeOfDay? stopTime;
+List<int> errorFields = [];
 
 class DateAndTimePage extends StatefulWidget {
   //start time, stop time, next page index
   final Function(DateTime, DateTime, int) onNext;
 
-  //index
+  //index of previous page
   final Function(int) onPrevious;
 
   const DateAndTimePage({
@@ -22,20 +32,6 @@ class DateAndTimePage extends StatefulWidget {
 }
 
 class _DateAndTimePageState extends State<DateAndTimePage> {
-  DateTime? startDate;
-  TimeOfDay? startTime;
-
-  DateTime? stopDate;
-  TimeOfDay? stopTime;
-
-  late List<int> errorFields;
-
-  @override
-  void initState() {
-    super.initState();
-    errorFields = [];
-  }
-
   @override
   Widget build(BuildContext context) {
     const double topLeftRightPadding = 25;
@@ -60,16 +56,16 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 30,
-                vertical: 10,
+                vertical: 15,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: _categoryText("Stwórz imprezę"),
+                    child: _categoryText(transl.createAParty),
                   ),
                   const SizedBox(height: 30),
-                  _categoryText("Wybierz datę i godzinę"),
+                  _categoryText(transl.pickDateAndTime),
                   Expanded(
                     flex: 6,
                     child: Center(
@@ -90,9 +86,9 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                             isStart: true,
                             isDate: false,
                           ),
-                          const Text(
-                            "do",
-                            style: TextStyle(
+                          Text(
+                            transl.to,
+                            style: const TextStyle(
                               fontSize: 24,
                             ),
                           ),
@@ -134,9 +130,9 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                   context,
                   topLeftRightPadding,
                   backgroundColor: Theming.whiteTone,
-                  text: const Text(
-                    "Wstecz",
-                    style: TextStyle(
+                  text: Text(
+                    transl.back,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -147,9 +143,9 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                 _navButton(
                   context, topLeftRightPadding,
                   backgroundColor: Theming.primaryColor,
-                  text: const Text(
-                    "Dalej",
-                    style: TextStyle(
+                  text: Text(
+                    transl.next,
+                    style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -304,6 +300,7 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                     ? isDate
                         ? textValue.toString().split(" ")[0]
                         : "${(textValue).hour}:${(textValue).minute}"
+                    //TODO fix translations
                     : "${isDate ? "Data" : "Czas"} ${isStart ? "rozpoczęcia" : "zakończenia"}",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),

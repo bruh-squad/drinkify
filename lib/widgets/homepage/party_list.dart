@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '/utils/locale_support.dart';
 import '/utils/theming.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class PartyList extends StatelessWidget {
   const PartyList({super.key});
@@ -11,8 +14,8 @@ class PartyList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 35),
-        const Text(
-          "Imprezy",
+        Text(
+          transl.parties,
           style: Styles.categoryText,
         ),
 
@@ -26,7 +29,7 @@ class PartyList extends StatelessWidget {
               ),
               child: SizedBox(
                 child: Text(
-                  "Brak imprez",
+                  transl.noParties,
                   style: Styles.emptyListText,
                 ),
               ),

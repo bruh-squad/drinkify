@@ -42,9 +42,9 @@ class Styles {
     fontWeight: FontWeight.bold,
   );
 
-  static const hintTextSearchBar = TextStyle(
+  static final hintTextSearchBar = TextStyle(
     fontWeight: FontWeight.bold,
-    color: Theming.bgColor,
+    color: Theming.bgColor.withOpacity(0.6),
     fontSize: 16,
   );
 

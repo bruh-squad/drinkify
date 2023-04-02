@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../utils/theming.dart';
 
 import '../widgets/custom_floating_button.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
@@ -25,9 +28,9 @@ class NotificationsPage extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text(
-          "Powiadomienia",
-          style: TextStyle(
+        title: Text(
+          transl.notificationsNotifications,
+          style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -51,9 +54,9 @@ class NotificationsPage extends StatelessWidget {
           CustomFloatingButton(
             backgroundColor: Theming.primaryColor,
             onTap: () {},
-            child: const Text(
-              "Oznacz jako przeczytane",
-              style: TextStyle(
+            child: Text(
+              transl.markAsRead,
+              style: const TextStyle(
                 color: Theming.whiteTone,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -97,18 +100,18 @@ class NotificationsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "Zaproszenie od ",
-                          style: TextStyle(
+                          text: transl.invitationFrom,
+                          style: const TextStyle(
                             color: Theming.whiteTone,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
-                        TextSpan(
-                          text: "@Ziemniak",
+                        const TextSpan(
+                          text: " @Ziemniak",
                           style: TextStyle(
                             color: Color(0xFFAEFF00),
                             fontWeight: FontWeight.bold,
@@ -119,7 +122,7 @@ class NotificationsPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "12 minut temu",
+                    "12 ${transl.minutesAgo}",
                     style: TextStyle(
                       color: Theming.whiteTone.withOpacity(0.5),
                       fontWeight: FontWeight.bold,

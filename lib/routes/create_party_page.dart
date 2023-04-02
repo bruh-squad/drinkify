@@ -21,6 +21,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
   var partyTitle = TextEditingController();
   var partyPeopleCount = TextEditingController();
   int partyStatusNumber = 1;
+  String partyLocation = ""; //format: POINT(lat lng)
   var partyDescription = TextEditingController();
   DateTime startTime = DateTime.now();
   DateTime stopTime = DateTime.now();
@@ -31,11 +32,12 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
     super.initState();
     routes = [
       TitlePage(
-        onNext: (title, peopleCount, partyStatus, idx) {
+        onNext: (title, peopleCount, partyStatus, pos, idx) {
           setState(() => index = idx);
           partyTitle = title;
           partyPeopleCount = peopleCount;
           partyStatusNumber = partyStatus;
+          partyLocation = pos;
         },
       ),
       DescriptionPage(
@@ -61,7 +63,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
         onPrevious: (idx) {
           setState(() => index = idx);
         },
-        onNext: (users, idx) {
+        onCreate: (users, idx) {
           setState(() => index = idx);
           partyUsers = users;
         },

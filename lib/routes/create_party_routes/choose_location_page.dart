@@ -5,10 +5,15 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 import '/widgets/custom_floating_button.dart';
+import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
+final transl = LocaleSupport.appTranslates();
+
+LatLng? selPoint;
+
 class ChooseLocationPage extends StatefulWidget {
-  final Function(LatLng) onSave;
+  final Function(String) onSave;
   const ChooseLocationPage({
     required this.onSave,
     super.key,
@@ -20,20 +25,21 @@ class ChooseLocationPage extends StatefulWidget {
 
 class _ChooseLocationPageState extends State<ChooseLocationPage> {
   final MapController mapCtrl = MapController();
-  LatLng selectedPoint = LatLng(
-    53.3439,
-    23.0622,
-  ); // Centre of Europe
+  final LatLng centerOfEurope = LatLng(55.18194, 28.25833);
 
   @override
   void initState() {
     super.initState();
-    _getUserLocation();
   }
 
-  //TODO set center to your location
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
-  Future<void> _getUserLocation() async {
+  void _getUserLocation() async {
     late bool serviceEnabled;
     late PermissionStatus permissionGranted;
     Location location = Location();
@@ -53,10 +59,9 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
         return;
       }
     }
-
     final LocationData posData = await location.getLocation();
     setState(() {
-      selectedPoint = LatLng(
+      selPoint = LatLng(
         posData.latitude!,
         posData.longitude!,
       );
@@ -67,16 +72,30 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theming.bgColor,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(
+          bottom: 55 + MediaQuery.of(context).padding.bottom,
+        ),
+        child: FloatingActionButton(
+          onPressed: () => _getUserLocation(),
+          backgroundColor: Theming.primaryColor,
+          child: const Icon(
+            Icons.person_pin_circle,
+            color: Theming.whiteTone,
+            size: 32,
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           FlutterMap(
             mapController: mapCtrl,
             options: MapOptions(
               onTap: (_, point) {
-                setState(() => selectedPoint = point);
+                setState(() => selPoint = point);
               },
-              center: selectedPoint,
-              zoom: 15,
+              center: centerOfEurope,
+              zoom: 3,
               interactiveFlags: InteractiveFlag.all -
                   InteractiveFlag.doubleTapZoom -
                   InteractiveFlag.rotate,
@@ -89,12 +108,15 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
               MarkerLayer(
                 markers: [
                   Marker(
-                    point: selectedPoint,
-                    builder: (ctx) {
-                      return const Icon(
-                        Icons.location_pin,
-                        color: Color.fromARGB(255, 233, 30, 98),
-                        size: 36,
+                    point: selPoint ?? LatLng(0, 0),
+                    builder: (_) {
+                      return Visibility(
+                        visible: selPoint == null ? false : true,
+                        child: const Icon(
+                          Icons.location_pin,
+                          color: Theming.primaryColor,
+                          size: 36,
+                        ),
                       );
                     },
                   ),
@@ -182,11 +204,15 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
           CustomFloatingButton(
             backgroundColor: Theming.primaryColor,
             onTap: () {
+              if (selPoint == null) return;
+              widget.onSave(
+                "POINT(${selPoint?.latitude} ${selPoint?.longitude})",
+              );
               context.pop();
             },
-            child: const Text(
-              "Zapisz",
-              style: TextStyle(
+            child: Text(
+              transl.save,
+              style: const TextStyle(
                 color: Theming.whiteTone,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,

@@ -1,8 +1,11 @@
-import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../utils/locale_support.dart';
 
+import '../widgets/glass_morphism.dart';
 import '../utils/theming.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class NavBar extends StatefulWidget {
   final double bottomMargin;
@@ -63,21 +66,21 @@ class _NavBarState extends State<NavBar> {
                     _navItem(
                       0,
                       context,
-                      caption: "Parties",
+                      caption: transl.navbarParties,
                       route: "/parties",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
                       1,
                       context,
-                      caption: "Home",
+                      caption: transl.navbarHome,
                       route: "/",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
                       2,
                       context,
-                      caption: "Profile",
+                      caption: transl.navbarProfile,
                       route: "/profile",
                     ),
                   ],

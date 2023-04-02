@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 import '/widgets/glass_morphism.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class LanguagesPage extends StatelessWidget {
   const LanguagesPage({super.key});
@@ -23,9 +26,9 @@ class LanguagesPage extends StatelessWidget {
             ),
           ),
         ),
-        title: const Text(
-          "Wybierz język",
-          style: TextStyle(
+        title: Text(
+          transl.chooseALanguage,
+          style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -34,10 +37,10 @@ class LanguagesPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 30,
           right: 30,
-          top: MediaQuery.of(context).padding.top + 20,
+          top: 30,
         ),
         child: GridView.count(
           crossAxisCount: 2,
@@ -47,11 +50,11 @@ class LanguagesPage extends StatelessWidget {
           children: [
             _languageField(
               imagePath: "assets/images/pl.jpg",
-              caption: "Polski",
+              caption: transl.polish,
             ),
             _languageField(
               imagePath: "assets/images/uk.jpg",
-              caption: "English",
+              caption: transl.english,
             ),
           ],
         ),

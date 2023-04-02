@@ -1,7 +1,10 @@
-import 'package:drinkify/routes/create_party_page.dart';
 import 'package:flutter/material.dart';
 
+import '/routes/create_party_page.dart';
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 class SearchAndMap extends StatefulWidget {
   const SearchAndMap({super.key});
@@ -49,9 +52,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
                       barrierColor: Colors.black.withOpacity(0.5),
                       useRootNavigator: true,
                       useSafeArea: true,
-                      barrierDismissible: true,
+                      barrierDismissible: false,
                       context: context,
-                      builder: (ctx) {
+                      builder: (_) {
                         return const CreatePartyPage();
                       },
                     );
@@ -83,19 +86,22 @@ class _SearchAndMapState extends State<SearchAndMap> {
                     color: Theming.whiteTone,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const TextField(
+                  child: TextField(
                     cursorColor: Theming.primaryColor,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theming.bgColor,
+                      fontSize: 16,
                     ),
                     decoration: InputDecoration(
-                      hintText: "Gdzie szukasz imprezy?",
+                      hintText: transl.lookingForAParty,
                       hintStyle: Styles.hintTextSearchBar,
                       border: InputBorder.none,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.search,
                         color: Theming.primaryColor,
-                        size: 32,
+                        size: 30,
                       ),
                     ),
                   ),
@@ -108,9 +114,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
             //Category roll
             Row(
               children: [
-                _categoryItem(0, caption: "Imprezy"),
-                _categoryItem(1, caption: "Znajomi"),
-                _categoryItem(2, caption: "W okolicy"),
+                _categoryItem(0, caption: transl.parties),
+                _categoryItem(1, caption: transl.friends),
+                _categoryItem(2, caption: transl.inYourArea),
               ],
             ),
           ],

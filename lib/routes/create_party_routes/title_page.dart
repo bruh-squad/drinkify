@@ -1,17 +1,25 @@
+import 'package:drinkify/routes/create_party_routes/choose_location_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
+
+final transl = LocaleSupport.appTranslates();
 
 final Color errorColor = Colors.red.withOpacity(0.3);
-
 typedef TEC = TextEditingController;
+
+//Moved outside the class to let the values stay after the page was switched
+var titleCtrl = TEC();
+var peopleCountCtrl = TEC();
+int partyStatus = 1; //1: private  2: public  3: secret
+String partyLocation = ""; //format: POINT(lat lng)
 
 class TitlePage extends StatefulWidget {
   //Ctrl, Ctrl, party status, next page index
-  final Function(TEC, TEC, int, int) onNext;
+  final Function(TEC, TEC, int, String, int) onNext;
   const TitlePage({
     required this.onNext,
     super.key,
@@ -25,10 +33,6 @@ class _TitlePageState extends State<TitlePage> {
   late List<int> errorFields;
 
   int subPageIndex = 0;
-
-  var titleCtrl = TextEditingController();
-  var peopleCountCtrl = TextEditingController();
-  int partyStatus = 1; //1: private  2: public  3: secret
 
   @override
   void initState() {
@@ -48,9 +52,9 @@ class _TitlePageState extends State<TitlePage> {
   String get _subPageTitle {
     switch (subPageIndex) {
       case 0:
-        return "Liczba osób";
+        return transl.numberOfPeople;
       default:
-        return "Status imprezy";
+        return transl.partyStatus;
     }
   }
 
@@ -83,10 +87,10 @@ class _TitlePageState extends State<TitlePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Center(
+                  Center(
                     child: Text(
-                      "Stwórz imprezę",
-                      style: TextStyle(
+                      transl.createAParty,
+                      style: const TextStyle(
                         color: Theming.whiteTone,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -96,7 +100,7 @@ class _TitlePageState extends State<TitlePage> {
                   const SizedBox(height: 20),
 
                   //Title
-                  _categoryText("Tytuł"),
+                  _categoryText(transl.title),
 
                   Flexible(
                     flex: 0,
@@ -111,35 +115,7 @@ class _TitlePageState extends State<TitlePage> {
                     child: _subPage,
                   ),
 
-                  _categoryText("Lokalizacja"),
-                  Flexible(
-                    flex: 0,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 90,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: FlutterMap(
-                          options: MapOptions(
-                            center: LatLng(0, 80),
-                            zoom: 0,
-                            interactiveFlags:
-                                InteractiveFlag.all - InteractiveFlag.all,
-                          ),
-                          children: [
-                            GestureDetector(
-                              onTap: () => context.push("/choose-location"),
-                              child: TileLayer(
-                                urlTemplate:
-                                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                userAgentPackageName: "app.drinkify",
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  _locationButton(2),
                 ],
               ),
             ),
@@ -160,9 +136,9 @@ class _TitlePageState extends State<TitlePage> {
                   context,
                   topLeftRightPadding,
                   backgroundColor: Theming.whiteTone,
-                  text: const Text(
-                    "Zamknij",
-                    style: TextStyle(
+                  text: Text(
+                    transl.close,
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -174,9 +150,9 @@ class _TitlePageState extends State<TitlePage> {
                   context,
                   topLeftRightPadding,
                   backgroundColor: Theming.primaryColor,
-                  text: const Text(
-                    "Dalej",
-                    style: TextStyle(
+                  text: Text(
+                    transl.next,
+                    style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -184,13 +160,21 @@ class _TitlePageState extends State<TitlePage> {
                   ),
                   onTap: () {
                     setState(() => errorFields = []);
-                    final List<TextEditingController> fields = [
+                    final List<dynamic> fields = [
                       titleCtrl,
                       peopleCountCtrl,
+                      partyLocation,
                     ];
                     for (int i = 0; i < fields.length; i++) {
-                      if (fields[i].text == "") {
-                        setState(() => errorFields.add(i));
+                      if (fields[i] is TEC) {
+                        if (fields[i].text == "") {
+                          setState(() => errorFields.add(i));
+                        }
+                      }
+                      if (fields[i] is String) {
+                        if (fields[i] == "") {
+                          setState(() => errorFields.add(i));
+                        }
                       }
                     }
                     if (errorFields.isNotEmpty) return;
@@ -198,6 +182,7 @@ class _TitlePageState extends State<TitlePage> {
                       titleCtrl,
                       peopleCountCtrl,
                       partyStatus,
+                      partyLocation,
                       1,
                     );
                   },
@@ -233,7 +218,7 @@ class _TitlePageState extends State<TitlePage> {
           color: Theming.whiteTone,
         ),
         decoration: InputDecoration(
-          hintText: "Dodaj tytuł imprezy",
+          hintText: transl.addPartyTitle,
           hintStyle: TextStyle(
             color: Theming.whiteTone.withOpacity(0.5),
           ),
@@ -256,6 +241,7 @@ class _TitlePageState extends State<TitlePage> {
 
   Widget _pageSwitcher() {
     const int maxPages = 2;
+
     return Row(
       children: [
         _categoryText(_subPageTitle),
@@ -301,10 +287,11 @@ class _TitlePageState extends State<TitlePage> {
         break;
       }
     }
+
     return Center(
       child: Container(
-        height: 60,
-        width: MediaQuery.of(context).size.width - 25 * 2 - 30 * 2 - 150,
+        height: 62,
+        width: 120,
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
         ),
@@ -315,12 +302,13 @@ class _TitlePageState extends State<TitlePage> {
         child: TextField(
           controller: peopleCountCtrl,
           cursorColor: Theming.primaryColor,
+          textAlign: TextAlign.center,
           keyboardType: const TextInputType.numberWithOptions(
             signed: false,
             decimal: true,
           ),
           decoration: InputDecoration(
-            hintText: "Liczba osób",
+            hintText: "0",
             hintStyle: TextStyle(
               color: Theming.whiteTone.withOpacity(0.5),
             ),
@@ -328,7 +316,7 @@ class _TitlePageState extends State<TitlePage> {
           ),
           style: const TextStyle(
             color: Theming.whiteTone,
-            fontSize: 22,
+            fontSize: 24,
           ),
         ),
       ),
@@ -339,9 +327,9 @@ class _TitlePageState extends State<TitlePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _statusItem(1, "prywatna"),
-        _statusItem(2, "publiczna"),
-        _statusItem(3, "sekretna"),
+        _statusItem(1, transl.private),
+        _statusItem(2, transl.public),
+        _statusItem(3, transl.secret),
       ],
     );
   }
@@ -374,6 +362,81 @@ class _TitlePageState extends State<TitlePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _locationButton(int index) {
+    bool isError = false;
+    for (final i in errorFields) {
+      if (i == index) {
+        setState(() => isError = true);
+        break;
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          transl.location,
+          style: TextStyle(
+            color: isError ? Colors.red : Theming.whiteTone,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        Flexible(
+          flex: 0,
+          child: SizedBox(
+            width: double.infinity,
+            height: 90,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: FlutterMap(
+                options: MapOptions(
+                  center: LatLng(0, 80),
+                  zoom: 0,
+                  interactiveFlags: InteractiveFlag.all - InteractiveFlag.all,
+                ),
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(
+                            milliseconds: 100,
+                          ),
+                          reverseTransitionDuration: const Duration(
+                            milliseconds: 100,
+                          ),
+                          transitionsBuilder: (_, a, __, c) {
+                            return FadeTransition(
+                              opacity: a,
+                              child: c,
+                            );
+                          },
+                          pageBuilder: (_, __, ___) {
+                            return ChooseLocationPage(
+                              onSave: (point) {
+                                partyLocation = point;
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: TileLayer(
+                      urlTemplate:
+                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      userAgentPackageName: "app.drinkify",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
