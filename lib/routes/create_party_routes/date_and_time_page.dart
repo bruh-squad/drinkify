@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
-
-final transl = LocaleSupport.appTranslates();
 
 final Color errorColor = Colors.red.withOpacity(0.3);
 
@@ -14,11 +15,13 @@ DateTime? stopDate;
 TimeOfDay? stopTime;
 List<int> errorFields = [];
 
+late AppLocalizations transl;
+
 class DateAndTimePage extends StatefulWidget {
-  //start time, stop time, next page index
+  /// * start time, stop time, next page index
   final Function(DateTime, DateTime, int) onNext;
 
-  //index of previous page
+  /// * index of previous page
   final Function(int) onPrevious;
 
   const DateAndTimePage({
@@ -33,7 +36,15 @@ class DateAndTimePage extends StatefulWidget {
 
 class _DateAndTimePageState extends State<DateAndTimePage> {
   @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    transl = LocaleSupport.appTranslates(context);
+
     const double topLeftRightPadding = 25;
 
     return Stack(
@@ -141,7 +152,8 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                   onTap: () => widget.onPrevious(1),
                 ),
                 _navButton(
-                  context, topLeftRightPadding,
+                  context,
+                  topLeftRightPadding,
                   backgroundColor: Theming.primaryColor,
                   text: Text(
                     transl.next,
@@ -151,8 +163,6 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                       fontSize: 20,
                     ),
                   ),
-
-                  //TODO finish this
                   onTap: () {
                     setState(() => errorFields = []);
                     final List<dynamic> fields = [
@@ -161,28 +171,39 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                       stopDate,
                       stopTime,
                     ];
+                    var startDateTime = DateTime(
+                      startDate!.year,
+                      startDate!.month,
+                      startDate!.day,
+                      startTime!.hour,
+                      startTime!.minute,
+                    );
+
+                    var stopDateTime = DateTime(
+                      stopDate!.year,
+                      stopDate!.month,
+                      stopDate!.day,
+                      stopTime!.hour,
+                      stopTime!.minute,
+                    );
+                    if (stopDateTime.isBefore(startDateTime)) {
+                      for (int i = 0; i < fields.length; i++) {
+                        setState(() => errorFields.add(i));
+                      }
+                      return;
+                    }
+
                     for (int i = 0; i < fields.length; i++) {
                       if (fields[i] == null) {
                         setState(() => errorFields.add(i));
                       }
                     }
+
                     if (errorFields.isNotEmpty) return;
 
                     widget.onNext(
-                      DateTime(
-                        startDate!.year,
-                        startDate!.month,
-                        startDate!.day,
-                        startTime!.hour,
-                        startTime!.minute,
-                      ),
-                      DateTime(
-                        stopDate!.year,
-                        stopDate!.month,
-                        stopDate!.day,
-                        stopTime!.hour,
-                        stopTime!.minute,
-                      ),
+                      startDateTime,
+                      stopDateTime,
                       3,
                     );
                   },
@@ -253,6 +274,7 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
               firstDate: DateTime(DateTime.now().year),
               lastDate: DateTime(DateTime.now().year + 14),
               useRootNavigator: true,
+              locale: Locale(transl.localeName),
             ).then((date) {
               if (isStart) {
                 setState(() => startDate = date!);
@@ -289,19 +311,22 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
           child: Row(
             children: [
               Icon(
-                isDate
-                    ? Icons.calendar_month_outlined
-                    : Icons.watch_later_outlined,
+                isDate ? Icons.calendar_month_outlined : Icons.watch_later_outlined,
                 color: Theming.primaryColor,
               ),
               const SizedBox(width: 5),
               Text(
                 textValue != null
                     ? isDate
-                        ? textValue.toString().split(" ")[0]
-                        : "${(textValue).hour}:${(textValue).minute}"
-                    //TODO fix translations
-                    : "${isDate ? "Data" : "Czas"} ${isStart ? "rozpoczęcia" : "zakończenia"}",
+                        ? DateFormat.yMd(transl.localeName).format(textValue)
+                        : "${textValue.hour}:${textValue.minute}"
+                    : isDate
+                        ? isStart
+                            ? transl.startDate
+                            : transl.completionDate
+                        : isStart
+                            ? transl.startTime
+                            : transl.completionTime,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],

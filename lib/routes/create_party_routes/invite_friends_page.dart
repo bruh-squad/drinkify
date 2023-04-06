@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/widgets/glass_morphism.dart';
 import '/models/user.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
+late AppLocalizations transl;
 
 class InviteFriendsPage extends StatelessWidget {
   //list of invited users, index
@@ -22,6 +23,8 @@ class InviteFriendsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    transl = LocaleSupport.appTranslates(context);
+
     const double topLeftRightPadding = 25;
 
     return Stack(
@@ -189,9 +192,9 @@ class InviteFriendsPage extends StatelessWidget {
                 color: Theming.primaryColor,
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: const Text(
-                "Zaproś",
-                style: TextStyle(
+              child: Text(
+                transl.invite,
+                style: const TextStyle(
                   color: Theming.whiteTone,
                   fontWeight: FontWeight.bold,
                 ),

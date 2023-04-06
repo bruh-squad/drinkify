@@ -4,8 +4,6 @@ import '/routes/create_party_page.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class SearchAndMap extends StatefulWidget {
   const SearchAndMap({super.key});
 
@@ -24,6 +22,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Container(
       height: 110,
       width: double.infinity,

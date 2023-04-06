@@ -4,8 +4,6 @@ import '/utils/theming.dart';
 import '/models/user.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class UserInfo extends StatefulWidget {
   final User user;
   const UserInfo(this.user, {super.key});
@@ -20,6 +18,7 @@ class _UserInfoState extends State<UserInfo> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Column(
       children: [
         //Parties attended / Profile pic with username / Friends

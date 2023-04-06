@@ -6,7 +6,8 @@ extension Capitalize on String {
   }
 }
 
-Future<void> openMap({
+/// * Return [true] if opening a map succeded
+Future<bool> openMap({
   String? adress,
   double lat = 0,
   double lng = 0,
@@ -14,13 +15,13 @@ Future<void> openMap({
   final List<AvailableMap> installedMaps = await MapLauncher.installedMaps;
 
   if (installedMaps.isNotEmpty) {
-    return MapLauncher.showMarker(
+    MapLauncher.showMarker(
       mapType: installedMaps[0].mapType,
       coords: Coords(lat, lng),
       title: "",
     );
+    return true;
   }
 
-  // If installedMaps is empty show a pop-up message
-  // that user doesn't have any maps installed
+  return false;
 }

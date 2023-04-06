@@ -9,6 +9,8 @@ class Theming {
   static const Color whiteTone = Color(0xFFF7F4F3);
 }
 
+class DarkTheme {}
+
 class Styles {
   Styles._();
 

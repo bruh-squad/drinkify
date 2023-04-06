@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/ext.dart' show Capitalize;
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
 import './date_picker.dart';
-
-final transl = LocaleSupport.appTranslates();
 
 class DateRow extends StatefulWidget {
   final EdgeInsets textPadding;
@@ -48,11 +47,15 @@ class _DateRowState extends State<DateRow> {
 
   //type must be MONTH else it will be considered as YEAR
   String toMonthName(DateTime date) {
-    return DateFormat("MMMM", "pl").format(date).toString().capitalize();
+    return DateFormat("MMMM", AppLocalizations.of(context)!.localeName)
+        .format(date)
+        .toString()
+        .capitalize();
   }
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     String month = toMonthName(DateTime(date[0], date[1]));
 
     int dateBoxStart =
@@ -171,7 +174,10 @@ class _DateRowState extends State<DateRow> {
     required DateTime boxDate,
   }) {
     bool isSelected = selectedDayIndex == index;
-    String dayOfWeek = DateFormat("EEE", "pl").format(boxDate);
+    String dayOfWeek = DateFormat(
+      "EEE",
+      AppLocalizations.of(context)!.localeName,
+    ).format(boxDate);
 
     return GestureDetector(
       onTap: () {

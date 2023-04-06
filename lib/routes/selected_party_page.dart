@@ -10,8 +10,6 @@ import '../utils/theming.dart';
 import '../models/party.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
   const SelectedPartyPage({Key? key, required this.party}) : super(key: key);
@@ -66,6 +64,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     final double mapFullSize = MediaQuery.of(context).size.height - 120;
     const double mapShrinkedSize = 140;
 

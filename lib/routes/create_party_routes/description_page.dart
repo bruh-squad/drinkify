@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 final _descriptionCtrl = TextEditingController();
 
 class DescriptionPage extends StatelessWidget {
@@ -22,6 +20,8 @@ class DescriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     const double topLeftRightPadding = 25;
 
     return Stack(

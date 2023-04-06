@@ -4,14 +4,13 @@ import '/utils/theming.dart';
 import '/models/user.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class Parties extends StatelessWidget {
   final User user;
   const Parties(this.user, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Align(
       alignment: Alignment.centerLeft,
       child: Column(

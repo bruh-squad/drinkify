@@ -6,8 +6,6 @@ import '/widgets/custom_floating_button.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
@@ -31,6 +29,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Scaffold(
       backgroundColor: Theming.bgColor,
       resizeToAvoidBottomInset: false,
@@ -191,7 +190,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 300),
+                  const SizedBox(height: 200),
                 ],
               ),
             ),

@@ -5,13 +5,12 @@ import '/utils/theming.dart';
 import '/widgets/glass_morphism.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class LanguagesPage extends StatelessWidget {
   const LanguagesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Scaffold(
       backgroundColor: Theming.bgColor,
       appBar: AppBar(
@@ -49,10 +48,12 @@ class LanguagesPage extends StatelessWidget {
           childAspectRatio: 16 / 6,
           children: [
             _languageField(
+              "pl",
               imagePath: "assets/images/pl.jpg",
               caption: transl.polish,
             ),
             _languageField(
+              "en",
               imagePath: "assets/images/uk.jpg",
               caption: transl.english,
             ),
@@ -62,39 +63,43 @@ class LanguagesPage extends StatelessWidget {
     );
   }
 
-  Widget _languageField({
+  Widget _languageField(
+    String locale, {
     required String imagePath,
     required String caption,
   }) {
-    return GlassMorphism(
-      blur: 20,
-      opacity: 0.2,
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          // color: Theming.primaryColor,
-        ),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Image.asset(
-                imagePath,
-                scale: 4,
+    return GestureDetector(
+      onTap: () {},
+      child: GlassMorphism(
+        blur: 20,
+        opacity: 0.2,
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            // color: Theming.primaryColor,
+          ),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Image.asset(
+                  imagePath,
+                  scale: 4,
+                ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              caption,
-              style: const TextStyle(
-                color: Theming.whiteTone,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+              const SizedBox(width: 10),
+              Text(
+                caption,
+                style: const TextStyle(
+                  color: Theming.whiteTone,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

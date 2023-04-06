@@ -4,13 +4,12 @@ import 'package:go_router/go_router.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class LogoutPage extends StatelessWidget {
   const LogoutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return SizedBox(
       height: 250,
       child: Column(

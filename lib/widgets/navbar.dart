@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../utils/locale_support.dart';
 
+import '../utils/locale_support.dart';
 import '../widgets/glass_morphism.dart';
 import '../utils/theming.dart';
-
-final transl = LocaleSupport.appTranslates();
 
 class NavBar extends StatefulWidget {
   final double bottomMargin;
@@ -30,6 +28,8 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     navBarSize = Size(
       MediaQuery.of(context).size.width - 30 * 2,
       70,

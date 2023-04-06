@@ -32,7 +32,6 @@
 
     "settings": "Settings",
     "editProfile": "Edit profile",
-    "changeTheme": "Change theme",
     "organization": "Organization",
     "language": "Language",
     "privacy": "Privacy",
@@ -69,10 +68,13 @@
     "doYouWantToLogOut": "Do you want to log out?",
     "yes": "Yes",
     "no": "No",
-
+    
+    "unknown": "Unknown",
     "showMore": "Show more",
     "showLess": "Show less",
     "join": "Join",
+    "error": "Error!",
+    "mapError": "It seems like you don't have any maps installed on your device.",
     
     "logIn": "Log in",
     "fillFieldsBelow": "Fill the fields below to continue",

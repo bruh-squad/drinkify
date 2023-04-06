@@ -4,13 +4,12 @@ import 'package:go_router/go_router.dart';
 import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class WelcomeHeader extends StatelessWidget {
   const WelcomeHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Column(
       children: [
         Row(

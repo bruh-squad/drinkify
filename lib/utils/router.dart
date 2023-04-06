@@ -163,6 +163,7 @@ GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      //This route is being pushed using Navigator
       path: "/choose-location",
       parentNavigatorKey: _rootKey,
       pageBuilder: (_, state) {

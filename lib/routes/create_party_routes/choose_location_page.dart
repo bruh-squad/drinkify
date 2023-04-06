@@ -8,8 +8,6 @@ import '/widgets/custom_floating_button.dart';
 import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 LatLng? selPoint;
 
 class ChooseLocationPage extends StatefulWidget {
@@ -26,11 +24,6 @@ class ChooseLocationPage extends StatefulWidget {
 class _ChooseLocationPageState extends State<ChooseLocationPage> {
   final MapController mapCtrl = MapController();
   final LatLng centerOfEurope = LatLng(55.18194, 28.25833);
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void setState(VoidCallback fn) {
@@ -70,6 +63,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(

@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
-final transl = LocaleSupport.appTranslates();
-
 class PartyList extends StatelessWidget {
   const PartyList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

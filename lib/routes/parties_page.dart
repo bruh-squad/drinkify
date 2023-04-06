@@ -1,4 +1,3 @@
-import 'package:drinkify/models/friend.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -7,6 +6,7 @@ import '../widgets/partiespage/party_holder.dart';
 
 import '../utils/theming.dart';
 import '../models/party.dart';
+import '../models/friend.dart';
 
 class PartiesPage extends StatelessWidget {
   const PartiesPage({super.key});

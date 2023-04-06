@@ -1,22 +1,56 @@
+import 'package:drinkify/widgets/selectedpartypage/no_maps_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../models/party.dart';
+import '/models/party.dart';
 import '/utils/theming.dart';
 import '/utils/ext.dart' show openMap;
+import '/utils/locale_support.dart';
 
-class PartyHeader extends StatelessWidget {
+late AppLocalizations transl;
+
+class PartyHeader extends StatefulWidget {
   final Party party;
   const PartyHeader({super.key, required this.party});
 
-  //TODO make it work
-  String _getActualLocation(LatLng latLng) {
-    return "Polska, Warszawa";
+  @override
+  State<PartyHeader> createState() => _PartyHeaderState();
+}
+
+class _PartyHeaderState extends State<PartyHeader> {
+  String partyLocation = "";
+
+  void _getActualLocation(LatLng latLng, BuildContext ctx) async {
+    transl = LocaleSupport.appTranslates(ctx);
+    List<Placemark> placemarks = [];
+
+    try {
+      placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+    } catch (_) {
+      partyLocation = transl.unknown;
+      return;
+    }
+
+    if (placemarks.isNotEmpty) {
+      Placemark place = placemarks[0];
+      if (mounted) {
+        setState(() {
+          partyLocation = "${place.country}, ${place.subAdministrativeArea}, ${place.street}";
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _getActualLocation(widget.party.location, context);
+
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 110),
@@ -35,21 +69,32 @@ class PartyHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            party.name,
+            widget.party.name,
             style: Styles.partyHeaderTitle,
             maxLines: 1,
           ),
           GestureDetector(
-            onTap: () {
-              openMap(
-                lat: party.location.latitude,
-                lng: party.location.longitude,
+            onTap: () async {
+              bool succeded = await openMap(
+                lat: widget.party.location.latitude,
+                lng: widget.party.location.longitude,
               );
+
+              if (!succeded) {
+                if (context.mounted) {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return const NoMapsDialog();
+                    },
+                  );
+                }
+              }
             },
             child: Row(
               children: [
                 Text(
-                  _getActualLocation(party.location),
+                  partyLocation,
                   style: Styles.partyHeaderLocation,
                 ),
                 const SizedBox(width: 5),
@@ -75,7 +120,7 @@ class PartyHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.yMd().format(party.startTime),
+                    DateFormat.yMd(transl.localeName).format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],
@@ -90,7 +135,7 @@ class PartyHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.Hm().format(party.startTime),
+                    DateFormat.Hm(transl.localeName).format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],
@@ -105,7 +150,7 @@ class PartyHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    "${party.participants?.length}",
+                    "${widget.party.participants?.length}",
                     style: Styles.partyHeaderInfo,
                   ),
                 ],

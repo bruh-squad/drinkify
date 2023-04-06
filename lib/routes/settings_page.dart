@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../routes/settings_routes/log_out_page.dart';
-import '../routes/settings_routes/change_theme.dart';
 
 import '../widgets/glass_morphism.dart';
 
 import '../utils/theming.dart';
-import '/utils/locale_support.dart';
-
-final transl = LocaleSupport.appTranslates();
+import '../utils/locale_support.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Scaffold(
       backgroundColor: Theming.bgColor,
       body: Padding(
@@ -39,17 +37,6 @@ class SettingsPage extends StatelessWidget {
               _settingsItem(
                 caption: transl.editProfile,
                 onTap: () => context.push("/edit-profile"),
-              ),
-              _settingsItem(
-                caption: transl.changeTheme,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Theming.bgColor,
-                    enableDrag: false,
-                    builder: (ctx) => const ChangeThemePage(),
-                  );
-                },
               ),
               _settingsItem(
                 caption: transl.organization,

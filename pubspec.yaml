@@ -25,7 +25,8 @@ dependencies:
   rename: ^2.1.1
   map_launcher: ^2.4.0
   location: ^4.4.0
-  hive: ^2.2.3
+  flutter_secure_storage: ^8.0.0
+  geocoding: ^2.1.0
 
 dev_dependencies:
   flutter_test:
