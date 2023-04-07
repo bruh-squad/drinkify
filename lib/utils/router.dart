@@ -10,10 +10,8 @@ import '../routes/selected_party_page.dart';
 import '../routes/notifications_page.dart';
 import '../routes/settings_page.dart';
 import '../routes/settings_routes/edit_profile_page.dart';
-import '../routes/settings_routes/languages_page.dart';
 import '../routes/settings_routes/privacy_page.dart';
 import '../routes/settings_routes/organization_page.dart';
-import '../routes/create_party_routes/choose_location_page.dart';
 
 import '../widgets/navbar.dart';
 
@@ -23,7 +21,7 @@ import '../models/user.dart';
 //Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 
-//Use this for all routes needing NavBar
+//Use this for all routes that need NavBar
 final GlobalKey<NavigatorState> _navBarKey = GlobalKey<NavigatorState>();
 
 GoRouter router = GoRouter(
@@ -143,35 +141,12 @@ GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: "/languages",
-      parentNavigatorKey: _rootKey,
-      pageBuilder: (_, state) {
-        return pageTransition(
-          state: state,
-          childWidget: const LanguagesPage(),
-        );
-      },
-    ),
-    GoRoute(
       path: "/privacy",
       parentNavigatorKey: _rootKey,
       pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const PrivacyPage(),
-        );
-      },
-    ),
-    GoRoute(
-      //This route is being pushed using Navigator
-      path: "/choose-location",
-      parentNavigatorKey: _rootKey,
-      pageBuilder: (_, state) {
-        return pageTransition(
-          state: state,
-          childWidget: ChooseLocationPage(
-            onSave: (location) {},
-          ),
         );
       },
     ),
@@ -182,11 +157,13 @@ CustomTransitionPage pageTransition({
   required GoRouterState state,
   required Widget childWidget,
 }) {
+  const Duration animDuration = Duration(milliseconds: 100);
+
   return CustomTransitionPage(
     key: state.pageKey,
     child: childWidget,
-    transitionDuration: const Duration(milliseconds: 100),
-    reverseTransitionDuration: const Duration(milliseconds: 100),
+    transitionDuration: animDuration,
+    reverseTransitionDuration: animDuration,
     transitionsBuilder: (_, animation, __, child) {
       return FadeTransition(
         opacity: animation,

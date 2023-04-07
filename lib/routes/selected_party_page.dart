@@ -86,9 +86,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
               borderRadius: BorderRadius.circular(100),
               boxShadow: [
                 BoxShadow(
-                  color: showMore
-                      ? Colors.black.withOpacity(0.3)
-                      : Colors.transparent,
+                  color: showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
                   blurRadius: 10,
                   spreadRadius: 1,
                   offset: const Offset(0, 5),
@@ -149,14 +147,11 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                           widget.party.location.longitude,
                         ),
                         zoom: 15,
-                        interactiveFlags: InteractiveFlag.all -
-                            InteractiveFlag.doubleTapZoom -
-                            InteractiveFlag.rotate,
+                        interactiveFlags: InteractiveFlag.all - InteractiveFlag.doubleTapZoom - InteractiveFlag.rotate,
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate:
-                              "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                           userAgentPackageName: "app.drinkify",
                         ),
                         MarkerLayer(
@@ -285,9 +280,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
               color: showMore ? Colors.transparent : Theming.primaryColor,
               boxShadow: [
                 BoxShadow(
-                  color: showMore
-                      ? Colors.transparent
-                      : Colors.black.withOpacity(0.5),
+                  color: showMore ? Colors.transparent : Colors.black.withOpacity(0.5),
                   blurRadius: 10,
                   spreadRadius: 1,
                   offset: const Offset(0, 5),

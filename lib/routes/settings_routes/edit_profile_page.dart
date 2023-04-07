@@ -152,8 +152,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       ),
                                       decoration: BoxDecoration(
                                         color: Theming.primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
+                                        borderRadius: BorderRadius.circular(100),
                                       ),
                                       child: Text(
                                         transl.changePassword,
@@ -234,9 +233,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             Text(
               caption,
               style: TextStyle(
-                color: isSelected
-                    ? Theming.whiteTone
-                    : Theming.whiteTone.withOpacity(0.7),
+                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
@@ -245,9 +242,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         Container(
           height: 60,
-          width: isUsername
-              ? (MediaQuery.of(context).size.width - 30 * 2) / 1.6
-              : double.infinity,
+          width: isUsername ? (MediaQuery.of(context).size.width - 30 * 2) / 1.6 : double.infinity,
           margin: const EdgeInsets.only(bottom: 30),
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -267,9 +262,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               prefixIcon: Icon(
                 icon,
-                color: isSelected
-                    ? Theming.whiteTone
-                    : Theming.whiteTone.withOpacity(0.7),
+                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
               ),
               border: InputBorder.none,
             ),

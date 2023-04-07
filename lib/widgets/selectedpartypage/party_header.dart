@@ -84,9 +84,7 @@ class _PartyHeaderState extends State<PartyHeader> {
                 if (context.mounted) {
                   showDialog(
                     context: context,
-                    builder: (_) {
-                      return const NoMapsDialog();
-                    },
+                    builder: (_) => const NoMapsDialog(),
                   );
                 }
               }
@@ -107,6 +105,7 @@ class _PartyHeaderState extends State<PartyHeader> {
             ),
           ),
           const SizedBox(height: 15),
+
           //Party info (date, time, number of people)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

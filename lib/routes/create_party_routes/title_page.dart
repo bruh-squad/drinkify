@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
@@ -16,10 +17,12 @@ typedef TEC = TextEditingController;
 var titleCtrl = TEC();
 var peopleCountCtrl = TEC();
 int partyStatus = 1; //1: private  2: public  3: secret
-String partyLocation = ""; //format: POINT(lat lng)
+String formattedPartyLocation = ""; //format: POINT(lat lng)
+
+String? textLocation;
 
 class TitlePage extends StatefulWidget {
-  //Ctrl, Ctrl, party status, next page index
+  /// * title controller, people count controller, party status, formatted location, next page index
   final Function(TEC, TEC, int, String, int) onNext;
   const TitlePage({
     required this.onNext,
@@ -59,9 +62,32 @@ class _TitlePageState extends State<TitlePage> {
     }
   }
 
+  void _getActualLocation(LatLng latLng, BuildContext ctx) async {
+    List<Placemark> placemarks = [];
+
+    try {
+      placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+    } catch (_) {
+      textLocation = transl.unknown;
+      return;
+    }
+
+    if (placemarks.isNotEmpty) {
+      Placemark place = placemarks[0];
+      if (mounted) {
+        setState(() {
+          textLocation = "${place.country}, ${place.locality == "" ? "" : "${place.locality},"} ${place.street}";
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    const double topLeftRightPadding = 25;
+    const double topLeftRightPadding = 15;
     transl = LocaleSupport.appTranslates(context);
 
     return Stack(
@@ -74,7 +100,7 @@ class _TitlePageState extends State<TitlePage> {
             top: topLeftRightPadding,
             bottom: 130,
           ),
-          insetAnimationDuration: const Duration(days: 360),
+          insetAnimationDuration: const Duration(days: 365),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
@@ -117,7 +143,7 @@ class _TitlePageState extends State<TitlePage> {
                     child: _subPage,
                   ),
 
-                  _locationButton(2),
+                  _locationButton(2, context),
                 ],
               ),
             ),
@@ -165,7 +191,7 @@ class _TitlePageState extends State<TitlePage> {
                     final List<dynamic> fields = [
                       titleCtrl,
                       peopleCountCtrl,
-                      partyLocation,
+                      formattedPartyLocation,
                     ];
                     for (int i = 0; i < fields.length; i++) {
                       if (fields[i] is TEC) {
@@ -184,7 +210,7 @@ class _TitlePageState extends State<TitlePage> {
                       titleCtrl,
                       peopleCountCtrl,
                       partyStatus,
-                      partyLocation,
+                      formattedPartyLocation,
                       1,
                     );
                   },
@@ -256,8 +282,7 @@ class _TitlePageState extends State<TitlePage> {
           },
           child: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color:
-                subPageIndex != 0 ? Theming.primaryColor : Colors.transparent,
+            color: subPageIndex != 0 ? Theming.primaryColor : Colors.transparent,
           ),
         ),
         Text(
@@ -273,9 +298,7 @@ class _TitlePageState extends State<TitlePage> {
           },
           child: Icon(
             Icons.arrow_forward_ios_rounded,
-            color: subPageIndex != maxPages - 1
-                ? Theming.primaryColor
-                : Colors.transparent,
+            color: subPageIndex != maxPages - 1 ? Theming.primaryColor : Colors.transparent,
           ),
         ),
       ],
@@ -368,7 +391,7 @@ class _TitlePageState extends State<TitlePage> {
     );
   }
 
-  Widget _locationButton(int index) {
+  Widget _locationButton(int index, BuildContext ctx) {
     bool isError = false;
     for (final i in errorFields) {
       if (i == index) {
@@ -381,11 +404,11 @@ class _TitlePageState extends State<TitlePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          transl.location,
+          textLocation ?? transl.location,
           style: TextStyle(
             color: isError ? Colors.red : Theming.whiteTone,
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: textLocation == null ? 18 : 14,
           ),
         ),
         Flexible(
@@ -420,8 +443,9 @@ class _TitlePageState extends State<TitlePage> {
                           },
                           pageBuilder: (_, __, ___) {
                             return ChooseLocationPage(
-                              onSave: (point) {
-                                partyLocation = point;
+                              onSave: (point, latLng) {
+                                formattedPartyLocation = point;
+                                _getActualLocation(latLng, ctx);
                               },
                             );
                           },
@@ -429,8 +453,7 @@ class _TitlePageState extends State<TitlePage> {
                       );
                     },
                     child: TileLayer(
-                      urlTemplate:
-                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                       userAgentPackageName: "app.drinkify",
                     ),
                   ),

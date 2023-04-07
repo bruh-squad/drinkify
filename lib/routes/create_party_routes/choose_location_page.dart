@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:geocoding/geocoding.dart' hide Location;
 
 import '/widgets/custom_floating_button.dart';
 import '/utils/locale_support.dart';
@@ -11,7 +12,8 @@ import '/utils/theming.dart';
 LatLng? selPoint;
 
 class ChooseLocationPage extends StatefulWidget {
-  final Function(String) onSave;
+  /// * formatted point, latitude and longtidude
+  final Function(String, LatLng) onSave;
   const ChooseLocationPage({
     required this.onSave,
     super.key,
@@ -90,9 +92,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
               },
               center: centerOfEurope,
               zoom: 3,
-              interactiveFlags: InteractiveFlag.all -
-                  InteractiveFlag.doubleTapZoom -
-                  InteractiveFlag.rotate,
+              interactiveFlags: InteractiveFlag.all - InteractiveFlag.doubleTapZoom - InteractiveFlag.rotate,
             ),
             children: [
               TileLayer(
@@ -127,8 +127,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                     top: MediaQuery.of(context).padding.top - 15,
                   ),
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width -
-                        (MediaQuery.of(context).size.width - 100),
+                    width: MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width - 100),
                     child: _returnButton(
                       icon: Icons.arrow_back_rounded,
                       onClick: () => context.pop(),
@@ -197,12 +196,25 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
           ),
           CustomFloatingButton(
             backgroundColor: Theming.primaryColor,
-            onTap: () {
+            onTap: () async {
               if (selPoint == null) return;
+
+              //Check if location is on land
+              try {
+                await placemarkFromCoordinates(
+                  selPoint!.latitude,
+                  selPoint!.longitude,
+                );
+              } catch (_) {
+                return;
+              }
               widget.onSave(
                 "POINT(${selPoint?.latitude} ${selPoint?.longitude})",
+                selPoint!,
               );
-              context.pop();
+              if (context.mounted) {
+                context.pop();
+              }
             },
             child: Text(
               transl.save,

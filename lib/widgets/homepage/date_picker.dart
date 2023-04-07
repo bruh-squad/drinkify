@@ -38,6 +38,7 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     var monthCtrl = FixedExtentScrollController(
       initialItem: selectedMonthIndex,
     );
@@ -122,15 +123,10 @@ class _DatePickerState extends State<DatePicker> {
                 physics: const FixedExtentScrollPhysics(),
                 perspective: 0.00000001,
                 onSelectedItemChanged: (value) {
-                  setState(() {
-                    selectedYearIndex = value + DateTime.now().year;
-                  });
+                  setState(() => selectedYearIndex = value + DateTime.now().year);
                 },
                 children: [
-                  for (int i = DateTime.now().year;
-                      i < DateTime.now().year + 15;
-                      i++)
-                    _datePickerItem(i, type: "YEAR"),
+                  for (int i = DateTime.now().year; i < DateTime.now().year + 15; i++) _datePickerItem(i, type: "YEAR"),
                 ],
               ),
             ),

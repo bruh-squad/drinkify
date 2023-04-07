@@ -1,3 +1,4 @@
+import 'package:drinkify/routes/create_party_routes/on_create_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../models/user.dart';
@@ -68,6 +69,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
           partyUsers = users;
         },
       ),
+      const OnCreateDialog(),
     ];
   }
 

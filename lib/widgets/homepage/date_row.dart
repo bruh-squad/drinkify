@@ -47,10 +47,7 @@ class _DateRowState extends State<DateRow> {
 
   //type must be MONTH else it will be considered as YEAR
   String toMonthName(DateTime date) {
-    return DateFormat("MMMM", AppLocalizations.of(context)!.localeName)
-        .format(date)
-        .toString()
-        .capitalize();
+    return DateFormat("MMMM", AppLocalizations.of(context)!.localeName).format(date).toString().capitalize();
   }
 
   @override
@@ -58,10 +55,7 @@ class _DateRowState extends State<DateRow> {
     final transl = LocaleSupport.appTranslates(context);
     String month = toMonthName(DateTime(date[0], date[1]));
 
-    int dateBoxStart =
-        date[1] != DateTime.now().month || date[0] != DateTime.now().year
-            ? 1
-            : DateTime.now().day;
+    int dateBoxStart = date[1] != DateTime.now().month || date[0] != DateTime.now().year ? 1 : DateTime.now().day;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,15 +89,10 @@ class _DateRowState extends State<DateRow> {
                           date[1] = month;
                         });
 
-                        if (date[0] == DateTime.now().year &&
-                            date[1] == DateTime.now().month) {
-                          setState(() {
-                            selectedDayIndex = DateTime.now().day;
-                          });
+                        if (date[0] == DateTime.now().year && date[1] == DateTime.now().month) {
+                          setState(() => selectedDayIndex = DateTime.now().day);
                         } else {
-                          setState(() {
-                            selectedDayIndex = 1;
-                          });
+                          setState(() => selectedDayIndex = 1);
                         }
                       },
                     ),
@@ -125,9 +114,7 @@ class _DateRowState extends State<DateRow> {
               child: Row(
                 children: [
                   const SizedBox(width: 30),
-                  for (int i = dateBoxStart;
-                      i <= numOfDaysInMonth(date[0], date[1]);
-                      i++)
+                  for (int i = dateBoxStart; i <= numOfDaysInMonth(date[0], date[1]); i++)
                     _dateBox(
                       i,
                       boxDate: DateTime(
@@ -159,9 +146,7 @@ class _DateRowState extends State<DateRow> {
               color: Theming.bgColor,
               blurRadius: 15,
               spreadRadius: 20,
-              offset: alignment == Alignment.centerRight
-                  ? const Offset(50, 0)
-                  : const Offset(-50, 0),
+              offset: alignment == Alignment.centerRight ? const Offset(50, 0) : const Offset(-50, 0),
             ),
           ],
         ),
@@ -190,9 +175,7 @@ class _DateRowState extends State<DateRow> {
         curve: Curves.linearToEaseOut,
         margin: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: isSelected
-              ? Theming.primaryColor
-              : Theming.whiteTone.withOpacity(0.1),
+          color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -200,9 +183,7 @@ class _DateRowState extends State<DateRow> {
           child: Column(
             children: [
               Text(
-                dayOfWeek.length > 4
-                    ? dayOfWeek.replaceRange(4, null, ".")
-                    : dayOfWeek,
+                dayOfWeek.length > 4 ? dayOfWeek.replaceRange(4, null, ".") : dayOfWeek,
                 style: Styles.dateBoxText,
               ),
               const SizedBox(height: 4),

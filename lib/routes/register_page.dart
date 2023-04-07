@@ -11,7 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  late int? selectedFieldIndex;
+  int? selectedFieldIndex;
 
   var emailCtrl = TextEditingController();
   var usernameCtrl = TextEditingController();
@@ -19,12 +19,6 @@ class _RegisterPageState extends State<RegisterPage> {
   var lastNameCtrl = TextEditingController();
   var passwordCtrl = TextEditingController();
   var passwordConfirmCtrl = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    selectedFieldIndex = null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,9 +213,7 @@ class _RegisterPageState extends State<RegisterPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                color: isSelected
-                    ? Theming.whiteTone
-                    : Theming.whiteTone.withOpacity(0.7),
+                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
               ),
             ),
           ],
@@ -242,9 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
               setState(() => selectedFieldIndex = index);
             },
             style: TextStyle(
-              color: isSelected
-                  ? Theming.whiteTone
-                  : Theming.whiteTone.withOpacity(0.7),
+              color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
             ),
             decoration: InputDecoration(
               hintText: placeholder,
@@ -253,9 +243,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               prefixIcon: Icon(
                 icon,
-                color: isSelected
-                    ? Theming.whiteTone
-                    : Theming.whiteTone.withOpacity(0.7),
+                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
               ),
               border: InputBorder.none,
             ),

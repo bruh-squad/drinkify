@@ -54,8 +54,7 @@ class _UserInfoState extends State<UserInfo> {
                 const SizedBox(height: 10),
                 //Username
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   decoration: BoxDecoration(
                     color: Theming.whiteTone.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(100),

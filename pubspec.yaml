@@ -40,8 +40,6 @@ flutter:
 
   assets:
     - .env
-    - assets/images/pl.jpg
-    - assets/images/uk.jpg
 
   fonts:
     - family: Nunito

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../routes/settings_routes/log_out_page.dart';
-
 import '../widgets/glass_morphism.dart';
-
-import '../utils/theming.dart';
 import '../utils/locale_support.dart';
+import '../utils/theming.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -14,6 +12,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return Scaffold(
       backgroundColor: Theming.bgColor,
       body: Padding(
@@ -43,10 +42,6 @@ class SettingsPage extends StatelessWidget {
                 onTap: () => context.push("/organization"),
               ),
               _settingsItem(
-                caption: transl.language,
-                onTap: () => context.push("/languages"),
-              ),
-              _settingsItem(
                 caption: transl.privacy,
                 onTap: () => context.push("/privacy"),
               ),
@@ -57,11 +52,10 @@ class SettingsPage extends StatelessWidget {
                     context: context,
                     backgroundColor: Theming.bgColor,
                     enableDrag: false,
-                    builder: (ctx) => const LogoutPage(),
+                    builder: (_) => const LogoutPage(),
                   );
                 },
               ),
-              const SizedBox(height: 30),
             ],
           ),
         ),

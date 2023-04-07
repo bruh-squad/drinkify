@@ -135,16 +135,14 @@ class _SearchAndMapState extends State<SearchAndMap> {
         setState(() => selectedIndex = index);
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 80),
+        duration: const Duration(milliseconds: 125),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 2,
         ),
         margin: const EdgeInsets.only(right: 15),
         decoration: BoxDecoration(
-          color: isSelected
-              ? Theming.primaryColor.withOpacity(0.5)
-              : Theming.whiteTone.withOpacity(0.1),
+          color: isSelected ? Theming.primaryColor.withOpacity(0.7) : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(

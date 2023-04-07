@@ -34,7 +34,7 @@ class DescriptionPage extends StatelessWidget {
             top: topLeftRightPadding,
             bottom: 130,
           ),
-          insetAnimationDuration: const Duration(days: 360),
+          insetAnimationDuration: const Duration(days: 365),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),

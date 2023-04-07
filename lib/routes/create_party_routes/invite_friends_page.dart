@@ -8,11 +8,13 @@ import '/utils/locale_support.dart';
 
 late AppLocalizations transl;
 
+List<User> invitedUsers = [];
+
 class InviteFriendsPage extends StatelessWidget {
-  //list of invited users, index
+  /// * list of invited users, index
   final Function(List<User>, int) onCreate;
 
-  //index
+  /// * previous page index
   final Function(int) onPrevious;
 
   const InviteFriendsPage({
@@ -37,7 +39,7 @@ class InviteFriendsPage extends StatelessWidget {
             top: topLeftRightPadding,
             bottom: 130,
           ),
-          insetAnimationDuration: const Duration(days: 360),
+          insetAnimationDuration: const Duration(days: 365),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
@@ -149,7 +151,7 @@ class InviteFriendsPage extends StatelessWidget {
                   //TODO make this working
                   onTap: () => onCreate(
                     [],
-                    3,
+                    4,
                   ),
                 ),
               ],

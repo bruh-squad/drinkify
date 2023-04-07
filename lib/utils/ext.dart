@@ -6,9 +6,8 @@ extension Capitalize on String {
   }
 }
 
-/// * Return [true] if opening a map succeded
+/// * Return [true] if opening a map succeded and [false] if failed
 Future<bool> openMap({
-  String? adress,
   double lat = 0,
   double lng = 0,
 }) async {

@@ -219,9 +219,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                color: isSelected
-                    ? Theming.whiteTone
-                    : Theming.whiteTone.withOpacity(0.7),
+                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
               ),
             ),
           ],
@@ -242,9 +240,7 @@ class _LoginPageState extends State<LoginPage> {
               setState(() => selectedFieldIndex = index);
             },
             style: TextStyle(
-              color: isSelected
-                  ? Theming.whiteTone
-                  : Theming.whiteTone.withOpacity(0.7),
+              color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
             ),
             decoration: InputDecoration(
               hintText: placeholder,
@@ -253,9 +249,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               prefixIcon: Icon(
                 icon,
-                color: isSelected
-                    ? Theming.whiteTone
-                    : Theming.whiteTone.withOpacity(0.7),
+                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
               ),
               border: InputBorder.none,
             ),

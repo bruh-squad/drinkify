@@ -57,7 +57,7 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
             top: topLeftRightPadding,
             bottom: 130,
           ),
-          insetAnimationDuration: const Duration(days: 360),
+          insetAnimationDuration: const Duration(days: 365),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
@@ -165,12 +165,22 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                   ),
                   onTap: () {
                     setState(() => errorFields = []);
+
                     final List<dynamic> fields = [
                       startDate,
                       startTime,
                       stopDate,
                       stopTime,
                     ];
+
+                    for (int i = 0; i < fields.length; i++) {
+                      if (fields[i] == null) {
+                        setState(() => errorFields.add(i));
+                      }
+                    }
+
+                    if (errorFields.isNotEmpty) return;
+
                     var startDateTime = DateTime(
                       startDate!.year,
                       startDate!.month,
@@ -186,20 +196,13 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                       stopTime!.hour,
                       stopTime!.minute,
                     );
+
                     if (stopDateTime.isBefore(startDateTime)) {
                       for (int i = 0; i < fields.length; i++) {
                         setState(() => errorFields.add(i));
                       }
                       return;
                     }
-
-                    for (int i = 0; i < fields.length; i++) {
-                      if (fields[i] == null) {
-                        setState(() => errorFields.add(i));
-                      }
-                    }
-
-                    if (errorFields.isNotEmpty) return;
 
                     widget.onNext(
                       startDateTime,
@@ -319,7 +322,7 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
                 textValue != null
                     ? isDate
                         ? DateFormat.yMd(transl.localeName).format(textValue)
-                        : "${textValue.hour}:${textValue.minute}"
+                        : "${textValue.hour < 10 ? "0${textValue.hour}" : textValue.hour}:${textValue.minute < 10 ? "0${textValue.minute}" : textValue.minute}"
                     : isDate
                         ? isStart
                             ? transl.startDate

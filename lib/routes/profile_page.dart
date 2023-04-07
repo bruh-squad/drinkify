@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theming.bgColor,
         title: const Text(
-          "Oliwier Adamczyk",
+          "Test User",
           style: Styles.appBarTitle,
         ),
         centerTitle: true,

@@ -17,8 +17,15 @@ void main() async {
   );
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
-    overlays: [SystemUiOverlay.top],
+    overlays: [
+      SystemUiOverlay.top,
+      SystemUiOverlay.bottom,
+    ],
   );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   await dotenv.load(fileName: ".env");
 }
