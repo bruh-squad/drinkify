@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import '../utils/consts.dart' as consts;
+import '../utils/consts.dart' show mainUrl;
 
 import './friend.dart';
 
@@ -27,7 +27,8 @@ class CreateUser {
   });
 
   Future<http.Response> createUser() async {
-    Uri url = Uri.parse("${consts.url}/users/");
+    Uri url = Uri.parse("$mainUrl/users/");
+
     return await http.post(
       url,
       body: {

@@ -37,13 +37,25 @@ class _PartyHeaderState extends State<PartyHeader> {
       return;
     }
 
-    if (placemarks.isNotEmpty) {
-      Placemark place = placemarks[0];
-      if (mounted) {
-        setState(() {
-          partyLocation = "${place.country}, ${place.subAdministrativeArea}, ${place.street}";
-        });
+    Placemark place = placemarks[0];
+
+    final cityFields = <String>[
+      place.locality!,
+      place.administrativeArea!,
+      place.subAdministrativeArea!,
+      place.subLocality!,
+    ];
+
+    String locArea = "";
+
+    for (final i in cityFields) {
+      if (i != "") {
+        locArea = i;
+        break;
       }
+    }
+    if (mounted) {
+      setState(() => partyLocation = "${place.country}, $locArea, ${place.street}");
     }
   }
 

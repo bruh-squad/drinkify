@@ -11,10 +11,10 @@ class PartyHolder extends StatelessWidget {
   final Party party;
   const PartyHolder({required this.party, super.key});
 
-  final double _imageAspectRatio = 16 / 6;
-
   @override
   Widget build(BuildContext context) {
+    const double imageAspectRatio = 16 / 6;
+
     var transl = LocaleSupport.appTranslates(context);
 
     return GestureDetector(
@@ -60,7 +60,7 @@ class PartyHolder extends StatelessWidget {
             child: Column(
               children: [
                 AspectRatio(
-                  aspectRatio: _imageAspectRatio,
+                  aspectRatio: imageAspectRatio,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),

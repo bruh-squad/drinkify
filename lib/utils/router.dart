@@ -1,3 +1,4 @@
+import 'package:drinkify/routes/create_party_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -147,6 +148,16 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: const PrivacyPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/create-party",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const CreatePartyPage(),
         );
       },
     ),

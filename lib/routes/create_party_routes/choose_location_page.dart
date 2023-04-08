@@ -11,6 +11,9 @@ import '/utils/theming.dart';
 
 LatLng? selPoint;
 
+String? countryAndCity;
+String? street;
+
 class ChooseLocationPage extends StatefulWidget {
   /// * formatted point, latitude and longtidude
   final Function(String, LatLng) onSave;
@@ -55,17 +58,30 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
       }
     }
     final LocationData posData = await location.getLocation();
+
+    var loc = <Placemark>[];
+    try {
+      loc = await placemarkFromCoordinates(
+        posData.latitude!,
+        posData.longitude!,
+      );
+    } catch (_) {
+      return;
+    }
     setState(() {
       selPoint = LatLng(
         posData.latitude!,
         posData.longitude!,
       );
+      countryAndCity = "${loc[0].country}, ${loc[0].locality}";
+      street = loc[0].street;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
@@ -87,8 +103,39 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
           FlutterMap(
             mapController: mapCtrl,
             options: MapOptions(
-              onTap: (_, point) {
-                setState(() => selPoint = point);
+              onTap: (_, point) async {
+                var loc = <Placemark>[];
+                try {
+                  loc = await placemarkFromCoordinates(
+                    point.latitude,
+                    point.longitude,
+                  );
+                } catch (_) {
+                  return;
+                }
+                final cityFields = <String>[
+                  loc[0].locality!,
+                  loc[0].administrativeArea!,
+                  loc[0].subAdministrativeArea!,
+                  loc[0].subLocality!,
+                ];
+
+                String locArea = "";
+
+                for (final i in cityFields) {
+                  if (i != "") {
+                    locArea = i;
+                    break;
+                  }
+                }
+
+                bool addComma = locArea != "";
+
+                setState(() {
+                  selPoint = point;
+                  countryAndCity = "${loc[0].country}${addComma ? "," : ""} $locArea";
+                  street = loc[0].street;
+                });
               },
               center: centerOfEurope,
               zoom: 3,
@@ -157,12 +204,12 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      "Polska, Radom",
+                    child: Text(
+                      countryAndCity ?? transl.unknown,
                       style: TextStyle(
                         color: Theming.whiteTone,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: countryAndCity!.length > 25 ? 16 : 20,
                       ),
                     ),
                   ),
@@ -184,9 +231,9 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                   topRight: Radius.circular(25),
                 ),
               ),
-              child: const Text(
-                "Lubelska 91a",
-                style: TextStyle(
+              child: Text(
+                street ?? transl.unknown,
+                style: const TextStyle(
                   color: Theming.whiteTone,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -198,16 +245,6 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
             backgroundColor: Theming.primaryColor,
             onTap: () async {
               if (selPoint == null) return;
-
-              //Check if location is on land
-              try {
-                await placemarkFromCoordinates(
-                  selPoint!.latitude,
-                  selPoint!.longitude,
-                );
-              } catch (_) {
-                return;
-              }
               widget.onSave(
                 "POINT(${selPoint?.latitude} ${selPoint?.longitude})",
                 selPoint!,

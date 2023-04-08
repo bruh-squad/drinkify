@@ -1,4 +1,8 @@
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import './friend.dart';
+import '../utils/consts.dart' show mainUrl;
 
 class User {
   final String? publicId;
@@ -22,4 +26,19 @@ class User {
     this.friends,
     required this.password,
   });
+
+  static Future<http.Response> deleteUser() async {
+    final Uri url = Uri.parse("$mainUrl/users/");
+
+    const storage = FlutterSecureStorage();
+    final String? jwt = await storage.read(key: "auth-token");
+
+    return await http.delete(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $jwt",
+      },
+    );
+  }
 }

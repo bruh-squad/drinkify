@@ -27,138 +27,152 @@ class InviteFriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     transl = LocaleSupport.appTranslates(context);
 
-    const double topLeftRightPadding = 25;
+    const double topLeftRightPadding = 15;
 
-    return Stack(
-      children: [
-        Dialog(
-          backgroundColor: Theming.bgColor,
-          insetPadding: const EdgeInsets.only(
-            left: topLeftRightPadding,
-            right: topLeftRightPadding,
-            top: topLeftRightPadding,
-            bottom: 130,
+    return Scaffold(
+      backgroundColor: Theming.bgColor,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          transl.createAParty,
+          style: const TextStyle(
+            color: Theming.whiteTone,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
-          insetAnimationDuration: const Duration(days: 365),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          child: SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 15,
-              ),
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 80),
-                        for (int i = 0; i < 20; i++)
-                          _friendPlaceholder(
-                            i,
-                            user: User(
-                              password: "asdasd",
-                              dateOfBirth: DateTime.now(),
-                            ),
+        ),
+        centerTitle: true,
+        backgroundColor: Theming.bgColor,
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 15,
+            ),
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 80),
+                      for (int i = 0; i < 20; i++)
+                        _friendPlaceholder(
+                          i,
+                          user: User(
+                            password: "asdasd",
+                            dateOfBirth: DateTime.now(),
                           ),
-                      ],
-                    ),
+                        ),
+                      const SizedBox(height: 160),
+                    ],
                   ),
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        GlassMorphism(
-                          blur: 30,
-                          opacity: 0.1,
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            height: 50,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
+                ),
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GlassMorphism(
+                        blur: 30,
+                        opacity: 0.1,
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                          height: 50,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: TextField(
+                            style: const TextStyle(
+                              color: Theming.whiteTone,
                             ),
-                            child: TextField(
-                              style: const TextStyle(
-                                color: Theming.whiteTone,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: transl.searchAFriend,
+                              hintStyle: TextStyle(
+                                color: Theming.whiteTone.withOpacity(0.5),
                               ),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: transl.searchAFriend,
-                                hintStyle: TextStyle(
-                                  color: Theming.whiteTone.withOpacity(0.5),
-                                ),
-                                prefixIcon: const Icon(
-                                  Icons.search_rounded,
-                                  color: Theming.primaryColor,
-                                  size: 34,
-                                ),
+                              prefixIcon: const Icon(
+                                Icons.search_rounded,
+                                color: Theming.primaryColor,
+                                size: 34,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 25,
-              right: 25,
-              bottom: 40,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _navButton(
-                  context,
-                  topLeftRightPadding,
-                  backgroundColor: Theming.whiteTone,
-                  text: Text(
-                    transl.back,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  onTap: () => onPrevious(2),
-                ),
-                _navButton(
-                  context,
-                  topLeftRightPadding,
-                  backgroundColor: Theming.primaryColor,
-                  text: Text(
-                    transl.create,
-                    style: const TextStyle(
-                      color: Theming.whiteTone,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  //TODO make this working
-                  onTap: () => onCreate(
-                    [],
-                    4,
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ),
-      ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: 140,
+              width: double.infinity,
+              alignment: Alignment.bottomCenter,
+              decoration: const BoxDecoration(
+                color: Theming.bgColor,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 20,
+                    color: Theming.bgColor,
+                    offset: Offset(0, -40),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 80,
+                  left: 30,
+                  right: 30,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _navButton(
+                      context,
+                      topLeftRightPadding,
+                      backgroundColor: Theming.whiteTone,
+                      text: Text(
+                        transl.back,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      onTap: () => onPrevious(2),
+                    ),
+                    _navButton(
+                      context,
+                      topLeftRightPadding,
+                      backgroundColor: Theming.primaryColor,
+                      text: Text(
+                        transl.create,
+                        style: const TextStyle(
+                          color: Theming.whiteTone,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      onTap: () => onCreate(
+                        [],
+                        4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -218,12 +232,12 @@ class InviteFriendsPage extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 70,
-        width: (MediaQuery.of(ctx).size.width - padding * 2) / 2 - 10,
+        height: 50,
+        width: (MediaQuery.of(ctx).size.width - padding * 2) / 2 - 30,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: text,
       ),

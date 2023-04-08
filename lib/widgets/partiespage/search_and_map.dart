@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/routes/create_party_page.dart';
 import '/utils/theming.dart';
@@ -46,18 +47,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
               children: [
                 //Map button
                 GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      barrierColor: Colors.black.withOpacity(0.5),
-                      useRootNavigator: true,
-                      useSafeArea: true,
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (_) {
-                        return const CreatePartyPage();
-                      },
-                    );
-                  },
+                  onTap: () => context.push("/create-party"),
                   child: Container(
                     height: 55,
                     width: 55,

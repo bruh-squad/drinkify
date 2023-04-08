@@ -45,177 +45,165 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
   Widget build(BuildContext context) {
     transl = LocaleSupport.appTranslates(context);
 
-    const double topLeftRightPadding = 25;
+    const double topLeftRightPadding = 15;
 
-    return Stack(
-      children: [
-        Dialog(
-          backgroundColor: Theming.bgColor,
-          insetPadding: const EdgeInsets.only(
-            left: topLeftRightPadding,
-            right: topLeftRightPadding,
-            top: topLeftRightPadding,
-            bottom: 130,
+    return Scaffold(
+      backgroundColor: Theming.bgColor,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          transl.createAParty,
+          style: const TextStyle(
+            color: Theming.whiteTone,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
-          insetAnimationDuration: const Duration(days: 365),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          child: SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 15,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: _categoryText(transl.createAParty),
-                  ),
-                  const SizedBox(height: 30),
-                  _categoryText(transl.pickDateAndTime),
-                  Expanded(
-                    flex: 6,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _dateOrTimeButton(
-                            context,
-                            0,
-                            textValue: startDate,
-                            isStart: true,
-                            isDate: true,
-                          ),
-                          _dateOrTimeButton(
-                            context,
-                            1,
-                            textValue: startTime,
-                            isStart: true,
-                            isDate: false,
-                          ),
-                          Text(
-                            transl.to,
-                            style: const TextStyle(
-                              fontSize: 24,
-                            ),
-                          ),
-                          _dateOrTimeButton(
-                            context,
-                            2,
-                            textValue: stopDate,
-                            isStart: false,
-                            isDate: true,
-                          ),
-                          _dateOrTimeButton(
-                            context,
-                            3,
-                            textValue: stopTime,
-                            isStart: false,
-                            isDate: false,
-                          ),
-                        ],
+        ),
+        centerTitle: true,
+        backgroundColor: Theming.bgColor,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            _categoryText(transl.pickDateAndTime),
+            Expanded(
+              flex: 6,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _dateOrTimeButton(
+                      context,
+                      0,
+                      textValue: startDate,
+                      isStart: true,
+                      isDate: true,
+                    ),
+                    _dateOrTimeButton(
+                      context,
+                      1,
+                      textValue: startTime,
+                      isStart: true,
+                      isDate: false,
+                    ),
+                    Text(
+                      transl.to,
+                      style: const TextStyle(
+                        fontSize: 24,
                       ),
                     ),
-                  ),
-                ],
+                    _dateOrTimeButton(
+                      context,
+                      2,
+                      textValue: stopDate,
+                      isStart: false,
+                      isDate: true,
+                    ),
+                    _dateOrTimeButton(
+                      context,
+                      3,
+                      textValue: stopTime,
+                      isStart: false,
+                      isDate: false,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 25,
-              right: 25,
-              bottom: 40,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _navButton(
-                  context,
-                  topLeftRightPadding,
-                  backgroundColor: Theming.whiteTone,
-                  text: Text(
-                    transl.back,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _navButton(
+                      context,
+                      topLeftRightPadding,
+                      backgroundColor: Theming.whiteTone,
+                      text: Text(
+                        transl.back,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      onTap: () => widget.onPrevious(1),
                     ),
-                  ),
-                  onTap: () => widget.onPrevious(1),
-                ),
-                _navButton(
-                  context,
-                  topLeftRightPadding,
-                  backgroundColor: Theming.primaryColor,
-                  text: Text(
-                    transl.next,
-                    style: const TextStyle(
-                      color: Theming.whiteTone,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                    _navButton(
+                      context,
+                      topLeftRightPadding,
+                      backgroundColor: Theming.primaryColor,
+                      text: Text(
+                        transl.next,
+                        style: const TextStyle(
+                          color: Theming.whiteTone,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() => errorFields = []);
+
+                        final List<dynamic> fields = [
+                          startDate,
+                          startTime,
+                          stopDate,
+                          stopTime,
+                        ];
+
+                        for (int i = 0; i < fields.length; i++) {
+                          if (fields[i] == null) {
+                            setState(() => errorFields.add(i));
+                          }
+                        }
+
+                        if (errorFields.isNotEmpty) return;
+
+                        var startDateTime = DateTime(
+                          startDate!.year,
+                          startDate!.month,
+                          startDate!.day,
+                          startTime!.hour,
+                          startTime!.minute,
+                        );
+
+                        var stopDateTime = DateTime(
+                          stopDate!.year,
+                          stopDate!.month,
+                          stopDate!.day,
+                          stopTime!.hour,
+                          stopTime!.minute,
+                        );
+
+                        if (stopDateTime.isBefore(startDateTime)) {
+                          for (int i = 0; i < fields.length; i++) {
+                            setState(() => errorFields.add(i));
+                          }
+                          return;
+                        }
+
+                        widget.onNext(
+                          startDateTime,
+                          stopDateTime,
+                          3,
+                        );
+                      },
                     ),
-                  ),
-                  onTap: () {
-                    setState(() => errorFields = []);
-
-                    final List<dynamic> fields = [
-                      startDate,
-                      startTime,
-                      stopDate,
-                      stopTime,
-                    ];
-
-                    for (int i = 0; i < fields.length; i++) {
-                      if (fields[i] == null) {
-                        setState(() => errorFields.add(i));
-                      }
-                    }
-
-                    if (errorFields.isNotEmpty) return;
-
-                    var startDateTime = DateTime(
-                      startDate!.year,
-                      startDate!.month,
-                      startDate!.day,
-                      startTime!.hour,
-                      startTime!.minute,
-                    );
-
-                    var stopDateTime = DateTime(
-                      stopDate!.year,
-                      stopDate!.month,
-                      stopDate!.day,
-                      stopTime!.hour,
-                      stopTime!.minute,
-                    );
-
-                    if (stopDateTime.isBefore(startDateTime)) {
-                      for (int i = 0; i < fields.length; i++) {
-                        setState(() => errorFields.add(i));
-                      }
-                      return;
-                    }
-
-                    widget.onNext(
-                      startDateTime,
-                      stopDateTime,
-                      3,
-                    );
-                  },
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -240,12 +228,12 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 70,
-        width: (MediaQuery.of(ctx).size.width - padding * 2) / 2 - 10,
+        height: 50,
+        width: (MediaQuery.of(ctx).size.width - padding * 2) / 2 - 30,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: text,
       ),

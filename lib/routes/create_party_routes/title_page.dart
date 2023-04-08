@@ -36,12 +36,18 @@ class TitlePage extends StatefulWidget {
 class _TitlePageState extends State<TitlePage> {
   late List<int> errorFields;
 
-  int subPageIndex = 0;
+  /// * 0 = people count page; 1 = party status page
+  late int subPageIndex;
+
+  /// * 0 = none; 1 = title; 2 = people count
+  late int selectedFieldIndex;
 
   @override
   void initState() {
     super.initState();
     errorFields = [];
+    subPageIndex = 0;
+    selectedFieldIndex = 0;
   }
 
   Widget get _subPage {
@@ -74,14 +80,29 @@ class _TitlePageState extends State<TitlePage> {
       textLocation = transl.unknown;
       return;
     }
+    Placemark place = placemarks[0];
 
-    if (placemarks.isNotEmpty) {
-      Placemark place = placemarks[0];
-      if (mounted) {
-        setState(() {
-          textLocation = "${place.country}, ${place.locality == "" ? "" : "${place.locality},"} ${place.street}";
-        });
+    final cityFields = <String>[
+      place.locality!,
+      place.administrativeArea!,
+      place.subAdministrativeArea!,
+      place.subLocality!,
+    ];
+
+    String locArea = "";
+
+    for (final i in cityFields) {
+      if (i != "") {
+        locArea = i;
+        break;
       }
+    }
+    bool addComma = locArea != "";
+
+    if (mounted) {
+      setState(() {
+        textLocation = "${place.country}, $locArea${addComma ? ", " : ""}${place.street}";
+      });
     }
   }
 
@@ -90,140 +111,120 @@ class _TitlePageState extends State<TitlePage> {
     const double topLeftRightPadding = 15;
     transl = LocaleSupport.appTranslates(context);
 
-    return Stack(
-      children: [
-        Dialog(
-          backgroundColor: Theming.bgColor,
-          insetPadding: const EdgeInsets.only(
-            left: topLeftRightPadding,
-            right: topLeftRightPadding,
-            top: topLeftRightPadding,
-            bottom: 130,
+    return Scaffold(
+      backgroundColor: Theming.bgColor,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          transl.createAParty,
+          style: const TextStyle(
+            color: Theming.whiteTone,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
-          insetAnimationDuration: const Duration(days: 365),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 15,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        centerTitle: true,
+        backgroundColor: Theming.bgColor,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            //Title
+            _categoryText(transl.title),
+
+            Flexible(
+              flex: 0,
+              child: _titleField(0),
+            ),
+            const SizedBox(height: 40),
+
+            _pageSwitcher(),
+
+            Flexible(
+              flex: 2,
+              child: _subPage,
+            ),
+
+            _locationButton(2, context),
+            const SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 80),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Center(
-                    child: Text(
-                      transl.createAParty,
+                  _navButton(
+                    context,
+                    topLeftRightPadding,
+                    backgroundColor: Theming.whiteTone,
+                    text: Text(
+                      transl.close,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    onTap: () => Navigator.pop(context),
+                  ),
+                  _navButton(
+                    context,
+                    topLeftRightPadding,
+                    backgroundColor: Theming.primaryColor,
+                    text: Text(
+                      transl.next,
                       style: const TextStyle(
                         color: Theming.whiteTone,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 20,
                       ),
                     ),
+                    onTap: () {
+                      setState(() => errorFields = []);
+                      final List<dynamic> fields = [
+                        titleCtrl,
+                        peopleCountCtrl,
+                        formattedPartyLocation,
+                      ];
+                      for (int i = 0; i < fields.length; i++) {
+                        if (fields[i] is TEC) {
+                          if (fields[i].text == "") {
+                            setState(() => errorFields.add(i));
+                          }
+                        }
+                        if (fields[i] is String) {
+                          if (fields[i] == "") {
+                            setState(() => errorFields.add(i));
+                          }
+                        }
+                      }
+                      if (errorFields.isNotEmpty) return;
+                      widget.onNext(
+                        titleCtrl,
+                        peopleCountCtrl,
+                        partyStatus,
+                        formattedPartyLocation,
+                        1,
+                      );
+                    },
                   ),
-                  const SizedBox(height: 20),
-
-                  //Title
-                  _categoryText(transl.title),
-
-                  Flexible(
-                    flex: 0,
-                    child: _titleField(0),
-                  ),
-                  const SizedBox(height: 40),
-
-                  _pageSwitcher(),
-
-                  Flexible(
-                    flex: 2,
-                    child: _subPage,
-                  ),
-
-                  _locationButton(2, context),
                 ],
               ),
             ),
-          ),
+          ],
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 25,
-              right: 25,
-              bottom: 40,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _navButton(
-                  context,
-                  topLeftRightPadding,
-                  backgroundColor: Theming.whiteTone,
-                  text: Text(
-                    transl.close,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  onTap: () => Navigator.pop(context),
-                ),
-                _navButton(
-                  context,
-                  topLeftRightPadding,
-                  backgroundColor: Theming.primaryColor,
-                  text: Text(
-                    transl.next,
-                    style: const TextStyle(
-                      color: Theming.whiteTone,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() => errorFields = []);
-                    final List<dynamic> fields = [
-                      titleCtrl,
-                      peopleCountCtrl,
-                      formattedPartyLocation,
-                    ];
-                    for (int i = 0; i < fields.length; i++) {
-                      if (fields[i] is TEC) {
-                        if (fields[i].text == "") {
-                          setState(() => errorFields.add(i));
-                        }
-                      }
-                      if (fields[i] is String) {
-                        if (fields[i] == "") {
-                          setState(() => errorFields.add(i));
-                        }
-                      }
-                    }
-                    if (errorFields.isNotEmpty) return;
-                    widget.onNext(
-                      titleCtrl,
-                      peopleCountCtrl,
-                      partyStatus,
-                      formattedPartyLocation,
-                      1,
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
   Widget _titleField(int index) {
+    bool isSelected = selectedFieldIndex == 1;
+
     bool isError = false;
     for (final i in errorFields) {
       if (i == index) {
@@ -239,8 +240,15 @@ class _TitlePageState extends State<TitlePage> {
       decoration: BoxDecoration(
         color: isError ? errorColor : Theming.whiteTone.withOpacity(0.1),
         borderRadius: BorderRadius.circular(50),
+        border: Border.all(
+          color: isSelected ? Theming.primaryColor : Colors.transparent,
+          width: 2,
+        ),
       ),
       child: TextField(
+        onTap: () {
+          setState(() => selectedFieldIndex = 1);
+        },
         cursorColor: Theming.primaryColor,
         controller: titleCtrl,
         style: const TextStyle(
@@ -306,6 +314,8 @@ class _TitlePageState extends State<TitlePage> {
   }
 
   Widget _peopleCountPage(int index) {
+    bool isSelected = selectedFieldIndex == 2;
+
     bool isError = false;
     for (final i in errorFields) {
       if (i == index) {
@@ -316,16 +326,23 @@ class _TitlePageState extends State<TitlePage> {
 
     return Center(
       child: Container(
-        height: 62,
+        height: 66,
         width: 120,
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
         ),
         decoration: BoxDecoration(
           color: isError ? errorColor : Theming.whiteTone.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(
+            color: isSelected ? Theming.primaryColor : Colors.transparent,
+            width: 2,
+          ),
         ),
         child: TextField(
+          onTap: () {
+            setState(() => selectedFieldIndex = 2);
+          },
           controller: peopleCountCtrl,
           cursorColor: Theming.primaryColor,
           textAlign: TextAlign.center,
@@ -476,12 +493,12 @@ class _TitlePageState extends State<TitlePage> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 70,
-        width: (MediaQuery.of(ctx).size.width - padding * 2) / 2 - 10,
+        height: 50,
+        width: (MediaQuery.of(ctx).size.width - padding * 2) / 2 - 30,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: text,
       ),
