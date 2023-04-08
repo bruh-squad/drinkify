@@ -209,7 +209,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                       style: TextStyle(
                         color: Theming.whiteTone,
                         fontWeight: FontWeight.bold,
-                        fontSize: countryAndCity!.length > 25 ? 16 : 20,
+                        fontSize: countryAndCity != null && countryAndCity!.length > 25 ? 16 : 20,
                       ),
                     ),
                   ),
