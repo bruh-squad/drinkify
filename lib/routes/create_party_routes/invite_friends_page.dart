@@ -86,6 +86,7 @@ class InviteFriendsPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                           ),
                           child: TextField(
+                            cursorColor: Theming.primaryColor,
                             style: const TextStyle(
                               color: Theming.whiteTone,
                             ),

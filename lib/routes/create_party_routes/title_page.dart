@@ -232,9 +232,11 @@ class _TitlePageState extends State<TitlePage> {
         break;
       }
     }
-    return Container(
+    return AnimatedContainer(
       width: double.infinity,
       height: 60,
+      curve: Curves.linearToEaseOut,
+      duration: const Duration(milliseconds: 250),
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
@@ -325,9 +327,11 @@ class _TitlePageState extends State<TitlePage> {
     }
 
     return Center(
-      child: Container(
+      child: AnimatedContainer(
         height: 66,
         width: 120,
+        curve: Curves.linearToEaseOut,
+        duration: const Duration(milliseconds: 250),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
         ),

@@ -23,7 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       backgroundColor: Theming.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -60,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           //TODO: implement picking an image from gallery
                         },
                         child: const CircleAvatar(
-                          radius: 50,
+                          radius: 40,
                           backgroundColor: Theming.bgColorLight,
                           backgroundImage: NetworkImage(
                             "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
@@ -184,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -201,51 +201,67 @@ class _RegisterPageState extends State<RegisterPage> {
     required TextEditingController ctrl,
     bool isPassword = false,
   }) {
-    bool isSelected = index == selectedFieldIndex;
     const double radius = 20;
-    return Column(
+    const double iconSize = 24;
+
+    bool isSelected = index == selectedFieldIndex;
+
+    return Stack(
       children: [
-        Row(
-          children: [
-            const SizedBox(width: radius / 2),
-            Text(
-              caption,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
-              ),
-            ),
-          ],
-        ),
         Container(
-          height: 60,
+          height: 70,
           width: double.infinity,
-          alignment: Alignment.center,
           margin: const EdgeInsets.only(bottom: 30),
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: const Color(0xFF000E1F),
-            borderRadius: BorderRadius.circular(20),
+            color: const Color(0x9F000E1F),
+            borderRadius: BorderRadius.circular(radius),
           ),
           child: TextField(
-            controller: ctrl,
-            obscureText: isPassword,
             onTap: () {
               setState(() => selectedFieldIndex = index);
             },
-            style: TextStyle(
-              color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
-            ),
+            obscureText: isPassword,
+            style: const TextStyle(color: Theming.whiteTone),
+            cursorColor: Theming.primaryColor,
+            controller: ctrl,
             decoration: InputDecoration(
               hintText: placeholder,
               hintStyle: TextStyle(
-                color: Theming.whiteTone.withOpacity(0.4),
+                fontSize: 14,
+                color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
               ),
               prefixIcon: Icon(
                 icon,
-                color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.7),
+                color: isSelected ? Theming.primaryColor : Theming.whiteTone,
+                size: iconSize,
               ),
               border: InputBorder.none,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 80,
+          child: AnimatedPadding(
+            padding: EdgeInsets.only(
+              top: isSelected || ctrl.text.isNotEmpty ? 7 : 0,
+              left: iconSize * 2,
+              bottom: isSelected || ctrl.text.isNotEmpty ? 0 : 10,
+            ),
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.linearToEaseOut,
+            child: AnimatedAlign(
+              alignment: isSelected || ctrl.text.isNotEmpty ? Alignment.topLeft : Alignment.centerLeft,
+              curve: Curves.linearToEaseOut,
+              duration: const Duration(milliseconds: 500),
+              child: Text(
+                caption,
+                style: TextStyle(
+                  color: isSelected ? Theming.primaryColor : Theming.whiteTone,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
             ),
           ),
         ),

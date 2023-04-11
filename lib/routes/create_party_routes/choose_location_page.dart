@@ -86,7 +86,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
         padding: EdgeInsets.only(
-          bottom: 55 + MediaQuery.of(context).padding.bottom,
+          bottom: 55 + MediaQuery.of(context).viewPadding.bottom,
         ),
         child: FloatingActionButton(
           onPressed: () => _getUserLocation(),
@@ -220,7 +220,7 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 95 + MediaQuery.of(context).padding.bottom,
+              height: 95 + MediaQuery.of(context).viewPadding.bottom,
               width: double.infinity,
               alignment: Alignment.topCenter,
               padding: const EdgeInsets.only(top: 10),

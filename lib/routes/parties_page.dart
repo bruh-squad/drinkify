@@ -44,7 +44,9 @@ class PartiesPage extends StatelessWidget {
                           stopTime: DateTime.now(),
                         ),
                       ),
-                    const SizedBox(height: 200),
+                    SizedBox(
+                      height: MediaQuery.of(context).viewPadding.bottom + 120,
+                    ),
                   ],
                 ),
               ),

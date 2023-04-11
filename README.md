@@ -11,7 +11,7 @@ flutter pub get
 
 ## Example .env
 ```
-URL = "Server URL eg. 127.0.0.1:8000"
+URL = "http://127.0.0.1:8000"
 ```
 
 ## Running the App
@@ -21,6 +21,10 @@ Once all dependencies have been installed, run the following command to start th
 ```
 flutter run
 ```
+
+## Using an API
+
+Drinkify uses [liquor-lovers](https://github.com/Kawaii-Addicts/liquor-lovers). Make sure to install it and run in order to use all the features provided by the app.
 
 ## Contributing
 

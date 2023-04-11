@@ -47,7 +47,7 @@ class _DatePickerState extends State<DatePicker> {
     );
 
     return SizedBox(
-      height: 200 + 8 * 2 + 20 + 40 + MediaQuery.of(context).padding.bottom,
+      height: 200 + 8 * 2 + 20 + 40 + MediaQuery.of(context).viewPadding.bottom,
       child: Column(
         children: [
           //Button

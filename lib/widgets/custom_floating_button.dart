@@ -18,7 +18,7 @@ class CustomFloatingButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          height: 55 + MediaQuery.of(context).padding.bottom,
+          height: 55 + MediaQuery.of(context).viewPadding.bottom,
           width: double.infinity,
           alignment: Alignment.topCenter,
           decoration: BoxDecoration(
