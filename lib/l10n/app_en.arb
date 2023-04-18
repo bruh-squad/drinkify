@@ -52,6 +52,8 @@
     "oldPasswordField": "Provide an old password",
     "newPassword": "New password",
     "newPasswordField": "Provide a new password",
+    "password": "Password",
+    "passwordField": "Provide a password",
     "save": "Save",
 
     "chooseATheme": "Choose a theme",
@@ -78,15 +80,16 @@
     "mapError": "It seems like you don't have any maps installed on your device.",
     
     "logIn": "Log in",
-    "fillFieldsBelow": "Fill the fields below to continue",
-    "dontRememberPassword": "Don't remember the password?",
+    "fillFieldsBelow": "Fill the fields below to continue.",
+    "forgotPassword": "Forgot password?",
     "passwordReset": "Password reset",
     "resetPassword": "Reset password",
     "dontHaveAnAccount": "Don't have an account?",
-    "signIn": "Sign up",
+    "signUp": "Sign up",
     "confirmPassword": "Confirm password",
     "haveAnAccount": "Have an account?",
     "signIn": "Sign in",
+    "dateOfBirth": "Date of birth",
 
     "createAParty": "Create a party",
     "title": "Title",

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
+import '../utils/locale_support.dart';
 import '../utils/theming.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -19,11 +22,20 @@ class _RegisterPageState extends State<RegisterPage> {
   var lastNameCtrl = TextEditingController();
   var passwordCtrl = TextEditingController();
   var passwordConfirmCtrl = TextEditingController();
+  DateTime? dateOfBirthVal;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initializeDateFormatting();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: Theming.bgColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -36,16 +48,16 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Zarejestruj się",
-                  style: TextStyle(
+                Text(
+                  transl.signUp,
+                  style: const TextStyle(
                     color: Theming.whiteTone,
                     fontWeight: FontWeight.bold,
                     fontSize: 38,
                   ),
                 ),
                 Text(
-                  "Wypełnij poniższe pola, aby kontynuować.",
+                  transl.fillFieldsBelow,
                   style: TextStyle(
                     color: Theming.whiteTone.withOpacity(0.5),
                     fontWeight: FontWeight.bold,
@@ -57,7 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          //TODO: implement picking an image from gallery
+                          //TODO picking an image from gallery
                         },
                         child: const CircleAvatar(
                           radius: 40,
@@ -92,51 +104,101 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 40),
                 _editField(
                   0,
-                  caption: "E-mail",
-                  icon: Icons.email_outlined,
-                  placeholder: "Podaj e-mail",
-                  ctrl: emailCtrl,
-                ),
-                _editField(
-                  1,
-                  caption: "Nazwa użytkownika",
+                  caption: transl.username,
                   icon: Icons.verified_user_outlined,
-                  placeholder: "Podaj nazwę użytkownika",
+                  placeholder: transl.usernameField,
                   ctrl: usernameCtrl,
                 ),
                 _editField(
+                  1,
+                  caption: transl.email,
+                  icon: Icons.email_outlined,
+                  placeholder: transl.emailField,
+                  ctrl: emailCtrl,
+                ),
+                _editField(
                   2,
-                  caption: "Imię",
+                  caption: transl.firstName,
                   icon: Icons.person_pin_rounded,
-                  placeholder: "Podaj imię",
+                  placeholder: transl.firstNameField,
                   ctrl: firstNameCtrl,
                 ),
                 _editField(
                   3,
-                  caption: "Nazwisko",
+                  caption: transl.lastName,
                   icon: Icons.person_pin_rounded,
-                  placeholder: "Podaj nazwisko",
+                  placeholder: transl.lastNameField,
                   ctrl: lastNameCtrl,
                 ),
                 _editField(
                   4,
-                  caption: "Hasło",
+                  caption: transl.password,
                   icon: Icons.lock_outline,
-                  placeholder: "Podaj hasło",
+                  placeholder: transl.passwordField,
                   ctrl: passwordCtrl,
                   isPassword: true,
                 ),
                 _editField(
                   5,
-                  caption: "Potwierdź hasło",
+                  caption: transl.confirmPassword,
                   icon: Icons.lock_outline,
-                  placeholder: "Podaj hasło",
+                  placeholder: transl.passwordField,
                   ctrl: passwordConfirmCtrl,
                   isPassword: true,
                 ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedFieldIndex = null;
+                    });
+                    showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(DateTime.now().year - 100),
+                      lastDate: DateTime.now(),
+                      useRootNavigator: true,
+                      locale: const Locale("en"),
+                    ).then((date) {
+                      setState(() {
+                        dateOfBirthVal = date;
+                      });
+                    });
+                  },
+                  child: Container(
+                    height: 70,
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(bottom: 30),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0x9F000E1F),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.date_range_outlined,
+                          color: selectedFieldIndex == 6 ? Theming.primaryColor : Theming.whiteTone,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          dateOfBirthVal == null ? transl.dateOfBirth : DateFormat.yMd(transl.localeName).format(dateOfBirthVal!),
+                          style: TextStyle(
+                            color: selectedFieldIndex == 6 ? Theming.primaryColor : Theming.whiteTone,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Center(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      //TODO signing up
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 30,
@@ -146,9 +208,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theming.primaryColor,
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: const Text(
-                        "Zarejestruj się",
-                        style: TextStyle(
+                      child: Text(
+                        transl.signUp,
+                        style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -165,15 +227,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Masz już konto? ",
+                            text: transl.haveAnAccount,
                             style: TextStyle(
                               color: Theming.whiteTone.withOpacity(0.5),
                               fontSize: 16,
                             ),
                           ),
-                          const TextSpan(
-                            text: "Zaloguj się",
-                            style: TextStyle(
+                          TextSpan(
+                            text: " ${transl.signIn}",
+                            style: const TextStyle(
                               color: Theming.primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,

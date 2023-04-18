@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../utils/theming.dart';
+import '../utils/locale_support.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -25,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theming.bgColor,
@@ -37,16 +40,16 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Zaloguj się",
-              style: TextStyle(
+            Text(
+              transl.logIn,
+              style: const TextStyle(
                 color: Theming.whiteTone,
                 fontWeight: FontWeight.bold,
                 fontSize: 38,
               ),
             ),
             Text(
-              "Wypełnij poniższe pola, aby kontynuować.",
+              transl.fillFieldsBelow,
               style: TextStyle(
                 color: Theming.whiteTone.withOpacity(0.5),
                 fontWeight: FontWeight.bold,
@@ -55,16 +58,16 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 40),
             _editField(
               0,
-              caption: "E-mail",
+              caption: transl.email,
               icon: Icons.email_outlined,
-              placeholder: "Podaj e-mail",
+              placeholder: transl.emailField,
               ctrl: emailCtrl,
             ),
             _editField(
               1,
-              caption: "Hasło",
+              caption: transl.password,
               icon: Icons.lock_outline,
-              placeholder: "Podaj hasło",
+              placeholder: transl.passwordField,
               ctrl: passwordCtrl,
               isPassword: true,
             ),
@@ -80,9 +83,9 @@ class _LoginPageState extends State<LoginPage> {
                     color: Theming.primaryColor,
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: const Text(
-                    "Zaloguj się",
-                    style: TextStyle(
+                  child: Text(
+                    transl.logIn,
+                    style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -111,9 +114,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Column(
                             children: [
-                              const Text(
-                                "Resetowanie hasła",
-                                style: TextStyle(
+                              Text(
+                                transl.passwordReset,
+                                style: const TextStyle(
                                   color: Theming.whiteTone,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -122,9 +125,9 @@ class _LoginPageState extends State<LoginPage> {
                               const SizedBox(height: 30),
                               _editField(
                                 2,
-                                caption: "E-mail",
+                                caption: transl.email,
                                 icon: Icons.email_outlined,
-                                placeholder: "Podaj e-mail",
+                                placeholder: transl.emailField,
                                 ctrl: passwordResetEmailCtrl,
                               ),
                               GestureDetector(
@@ -138,9 +141,9 @@ class _LoginPageState extends State<LoginPage> {
                                     color: Theming.primaryColor,
                                     borderRadius: BorderRadius.circular(100),
                                   ),
-                                  child: const Text(
-                                    "Zresetuj hasło",
-                                    style: TextStyle(
+                                  child: Text(
+                                    transl.resetPassword,
+                                    style: const TextStyle(
                                       color: Theming.whiteTone,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
@@ -155,9 +158,9 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   );
                 },
-                child: const Text(
-                  "Nie pamietasz hasła?",
-                  style: TextStyle(
+                child: Text(
+                  transl.forgotPassword,
+                  style: const TextStyle(
                     color: Theming.primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
@@ -174,15 +177,15 @@ class _LoginPageState extends State<LoginPage> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "Nie masz jeszcze konta? ",
+                          text: transl.dontHaveAnAccount,
                           style: TextStyle(
                             color: Theming.whiteTone.withOpacity(0.5),
                             fontSize: 16,
                           ),
                         ),
-                        const TextSpan(
-                          text: "Zarejestruj się",
-                          style: TextStyle(
+                        TextSpan(
+                          text: " ${transl.signUp}",
+                          style: const TextStyle(
                             color: Theming.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,

@@ -52,6 +52,8 @@
     "oldPasswordField": "Podaj stare hasło",
     "newPassword": "Nowe hasło",
     "newPasswordField": "Podaj nowe hasło",
+    "password": "Hasło",
+    "passwordField": "Podaj hasło",
     "save": "Zapisz",
 
     "chooseATheme": "Wybierz motyw",
@@ -79,14 +81,15 @@
     
     "logIn": "Zaloguj się",
     "fillFieldsBelow": "Wypełnij poniższe pola, aby kontynuować.",
-    "dontRememberPassword": "Nie pamietasz hasła?",
+    "forgotPassword": "Nie pamietasz hasła?",
     "passwordReset": "Resetowanie hasła",
     "resetPassword": "Zresetuj hasło",
     "dontHaveAnAccount": "Nie masz konta?",
-    "signIn": "Zarejestruj się",
+    "signUp": "Zarejestruj się",
     "confirmPassword": "Potwierdź hasło",
     "haveAnAccount": "Masz już konto?",
     "signIn": "Zaloguj się",
+    "dateOfBirth": "Data urodzenia",
 
     "createAParty": "Stwórz imprezę",
     "title": "Tytuł",
