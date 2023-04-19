@@ -1,6 +1,3 @@
-import 'package:http/http.dart' as http;
-import '../utils/consts.dart' show mainUrl;
-
 import './friend.dart';
 
 class CreateUser {
@@ -25,23 +22,4 @@ class CreateUser {
     this.friends,
     required this.password,
   });
-
-  Future<http.Response> createUser() async {
-    Uri url = Uri.parse("$mainUrl/users/");
-
-    return await http.post(
-      url,
-      body: {
-        "username": username,
-        "email": email,
-        "first_name": firstName,
-        "last_name": lastName,
-        "date_of_birth": dateOfBirth.toString(),
-        "password": password,
-      },
-      headers: {
-        "Content-Type": "application/json",
-      },
-    );
-  }
 }

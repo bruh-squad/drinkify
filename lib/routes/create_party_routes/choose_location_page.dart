@@ -133,13 +133,16 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
 
                 setState(() {
                   selPoint = point;
-                  countryAndCity = "${loc[0].country}${addComma ? "," : ""} $locArea";
+                  countryAndCity =
+                      "${loc[0].country}${addComma ? "," : ""} $locArea";
                   street = loc[0].street;
                 });
               },
               center: centerOfEurope,
               zoom: 3,
-              interactiveFlags: InteractiveFlag.all - InteractiveFlag.doubleTapZoom - InteractiveFlag.rotate,
+              interactiveFlags: InteractiveFlag.all -
+                  InteractiveFlag.doubleTapZoom -
+                  InteractiveFlag.rotate,
             ),
             children: [
               TileLayer(
@@ -174,7 +177,8 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                     top: MediaQuery.of(context).padding.top - 15,
                   ),
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width - 100),
+                    width: MediaQuery.of(context).size.width -
+                        (MediaQuery.of(context).size.width - 100),
                     child: _returnButton(
                       icon: Icons.arrow_back_rounded,
                       onClick: () => context.pop(),
@@ -209,7 +213,10 @@ class _ChooseLocationPageState extends State<ChooseLocationPage> {
                       style: TextStyle(
                         color: Theming.whiteTone,
                         fontWeight: FontWeight.bold,
-                        fontSize: countryAndCity != null && countryAndCity!.length > 25 ? 16 : 20,
+                        fontSize: countryAndCity != null &&
+                                countryAndCity!.length > 25
+                            ? 16
+                            : 20,
                       ),
                     ),
                   ),
