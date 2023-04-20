@@ -5,6 +5,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import '/utils/ext.dart' show Capitalize;
 import '/utils/theming.dart';
 
+import './date_picker.dart';
+
 class DateRow extends StatefulWidget {
   final EdgeInsets textPadding;
   const DateRow({required this.textPadding, super.key});
@@ -14,33 +16,47 @@ class DateRow extends StatefulWidget {
 }
 
 class _DateRowState extends State<DateRow> {
-  late int selectedIndex;
-  late int numOfDaysInMonth;
+  late int selectedDayIndex;
+  late int selectedMonthIndex;
+  late int selectedYearIndex;
+  late List<int> date;
 
   @override
   void initState() {
     super.initState();
-    selectedIndex = DateTime.now().day;
-    numOfDaysInMonth = DateTime(
+    selectedDayIndex = DateTime.now().day;
+    selectedMonthIndex = DateTime.now().month - 1;
+    selectedYearIndex = DateTime.now().year;
+    date = [
       DateTime.now().year,
-      DateTime.now().month + 1,
-      0,
-    ).day;
+      DateTime.now().month,
+    ];
+
     initializeDateFormatting();
   }
 
-  Map<String, Object> get currentMonthAndYear {
-    return {
-      "month": DateFormat("MMMM", "pl")
-          .format(DateTime.now())
-          .toString()
-          .capitalize(),
-      "year": DateTime.now().year,
-    };
+  int numOfDaysInMonth(int year, int month) {
+    return DateTime(
+      year,
+      month + 1,
+      0,
+    ).day;
+  }
+
+  //type must be MONTH else it will be considered as YEAR
+  String toMonthName(DateTime date) {
+    return DateFormat("MMMM", "pl").format(date).toString().capitalize();
   }
 
   @override
   Widget build(BuildContext context) {
+    String month = toMonthName(DateTime(date[0], date[1]));
+
+    int dateBoxStart =
+        date[1] != DateTime.now().month || date[0] != DateTime.now().year
+            ? 1
+            : DateTime.now().day;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,7 +67,7 @@ class _DateRowState extends State<DateRow> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${currentMonthAndYear["month"]} ${currentMonthAndYear["year"]}",
+                "$month ${date[0]}",
                 style: Styles.categoryText,
               ),
               TextButton(
@@ -64,11 +80,27 @@ class _DateRowState extends State<DateRow> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
-                    builder: (context) {
-                      return const SizedBox(
-                        height: 340,
-                      );
-                    },
+                    builder: (_) => DatePicker(
+                      monthIndex: selectedMonthIndex,
+                      yearIndex: selectedYearIndex,
+                      onSelect: (year, month) {
+                        setState(() {
+                          date[0] = year + DateTime.now().year;
+                          date[1] = month;
+                        });
+
+                        if (date[0] == DateTime.now().year &&
+                            date[1] == DateTime.now().month) {
+                          setState(() {
+                            selectedDayIndex = DateTime.now().day;
+                          });
+                        } else {
+                          setState(() {
+                            selectedDayIndex = 1;
+                          });
+                        }
+                      },
+                    ),
                   );
                 },
                 child: Text(
@@ -87,12 +119,14 @@ class _DateRowState extends State<DateRow> {
               child: Row(
                 children: [
                   const SizedBox(width: 30),
-                  for (int i = DateTime.now().day; i <= numOfDaysInMonth; i++)
+                  for (int i = dateBoxStart;
+                      i <= numOfDaysInMonth(date[0], date[1]);
+                      i++)
                     _dateBox(
                       i,
-                      date: DateTime(
-                        currentMonthAndYear["year"] as int,
-                        DateTime.now().month,
+                      boxDate: DateTime(
+                        date[0],
+                        date[1],
                         i,
                       ),
                     ),
@@ -120,8 +154,8 @@ class _DateRowState extends State<DateRow> {
               blurRadius: 15,
               spreadRadius: 20,
               offset: alignment == Alignment.centerRight
-                  ? const Offset(45, 0)
-                  : const Offset(-45, 0),
+                  ? const Offset(50, 0)
+                  : const Offset(-50, 0),
             ),
           ],
         ),
@@ -131,14 +165,14 @@ class _DateRowState extends State<DateRow> {
 
   Widget _dateBox(
     int index, {
-    required DateTime date,
+    required DateTime boxDate,
   }) {
-    bool isSelected = selectedIndex == index;
-    String dayOfWeek = DateFormat("EEE", "pl").format(date);
+    bool isSelected = selectedDayIndex == index;
+    String dayOfWeek = DateFormat("EEE", "pl").format(boxDate);
 
     return GestureDetector(
       onTap: () {
-        setState(() => selectedIndex = index);
+        setState(() => selectedDayIndex = index);
       },
       child: AnimatedContainer(
         height: 90,
@@ -164,7 +198,7 @@ class _DateRowState extends State<DateRow> {
               ),
               const SizedBox(height: 4),
               Text(
-                "${date.day}",
+                "${boxDate.day}",
                 style: Styles.dateBoxText,
               ),
             ],

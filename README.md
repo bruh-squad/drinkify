@@ -1,6 +1,6 @@
 # Drinkify
 
-A mobile app that will help you find a party in your area.
+Drinkify is a mobile app that helps you plan parties and discover new ones in your area. 
 
 ## Before you install
 This repository does NOT contain **.dart_tool**.

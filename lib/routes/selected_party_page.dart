@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../widgets/selectedpartypage/party_header.dart';
 import '../widgets/selectedpartypage/party_desc.dart';
+import '../widgets/custom_floating_button.dart';
 import '../utils/theming.dart';
 import '../models/party_model.dart';
 import '../api/directions.dart';
@@ -26,8 +27,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
   void getDirectionsData() async {
     try {
       data = await getData(
-        widget.party.lnglat.longitude,
-        widget.party.lnglat.latitude,
+        widget.party.latlng.longitude,
+        widget.party.latlng.latitude,
       );
 
       LineString ls = LineString(
@@ -48,46 +49,26 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double mapFullSize = MediaQuery.of(context).size.height - 120;
+    const double mapShrinkedSize = 140;
+
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(right: 14, bottom: 25),
-        child: GestureDetector(
-          onTap: () {
-            if (!showMore) return;
-            //Some code
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.linearToEaseOut,
-            decoration: BoxDecoration(
-              color: showMore ? Theming.primaryColor : Colors.transparent,
-              borderRadius: BorderRadius.circular(100),
-              boxShadow: [
-                BoxShadow(
-                  color: showMore
-                      ? Colors.black.withOpacity(0.6)
-                      : Colors.transparent,
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 20,
-            ),
-            child: Text(
-              "Dołącz",
-              style: TextStyle(
-                color: showMore ? Theming.whiteTone : Colors.transparent,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
+      floatingActionButton: CustomFloatingButton(
+        caption: Text(
+          "Dołącz",
+          style: TextStyle(
+            color: showMore ? Theming.whiteTone : Colors.transparent,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
+        backgroundColor: showMore ? Theming.primaryColor : Colors.transparent,
+        shadowColor:
+            showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
+        onTap: () {
+          if (!showMore) return;
+        },
       ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -100,8 +81,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 AnimatedContainer(
                   width: double.infinity,
                   height: showMore
-                      ? 140 // Map shrinked size
-                      : MediaQuery.of(context).size.height - 150,
+                      ? mapShrinkedSize
+                      : mapFullSize,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.linearToEaseOut,
                   decoration: BoxDecoration(
@@ -114,7 +95,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.5),
                         blurRadius: 30,
-                        offset: const Offset(0, 30),
+                        offset: const Offset(0, 20),
                       ),
                     ],
                   ),
@@ -126,25 +107,26 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     child: FlutterMap(
                       options: MapOptions(
                         center: LatLng(
-                          widget.party.lnglat.latitude,
-                          widget.party.lnglat.longitude,
+                          widget.party.latlng.latitude,
+                          widget.party.latlng.longitude,
                         ),
                         zoom: 15,
-                        interactiveFlags:
-                            InteractiveFlag.all - InteractiveFlag.doubleTapZoom,
+                        interactiveFlags: InteractiveFlag.all -
+                            InteractiveFlag.doubleTapZoom -
+                            InteractiveFlag.rotate,
                       ),
                       children: [
                         TileLayer(
                           urlTemplate:
                               "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                          userAgentPackageName: "app.example.drinkify",
+                          userAgentPackageName: "app.drinkify",
                         ),
                         MarkerLayer(
                           markers: [
                             Marker(
                               point: LatLng(
-                                widget.party.lnglat.latitude,
-                                widget.party.lnglat.longitude,
+                                widget.party.latlng.latitude,
+                                widget.party.latlng.longitude,
                               ),
                               builder: (ctx) {
                                 return const Icon(
@@ -187,8 +169,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       curve: Curves.linearToEaseOut,
                       margin: EdgeInsets.only(
                         top: showMore
-                            ? 110 //Map page shrinked size - 30
-                            : MediaQuery.of(context).size.height - 180,
+                            ? mapShrinkedSize - 30
+                            : mapFullSize - 30,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
@@ -214,7 +196,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   icon: Icons.arrow_back_rounded,
                   onClick: () {
                     if (showMore) return;
-                    context.go("/");
+                    context.pop();
                   },
                 ),
 
@@ -225,7 +207,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   icon: Icons.roundabout_right_outlined,
                   onClick: () {
                     if (showMore) return;
-                    getDirectionsData();
+                    // getDirectionsData();
                   },
                 ),
               ],
@@ -239,12 +221,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
               child: Stack(
                 children: [
                   PartyDesc(description: widget.party.description),
-                  PartyHeader(
-                    partyName: widget.party.name,
-                    localisation widget.party.localisation,
-                    participantsCount: widget.party.participants.length,
-                    startTime: widget.party.startTime,
-                  ),
+                  PartyHeader(party: widget.party),
                 ],
               ),
             ),
@@ -279,7 +256,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 BoxShadow(
                   color: showMore
                       ? Colors.transparent
-                      : Colors.black.withOpacity(0.6),
+                      : Colors.black.withOpacity(0.5),
                   blurRadius: 10,
                   spreadRadius: 1,
                   offset: const Offset(0, 5),

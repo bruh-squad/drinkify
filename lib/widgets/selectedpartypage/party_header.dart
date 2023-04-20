@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '/models/party_model.dart';
 import '/utils/theming.dart';
 import '/utils/ext.dart' show openMap;
 
 class PartyHeader extends StatelessWidget {
-  final String partyName;
-  final String localisation;
-  final DateTime startTime;
-  final int participantsCount;
-  const PartyHeader({
-    super.key,
-    required this.partyName,
-    required this.localisation,
-    required this.startTime,
-    required this.participantsCount,
-  });
+  final Party party;
+  const PartyHeader({super.key, required this.party});
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +29,18 @@ class PartyHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            partyName,
+            party.name,
             style: Styles.partyHeaderTitle,
             maxLines: 1,
           ),
           GestureDetector(
             onTap: () {
-              openMap(lat: 51.40253, lng: 21.14714);
+              openMap(lat: party.latlng.latitude, lng: party.latlng.longitude);
             },
             child: Row(
               children: [
                 Text(
-                  localisation,
+                  party.localisation,
                   style: Styles.partyHeaderLocation,
                 ),
                 const SizedBox(width: 5),
@@ -74,7 +66,7 @@ class PartyHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.yMd().format(startTime),
+                    DateFormat.yMd().format(party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],
@@ -83,10 +75,13 @@ class PartyHeader extends StatelessWidget {
               //Time
               Row(
                 children: [
-                  const Icon(Icons.timelapse, color: Theming.primaryColor),
+                  const Icon(
+                    Icons.timelapse,
+                    color: Theming.primaryColor,
+                  ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.Hm().format(startTime),
+                    DateFormat.Hm().format(party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],
@@ -95,10 +90,13 @@ class PartyHeader extends StatelessWidget {
               //Number of people participating
               Row(
                 children: [
-                  const Icon(Icons.group_outlined, color: Theming.primaryColor),
+                  const Icon(
+                    Icons.group_outlined,
+                    color: Theming.primaryColor,
+                  ),
                   const SizedBox(width: 5),
                   Text(
-                    participantsCount.toString(),
+                    party.participants.length.toString(),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],

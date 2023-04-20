@@ -1,3 +1,4 @@
+import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -28,56 +29,62 @@ class _NavBarState extends State<NavBar> {
       70,
     );
 
-    return Container( //TODO: Make the bg glass morphism
-      height: navBarSize.height,
-      width: navBarSize.width,
-      margin: EdgeInsets.only(bottom: widget.bottomMargin),
-      padding: const EdgeInsets.all(7),
-      decoration: BoxDecoration(
-        color: Theming.whiteTone.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: Stack(
-        children: [
-          AnimatedContainer(
-            width: navBarSize.width / 3 - 14,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.linearToEaseOut,
-            margin: EdgeInsets.only(
-              left: selectedIndex * (navBarSize.width / 3),
-            ),
-            decoration: BoxDecoration(
-              color: Theming.primaryColor,
-              borderRadius: BorderRadius.circular(50),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        GlassMorphism(
+          blur: 30,
+          opacity: 0.1,
+          borderRadius: BorderRadius.circular(100),
+          child: Container(
+            height: navBarSize.height,
+            width: navBarSize.width,
+            padding: const EdgeInsets.all(7),
+            child: Stack(
+              children: [
+                AnimatedContainer(
+                  width: navBarSize.width / 3 - 14,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.linearToEaseOut,
+                  margin: EdgeInsets.only(
+                    left: selectedIndex * (navBarSize.width / 3),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theming.primaryColor,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _navItem(
+                      0,
+                      context,
+                      caption: "Home",
+                      route: "/",
+                    ),
+                    const SizedBox(width: 14),
+                    _navItem(
+                      1,
+                      context,
+                      caption: "Parties",
+                      route: "/parties",
+                    ),
+                    const SizedBox(width: 14),
+                    _navItem(
+                      2,
+                      context,
+                      caption: "Profile",
+                      route: "/profile",
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _navItem(
-                0,
-                context,
-                caption: "Home",
-                route: "/",
-              ),
-              const SizedBox(width: 14),
-              _navItem(
-                1,
-                context,
-                caption: "Parties",
-                route: "/parties",
-              ),
-              const SizedBox(width: 14),
-              _navItem(
-                2,
-                context,
-                caption: "Profile",
-                route: "/profile",
-              ),
-            ],
-          ),
-        ],
-      ),
+        ),
+        SizedBox(height: widget.bottomMargin),
+      ],
     );
   }
 

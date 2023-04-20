@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class Theming {
   Theming._();
 
-  static const Color primaryColor = Color(0xFF0EB1D2);
-  static const Color bgColorLight = Color(0xFF002859);
+  static const Color primaryColor = Color(0xFFFF0F5C);
+  static const Color bgColorLight = Color(0xFF004497);
   static const Color bgColor = Color(0xFF011936);
   static const Color whiteTone = Color(0xFFF7F4F3);
 }
@@ -60,7 +60,7 @@ class Styles {
 
   static const dateTextUnselected = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 20,
+    fontSize: 18,
     color: Theming.whiteTone,
   );
 
@@ -77,6 +77,42 @@ class Styles {
 
   static const partyHeaderInfo = TextStyle(
     color: Theming.whiteTone,
+    fontWeight: FontWeight.bold,
+  );
+
+  static final loginFormHintText = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Theming.whiteTone.withOpacity(0.7),
+    fontSize: 16,
+  );
+
+  static const buttonText = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Theming.bgColor,
+    fontSize: 18,
+  );
+
+  static const buttonTextLight = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Theming.whiteTone,
+    fontSize: 18,
+  );
+
+  static const appBarTitle = TextStyle(
+    color: Theming.whiteTone,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
+
+  static final userInfoType = TextStyle(
+    color: Theming.whiteTone.withOpacity(0.5),
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const userInfoStatistic = TextStyle(
+    color: Theming.whiteTone,
+    fontSize: 18,
     fontWeight: FontWeight.bold,
   );
 }
