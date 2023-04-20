@@ -1,12 +1,16 @@
-import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../utils/locale_support.dart';
+import '../widgets/glass_morphism.dart';
 import '../utils/theming.dart';
 
 class NavBar extends StatefulWidget {
   final double bottomMargin;
-  const NavBar({required this.bottomMargin, super.key});
+  const NavBar({
+    required this.bottomMargin,
+    super.key,
+  });
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -19,11 +23,13 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     super.initState();
-    selectedIndex = 0;
+    selectedIndex = 1;
   }
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     navBarSize = Size(
       MediaQuery.of(context).size.width - 30 * 2,
       70,
@@ -60,21 +66,21 @@ class _NavBarState extends State<NavBar> {
                     _navItem(
                       0,
                       context,
-                      caption: "Home",
-                      route: "/",
+                      caption: transl.navbarParties,
+                      route: "/parties",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
                       1,
                       context,
-                      caption: "Parties",
-                      route: "/parties",
+                      caption: transl.navbarHome,
+                      route: "/",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
                       2,
                       context,
-                      caption: "Profile",
+                      caption: transl.navbarProfile,
                       route: "/profile",
                     ),
                   ],
@@ -94,6 +100,8 @@ class _NavBarState extends State<NavBar> {
     required String caption,
     required String route,
   }) {
+    bool isSelected = selectedIndex == index;
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -106,7 +114,7 @@ class _NavBarState extends State<NavBar> {
         alignment: Alignment.center,
         child: AnimatedOpacity(
           curve: Curves.linearToEaseOut,
-          opacity: selectedIndex == index ? 1.0 : 0.7,
+          opacity: isSelected ? 1.0 : 0.7,
           duration: const Duration(milliseconds: 200),
           child: Text(
             caption,

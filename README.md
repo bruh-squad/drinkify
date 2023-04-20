@@ -1,31 +1,35 @@
-# Drinkify
 
-Drinkify is a mobile app that helps you plan parties and discover new ones in your area. 
-
-## Before you install
-This repository does NOT contain **.dart_tool**.
-If you don't have this folder, make sure to run the command below while being in the app's directory.
-```
-flutter create .
-```
-Now delete **test** folder since this repository does not contain one.
-Leaving this folder undeleted will cause errors.
-
-To make maps work properly you need to set up a **.env** file.
-Example:
-```
-OPENROUTESERVICE_APIKEY = "Your API key to openrouteservice.org"
-ONESIGNAL_APIKEY = "Your API key to onesignal.com"
-```
-
-Without those API keys app won't be able to:
-> draw a path to selected location\
-> send push notifications.
+# Drinkify - Party Planning App
+Drinkify is a Flutter-based party planning app that communicates with a Django API to help you organize and plan the perfect party with your friends. With Drinkify, you can search for and find the best parties in your area, create a guest list and plan your party with ease.
 
 ## Installation
-Make sure you have have enabled USB debugging in developer options and your device is being detected.
-If so run the commands below.
+
+To get started with Drinkify, clone this repository to your local machine and open it in your preferred IDE or code editor. Then, run the following command in your terminal to install all required dependencies:
 ```
-flutter build apk --release
-flutter install
+flutter pub get
 ```
+
+## Example .env
+```
+URL = "http://127.0.0.1:8000"
+```
+
+## Running the App
+
+Once all dependencies have been installed, run the following command to start the app:
+
+```
+flutter run
+```
+
+## Using an API
+
+Drinkify uses [liquor-lovers](https://github.com/Kawaii-Addicts/liquor-lovers). Make sure to install it and run in order to use all the features provided by the app.
+
+## Contributing
+
+Contributions to Drinkify are always welcome and appreciated! If you would like to contribute, please fork this repository and submit a pull request with your changes. 
+
+## License
+
+Drinkify is distributed under the GNU General Public License v3.0. See LICENSE for more information.

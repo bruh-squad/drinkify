@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-// ignore: depend_on_referenced_packages
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location/location.dart';
 
 import '../widgets/selectedpartypage/party_header.dart';
 import '../widgets/selectedpartypage/party_desc.dart';
-import '../widgets/custom_floating_button.dart';
 import '../utils/theming.dart';
-import '../models/party_model.dart';
-import '../api/directions.dart';
+import '../models/party.dart';
+import '/utils/locale_support.dart';
 
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
@@ -20,55 +19,94 @@ class SelectedPartyPage extends StatefulWidget {
 }
 
 class _SelectedPartyPage extends State<SelectedPartyPage> {
-  bool showMore = false;
-  late dynamic data;
-  final List<LatLng> polyPoints = [];
+  late bool showMore;
+  late LatLng userLocation;
+  bool showUserLocation = false;
 
-  void getDirectionsData() async {
-    try {
-      data = await getData(
-        widget.party.latlng.longitude,
-        widget.party.latlng.latitude,
-      );
+  Future<void> _getUserLocation() async {
+    late bool serviceEnabled;
+    late PermissionStatus permissionGranted;
+    Location location = Location();
 
-      LineString ls = LineString(
-        data['features'][0]['geometry']['coordinates'],
-      );
-      for (int i = 0; i < ls.lineString.length; i++) {
-        polyPoints.add(
-          LatLng(ls.lineString[i][1], ls.lineString[i][0]),
-        );
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
       }
-      if (polyPoints.length == ls.lineString.length) {
-        //print(ls);
-      }
-    } catch (e) {
-      //print(e);
     }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    final LocationData posData = await location.getLocation();
+    setState(() {
+      userLocation = LatLng(
+        posData.latitude!,
+        posData.longitude!,
+      );
+      showUserLocation = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    showMore = false;
+    userLocation = LatLng(52.237049, 18.017532);
+    _getUserLocation();
   }
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     final double mapFullSize = MediaQuery.of(context).size.height - 120;
     const double mapShrinkedSize = 140;
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      floatingActionButton: CustomFloatingButton(
-        caption: Text(
-          "Dołącz",
-          style: TextStyle(
-            color: showMore ? Theming.whiteTone : Colors.transparent,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 14, bottom: 25),
+        child: GestureDetector(
+          onTap: () {
+            if (!showMore) return;
+            //Some code
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.linearToEaseOut,
+            decoration: BoxDecoration(
+              color: showMore ? Theming.primaryColor : Colors.transparent,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [
+                BoxShadow(
+                  color: showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
+            child: Text(
+              transl.join,
+              style: TextStyle(
+                color: showMore ? Theming.whiteTone : Colors.transparent,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
           ),
         ),
-        backgroundColor: showMore ? Theming.primaryColor : Colors.transparent,
-        shadowColor:
-            showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
-        onTap: () {
-          if (!showMore) return;
-        },
       ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -80,9 +118,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 //Map
                 AnimatedContainer(
                   width: double.infinity,
-                  height: showMore
-                      ? mapShrinkedSize
-                      : mapFullSize,
+                  height: showMore ? mapShrinkedSize : mapFullSize,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.linearToEaseOut,
                   decoration: BoxDecoration(
@@ -107,43 +143,44 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     child: FlutterMap(
                       options: MapOptions(
                         center: LatLng(
-                          widget.party.latlng.latitude,
-                          widget.party.latlng.longitude,
+                          widget.party.location.latitude,
+                          widget.party.location.longitude,
                         ),
                         zoom: 15,
-                        interactiveFlags: InteractiveFlag.all -
-                            InteractiveFlag.doubleTapZoom -
-                            InteractiveFlag.rotate,
+                        interactiveFlags: InteractiveFlag.all - InteractiveFlag.doubleTapZoom - InteractiveFlag.rotate,
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate:
-                              "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                           userAgentPackageName: "app.drinkify",
                         ),
                         MarkerLayer(
                           markers: [
                             Marker(
-                              point: LatLng(
-                                widget.party.latlng.latitude,
-                                widget.party.latlng.longitude,
-                              ),
-                              builder: (ctx) {
-                                return const Icon(
-                                  Icons.location_pin,
-                                  color: Color.fromARGB(255, 233, 30, 98),
-                                  size: 36,
+                              point: userLocation,
+                              builder: (_) {
+                                return Visibility(
+                                  visible: showUserLocation,
+                                  child: const Icon(
+                                    Icons.person_pin_circle,
+                                    color: Theming.primaryColor,
+                                    size: 36,
+                                  ),
                                 );
                               },
                             ),
-                          ],
-                        ),
-                        PolylineLayer(
-                          polylines: [
-                            Polyline(
-                              points: polyPoints,
-                              strokeWidth: 4.0,
-                              color: Theming.primaryColor,
+                            Marker(
+                              point: LatLng(
+                                widget.party.location.latitude,
+                                widget.party.location.longitude,
+                              ),
+                              builder: (_) {
+                                return const Icon(
+                                  Icons.location_pin,
+                                  color: Theming.primaryColor,
+                                  size: 36,
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -157,9 +194,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   alignment: Alignment.topCenter,
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        showMore = !showMore;
-                      });
+                      setState(() => showMore = !showMore);
                     },
                     child: AnimatedContainer(
                       height: 60,
@@ -168,9 +203,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linearToEaseOut,
                       margin: EdgeInsets.only(
-                        top: showMore
-                            ? mapShrinkedSize - 30
-                            : mapFullSize - 30,
+                        top: showMore ? mapShrinkedSize - 30 : mapFullSize - 30,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
@@ -178,7 +211,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                         borderRadius: BorderRadius.circular(60),
                       ),
                       child: Text(
-                        showMore ? "Pokaż mniej" : "Zobacz więcej",
+                        showMore ? transl.showLess : transl.showMore,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.w700,
@@ -199,21 +232,14 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     context.pop();
                   },
                 ),
-
-                //Get Path to location button
-                _mapButton(
-                  alignment: Alignment.topRight,
-                  margin: const EdgeInsets.only(top: 30, right: 30),
-                  icon: Icons.roundabout_right_outlined,
-                  onClick: () {
-                    if (showMore) return;
-                    // getDirectionsData();
-                  },
-                ),
               ],
             ),
 
-            const SizedBox(height: 38),
+            AnimatedContainer(
+              height: showMore ? 38 : 83,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.linearToEaseOut,
+            ),
 
             //Party info
             Padding(
@@ -254,9 +280,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
               color: showMore ? Colors.transparent : Theming.primaryColor,
               boxShadow: [
                 BoxShadow(
-                  color: showMore
-                      ? Colors.transparent
-                      : Colors.black.withOpacity(0.5),
+                  color: showMore ? Colors.transparent : Colors.black.withOpacity(0.5),
                   blurRadius: 10,
                   spreadRadius: 1,
                   offset: const Offset(0, 5),
@@ -272,9 +296,4 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
       ),
     );
   }
-}
-
-class LineString {
-  List<dynamic> lineString;
-  LineString(this.lineString);
 }

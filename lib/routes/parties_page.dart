@@ -5,7 +5,8 @@ import '../widgets/partiespage/search_and_map.dart';
 import '../widgets/partiespage/party_holder.dart';
 
 import '../utils/theming.dart';
-import '/models/party_model.dart';
+import '../models/party.dart';
+import '../models/friend.dart';
 
 class PartiesPage extends StatelessWidget {
   const PartiesPage({super.key});
@@ -26,25 +27,26 @@ class PartiesPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
-                    const SizedBox(height: 135),
+                    const SizedBox(height: 130),
                     for (int i = 0; i < 5; i++)
                       PartyHolder(
                         party: Party(
-                          owner: "",
+                          owner: null,
+                          ownerPublicId: "",
                           name: "Example party",
                           privacyStatus: PrivacyStatus.public,
                           description: "Example description of a party",
                           participants: [
-                            "oke",
+                            Friend(),
                           ],
-                          localisation: "test street",
-                          latlng: LatLng(0, 0),
-                          date: DateTime.now(),
+                          location: LatLng(52.237049, 21.017532),
                           startTime: DateTime.now(),
-                          endTime: DateTime.now(),
+                          stopTime: DateTime.now(),
                         ),
                       ),
-                    const SizedBox(height: 200),
+                    SizedBox(
+                      height: MediaQuery.of(context).viewPadding.bottom + 120,
+                    ),
                   ],
                 ),
               ),

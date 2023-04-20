@@ -9,6 +9,8 @@ class Theming {
   static const Color whiteTone = Color(0xFFF7F4F3);
 }
 
+class DarkTheme {}
+
 class Styles {
   Styles._();
 
@@ -37,12 +39,14 @@ class Styles {
   );
 
   static final emptyListText = TextStyle(
-      color: Theming.whiteTone.withOpacity(0.7),
-      fontSize: 24,
-      fontWeight: FontWeight.bold);
-
-  static const hintTextSearchBar = TextStyle(
+    color: Theming.whiteTone.withOpacity(0.7),
+    fontSize: 24,
     fontWeight: FontWeight.bold,
+  );
+
+  static final hintTextSearchBar = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Theming.bgColor.withOpacity(0.6),
     fontSize: 16,
   );
 

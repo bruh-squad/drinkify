@@ -1,44 +1,39 @@
 import 'package:flutter/material.dart';
 
 class CustomFloatingButton extends StatelessWidget {
-  final Text caption;
+  final Widget child;
   final Color backgroundColor;
   final VoidCallback onTap;
-  final Color shadowColor;
   const CustomFloatingButton({
-    required this.caption,
+    required this.child,
     required this.backgroundColor,
     required this.onTap,
-    required this.shadowColor,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 14, bottom: 25),
+    return Align(
+      alignment: Alignment.bottomCenter,
       child: GestureDetector(
         onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.linearToEaseOut,
+        child: Container(
+          height: 55 + MediaQuery.of(context).viewPadding.bottom,
+          width: double.infinity,
+          alignment: Alignment.topCenter,
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(100),
-            boxShadow: [
-              BoxShadow(
-                color: shadowColor,
-                blurRadius: 10,
-                spreadRadius: 1,
-                offset: const Offset(0, 5),
-              ),
-            ],
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(25),
+            ),
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 20,
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 20,
+            right: 20,
           ),
-          child: caption,
+          child: child,
         ),
       ),
     );

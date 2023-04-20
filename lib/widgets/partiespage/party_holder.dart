@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 
-import '/models/party_model.dart';
+import '/models/party.dart';
 
+import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 class PartyHolder extends StatelessWidget {
   final Party party;
   const PartyHolder({required this.party, super.key});
 
-  final double _imageAspectRatio = 16 / 6;
-
   @override
   Widget build(BuildContext context) {
+    const double imageAspectRatio = 16 / 6;
+
+    var transl = LocaleSupport.appTranslates(context);
+
     return GestureDetector(
       onTap: () => context.push(
         '/party',
@@ -57,7 +60,7 @@ class PartyHolder extends StatelessWidget {
             child: Column(
               children: [
                 AspectRatio(
-                  aspectRatio: _imageAspectRatio,
+                  aspectRatio: imageAspectRatio,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -87,7 +90,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.yMd().format(party.date),
+                            DateFormat.yMd(transl.localeName).format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],
@@ -102,7 +105,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.Hm().format(party.startTime),
+                            DateFormat.Hm(transl.localeName).format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],
@@ -117,7 +120,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            "${party.participants.length}",
+                            "${party.participants?.length}",
                             style: Styles.partyHeaderInfo,
                           ),
                         ],

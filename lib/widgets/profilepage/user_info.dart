@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
-import '/models/user_model.dart';
+import '/models/user.dart';
+import '/utils/locale_support.dart';
 
 class UserInfo extends StatefulWidget {
   final User user;
@@ -17,6 +18,7 @@ class _UserInfoState extends State<UserInfo> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Column(
       children: [
         //Parties attended / Profile pic with username / Friends
@@ -27,8 +29,14 @@ class _UserInfoState extends State<UserInfo> {
               width: 100,
               child: Column(
                 children: [
-                  const Text("10", style: Styles.userInfoStatistic),
-                  Text("Imprez", style: Styles.userInfoType),
+                  const Text(
+                    "10",
+                    style: Styles.userInfoStatistic,
+                  ),
+                  Text(
+                    transl.partiesProfile1,
+                    style: Styles.userInfoType,
+                  ),
                 ],
               ),
             ),
@@ -46,8 +54,7 @@ class _UserInfoState extends State<UserInfo> {
                 const SizedBox(height: 10),
                 //Username
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   decoration: BoxDecoration(
                     color: Theming.whiteTone.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(100),
@@ -65,8 +72,14 @@ class _UserInfoState extends State<UserInfo> {
               width: 100,
               child: Column(
                 children: [
-                  const Text("420", style: Styles.userInfoStatistic),
-                  Text("Znajomych", style: Styles.userInfoType),
+                  const Text(
+                    "420",
+                    style: Styles.userInfoStatistic,
+                  ),
+                  Text(
+                    transl.friendsProfile,
+                    style: Styles.userInfoType,
+                  ),
                 ],
               ),
             ),
@@ -106,8 +119,8 @@ class _UserInfoState extends State<UserInfo> {
                   color: Theming.primaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Text(
-                  "Dodaj znajomego",
+                child: Text(
+                  transl.addAFriend,
                   style: Styles.buttonTextLight,
                 ),
               ),
@@ -133,9 +146,10 @@ class _UserInfoState extends State<UserInfo> {
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).padding.bottom),
+                            bottom: MediaQuery.of(context).viewPadding.bottom,
+                          ),
                           child: Text(
-                            "Pusto tutaj :(",
+                            transl.emptyHere,
                             style: Styles.emptyListText,
                           ),
                         ),

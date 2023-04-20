@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/routes/create_party_page.dart';
 import '/utils/theming.dart';
+import '/utils/locale_support.dart';
 
 class SearchAndMap extends StatefulWidget {
   const SearchAndMap({super.key});
@@ -21,15 +23,16 @@ class _SearchAndMapState extends State<SearchAndMap> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Container(
-      height: 75 + MediaQuery.of(context).padding.top,
+      height: 110,
       width: double.infinity,
       decoration: const BoxDecoration(
         color: Theming.bgColor,
         boxShadow: [
           BoxShadow(
             color: Theming.bgColor,
-            offset: Offset(0, 0),
+            offset: Offset(0, 5),
             spreadRadius: 15,
             blurRadius: 15,
           ),
@@ -59,9 +62,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
                     ),
                   ),
                 ),
-      
+
                 const Spacer(),
-      
+
                 //Search bar
                 Container(
                   height: 55,
@@ -72,32 +75,37 @@ class _SearchAndMapState extends State<SearchAndMap> {
                     color: Theming.whiteTone,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const TextField(
+                  child: TextField(
                     cursorColor: Theming.primaryColor,
-                    style: TextStyle(fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theming.bgColor,
+                      fontSize: 16,
+                    ),
                     decoration: InputDecoration(
-                      hintText: "Gdzie szukasz imprezy?",
+                      hintText: transl.lookingForAParty,
                       hintStyle: Styles.hintTextSearchBar,
                       border: InputBorder.none,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.search,
                         color: Theming.primaryColor,
-                        size: 32,
+                        size: 30,
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-      
-            const SizedBox(height: 20),
-      
+
+            const SizedBox(height: 15),
+
             //Category roll
             Row(
               children: [
-                _categoryItem(0, caption: "Imprezy"),
-                _categoryItem(1, caption: "Znajomi"),
-                _categoryItem(2, caption: "W okolicy"),
+                _categoryItem(0, caption: transl.parties),
+                _categoryItem(1, caption: transl.friends),
+                _categoryItem(2, caption: transl.inYourArea),
               ],
             ),
           ],
@@ -117,16 +125,14 @@ class _SearchAndMapState extends State<SearchAndMap> {
         setState(() => selectedIndex = index);
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 80),
+        duration: const Duration(milliseconds: 125),
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 2,
         ),
         margin: const EdgeInsets.only(right: 15),
         decoration: BoxDecoration(
-          color: isSelected
-              ? Theming.primaryColor.withOpacity(0.5)
-              : Theming.whiteTone.withOpacity(0.1),
+          color: isSelected ? Theming.primaryColor.withOpacity(0.7) : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(

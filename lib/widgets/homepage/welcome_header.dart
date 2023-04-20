@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 class WelcomeHeader extends StatelessWidget {
@@ -8,6 +9,7 @@ class WelcomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Column(
       children: [
         Row(
@@ -17,18 +19,18 @@ class WelcomeHeader extends StatelessWidget {
               onTap: () => context.push("/notifications"),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Siema, Oliwier',
-                    style: TextStyle(
+                    '${transl.welcomeHeader}Oliwier',
+                    style: const TextStyle(
                       fontSize: 32,
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    "Masz 5 powiadomień!",
-                    style: TextStyle(
+                    "${transl.youHave} 5 ${transl.notifications}",
+                    style: const TextStyle(
                       color: Theming.primaryColor,
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
-import '/models/user_model.dart';
+import '/models/user.dart';
+import '/utils/locale_support.dart';
 
 class Parties extends StatelessWidget {
   final User user;
@@ -9,6 +10,7 @@ class Parties extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Align(
       alignment: Alignment.centerLeft,
       child: Column(
@@ -17,14 +19,14 @@ class Parties extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Imprezy",
+              Text(
+                transl.partiesProfile2,
                 style: Styles.categoryText,
               ),
               TextButton(
                 onPressed: () {},
                 child: Text(
-                  "Sortuj",
+                  transl.sort,
                   style: Styles.smallTextButton,
                 ),
               ),

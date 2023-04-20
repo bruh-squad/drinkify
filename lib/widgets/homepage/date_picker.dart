@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import '/utils/ext.dart' show Capitalize;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '/utils/ext.dart' show Capitalize;
+import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 class DatePicker extends StatefulWidget {
@@ -35,6 +37,8 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
+
     var monthCtrl = FixedExtentScrollController(
       initialItem: selectedMonthIndex,
     );
@@ -43,7 +47,7 @@ class _DatePickerState extends State<DatePicker> {
     );
 
     return SizedBox(
-      height: 200 + 8 * 2 + 20 + 40 + MediaQuery.of(context).padding.bottom,
+      height: 200 + 8 * 2 + 20 + 40 + MediaQuery.of(context).viewPadding.bottom,
       child: Column(
         children: [
           //Button
@@ -53,6 +57,7 @@ class _DatePickerState extends State<DatePicker> {
                 yearCtrl.selectedItem,
                 monthCtrl.selectedItem + 1,
               );
+              Navigator.pop(context);
             },
             child: Container(
               width: double.infinity,
@@ -69,9 +74,9 @@ class _DatePickerState extends State<DatePicker> {
                   bottomRight: Radius.circular(10),
                 ),
               ),
-              child: const Text(
-                "Wybierz",
-                style: TextStyle(
+              child: Text(
+                transl.select,
+                style: const TextStyle(
                   color: Theming.bgColor,
                   fontWeight: FontWeight.bold,
                 ),
@@ -118,15 +123,10 @@ class _DatePickerState extends State<DatePicker> {
                 physics: const FixedExtentScrollPhysics(),
                 perspective: 0.00000001,
                 onSelectedItemChanged: (value) {
-                  setState(() {
-                    selectedYearIndex = value + DateTime.now().year;
-                  });
+                  setState(() => selectedYearIndex = value + DateTime.now().year);
                 },
                 children: [
-                  for (int i = DateTime.now().year;
-                      i < DateTime.now().year + 15;
-                      i++)
-                    _datePickerItem(i, type: "YEAR"),
+                  for (int i = DateTime.now().year; i < DateTime.now().year + 15; i++) _datePickerItem(i, type: "YEAR"),
                 ],
               ),
             ),
@@ -146,7 +146,7 @@ class _DatePickerState extends State<DatePicker> {
         quarterTurns: 1,
         child: Text(
           type == "MONTH"
-              ? DateFormat("MMMM", "pl")
+              ? DateFormat("MMMM", AppLocalizations.of(context)!.localeName)
                   .format(
                     DateTime(
                       DateTime.now().year,

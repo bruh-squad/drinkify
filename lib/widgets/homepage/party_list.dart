@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 class PartyList extends StatelessWidget {
@@ -7,14 +8,16 @@ class PartyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transl = LocaleSupport.appTranslates(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 35),
-        const Text(
-          "Imprezy",
+        Text(
+          transl.parties,
           style: Styles.categoryText,
         ),
+
         //Display if there are no parties
         AspectRatio(
           aspectRatio: 1 / 1,
@@ -25,7 +28,7 @@ class PartyList extends StatelessWidget {
               ),
               child: SizedBox(
                 child: Text(
-                  "Brak imprez",
+                  transl.noParties,
                   style: Styles.emptyListText,
                 ),
               ),

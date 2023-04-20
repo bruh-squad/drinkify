@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import './utils/router.dart';
 import './utils/theming.dart';
@@ -12,18 +12,22 @@ void main() async {
     SystemUiOverlayStyle(
       statusBarColor: Theming.bgColor.withOpacity(0.002),
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Theming.bgColor,
+      systemNavigationBarColor: Theming.bgColor.withOpacity(0.002),
     ),
   );
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
-    overlays: [SystemUiOverlay.top],
+    overlays: [
+      SystemUiOverlay.top,
+      SystemUiOverlay.bottom,
+    ],
   );
-  await dotenv.load(fileName: ".env");
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
-  //Push notifications
-  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId("${dotenv.env["ONESIGNAL_APIKEY"]}");
+  await dotenv.load(fileName: ".env");
 }
 
 class App extends StatelessWidget {
@@ -38,8 +42,11 @@ class App extends StatelessWidget {
         theme: ThemeData(
           fontFamily: 'Nunito',
           useMaterial3: true,
+          brightness: Brightness.dark,
         ),
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         routerConfig: router,
       ),
     );

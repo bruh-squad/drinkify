@@ -1,13 +1,20 @@
-import 'package:drinkify/utils/theming.dart';
-import 'package:drinkify/widgets/custom_floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../utils/theming.dart';
+
+import '../widgets/custom_floating_button.dart';
+import '/utils/locale_support.dart';
+
+late AppLocalizations transl;
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    transl = LocaleSupport.appTranslates(context);
     return Scaffold(
       backgroundColor: Theming.bgColor,
       appBar: AppBar(
@@ -19,43 +26,46 @@ class NotificationsPage extends StatelessWidget {
             onPressed: () => context.pop(),
             icon: const Icon(
               Icons.arrow_back_ios_rounded,
-              color: Theming.primaryColor,
+              color: Theming.whiteTone,
             ),
           ),
         ),
-        title: const Text(
-          "12 powiadomień",
-          style: TextStyle(
-            color: Theming.primaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-      ),
-      floatingActionButton: CustomFloatingButton(
-        caption: const Text(
-          "Oznacz jako przeczytane",
-          style: TextStyle(
+        title: Text(
+          transl.notificationsNotifications,
+          style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
-        backgroundColor: Theming.primaryColor,
-        shadowColor: Colors.black.withOpacity(0.3),
-        onTap: () {},
       ),
 
       // Notification list
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            for (int i = 0; i < 12; i++) _notificationItem(context),
-            const SizedBox(
-              height: 150,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                for (int i = 0; i < 12; i++) _notificationItem(context),
+                const SizedBox(
+                  height: 150,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          CustomFloatingButton(
+            backgroundColor: Theming.primaryColor,
+            onTap: () {},
+            child: Text(
+              transl.markAsRead,
+              style: const TextStyle(
+                color: Theming.whiteTone,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -63,11 +73,11 @@ class NotificationsPage extends StatelessWidget {
   Widget _notificationItem(BuildContext ctx) {
     return InkWell(
       onTap: () {
-        //TODO on click show more information about the notification
+        ///TODO on click show [Dialog] with information about the notification
         showModalBottomSheet(
           context: ctx,
-          builder: (context) {
-            return const SizedBox();
+          builder: (_) {
+            return const Dialog();
           },
         );
       },
@@ -92,18 +102,18 @@ class NotificationsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "Zaproszenie od ",
-                          style: TextStyle(
+                          text: transl.invitationFrom,
+                          style: const TextStyle(
                             color: Theming.whiteTone,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
-                        TextSpan(
-                          text: "@Ziemniak",
+                        const TextSpan(
+                          text: " @Ziemniak",
                           style: TextStyle(
                             color: Color(0xFFAEFF00),
                             fontWeight: FontWeight.bold,
@@ -114,7 +124,7 @@ class NotificationsPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "12 minut temu",
+                    "12 ${transl.minutesAgo}",
                     style: TextStyle(
                       color: Theming.whiteTone.withOpacity(0.5),
                       fontWeight: FontWeight.bold,

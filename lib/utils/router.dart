@@ -1,25 +1,28 @@
+import 'package:drinkify/routes/create_party_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../routes/login_page.dart' show LoginPage;
+import '../routes/login_page.dart';
+import '../routes/register_page.dart';
 import '../routes/home_page.dart';
 import '../routes/parties_page.dart';
 import '../routes/profile_page.dart';
-import '../routes/edit_profile_page.dart';
-import '../routes/create_party_page.dart';
 import '../routes/selected_party_page.dart';
-import '../routes/settings_page.dart';
 import '../routes/notifications_page.dart';
+import '../routes/settings_page.dart';
+import '../routes/settings_routes/edit_profile_page.dart';
+import '../routes/settings_routes/privacy_page.dart';
+import '../routes/settings_routes/organization_page.dart';
 
 import '../widgets/navbar.dart';
 
-import '../models/party_model.dart';
-import '../models/user_model.dart';
+import '../models/party.dart';
+import '../models/user.dart';
 
 //Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
 
-//Use this for all routes needing NavBar
+//Use this for all routes that need NavBar
 final GlobalKey<NavigatorState> _navBarKey = GlobalKey<NavigatorState>();
 
 GoRouter router = GoRouter(
@@ -28,14 +31,12 @@ GoRouter router = GoRouter(
   routes: [
     ShellRoute(
       navigatorKey: _navBarKey,
-      builder: (context, state, child) {
-        return _ScaffoldWithNavBar(child);
-      },
+      builder: (_, __, child) => _ScaffoldWithNavBar(child),
       routes: [
         GoRoute(
           path: "/",
           parentNavigatorKey: _navBarKey,
-          pageBuilder: (context, state) {
+          pageBuilder: (_, state) {
             return pageTransition(
               state: state,
               childWidget: const HomePage(),
@@ -45,7 +46,7 @@ GoRouter router = GoRouter(
         GoRoute(
           path: "/parties",
           parentNavigatorKey: _navBarKey,
-          pageBuilder: (context, state) {
+          pageBuilder: (_, state) {
             return pageTransition(
               state: state,
               childWidget: const PartiesPage(),
@@ -55,10 +56,15 @@ GoRouter router = GoRouter(
         GoRoute(
           path: "/profile",
           parentNavigatorKey: _navBarKey,
-          pageBuilder: (context, state) {
+          pageBuilder: (_, state) {
             return pageTransition(
               state: state,
-              childWidget: ProfilePage(User()),
+              childWidget: ProfilePage(
+                User(
+                  dateOfBirth: DateTime.now(),
+                  password: "",
+                ),
+              ),
             );
           },
         ),
@@ -67,7 +73,7 @@ GoRouter router = GoRouter(
     GoRoute(
       path: "/party",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         Party p = state.extra as Party;
         return pageTransition(
           state: state,
@@ -76,29 +82,9 @@ GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: "/edit-profile",
-      parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
-        return pageTransition(
-          state: state,
-          childWidget: const EditProfilePage(),
-        );
-      },
-    ),
-    GoRoute(
-      path: "/create-party",
-      parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
-        return pageTransition(
-          state: state,
-          childWidget: const CreatePartyPage(),
-        );
-      },
-    ),
-    GoRoute(
       path: "/login",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const LoginPage(),
@@ -106,9 +92,19 @@ GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      path: "/register",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const RegisterPage(),
+        );
+      },
+    ),
+    GoRoute(
       path: "/notifications",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const NotificationsPage(),
@@ -118,10 +114,50 @@ GoRouter router = GoRouter(
     GoRoute(
       path: "/settings",
       parentNavigatorKey: _rootKey,
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return pageTransition(
           state: state,
           childWidget: const SettingsPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/edit-profile",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const EditProfilePage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/organization",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const OrganizationPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/privacy",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const PrivacyPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/create-party",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const CreatePartyPage(),
         );
       },
     ),
@@ -132,11 +168,13 @@ CustomTransitionPage pageTransition({
   required GoRouterState state,
   required Widget childWidget,
 }) {
+  const Duration animDuration = Duration(milliseconds: 100);
+
   return CustomTransitionPage(
     key: state.pageKey,
     child: childWidget,
-    transitionDuration: const Duration(milliseconds: 100),
-    //reverseTransitionDuration: const Duration(milliseconds: 100),
+    transitionDuration: animDuration,
+    reverseTransitionDuration: animDuration,
     transitionsBuilder: (_, animation, __, child) {
       return FadeTransition(
         opacity: animation,
@@ -152,7 +190,8 @@ class _ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
+    final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
