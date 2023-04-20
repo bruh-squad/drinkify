@@ -25,13 +25,26 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                transl.settings,
-                style: const TextStyle(
-                  color: Theming.whiteTone,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 38,
-                ),
+              Row(
+                children: [
+                  IconButton(
+                    padding: const EdgeInsets.only(right: 15),
+                    onPressed: () => context.pop(),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Theming.whiteTone,
+                      size: 30,
+                    ),
+                  ),
+                  Text(
+                    transl.settings,
+                    style: const TextStyle(
+                      color: Theming.whiteTone,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 38,
+                    ),
+                  ),
+                ],
               ),
               _settingsItem(
                 caption: transl.editProfile,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '/routes/create_party_page.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
@@ -24,6 +23,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return Container(
       height: 110,
       width: double.infinity,

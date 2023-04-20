@@ -28,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
 
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theming.bgColor,
@@ -74,9 +73,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Center(
               child: GestureDetector(
-                onTap: () {
-                  authController.loginUser();
-                },
+                onTap: () => authController.loginUser(),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 30,

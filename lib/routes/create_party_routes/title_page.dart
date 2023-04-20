@@ -1,3 +1,4 @@
+import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -20,6 +21,7 @@ int partyStatus = 1; //1: private  2: public  3: secret
 String formattedPartyLocation = ""; //format: POINT(lat lng)
 
 String? textLocation;
+final mapCtrl = MapController();
 
 class TitlePage extends StatefulWidget {
   /// * title controller, people count controller, party status, formatted location, next page index
@@ -102,6 +104,10 @@ class _TitlePageState extends State<TitlePage> {
     if (mounted) {
       setState(() {
         textLocation = "${place.country}, $locArea${addComma ? ", " : ""}${place.street}";
+        mapCtrl.move(
+          LatLng(latLng.latitude, latLng.longitude),
+          16,
+        );
       });
     }
   }
@@ -290,9 +296,13 @@ class _TitlePageState extends State<TitlePage> {
             if (subPageIndex <= 0) return;
             setState(() => subPageIndex--);
           },
-          child: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: subPageIndex != 0 ? Theming.primaryColor : Colors.transparent,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 150),
+            opacity: subPageIndex != 0 ? 1 : 0,
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Theming.primaryColor,
+            ),
           ),
         ),
         Text(
@@ -306,9 +316,13 @@ class _TitlePageState extends State<TitlePage> {
             if (subPageIndex >= maxPages - 1) return;
             setState(() => subPageIndex++);
           },
-          child: Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: subPageIndex != maxPages - 1 ? Theming.primaryColor : Colors.transparent,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 150),
+            opacity: subPageIndex != maxPages - 1 ? 1 : 0,
+            child: const Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Theming.primaryColor,
+            ),
           ),
         ),
       ],
@@ -388,9 +402,11 @@ class _TitlePageState extends State<TitlePage> {
       onTap: () {
         setState(() => partyStatus = index);
       },
-      child: Container(
+      child: AnimatedContainer(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 8),
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.linearToEaseOut,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Theming.whiteTone.withOpacity(0.1),
@@ -420,67 +436,103 @@ class _TitlePageState extends State<TitlePage> {
         break;
       }
     }
-
+    const widgetAspectRatio = 16 / 4.5;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          textLocation ?? transl.location,
+          transl.location,
           style: TextStyle(
             color: isError ? Colors.red : Theming.whiteTone,
             fontWeight: FontWeight.bold,
-            fontSize: textLocation == null ? 18 : 14,
+            fontSize: 18,
           ),
         ),
         Flexible(
           flex: 0,
-          child: SizedBox(
-            width: double.infinity,
-            height: 90,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FlutterMap(
-                options: MapOptions(
-                  center: LatLng(0, 80),
-                  zoom: 0,
-                  interactiveFlags: InteractiveFlag.all - InteractiveFlag.all,
-                ),
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          transitionDuration: const Duration(
-                            milliseconds: 100,
+          child: Stack(
+            children: [
+              Visibility(
+                visible: textLocation != null,
+                child: GlassMorphism(
+                  blur: 20,
+                  opacity: 0.1,
+                  borderRadius: BorderRadius.circular(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const AspectRatio(
+                        aspectRatio: widgetAspectRatio,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                color: Theming.primaryColor,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(textLocation ?? ""),
+                            ],
                           ),
-                          reverseTransitionDuration: const Duration(
-                            milliseconds: 100,
-                          ),
-                          transitionsBuilder: (_, a, __, c) {
-                            return FadeTransition(
-                              opacity: a,
-                              child: c,
-                            );
-                          },
-                          pageBuilder: (_, __, ___) {
-                            return ChooseLocationPage(
-                              onSave: (point, latLng) {
-                                formattedPartyLocation = point;
-                                _getActualLocation(latLng, ctx);
-                              },
-                            );
-                          },
                         ),
-                      );
-                    },
-                    child: TileLayer(
-                      urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      userAgentPackageName: "app.drinkify",
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              AspectRatio(
+                aspectRatio: widgetAspectRatio,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: FlutterMap(
+                    mapController: mapCtrl,
+                    options: MapOptions(
+                      center: LatLng(0, 80),
+                      zoom: 0,
+                      interactiveFlags: InteractiveFlag.all - InteractiveFlag.all,
+                    ),
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              transitionDuration: const Duration(
+                                milliseconds: 100,
+                              ),
+                              reverseTransitionDuration: const Duration(
+                                milliseconds: 100,
+                              ),
+                              transitionsBuilder: (_, a, __, c) {
+                                return FadeTransition(
+                                  opacity: a,
+                                  child: c,
+                                );
+                              },
+                              pageBuilder: (_, __, ___) {
+                                return ChooseLocationPage(
+                                  onSave: (point, latLng) {
+                                    formattedPartyLocation = point;
+                                    _getActualLocation(latLng, ctx);
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        child: TileLayer(
+                          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          userAgentPackageName: "app.drinkify",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
