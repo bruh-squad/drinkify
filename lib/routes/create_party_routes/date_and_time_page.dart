@@ -118,8 +118,10 @@ class _DateAndTimePageState extends State<DateAndTimePage> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 80),
+              child: Container(
+                height: 100 + MediaQuery.of(context).viewPadding.bottom,
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

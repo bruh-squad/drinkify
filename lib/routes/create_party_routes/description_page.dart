@@ -23,10 +23,10 @@ class DescriptionPage extends StatelessWidget {
     final transl = LocaleSupport.appTranslates(context);
 
     const double topLeftRightPadding = 15;
+    final double bottomNavHeight = 100 + MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
@@ -43,24 +43,32 @@ class DescriptionPage extends StatelessWidget {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              top: 40,
+            padding: EdgeInsets.only(
+              top: 50,
               left: 30,
               right: 30,
-              bottom: 150,
+              bottom: bottomNavHeight + 10,
             ),
-            child: TextField(
-              maxLines: null,
-              style: const TextStyle(color: Theming.whiteTone),
-              cursorColor: Theming.primaryColor,
-              decoration: InputDecoration(
-                hintText: transl.descOptional,
-                hintStyle: TextStyle(
-                  color: Theming.whiteTone.withOpacity(0.5),
-                  fontWeight: FontWeight.bold,
-                ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Theming.whiteTone.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
               ),
-              controller: _descriptionCtrl,
+              child: TextField(
+                maxLines: null,
+                style: const TextStyle(color: Theming.whiteTone),
+                cursorColor: Theming.primaryColor,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: transl.descOptional,
+                  hintStyle: TextStyle(
+                    color: Theming.whiteTone.withOpacity(0.5),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                controller: _descriptionCtrl,
+              ),
             ),
           ),
           Padding(
@@ -92,23 +100,23 @@ class DescriptionPage extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 160,
+              height: bottomNavHeight,
               width: double.infinity,
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topCenter,
               decoration: const BoxDecoration(
                 color: Theming.bgColor,
                 boxShadow: [
                   BoxShadow(
-                    blurRadius: 20,
+                    blurRadius: 10,
                     color: Theming.bgColor,
-                    offset: Offset(0, -20),
+                    offset: Offset(0, -15),
                   ),
                 ],
               ),
               padding: const EdgeInsets.only(
+                top: 10,
                 left: 30,
                 right: 30,
-                bottom: 80,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

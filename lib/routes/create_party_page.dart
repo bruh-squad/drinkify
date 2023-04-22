@@ -64,12 +64,10 @@ class _CreatePartyPageState extends State<CreatePartyPage> {
         onPrevious: (idx) {
           setState(() => index = idx);
         },
-        onCreate: (users, idx) {
-          setState(() => index = idx);
+        onCreate: (users) {
           partyUsers = users;
         },
       ),
-      const OnCreateDialog(),
     ];
   }
 

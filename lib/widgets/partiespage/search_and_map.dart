@@ -56,7 +56,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
-                      Icons.location_on_outlined,
+                      Icons.nightlife_rounded,
                       size: 32,
                       color: Theming.primaryColor,
                     ),

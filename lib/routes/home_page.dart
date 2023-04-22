@@ -15,29 +15,20 @@ class HomePage extends StatelessWidget {
       backgroundColor: Theming.bgColor,
       body: Padding(
         padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top + 20,
+          top: MediaQuery.of(context).viewPadding.top + 20,
         ),
         child: Column(
           children: const [
             //Had to use many paddings to make the DateRow boxes look better
             Padding(
-              padding: EdgeInsets.only(
-                right: 30,
-                left: 30,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: WelcomeHeader(),
             ),
             DateRow(
-              textPadding: EdgeInsets.only(
-                right: 30,
-                left: 30,
-              ),
+              textPadding: EdgeInsets.symmetric(horizontal: 30),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                right: 30,
-                left: 30,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: PartyList(),
             ),
           ],

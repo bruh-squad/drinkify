@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -8,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 import '../create_party_routes/choose_location_page.dart';
+import '/widgets/glass_morphism.dart';
 
 late AppLocalizations transl;
 
@@ -21,7 +21,7 @@ int partyStatus = 1; //1: private  2: public  3: secret
 String formattedPartyLocation = ""; //format: POINT(lat lng)
 
 String? textLocation;
-final mapCtrl = MapController();
+LatLng? savedLocation;
 
 class TitlePage extends StatefulWidget {
   /// * title controller, people count controller, party status, formatted location, next page index
@@ -36,6 +36,7 @@ class TitlePage extends StatefulWidget {
 }
 
 class _TitlePageState extends State<TitlePage> {
+  late final MapController mapCtrl;
   late List<int> errorFields;
 
   /// * 0 = people count page; 1 = party status page
@@ -50,6 +51,13 @@ class _TitlePageState extends State<TitlePage> {
     errorFields = [];
     subPageIndex = 0;
     selectedFieldIndex = 0;
+    mapCtrl = MapController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mapCtrl.dispose();
   }
 
   Widget get _subPage {
@@ -106,9 +114,10 @@ class _TitlePageState extends State<TitlePage> {
         textLocation = "${place.country}, $locArea${addComma ? ", " : ""}${place.street}";
         mapCtrl.move(
           LatLng(latLng.latitude, latLng.longitude),
-          16,
+          15,
         );
       });
+      savedLocation = latLng;
     }
   }
 
@@ -158,9 +167,12 @@ class _TitlePageState extends State<TitlePage> {
             ),
 
             _locationButton(2, context),
-            const SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 80),
+            const SizedBox(height: 30),
+
+            Container(
+              height: 100 + MediaQuery.of(context).viewPadding.bottom,
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -297,7 +309,7 @@ class _TitlePageState extends State<TitlePage> {
             setState(() => subPageIndex--);
           },
           child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 150),
+            duration: const Duration(milliseconds: 100),
             opacity: subPageIndex != 0 ? 1 : 0,
             child: const Icon(
               Icons.arrow_back_ios_new_rounded,
@@ -317,7 +329,7 @@ class _TitlePageState extends State<TitlePage> {
             setState(() => subPageIndex++);
           },
           child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 150),
+            duration: const Duration(milliseconds: 100),
             opacity: subPageIndex != maxPages - 1 ? 1 : 0,
             child: const Icon(
               Icons.arrow_forward_ios_rounded,
@@ -491,8 +503,8 @@ class _TitlePageState extends State<TitlePage> {
                   child: FlutterMap(
                     mapController: mapCtrl,
                     options: MapOptions(
-                      center: LatLng(0, 80),
-                      zoom: 0,
+                      center: savedLocation ?? LatLng(0, 80),
+                      zoom: savedLocation == null ? 0 : 15,
                       interactiveFlags: InteractiveFlag.all - InteractiveFlag.all,
                     ),
                     children: [

@@ -7,13 +7,13 @@ import '/utils/ext.dart' show Capitalize;
 import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
+int selectedMonthIndex = DateTime.now().month - 1;
+int selectedYearIndex = DateTime.now().year; //TODO make it work
+
 class DatePicker extends StatefulWidget {
-  final int monthIndex;
-  final int yearIndex;
   final Function(int, int) onSelect;
+
   const DatePicker({
-    required this.monthIndex,
-    required this.yearIndex,
     required this.onSelect,
     super.key,
   });
@@ -23,15 +23,9 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
-  late int selectedMonthIndex;
-  late int selectedYearIndex;
-
   @override
   void initState() {
     super.initState();
-    selectedMonthIndex = widget.monthIndex;
-    selectedYearIndex = widget.yearIndex;
-
     initializeDateFormatting();
   }
 

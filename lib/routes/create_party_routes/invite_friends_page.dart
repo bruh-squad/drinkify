@@ -1,3 +1,4 @@
+import 'package:drinkify/routes/create_party_routes/on_create_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -12,7 +13,7 @@ List<User> invitedUsers = [];
 
 class InviteFriendsPage extends StatelessWidget {
   /// * list of invited users, index
-  final Function(List<User>, int) onCreate;
+  final Function(List<User>) onCreate;
 
   /// * previous page index
   final Function(int) onPrevious;
@@ -32,19 +33,6 @@ class InviteFriendsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          transl.createAParty,
-          style: const TextStyle(
-            color: Theming.whiteTone,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Theming.bgColor,
-      ),
       body: Stack(
         children: [
           Padding(
@@ -57,7 +45,7 @@ class InviteFriendsPage extends StatelessWidget {
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      const SizedBox(height: 80),
+                      SizedBox(height: MediaQuery.of(context).viewPadding.top + 60),
                       for (int i = 0; i < 20; i++)
                         _friendPlaceholder(
                           i,
@@ -74,6 +62,7 @@ class InviteFriendsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: MediaQuery.of(context).viewPadding.top),
                       GlassMorphism(
                         blur: 30,
                         opacity: 0.1,
@@ -114,61 +103,65 @@ class InviteFriendsPage extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 140,
+              height: 100 + MediaQuery.of(context).padding.bottom,
               width: double.infinity,
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topCenter,
               decoration: const BoxDecoration(
                 color: Theming.bgColor,
                 boxShadow: [
                   BoxShadow(
-                    blurRadius: 20,
+                    blurRadius: 10,
                     color: Theming.bgColor,
-                    offset: Offset(0, -40),
+                    offset: Offset(0, -15),
                   ),
                 ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 80,
-                  left: 30,
-                  right: 30,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _navButton(
-                      context,
-                      topLeftRightPadding,
-                      backgroundColor: Theming.whiteTone,
-                      text: Text(
-                        transl.back,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                      onTap: () => onPrevious(2),
-                    ),
-                    _navButton(
-                      context,
-                      topLeftRightPadding,
-                      backgroundColor: Theming.primaryColor,
-                      text: Text(
-                        transl.create,
-                        style: const TextStyle(
-                          color: Theming.whiteTone,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                      onTap: () => onCreate(
-                        [],
-                        4,
+              padding: const EdgeInsets.only(
+                top: 10,
+                left: 30,
+                right: 30,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _navButton(
+                    context,
+                    topLeftRightPadding,
+                    backgroundColor: Theming.whiteTone,
+                    text: Text(
+                      transl.back,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
-                  ],
-                ),
+                    onTap: () => onPrevious(2),
+                  ),
+                  _navButton(
+                    context,
+                    topLeftRightPadding,
+                    backgroundColor: Theming.primaryColor,
+                    text: Text(
+                      transl.create,
+                      style: const TextStyle(
+                        color: Theming.whiteTone,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    onTap: () {
+                      //TODO friends invitation
+                      onCreate([]);
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return const OnCreateDialog();
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),
