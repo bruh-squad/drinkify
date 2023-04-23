@@ -68,43 +68,39 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 40),
                 Center(
-                  child: Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          //TODO picking an image from gallery
-                        },
-                        child: const CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Theming.bgColorLight,
-                          backgroundImage: NetworkImage(
-                            "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
-                          ),
-                        ),
+                  child: GestureDetector(
+                    onTap: () {
+                      //TODO picking an image from gallery
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color(0x9F000E1F),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            width: 30,
-                            height: 30,
-                            alignment: Alignment.center,
-                            decoration: const BoxDecoration(
-                              color: Theming.bgColor,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.edit_outlined,
-                              color: Theming.primaryColor,
-                              size: 17,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Theming.bgColorLight,
+                            backgroundImage: AssetImage("assets/images/default_pfp.png"),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            transl.changePfp,
+                            style: const TextStyle(
+                              color: Theming.whiteTone,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 _editField(
                   0,
                   caption: transl.username,
@@ -151,9 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      selectedFieldIndex = null;
-                    });
+                    setState(() => selectedFieldIndex = null);
                     showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
@@ -162,9 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       useRootNavigator: true,
                       locale: const Locale("en"),
                     ).then((date) {
-                      setState(() {
-                        dateOfBirthVal = date;
-                      });
+                      setState(() => dateOfBirthVal = date);
                     });
                   },
                   child: Container(
@@ -181,21 +173,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         Icon(
                           Icons.date_range_outlined,
-                          color: selectedFieldIndex == 6
-                              ? Theming.primaryColor
-                              : Theming.whiteTone,
+                          color: selectedFieldIndex == 6 ? Theming.primaryColor : Theming.whiteTone,
                           size: 24,
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          dateOfBirthVal == null
-                              ? transl.dateOfBirth
-                              : DateFormat.yMd(transl.localeName)
-                                  .format(dateOfBirthVal!),
+                          dateOfBirthVal == null ? transl.dateOfBirth : DateFormat.yMd(transl.localeName).format(dateOfBirthVal!),
                           style: TextStyle(
-                            color: selectedFieldIndex == 6
-                                ? Theming.primaryColor
-                                : Theming.whiteTone,
+                            color: selectedFieldIndex == 6 ? Theming.primaryColor : Theming.whiteTone,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -204,17 +189,21 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
+
+                // Register button
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      authController.registerUser(CreateUser(
-                        username: usernameCtrl.text,
-                        email: emailCtrl.text,
-                        firstName: firstNameCtrl.text,
-                        lastName: lastNameCtrl.text,
-                        dateOfBirth: dateOfBirthVal!,
-                        password: passwordCtrl.text,
-                      ));
+                      authController.registerUser(
+                        CreateUser(
+                          username: usernameCtrl.text,
+                          email: emailCtrl.text,
+                          firstName: firstNameCtrl.text,
+                          lastName: lastNameCtrl.text,
+                          dateOfBirth: dateOfBirthVal!, //TODO fix the NULL value
+                          password: passwordCtrl.text,
+                        ),
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -308,9 +297,7 @@ class _RegisterPageState extends State<RegisterPage> {
               hintText: placeholder,
               hintStyle: TextStyle(
                 fontSize: 14,
-                color: isSelected
-                    ? Theming.whiteTone.withOpacity(0.4)
-                    : Colors.transparent,
+                color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
               ),
               prefixIcon: Icon(
                 icon,
@@ -332,9 +319,7 @@ class _RegisterPageState extends State<RegisterPage> {
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
             child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty
-                  ? Alignment.topLeft
-                  : Alignment.centerLeft,
+              alignment: isSelected || ctrl.text.isNotEmpty ? Alignment.topLeft : Alignment.centerLeft,
               curve: Curves.linearToEaseOut,
               duration: const Duration(milliseconds: 500),
               child: Text(

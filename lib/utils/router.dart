@@ -1,4 +1,3 @@
-import 'package:drinkify/routes/create_party_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,6 +12,9 @@ import '../routes/settings_page.dart';
 import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/privacy_page.dart';
 import '../routes/settings_routes/organization_page.dart';
+import '../routes/friend_list.dart';
+
+import '../routes/create_party_page.dart';
 
 import '../widgets/navbar.dart';
 
@@ -158,6 +160,16 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: const CreatePartyPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/friend-list",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: const FriendListPage(),
         );
       },
     ),

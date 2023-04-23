@@ -54,7 +54,7 @@ class InviteFriendsPage extends StatelessWidget {
                             dateOfBirth: DateTime.now(),
                           ),
                         ),
-                      const SizedBox(height: 160),
+                      SizedBox(height: 100 + MediaQuery.of(context).viewPadding.bottom),
                     ],
                   ),
                 ),
@@ -103,7 +103,7 @@ class InviteFriendsPage extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 100 + MediaQuery.of(context).padding.bottom,
+              height: 100 + MediaQuery.of(context).viewPadding.bottom,
               width: double.infinity,
               alignment: Alignment.topCenter,
               decoration: const BoxDecoration(

@@ -8,7 +8,7 @@ import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 int selectedMonthIndex = DateTime.now().month - 1;
-int selectedYearIndex = DateTime.now().year; //TODO make it work
+int selectedYearIndex = 0;
 
 class DatePicker extends StatefulWidget {
   final Function(int, int) onSelect;
@@ -23,9 +23,14 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
+  late int tempMonthIndex;
+  late int tempYearIndex;
+
   @override
   void initState() {
     super.initState();
+    tempMonthIndex = selectedMonthIndex;
+    tempYearIndex = selectedYearIndex;
     initializeDateFormatting();
   }
 
@@ -37,9 +42,8 @@ class _DatePickerState extends State<DatePicker> {
       initialItem: selectedMonthIndex,
     );
     var yearCtrl = FixedExtentScrollController(
-      initialItem: 0,
+      initialItem: selectedYearIndex,
     );
-
     return SizedBox(
       height: 200 + 8 * 2 + 20 + 40 + MediaQuery.of(context).viewPadding.bottom,
       child: Column(
@@ -51,6 +55,8 @@ class _DatePickerState extends State<DatePicker> {
                 yearCtrl.selectedItem,
                 monthCtrl.selectedItem + 1,
               );
+              selectedMonthIndex = tempMonthIndex;
+              selectedYearIndex = tempYearIndex;
               Navigator.pop(context);
             },
             child: Container(
@@ -90,9 +96,7 @@ class _DatePickerState extends State<DatePicker> {
                 physics: const FixedExtentScrollPhysics(),
                 perspective: 0.00000001,
                 onSelectedItemChanged: (value) {
-                  setState(() {
-                    selectedMonthIndex = value;
-                  });
+                  setState(() => tempMonthIndex = value);
                 },
                 children: [
                   for (int i = 0; i < 12; i++)
@@ -117,10 +121,14 @@ class _DatePickerState extends State<DatePicker> {
                 physics: const FixedExtentScrollPhysics(),
                 perspective: 0.00000001,
                 onSelectedItemChanged: (value) {
-                  setState(() => selectedYearIndex = value + DateTime.now().year);
+                  setState(() => tempYearIndex = value);
                 },
                 children: [
-                  for (int i = DateTime.now().year; i < DateTime.now().year + 15; i++) _datePickerItem(i, type: "YEAR"),
+                  for (int i = 0; i < 15; i++)
+                    _datePickerItem(
+                      i,
+                      type: "YEAR",
+                    ),
                 ],
               ),
             ),
@@ -132,14 +140,14 @@ class _DatePickerState extends State<DatePicker> {
 
   Widget _datePickerItem(int value, {String type = ""}) {
     bool isMonth = type == "MONTH";
-    bool isMonthSelected = selectedMonthIndex == value;
-    bool isYearSelected = selectedYearIndex == value;
+    bool isMonthSelected = tempMonthIndex == value;
+    bool isYearSelected = tempYearIndex == value;
 
     return Center(
       child: RotatedBox(
         quarterTurns: 1,
         child: Text(
-          type == "MONTH"
+          isMonth
               ? DateFormat("MMMM", AppLocalizations.of(context)!.localeName)
                   .format(
                     DateTime(
@@ -150,7 +158,7 @@ class _DatePickerState extends State<DatePicker> {
                   .capitalize()
               : DateFormat("yyyy").format(
                   DateTime(
-                    value,
+                    value + DateTime.now().year,
                   ),
                 ),
           style: isMonth

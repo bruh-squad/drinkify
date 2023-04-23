@@ -10,6 +10,7 @@ class WelcomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return Column(
       children: [
         Row(

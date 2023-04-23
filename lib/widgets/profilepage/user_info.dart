@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 import '/models/user.dart';
@@ -13,7 +14,6 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
-  //TODO: replace values with user parameters
   bool showMoreDesc = false;
 
   @override
@@ -54,9 +54,12 @@ class _UserInfoState extends State<UserInfo> {
                 const SizedBox(height: 10),
                 //Username
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
-                    color: Theming.whiteTone.withOpacity(0.2),
+                    color: Theming.whiteTone.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: const Text(
@@ -68,19 +71,22 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ],
             ),
-            SizedBox(
-              width: 100,
-              child: Column(
-                children: [
-                  const Text(
-                    "420",
-                    style: Styles.userInfoStatistic,
-                  ),
-                  Text(
-                    transl.friendsProfile,
-                    style: Styles.userInfoType,
-                  ),
-                ],
+            GestureDetector(
+              onTap: () => context.push("/friend-list"),
+              child: SizedBox(
+                width: 100,
+                child: Column(
+                  children: [
+                    const Text(
+                      "420",
+                      style: Styles.userInfoStatistic,
+                    ),
+                    Text(
+                      transl.friendsProfile,
+                      style: Styles.userInfoType,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -108,6 +114,9 @@ class _UserInfoState extends State<UserInfo> {
           children: [
             //Add friend
             GestureDetector(
+              onLongPress: () {
+                //Show modal bottom sheet with full description
+              },
               onTap: () {
                 //sending a friend request
               },
@@ -164,6 +173,7 @@ class _UserInfoState extends State<UserInfo> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
+                    width: 2,
                     color: Theming.whiteTone.withOpacity(0.2),
                   ),
                 ),

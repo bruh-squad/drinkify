@@ -41,7 +41,7 @@ class _NavBarState extends State<NavBar> {
         GlassMorphism(
           blur: 30,
           opacity: 0.1,
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(35),
           child: Container(
             height: navBarSize.height,
             width: navBarSize.width,
