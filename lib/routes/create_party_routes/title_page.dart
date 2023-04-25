@@ -129,19 +129,6 @@ class _TitlePageState extends State<TitlePage> {
     return Scaffold(
       backgroundColor: Theming.bgColor,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          transl.createAParty,
-          style: const TextStyle(
-            color: Theming.whiteTone,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Theming.bgColor,
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 30,
@@ -149,7 +136,7 @@ class _TitlePageState extends State<TitlePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 10),
+            SizedBox(height: MediaQuery.of(context).viewPadding.top + 40),
             //Title
             _categoryText(transl.title),
 

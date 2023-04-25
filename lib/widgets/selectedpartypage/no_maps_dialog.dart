@@ -44,7 +44,7 @@ class NoMapsDialog extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 5,
+                    horizontal: 2,
                     vertical: 10,
                   ),
                   child: Column(
@@ -55,7 +55,7 @@ class NoMapsDialog extends StatelessWidget {
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,
-                          fontSize: 28,
+                          fontSize: 20,
                         ),
                       ),
                       SizedBox(

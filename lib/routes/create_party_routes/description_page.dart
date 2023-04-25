@@ -27,24 +27,11 @@ class DescriptionPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          transl.createAParty,
-          style: const TextStyle(
-            color: Theming.whiteTone,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Theming.bgColor,
-      ),
       body: Stack(
         children: [
           Padding(
             padding: EdgeInsets.only(
-              top: 50,
+              top: MediaQuery.of(context).viewPadding.top + 60,
               left: 30,
               right: 30,
               bottom: bottomNavHeight + 10,
@@ -72,7 +59,8 @@ class DescriptionPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).viewPadding.top + 10,
               left: 30,
               right: 30,
             ),

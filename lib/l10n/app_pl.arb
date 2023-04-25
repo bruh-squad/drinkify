@@ -114,5 +114,6 @@
     "next": "Dalej",
     "back": "Wstecz",
     "create": "Stwórz",
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "creatingParty": "Tworzenie imprezy..."
 }

@@ -4,6 +4,7 @@ import 'dart:ui';
 class GlassMorphism extends StatelessWidget {
   final double blur;
   final double opacity;
+  final Color color;
   final Widget? child;
   final BorderRadius borderRadius;
 
@@ -11,6 +12,7 @@ class GlassMorphism extends StatelessWidget {
     required this.blur,
     required this.opacity,
     this.child,
+    this.color = Colors.white,
     this.borderRadius = const BorderRadius.all(Radius.zero),
     super.key,
   });
@@ -26,7 +28,7 @@ class GlassMorphism extends StatelessWidget {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(opacity),
+            color: color.withOpacity(opacity),
             borderRadius: borderRadius,
           ),
           child: child,

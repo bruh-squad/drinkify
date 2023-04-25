@@ -114,5 +114,6 @@
     "next": "Next",
     "back": "Back",
     "create": "Create",
-    "close": "Close"
+    "close": "Close",
+    "creatingParty": "Creating party..."
 }
