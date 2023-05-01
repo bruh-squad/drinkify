@@ -1,3 +1,4 @@
+import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -45,13 +46,15 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
     }
 
     final LocationData posData = await location.getLocation();
-    setState(() {
-      userLocation = LatLng(
-        posData.latitude!,
-        posData.longitude!,
-      );
-      showUserLocation = true;
-    });
+    if (context.mounted) {
+      setState(() {
+        userLocation = LatLng(
+          posData.latitude!,
+          posData.longitude!,
+        );
+        showUserLocation = true;
+      });
+    }
   }
 
   @override
@@ -78,31 +81,28 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
             if (!showMore) return;
             //Some code
           },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.linearToEaseOut,
-            decoration: BoxDecoration(
-              color: showMore ? Theming.primaryColor : Colors.transparent,
-              borderRadius: BorderRadius.circular(100),
-              boxShadow: [
-                BoxShadow(
-                  color: showMore ? Colors.black.withOpacity(0.3) : Colors.transparent,
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                  offset: const Offset(0, 5),
+          child: GlassMorphism(
+            blur: showMore ? 10 : 0,
+            opacity: showMore ? 0.1 : 0.0,
+            color: showMore ? Colors.white : Colors.transparent,
+            borderRadius: BorderRadius.circular(100),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.linearToEaseOut,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 20,
+              ),
+              child: Text(
+                transl.join,
+                style: TextStyle(
+                  color: showMore ? Theming.primaryColor : Colors.transparent,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-              ],
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 20,
-            ),
-            child: Text(
-              transl.join,
-              style: TextStyle(
-                color: showMore ? Theming.whiteTone : Colors.transparent,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
               ),
             ),
           ),
@@ -147,11 +147,14 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                           widget.party.location.longitude,
                         ),
                         zoom: 15,
-                        interactiveFlags: InteractiveFlag.all - InteractiveFlag.doubleTapZoom - InteractiveFlag.rotate,
+                        interactiveFlags: InteractiveFlag.all -
+                            InteractiveFlag.doubleTapZoom -
+                            InteractiveFlag.rotate,
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          urlTemplate:
+                              "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                           userAgentPackageName: "app.drinkify",
                         ),
                         MarkerLayer(
@@ -225,8 +228,11 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 //Back button
                 _mapButton(
                   alignment: Alignment.topLeft,
-                  margin: const EdgeInsets.only(top: 30, left: 30),
-                  icon: Icons.arrow_back_rounded,
+                  margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).viewPadding.top + 10,
+                    left: 30,
+                  ),
+                  icon: Icons.arrow_back_ios_new_rounded,
                   onClick: () {
                     if (showMore) return;
                     context.pop();
@@ -265,32 +271,24 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
   }) {
     return Align(
       alignment: alignment,
-      child: SafeArea(
-        child: GestureDetector(
-          onTap: onClick,
-          child: AnimatedContainer(
-            height: 40,
-            width: 40,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.linearToEaseOut,
-            margin: margin,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: showMore ? Colors.transparent : Theming.primaryColor,
-              boxShadow: [
-                BoxShadow(
-                  color: showMore ? Colors.transparent : Colors.black.withOpacity(0.5),
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Icon(
-              icon,
-              color: showMore ? Colors.transparent : Theming.whiteTone,
-            ),
+      child: GestureDetector(
+        onTap: onClick,
+        child: AnimatedContainer(
+          height: 40,
+          width: 40,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.linearToEaseOut,
+          margin: margin,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: showMore
+                ? Colors.transparent
+                : Theming.bgColor.withOpacity(0.5),
+          ),
+          child: Icon(
+            icon,
+            color: showMore ? Colors.transparent : Theming.whiteTone,
           ),
         ),
       ),

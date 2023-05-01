@@ -111,9 +111,8 @@
     "completionTime": "Completion time",
     "searchAFriend": "Search for a friend",
     "invite": "Invite",
-    "next": "Next",
-    "back": "Back",
     "create": "Create",
-    "close": "Close",
-    "creatingParty": "Creating party..."
+    "creatingParty": "Creating party...",
+    "myLocation": "My location"
+
 }

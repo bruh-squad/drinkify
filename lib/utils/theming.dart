@@ -4,21 +4,13 @@ class Theming {
   Theming._();
 
   static const Color primaryColor = Color(0xFFFF0F5C);
-  static const Color bgColorLight = Color(0xFF004497);
+  static const Color bgColorLight = Color(0xFF002552);
   static const Color bgColor = Color(0xFF011936);
   static const Color whiteTone = Color(0xFFF7F4F3);
 }
 
-class DarkTheme {}
-
 class Styles {
   Styles._();
-
-  static const navBarText = TextStyle(
-    color: Theming.whiteTone,
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-  );
 
   static const categoryText = TextStyle(
     color: Theming.whiteTone,

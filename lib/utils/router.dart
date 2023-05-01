@@ -13,7 +13,6 @@ import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/privacy_page.dart';
 import '../routes/settings_routes/organization_page.dart';
 import '../routes/friend_list.dart';
-
 import '../routes/create_party_page.dart';
 
 import '../widgets/navbar.dart';
@@ -159,7 +158,7 @@ GoRouter router = GoRouter(
       pageBuilder: (_, state) {
         return pageTransition(
           state: state,
-          childWidget: const CreatePartyPage(),
+          childWidget: const CreatePartyRoute(),
         );
       },
     ),
@@ -212,7 +211,7 @@ class _ScaffoldWithNavBar extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: NavBar(
-              bottomMargin: bottomPadding + 40,
+              bottomMargin: bottomPadding + 30,
             ),
           ),
         ],

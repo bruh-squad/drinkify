@@ -4,9 +4,9 @@ name: Android Release
 on:
   # 2
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
   # 3
   workflow_dispatch:
@@ -39,4 +39,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Start release build
-        run: flutter build appbundle
+        run: flutter build app --release

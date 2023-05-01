@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
-class OnCreateDialog extends StatelessWidget {
-  const OnCreateDialog({super.key});
+class CreatePartyDialog extends StatelessWidget {
+  const CreatePartyDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     final Size dialogSize = Size(MediaQuery.of(context).size.width - 80, 200);
 
     return Dialog(
@@ -46,29 +43,16 @@ class OnCreateDialog extends StatelessWidget {
                   vertical: 10,
                 ),
                 child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        transl.creatingParty,
-                        maxLines: null,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Theming.whiteTone,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    const SizedBox(
+                  children: const [
+                    Spacer(),
+                    SizedBox(
                       height: 60,
                       width: 60,
                       child: CircularProgressIndicator(
                         color: Colors.deepOrangeAccent,
                       ),
                     ),
-                    const Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),

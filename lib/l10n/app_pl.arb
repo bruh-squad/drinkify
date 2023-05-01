@@ -111,9 +111,7 @@
     "completionTime": "Czas zakończenia",
     "searchAFriend": "Wyszukaj znajomego",
     "invite": "Zaproś",
-    "next": "Dalej",
-    "back": "Wstecz",
     "create": "Stwórz",
-    "close": "Zamknij",
-    "creatingParty": "Tworzenie imprezy..."
+    "creatingParty": "Tworzenie imprezy...",
+    "myLocation": "Moja lokalizacja"
 }

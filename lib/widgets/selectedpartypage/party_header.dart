@@ -1,4 +1,4 @@
-import 'package:drinkify/widgets/selectedpartypage/no_maps_dialog.dart';
+import 'package:drinkify/widgets/dialogs/no_maps_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
@@ -55,7 +55,8 @@ class _PartyHeaderState extends State<PartyHeader> {
       }
     }
     if (mounted) {
-      setState(() => partyLocation = "${place.country}, $locArea, ${place.street}");
+      setState(
+          () => partyLocation = "${place.country}, $locArea, ${place.street}");
     }
   }
 
@@ -131,7 +132,8 @@ class _PartyHeaderState extends State<PartyHeader> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.yMd(transl.localeName).format(widget.party.startTime),
+                    DateFormat.yMd(transl.localeName)
+                        .format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],
@@ -146,7 +148,8 @@ class _PartyHeaderState extends State<PartyHeader> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.Hm(transl.localeName).format(widget.party.startTime),
+                    DateFormat.Hm(transl.localeName)
+                        .format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],

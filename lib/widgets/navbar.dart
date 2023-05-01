@@ -32,7 +32,7 @@ class _NavBarState extends State<NavBar> {
 
     navBarSize = Size(
       MediaQuery.of(context).size.width - 30 * 2,
-      70,
+      60,
     );
 
     return Column(
@@ -118,7 +118,11 @@ class _NavBarState extends State<NavBar> {
           duration: const Duration(milliseconds: 200),
           child: Text(
             caption,
-            style: Styles.navBarText,
+            style: const TextStyle(
+              color: Theming.whiteTone,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
