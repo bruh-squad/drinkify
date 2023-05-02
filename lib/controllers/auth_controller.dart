@@ -25,15 +25,15 @@ class AuthController {
       const storage = FlutterSecureStorage();
       await storage.write(key: 'access', value: loginArr['access']);
       await storage.write(key: 'refresh', value: loginArr['refresh']);
-      print(loginArr);
+      debugPrint(loginArr);
     } else {
-      print(response.statusCode);
+      debugPrint("${response.statusCode}");
     }
   }
 
   Future registerUser(CreateUser user) async {
     var url = '$mainUrl/auth/token/';
-    // TODO: NAPRAWIĆ WYSYŁANIE
+    // TODO: FIX this shit
     var response = await http.post(
       Uri.parse('$mainUrl/users/'),
       body: {
@@ -41,14 +41,15 @@ class AuthController {
         "email": user.email,
         "first_name": user.firstName,
         "last_name": user.lastName,
-        "date_of_birth": '${user.dateOfBirth.year}-${user.dateOfBirth.month}-${user.dateOfBirth.day}',
+        "date_of_birth":
+            '${user.dateOfBirth.year}-${user.dateOfBirth.month}-${user.dateOfBirth.day}',
         "password": user.password
       },
     );
     if (response.statusCode == 200) {
-      print(json.decode(response.body));
+      debugPrint(json.decode(response.body));
     } else {
-      print(response.statusCode);
+      debugPrint("${response.statusCode}");
     }
   }
 }

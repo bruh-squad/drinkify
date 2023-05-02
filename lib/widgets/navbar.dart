@@ -20,6 +20,12 @@ class _NavBarState extends State<NavBar> {
   late int selectedIndex;
   late Size navBarSize;
 
+  final List<Color> fieldColors = [
+    Colors.deepPurpleAccent,
+    Theming.primaryColor,
+    const Color(0xFFF64740),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -56,7 +62,7 @@ class _NavBarState extends State<NavBar> {
                     left: selectedIndex * (navBarSize.width / 3),
                   ),
                   decoration: BoxDecoration(
-                    color: Theming.primaryColor,
+                    color: fieldColors[selectedIndex],
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
@@ -120,7 +126,7 @@ class _NavBarState extends State<NavBar> {
             caption,
             style: const TextStyle(
               color: Theming.whiteTone,
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),

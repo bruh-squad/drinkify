@@ -173,7 +173,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       ),
                                       decoration: BoxDecoration(
                                         color: Theming.primaryColor,
-                                        borderRadius: BorderRadius.circular(100),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                       ),
                                       child: Text(
                                         transl.changePassword,
@@ -272,7 +273,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               hintText: placeholder,
               hintStyle: TextStyle(
                 fontSize: 14,
-                color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
+                color: isSelected
+                    ? Theming.whiteTone.withOpacity(0.4)
+                    : Colors.transparent,
               ),
               prefixIcon: Icon(
                 icon,
@@ -294,7 +297,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
             child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty ? Alignment.topLeft : Alignment.centerLeft,
+              alignment: isSelected || ctrl.text.isNotEmpty
+                  ? Alignment.topLeft
+                  : Alignment.centerLeft,
               curve: Curves.linearToEaseOut,
               duration: const Duration(milliseconds: 500),
               child: Text(

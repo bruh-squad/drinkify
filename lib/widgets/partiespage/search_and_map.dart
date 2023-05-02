@@ -55,10 +55,28 @@ class _SearchAndMapState extends State<SearchAndMap> {
                       color: Theming.whiteTone.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(
-                      Icons.nightlife_rounded,
-                      size: 32,
-                      color: Theming.primaryColor,
+                    child: ShaderMask(
+                      shaderCallback: (bounds) {
+                        return const LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          colors: [
+                            Colors.deepPurpleAccent,
+                            Theming.primaryColor,
+                          ],
+                        ).createShader(
+                          const Rect.fromLTRB(
+                            0,
+                            0,
+                            24,
+                            24,
+                          ),
+                        );
+                      },
+                      child: const Icon(
+                        Icons.nightlife_rounded,
+                        size: 32,
+                      ),
                     ),
                   ),
                 ),
@@ -132,7 +150,9 @@ class _SearchAndMapState extends State<SearchAndMap> {
         ),
         margin: const EdgeInsets.only(right: 15),
         decoration: BoxDecoration(
-          color: isSelected ? Theming.primaryColor.withOpacity(0.7) : Theming.whiteTone.withOpacity(0.1),
+          color: isSelected
+              ? Theming.primaryColor.withOpacity(0.7)
+              : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(

@@ -13,8 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  AuthController authCtrl = AuthController();
   var passwordResetEmailCtrl = TextEditingController();
-  AuthController authController = AuthController();
 
   late int? selectedFieldIndex;
 
@@ -61,26 +61,34 @@ class _LoginPageState extends State<LoginPage> {
               caption: transl.email,
               icon: Icons.email_outlined,
               placeholder: transl.emailField,
-              ctrl: authController.emailCtrl,
+              ctrl: authCtrl.emailCtrl,
             ),
             _editField(
               1,
               caption: transl.password,
               icon: Icons.lock_outline,
               placeholder: transl.passwordField,
-              ctrl: authController.passwordCtrl,
+              ctrl: authCtrl.passwordCtrl,
               isPassword: true,
             ),
             Center(
               child: GestureDetector(
-                onTap: () => authController.loginUser(),
+                onTap: () {
+                  if (authCtrl.emailCtrl.text != "" ||
+                      authCtrl.passwordCtrl.text != "") {
+                    authCtrl.loginUser();
+                  }
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 30,
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: Theming.primaryColor,
+                    color: authCtrl.emailCtrl.text == "" ||
+                            authCtrl.passwordCtrl.text == ""
+                        ? Theming.whiteTone.withOpacity(0.7)
+                        : Theming.primaryColor,
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Text(
@@ -240,7 +248,9 @@ class _LoginPageState extends State<LoginPage> {
               hintText: placeholder,
               hintStyle: TextStyle(
                 fontSize: 14,
-                color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
+                color: isSelected
+                    ? Theming.whiteTone.withOpacity(0.4)
+                    : Colors.transparent,
               ),
               prefixIcon: Icon(
                 icon,
@@ -262,7 +272,9 @@ class _LoginPageState extends State<LoginPage> {
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
             child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty ? Alignment.topLeft : Alignment.centerLeft,
+              alignment: isSelected || ctrl.text.isNotEmpty
+                  ? Alignment.topLeft
+                  : Alignment.centerLeft,
               curve: Curves.linearToEaseOut,
               duration: const Duration(milliseconds: 500),
               child: Text(

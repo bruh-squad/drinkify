@@ -16,6 +16,8 @@ class CreatePartyRoute extends StatefulWidget {
 }
 
 class _CreatePartyRouteState extends State<CreatePartyRoute> {
+  var titleCtrl = TextEditingController();
+
   LatLng? selPoint;
   String? selLocation;
   final mapCtrl = MapController();
@@ -234,6 +236,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             maxChildSize: 1,
             initialChildSize: 0.16,
             minChildSize: 0.16,
+            snap: true,
             builder: (ctx, scrollCtrl) {
               return Container(
                 decoration: const BoxDecoration(
@@ -256,20 +259,18 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 30,
-                          right: 30,
-                        ),
-                        child: SizedBox(
-                          height:
-                              MediaQuery.of(context).size.height * 0.12 - 10,
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.12 - 10,
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                              ),
+                              child: Text(
                                 transl.location.toUpperCase(),
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.2),
@@ -277,17 +278,41 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                   fontSize: 12,
                                 ),
                               ),
-                              Text(
-                                selLocation ?? transl.unknown,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                            ),
+                            Stack(
+                              children: [
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                        ),
+                                        child: Text(
+                                          selLocation ?? transl.unknown,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: double.infinity),
-                            ],
-                          ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    _locationShadow(1),
+                                    _locationShadow(-1),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: double.infinity),
+                          ],
                         ),
                       ),
                       Container(
@@ -300,8 +325,21 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                             topRight: Radius.circular(30),
                           ),
                         ),
-                        child: Column(
-                          children: const [],
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 30,
+                            right: 30,
+                            top: 30,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _formField(
+                                caption: transl.title,
+                                ctrl: titleCtrl,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -309,6 +347,49 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                 ),
               );
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _formField({
+    required String caption,
+    required TextEditingController ctrl,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          caption.toUpperCase(),
+          style: TextStyle(
+            color: Theming.whiteTone.withOpacity(0.3),
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+        ),
+        Container(
+          height: 50,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Theming.whiteTone.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///[leftRight] must be equal 1 or -1
+  Widget _locationShadow(double leftRight) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Theming.whiteTone,
+            blurRadius: 15,
+            spreadRadius: 20,
+            offset: Offset(5 * leftRight, 20),
           ),
         ],
       ),
