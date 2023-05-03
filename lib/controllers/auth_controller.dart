@@ -33,7 +33,7 @@ class AuthController {
 
   Future registerUser(CreateUser user) async {
     var url = '$mainUrl/auth/token/';
-    // TODO: FIX this shit
+    // TODO: fix sending data
     var response = await http.post(
       Uri.parse('$mainUrl/users/'),
       body: {

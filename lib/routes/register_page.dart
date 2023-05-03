@@ -84,7 +84,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           const CircleAvatar(
                             radius: 30,
                             backgroundColor: Theming.bgColorLight,
-                            backgroundImage: AssetImage("assets/images/default_pfp.png"),
+                            backgroundImage:
+                                AssetImage("assets/images/default_pfp.png"),
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -100,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 15),
                 _editField(
                   0,
                   caption: transl.username,
@@ -162,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Container(
                     height: 70,
                     width: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 30),
+                    margin: const EdgeInsets.only(bottom: 15),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
@@ -173,14 +174,21 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         Icon(
                           Icons.date_range_outlined,
-                          color: selectedFieldIndex == 6 ? Theming.primaryColor : Theming.whiteTone,
+                          color: selectedFieldIndex == 6
+                              ? Theming.primaryColor
+                              : Theming.whiteTone,
                           size: 24,
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          dateOfBirthVal == null ? transl.dateOfBirth : DateFormat.yMd(transl.localeName).format(dateOfBirthVal!),
+                          dateOfBirthVal == null
+                              ? transl.dateOfBirth
+                              : DateFormat.yMd(transl.localeName)
+                                  .format(dateOfBirthVal!),
                           style: TextStyle(
-                            color: selectedFieldIndex == 6 ? Theming.primaryColor : Theming.whiteTone,
+                            color: selectedFieldIndex == 6
+                                ? Theming.primaryColor
+                                : Theming.whiteTone,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -189,8 +197,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-
-                // Register button
                 Center(
                   child: GestureDetector(
                     onTap: () {
@@ -200,19 +206,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           email: emailCtrl.text,
                           firstName: firstNameCtrl.text,
                           lastName: lastNameCtrl.text,
-                          dateOfBirth: dateOfBirthVal!, //TODO fix the NULL value
+                          dateOfBirth:
+                              dateOfBirthVal!, //TODO fix the NULL value
                           password: passwordCtrl.text,
                         ),
                       );
                     },
-                    child: Container(
+                    child: AnimatedContainer(
+                      width: double.infinity,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.linearToEaseOut,
+                      alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 10,
+                        vertical: 15,
                       ),
                       decoration: BoxDecoration(
                         color: Theming.primaryColor,
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         transl.signUp,
@@ -225,7 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 15),
                 Center(
                   child: GestureDetector(
                     onTap: () => context.go("/login"),
@@ -261,6 +271,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  //TODO: add multi-field propery for displaying multiple field in the same row eg. name and last name
   Widget _editField(
     int index, {
     required String caption,
@@ -269,59 +280,72 @@ class _RegisterPageState extends State<RegisterPage> {
     required TextEditingController ctrl,
     bool isPassword = false,
   }) {
-    const double radius = 20;
+    const double radius = 10;
     const double iconSize = 24;
 
     bool isSelected = index == selectedFieldIndex;
 
-    return Stack(
-      children: [
-        Container(
-          height: 70,
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 30),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: const Color(0x9F000E1F),
-            borderRadius: BorderRadius.circular(radius),
-          ),
-          child: TextField(
-            onTap: () {
-              setState(() => selectedFieldIndex = index);
-            },
-            obscureText: isPassword,
-            style: const TextStyle(color: Theming.whiteTone),
-            cursorColor: Theming.primaryColor,
-            controller: ctrl,
-            decoration: InputDecoration(
-              hintText: placeholder,
-              hintStyle: TextStyle(
-                fontSize: 14,
-                color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            height: 60,
+            width: double.infinity,
+            margin: const EdgeInsets.only(top: 10),
+            alignment: Alignment.center,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.linearToEaseOut,
+            decoration: BoxDecoration(
+              color: Theming.bgColor,
+              border: Border.all(
+                width: 1.5,
+                color: isSelected
+                    ? Theming.primaryColor
+                    : Theming.whiteTone.withOpacity(0.2),
               ),
-              prefixIcon: Icon(
-                icon,
-                color: isSelected ? Theming.primaryColor : Theming.whiteTone,
-                size: iconSize,
+              borderRadius: BorderRadius.circular(radius),
+            ),
+            child: TextField(
+              onTap: () {
+                setState(() => selectedFieldIndex = index);
+              },
+              obscureText: isPassword,
+              style: TextStyle(
+                  color: Theming.whiteTone, letterSpacing: isPassword ? 6 : 0),
+              cursorColor: Theming.primaryColor,
+              controller: ctrl,
+              decoration: InputDecoration(
+                hintText: placeholder,
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  letterSpacing: 0,
+                  color: isSelected
+                      ? Theming.whiteTone.withOpacity(0.4)
+                      : Colors.transparent,
+                ),
+                prefixIcon: Icon(
+                  icon,
+                  color: isSelected
+                      ? Theming.primaryColor
+                      : Theming.whiteTone.withOpacity(0.2),
+                  size: iconSize,
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
             ),
           ),
-        ),
-        SizedBox(
-          height: 80,
-          child: AnimatedPadding(
+          AnimatedPadding(
             padding: EdgeInsets.only(
-              top: isSelected || ctrl.text.isNotEmpty ? 7 : 0,
+              top: isSelected || ctrl.text.isNotEmpty ? 0 : 30,
               left: iconSize * 2,
               bottom: isSelected || ctrl.text.isNotEmpty ? 0 : 10,
             ),
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
-            child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty ? Alignment.topLeft : Alignment.centerLeft,
-              curve: Curves.linearToEaseOut,
-              duration: const Duration(milliseconds: 500),
+            child: Container(
+              color: Theming.bgColor,
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
                 caption,
                 style: TextStyle(
@@ -332,8 +356,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

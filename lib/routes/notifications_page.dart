@@ -70,10 +70,10 @@ class NotificationsPage extends StatelessWidget {
     );
   }
 
+  ///TODO on click show [Dialog] with information about the notification
   Widget _notificationItem(BuildContext ctx) {
     return InkWell(
       onTap: () {
-        ///TODO on click show [Dialog] with information about the notification
         showModalBottomSheet(
           context: ctx,
           builder: (_) {

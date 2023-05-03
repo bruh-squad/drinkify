@@ -65,7 +65,7 @@ class _UserInfoState extends State<UserInfo> {
                   child: const Text(
                     "@Jumpee",
                     style: TextStyle(
-                      color: Color(0xFFAEFF00),
+                      color: Theming.greenTone,
                     ),
                   ),
                 ),

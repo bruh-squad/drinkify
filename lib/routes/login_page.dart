@@ -51,11 +51,11 @@ class _LoginPageState extends State<LoginPage> {
             Text(
               transl.fillFieldsBelow,
               style: TextStyle(
-                color: Theming.whiteTone.withOpacity(0.5),
+                color: Theming.whiteTone.withOpacity(0.7),
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
             _editField(
               0,
               caption: transl.email,
@@ -71,6 +71,38 @@ class _LoginPageState extends State<LoginPage> {
               ctrl: authCtrl.passwordCtrl,
               isPassword: true,
             ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                //TODO remember user's password
+              },
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: 1.5,
+                          color: Theming.whiteTone.withOpacity(0.2),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    transl.rememberMe,
+                    style: TextStyle(
+                      color: Theming.whiteTone.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
             Center(
               child: GestureDetector(
                 onTap: () {
@@ -79,17 +111,20 @@ class _LoginPageState extends State<LoginPage> {
                     authCtrl.loginUser();
                   }
                 },
-                child: Container(
+                child: AnimatedContainer(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.linearToEaseOut,
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 10,
+                    vertical: 15,
                   ),
                   decoration: BoxDecoration(
                     color: authCtrl.emailCtrl.text == "" ||
                             authCtrl.passwordCtrl.text == ""
                         ? Theming.whiteTone.withOpacity(0.7)
                         : Theming.primaryColor,
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
                     transl.logIn,
@@ -102,105 +137,30 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            Center(
+            const SizedBox(height: 15),
+            Align(
+              alignment: Alignment.center,
               child: GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Theming.bgColor,
-                    enableDrag: false,
-                    isScrollControlled: true,
-                    builder: (ctx) {
-                      return SizedBox(
-                        height: MediaQuery.of(ctx).size.height / 1.3,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 30,
-                            right: 30,
-                            top: 30,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                transl.passwordReset,
-                                style: const TextStyle(
-                                  color: Theming.whiteTone,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              const SizedBox(height: 30),
-                              _editField(
-                                2,
-                                caption: transl.email,
-                                icon: Icons.email_outlined,
-                                placeholder: transl.emailField,
-                                ctrl: passwordResetEmailCtrl,
-                              ),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 30,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Theming.primaryColor,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Text(
-                                    transl.resetPassword,
-                                    style: const TextStyle(
-                                      color: Theming.whiteTone,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                onTap: () => context.go("/register"),
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: transl.dontHaveAnAccount,
+                        style: TextStyle(
+                          color: Theming.whiteTone.withOpacity(0.5),
+                          fontSize: 16,
                         ),
-                      );
-                    },
-                  );
-                },
-                child: Text(
-                  transl.forgotPassword,
-                  style: const TextStyle(
-                    color: Theming.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Center(
-                child: GestureDetector(
-                  onTap: () => context.go("/register"),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: transl.dontHaveAnAccount,
-                          style: TextStyle(
-                            color: Theming.whiteTone.withOpacity(0.5),
-                            fontSize: 16,
-                          ),
+                      ),
+                      TextSpan(
+                        text: " ${transl.signUp}",
+                        style: const TextStyle(
+                          color: Theming.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                        TextSpan(
-                          text: " ${transl.signUp}",
-                          style: const TextStyle(
-                            color: Theming.primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -220,63 +180,72 @@ class _LoginPageState extends State<LoginPage> {
     required TextEditingController ctrl,
     bool isPassword = false,
   }) {
-    const double radius = 20;
+    const double radius = 10;
     const double iconSize = 24;
 
     bool isSelected = index == selectedFieldIndex;
 
-    return Stack(
-      children: [
-        Container(
-          height: 70,
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 30),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: const Color(0x9F000E1F),
-            borderRadius: BorderRadius.circular(radius),
-          ),
-          child: TextField(
-            onTap: () {
-              setState(() => selectedFieldIndex = index);
-            },
-            obscureText: isPassword,
-            style: const TextStyle(color: Theming.whiteTone),
-            cursorColor: Theming.primaryColor,
-            controller: ctrl,
-            decoration: InputDecoration(
-              hintText: placeholder,
-              hintStyle: TextStyle(
-                fontSize: 14,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            height: 60,
+            width: double.infinity,
+            margin: const EdgeInsets.only(top: 10),
+            alignment: Alignment.center,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.linearToEaseOut,
+            decoration: BoxDecoration(
+              color: Theming.bgColor,
+              border: Border.all(
+                width: 1.5,
                 color: isSelected
-                    ? Theming.whiteTone.withOpacity(0.4)
-                    : Colors.transparent,
+                    ? Theming.primaryColor
+                    : Theming.whiteTone.withOpacity(0.2),
               ),
-              prefixIcon: Icon(
-                icon,
-                color: isSelected ? Theming.primaryColor : Theming.whiteTone,
-                size: iconSize,
+              borderRadius: BorderRadius.circular(radius),
+            ),
+            child: TextField(
+              onTap: () {
+                setState(() => selectedFieldIndex = index);
+              },
+              obscureText: isPassword,
+              style: TextStyle(
+                  color: Theming.whiteTone, letterSpacing: isPassword ? 6 : 0),
+              cursorColor: Theming.primaryColor,
+              controller: ctrl,
+              decoration: InputDecoration(
+                hintText: placeholder,
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  letterSpacing: 0,
+                  color: isSelected
+                      ? Theming.whiteTone.withOpacity(0.4)
+                      : Colors.transparent,
+                ),
+                prefixIcon: Icon(
+                  icon,
+                  color: isSelected
+                      ? Theming.primaryColor
+                      : Theming.whiteTone.withOpacity(0.2),
+                  size: iconSize,
+                ),
+                border: InputBorder.none,
               ),
-              border: InputBorder.none,
             ),
           ),
-        ),
-        SizedBox(
-          height: 80,
-          child: AnimatedPadding(
+          AnimatedPadding(
             padding: EdgeInsets.only(
-              top: isSelected || ctrl.text.isNotEmpty ? 7 : 0,
+              top: isSelected || ctrl.text.isNotEmpty ? 0 : 30,
               left: iconSize * 2,
               bottom: isSelected || ctrl.text.isNotEmpty ? 0 : 10,
             ),
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
-            child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty
-                  ? Alignment.topLeft
-                  : Alignment.centerLeft,
-              curve: Curves.linearToEaseOut,
-              duration: const Duration(milliseconds: 500),
+            child: Container(
+              color: Theming.bgColor,
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
                 caption,
                 style: TextStyle(
@@ -287,8 +256,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
