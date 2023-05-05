@@ -10,7 +10,10 @@ class NoMapsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var transl = LocaleSupport.appTranslates(context);
 
-    final Size dialogSize = Size(MediaQuery.of(context).size.width - 80, 200);
+    final Size dialogSize = Size(
+      MediaQuery.of(context).size.width - 80,
+      200,
+    );
 
     return GestureDetector(
       onTap: () => Navigator.of(context).pop(),

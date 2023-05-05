@@ -11,6 +11,7 @@ class Parties extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Column(

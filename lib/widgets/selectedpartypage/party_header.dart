@@ -59,7 +59,8 @@ class _PartyHeaderState extends State<PartyHeader> {
     }
     if (mounted) {
       setState(
-          () => partyLocation = "${place.country}, $locArea, ${place.street}");
+        () => partyLocation = "${place.country}, $locArea, ${place.street}",
+      );
     }
   }
 

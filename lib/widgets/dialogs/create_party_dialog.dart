@@ -7,7 +7,10 @@ class CreatePartyDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size dialogSize = Size(MediaQuery.of(context).size.width - 80, 200);
+    final Size dialogSize = Size(
+      MediaQuery.of(context).size.width - 80,
+      200,
+    );
 
     return Dialog(
       backgroundColor: Theming.bgColor,

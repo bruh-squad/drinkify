@@ -14,7 +14,7 @@ Future<bool> openMap({
   final List<AvailableMap> installedMaps = await MapLauncher.installedMaps;
 
   if (installedMaps.isNotEmpty) {
-    MapLauncher.showMarker(
+    await MapLauncher.showMarker(
       mapType: installedMaps[0].mapType,
       coords: Coords(lat, lng),
       title: "",

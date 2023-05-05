@@ -25,7 +25,7 @@ class SelectedPartyPage extends StatefulWidget {
 class _SelectedPartyPage extends State<SelectedPartyPage> {
   late bool showMore;
   late LatLng userLocation;
-  bool showUserLocation = false;
+  late bool showUserLocation;
 
   Future<void> _getUserLocation() async {
     late bool serviceEnabled;
@@ -65,6 +65,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
     super.initState();
     showMore = false;
     userLocation = LatLng(52.237049, 18.017532);
+    showUserLocation = false;
     _getUserLocation();
   }
 

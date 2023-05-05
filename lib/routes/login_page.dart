@@ -13,8 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  AuthController authCtrl = AuthController();
-  var passwordResetEmailCtrl = TextEditingController();
+  late final AuthController authCtrl;
+  late final TextEditingController passwordResetEmailCtrl;
   late bool rememberPassword;
 
   late int? selectedFieldIndex;
@@ -22,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    authCtrl = AuthController();
+    passwordResetEmailCtrl = TextEditingController();
     rememberPassword = false;
     selectedFieldIndex = null;
   }

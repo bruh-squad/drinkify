@@ -10,6 +10,7 @@ class OrganizationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return Scaffold(
       backgroundColor: Theming.bgColor,
       appBar: AppBar(

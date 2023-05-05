@@ -17,12 +17,22 @@ URL = "http://127.0.0.1:8000"
 ## Running the App
 
 Once all dependencies have been installed, run the following command to start the app:
-
 ```
 flutter run
 ```
 
-## Using an API
+## Building and installing
+In order to build the app run:
+```
+flutter build **[ apk / appbundle / ios ]** --release
+```
+
+Once you've done that, run the following command:
+```
+flutter install
+```
+
+## API
 
 Drinkify uses [liquor-lovers](https://github.com/Kawaii-Addicts/liquor-lovers). Make sure to install it and run in order to use all the features provided by the app.
 

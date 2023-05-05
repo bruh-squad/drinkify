@@ -19,14 +19,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
   var firstNameCtrl = TextEditingController();
   var lastNameCtrl = TextEditingController();
   var oldPasswordCtrl = TextEditingController();
-  var newPasswordNameCtrl = TextEditingController();
+  var newPasswordCtrl = TextEditingController();
 
   late int? selectedFieldIndex;
 
   @override
   void initState() {
     super.initState();
+    usernameCtrl = TextEditingController();
+    emailCtrl = TextEditingController();
+    firstNameCtrl = TextEditingController();
+    lastNameCtrl = TextEditingController();
+    oldPasswordCtrl = TextEditingController();
+    newPasswordCtrl = TextEditingController();
     selectedFieldIndex = null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    usernameCtrl.dispose();
+    emailCtrl.dispose();
+    firstNameCtrl.dispose();
+    lastNameCtrl.dispose();
+    oldPasswordCtrl.dispose();
+    newPasswordCtrl.dispose();
   }
 
   @override
@@ -162,7 +179,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     icon: Icons.lock_outline,
                                     placeholder: transl.newPasswordField,
                                     isPassword: true,
-                                    ctrl: newPasswordNameCtrl,
+                                    ctrl: newPasswordCtrl,
                                   ),
                                   GestureDetector(
                                     onTap: () {},

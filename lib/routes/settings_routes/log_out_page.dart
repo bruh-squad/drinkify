@@ -10,6 +10,7 @@ class LogoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return SizedBox(
       height: 250,
       child: Column(

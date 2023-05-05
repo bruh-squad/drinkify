@@ -19,6 +19,7 @@ class _UserInfoState extends State<UserInfo> {
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
+
     return Column(
       children: [
         //Parties attended / Profile pic with username / Friends

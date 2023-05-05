@@ -16,11 +16,11 @@ class CreatePartyRoute extends StatefulWidget {
 }
 
 class _CreatePartyRouteState extends State<CreatePartyRoute> {
-  var titleCtrl = TextEditingController();
+  late final TextEditingController titleCtrl;
 
   LatLng? selPoint;
   String? selLocation;
-  final mapCtrl = MapController();
+  late final MapController mapCtrl;
 
   @override
   void setState(VoidCallback fn) {
@@ -99,6 +99,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
   @override
   void initState() {
     super.initState();
+    titleCtrl = TextEditingController();
+    mapCtrl = MapController();
     _getUserLocation(false);
   }
 

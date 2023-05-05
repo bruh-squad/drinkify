@@ -15,7 +15,7 @@ class PartyHolder extends StatelessWidget {
   Widget build(BuildContext context) {
     const double imageAspectRatio = 16 / 6;
 
-    var transl = LocaleSupport.appTranslates(context);
+    final transl = LocaleSupport.appTranslates(context);
 
     return GestureDetector(
       onTap: () => context.push(
@@ -90,7 +90,8 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.yMd(transl.localeName).format(party.startTime),
+                            DateFormat.yMd(transl.localeName)
+                                .format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],
@@ -105,7 +106,8 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.Hm(transl.localeName).format(party.startTime),
+                            DateFormat.Hm(transl.localeName)
+                                .format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],

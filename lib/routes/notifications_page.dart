@@ -62,6 +62,7 @@ class NotificationsPage extends StatelessWidget {
             expandedHeight: 115,
             pinned: true,
             centerTitle: true,
+            shadowColor: Theming.bgColor,
             title: Text(
               transl.notificationsNotifications,
               style: const TextStyle(
@@ -101,7 +102,7 @@ class NotificationsPage extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: SizedBox(
-              height: MediaQuery.of(context).viewPadding.bottom + 65,
+              height: MediaQuery.of(context).viewPadding.bottom + 100,
             ),
           ),
         ],
@@ -121,77 +122,85 @@ class NotificationsPage extends StatelessWidget {
       child: Container(
         height: 100,
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Row(
-            children: [
-              Stack(
-                children: [
-                  const CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Theming.bgColorLight,
-                    backgroundImage: NetworkImage(
-                        "https://imgs.search.brave.com/lek-f6DrXwq-rOwULco3qjCi9C7IH6nhTo_pySkwVdM/rs:fit:1067:1200:1/g:ce/aHR0cDovLzQuYnAu/YmxvZ3Nwb3QuY29t/Ly1LUjJrSGY2Mjhm/MC9VeERaYlR4UkJC/SS9BQUFBQUFBQUF3/OC8wd0xJbFpLWFow/US9zMTYwMC8oMStv/ZisyKSthLmpwZw"),
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        height: 15,
-                        width: 15,
-                        decoration: BoxDecoration(
-                          color: Theming.primaryColor,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Theming.bgColor,
-                            width: 3,
-                          ),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Theming.whiteTone.withOpacity(0.05),
+              width: 1,
+            ),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 30,
+        ),
+        child: Row(
+          children: [
+            Stack(
+              children: [
+                const CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Theming.bgColorLight,
+                  backgroundImage: NetworkImage(
+                      "https://imgs.search.brave.com/lek-f6DrXwq-rOwULco3qjCi9C7IH6nhTo_pySkwVdM/rs:fit:1067:1200:1/g:ce/aHR0cDovLzQuYnAu/YmxvZ3Nwb3QuY29t/Ly1LUjJrSGY2Mjhm/MC9VeERaYlR4UkJC/SS9BQUFBQUFBQUF3/OC8wd0xJbFpLWFow/US9zMTYwMC8oMStv/ZisyKSthLmpwZw"),
+                ),
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      height: 15,
+                      width: 15,
+                      decoration: BoxDecoration(
+                        color: Theming.primaryColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Theming.bgColor,
+                          width: 3,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: transl.invitationFrom,
-                          style: const TextStyle(
-                            color: Theming.whiteTone,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: transl.invitationFrom,
+                        style: const TextStyle(
+                          color: Theming.whiteTone,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                        const TextSpan(
-                          text: " @Ziemniak",
-                          style: TextStyle(
-                            color: Theming.greenTone,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                      ),
+                      const TextSpan(
+                        text: " @Ziemniak",
+                        style: TextStyle(
+                          color: Theming.greenTone,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "12 ${transl.minutesAgo}",
-                    style: TextStyle(
-                      color: Theming.whiteTone.withOpacity(0.5),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
+                ),
+                Text(
+                  "12 ${transl.minutesAgo}",
+                  style: TextStyle(
+                    color: Theming.whiteTone.withOpacity(0.5),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
