@@ -6,7 +6,7 @@ extension Capitalize on String {
   }
 }
 
-/// * Return [true] if opening a map succeded and [false] if failed
+/// Return **true** if opening a map succeded and **false** if failed.
 Future<bool> openMap({
   double lat = 0,
   double lng = 0,

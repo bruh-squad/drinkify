@@ -14,7 +14,10 @@ late AppLocalizations transl;
 
 class PartyHeader extends StatefulWidget {
   final Party party;
-  const PartyHeader({super.key, required this.party});
+  const PartyHeader({
+    required this.party,
+    super.key,
+  });
 
   @override
   State<PartyHeader> createState() => _PartyHeaderState();

@@ -13,7 +13,10 @@ import '/utils/locale_support.dart';
 
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
-  const SelectedPartyPage({Key? key, required this.party}) : super(key: key);
+  const SelectedPartyPage({
+    required this.party,
+    super.key,
+  });
 
   @override
   State<SelectedPartyPage> createState() => _SelectedPartyPage();

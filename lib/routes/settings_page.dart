@@ -48,18 +48,23 @@ class SettingsPage extends StatelessWidget {
               ),
               _settingsItem(
                 caption: transl.editProfile,
+                prefixIcon: Icons.mode_edit_rounded,
                 onTap: () => context.push("/edit-profile"),
               ),
               _settingsItem(
                 caption: transl.organization,
+                prefixIcon: Icons.people_rounded,
                 onTap: () => context.push("/organization"),
               ),
               _settingsItem(
                 caption: transl.privacy,
+                prefixIcon: Icons.privacy_tip_outlined,
                 onTap: () => context.push("/privacy"),
               ),
               _settingsItem(
                 caption: transl.logOut,
+                prefixIcon: Icons.logout_rounded,
+                isLogoutButton: true,
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
@@ -79,6 +84,8 @@ class SettingsPage extends StatelessWidget {
   Widget _settingsItem({
     required String caption,
     required VoidCallback onTap,
+    required IconData prefixIcon,
+    bool isLogoutButton = false,
   }) {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
@@ -96,19 +103,28 @@ class SettingsPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Icon(
+                    prefixIcon,
+                    color: isLogoutButton ? Colors.red : Theming.whiteTone,
+                    size: 26,
+                  ),
+                  const SizedBox(width: 5),
                   Text(
                     caption,
-                    style: const TextStyle(
-                      color: Theming.whiteTone,
+                    style: TextStyle(
+                      color: isLogoutButton ? Colors.red : Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
-                  const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Theming.whiteTone,
+                  const Spacer(),
+                  Visibility(
+                    visible: !isLogoutButton,
+                    child: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: Theming.whiteTone,
+                    ),
                   ),
                 ],
               ),

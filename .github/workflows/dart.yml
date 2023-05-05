@@ -37,7 +37,12 @@ jobs:
       # 12    
       - name: Upgrade Flutter
         run: flutter upgrade
+
       # 13
+      - name: Create .ENV file
+        run: touch .env
+        
+      # 14
       - name: Get dependencies
         run: flutter pub get
 

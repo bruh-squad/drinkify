@@ -18,8 +18,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   int? selectedFieldIndex;
 
-  var emailCtrl = TextEditingController();
   var usernameCtrl = TextEditingController();
+  var emailCtrl = TextEditingController();
   var firstNameCtrl = TextEditingController();
   var lastNameCtrl = TextEditingController();
   var passwordCtrl = TextEditingController();
@@ -29,8 +29,36 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-
     initializeDateFormatting();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    usernameCtrl.dispose();
+    emailCtrl.dispose();
+    firstNameCtrl.dispose();
+    lastNameCtrl.dispose();
+    passwordCtrl.dispose();
+    passwordConfirmCtrl.dispose();
+  }
+
+  bool get _userCanRegister {
+    final List<dynamic> fieldCtrls = [
+      usernameCtrl.text,
+      emailCtrl.text,
+      firstNameCtrl.text,
+      lastNameCtrl.text,
+      passwordCtrl.text,
+      passwordConfirmCtrl.text,
+      dateOfBirthVal,
+    ];
+    for (final i in fieldCtrls) {
+      if (i == "" || i == null) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @override
@@ -105,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 _editField(
                   0,
                   caption: transl.username,
-                  icon: Icons.verified_user_outlined,
+                  icon: Icons.alternate_email_rounded,
                   placeholder: transl.usernameField,
                   ctrl: usernameCtrl,
                 ),
@@ -115,85 +143,100 @@ class _RegisterPageState extends State<RegisterPage> {
                   icon: Icons.email_outlined,
                   placeholder: transl.emailField,
                   ctrl: emailCtrl,
+                  keyboardType: TextInputType.emailAddress,
                 ),
-                _editField(
-                  2,
-                  caption: transl.firstName,
-                  icon: Icons.person_pin_rounded,
-                  placeholder: transl.firstNameField,
-                  ctrl: firstNameCtrl,
-                ),
-                _editField(
-                  3,
-                  caption: transl.lastName,
-                  icon: Icons.person_pin_rounded,
-                  placeholder: transl.lastNameField,
-                  ctrl: lastNameCtrl,
-                ),
-                _editField(
-                  4,
-                  caption: transl.password,
-                  icon: Icons.lock_outline,
-                  placeholder: transl.passwordField,
-                  ctrl: passwordCtrl,
-                  isPassword: true,
-                ),
-                _editField(
-                  5,
-                  caption: transl.confirmPassword,
-                  icon: Icons.lock_outline,
-                  placeholder: transl.passwordField,
-                  ctrl: passwordConfirmCtrl,
-                  isPassword: true,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() => selectedFieldIndex = null);
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(DateTime.now().year - 100),
-                      lastDate: DateTime.now(),
-                      useRootNavigator: true,
-                      locale: const Locale("en"),
-                    ).then((date) {
-                      setState(() => dateOfBirthVal = date);
-                    });
-                  },
-                  child: Container(
-                    height: 70,
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 15),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: const Color(0x9F000E1F),
-                      borderRadius: BorderRadius.circular(20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _editField(
+                      2,
+                      caption: transl.firstName,
+                      icon: Icons.person_pin_rounded,
+                      placeholder: transl.firstNameField,
+                      ctrl: firstNameCtrl,
+                      manyInRow: true,
+                      keyboardType: TextInputType.name,
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.date_range_outlined,
-                          color: selectedFieldIndex == 6
-                              ? Theming.primaryColor
-                              : Theming.whiteTone,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          dateOfBirthVal == null
-                              ? transl.dateOfBirth
-                              : DateFormat.yMd(transl.localeName)
-                                  .format(dateOfBirthVal!),
-                          style: TextStyle(
-                            color: selectedFieldIndex == 6
-                                ? Theming.primaryColor
-                                : Theming.whiteTone,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                    _editField(
+                      3,
+                      caption: transl.lastName,
+                      icon: Icons.contact_emergency_rounded,
+                      placeholder: transl.lastNameField,
+                      ctrl: lastNameCtrl,
+                      manyInRow: true,
+                      keyboardType: TextInputType.name,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _editField(
+                      4,
+                      caption: transl.password,
+                      icon: Icons.lock_outline,
+                      placeholder: transl.passwordField,
+                      ctrl: passwordCtrl,
+                      isPassword: true,
+                      manyInRow: true,
+                    ),
+                    _editField(
+                      5,
+                      caption: transl.confirmPassword,
+                      icon: Icons.lock_outline,
+                      placeholder: transl.passwordField,
+                      ctrl: passwordConfirmCtrl,
+                      isPassword: true,
+                      manyInRow: true,
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: GestureDetector(
+                    onTap: () async {
+                      setState(() => selectedFieldIndex = null);
+                      var dateVal = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(DateTime.now().year - 100),
+                        lastDate: DateTime.now(),
+                        useRootNavigator: true,
+                        locale: Locale(transl.localeName),
+                      );
+                      setState(() => dateOfBirthVal = dateVal);
+                    },
+                    child: Container(
+                      height: 70,
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(bottom: 15),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: const Color(0x9F000E1F),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.date_range_outlined,
+                            color: Theming.whiteTone,
+                            size: 24,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 12),
+                          Text(
+                            dateOfBirthVal == null
+                                ? transl.dateOfBirth
+                                : DateFormat.yMd(transl.localeName)
+                                    .format(dateOfBirthVal!),
+                            style: const TextStyle(
+                              color: Theming.whiteTone,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -221,7 +264,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         vertical: 15,
                       ),
                       decoration: BoxDecoration(
-                        color: Theming.primaryColor,
+                        color: _userCanRegister
+                            ? Theming.primaryColor
+                            : Theming.whiteTone.withOpacity(0.7),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
@@ -271,14 +316,15 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  //TODO: add multi-field propery for displaying multiple field in the same row eg. name and last name
   Widget _editField(
     int index, {
     required String caption,
     required IconData icon,
     required String placeholder,
     required TextEditingController ctrl,
+    bool manyInRow = false,
     bool isPassword = false,
+    TextInputType? keyboardType,
   }) {
     const double radius = 10;
     const double iconSize = 24;
@@ -291,8 +337,11 @@ class _RegisterPageState extends State<RegisterPage> {
         children: [
           AnimatedContainer(
             height: 60,
-            width: double.infinity,
+            width: manyInRow
+                ? MediaQuery.of(context).size.width / 2 - 30 - 10
+                : double.infinity,
             margin: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(right: 10),
             alignment: Alignment.center,
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
@@ -311,6 +360,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 setState(() => selectedFieldIndex = index);
               },
               obscureText: isPassword,
+              keyboardType: keyboardType,
               style: TextStyle(
                   color: Theming.whiteTone, letterSpacing: isPassword ? 6 : 0),
               cursorColor: Theming.primaryColor,

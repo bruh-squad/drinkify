@@ -15,13 +15,27 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   AuthController authCtrl = AuthController();
   var passwordResetEmailCtrl = TextEditingController();
+  late bool rememberPassword;
 
   late int? selectedFieldIndex;
 
   @override
   void initState() {
     super.initState();
+    rememberPassword = false;
     selectedFieldIndex = null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    authCtrl.emailCtrl.dispose();
+    authCtrl.passwordCtrl.dispose();
+    passwordResetEmailCtrl.dispose();
+  }
+
+  bool get _userCanLogin {
+    return !(authCtrl.emailCtrl.text == "" || authCtrl.passwordCtrl.text == "");
   }
 
   @override
@@ -62,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
               icon: Icons.email_outlined,
               placeholder: transl.emailField,
               ctrl: authCtrl.emailCtrl,
+              keyboardType: TextInputType.emailAddress,
             ),
             _editField(
               1,
@@ -74,23 +89,52 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
-                //TODO remember user's password
+                setState(() => rememberPassword = !rememberPassword);
               },
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 1.5,
-                          color: Theming.whiteTone.withOpacity(0.2),
+                  Stack(
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 1.5,
+                            color: Theming.whiteTone.withOpacity(0.2),
+                          ),
                         ),
                       ),
-                    ),
+                      Positioned.fill(
+                        child: Center(
+                          child: AnimatedContainer(
+                            height: rememberPassword ? 20 : 0,
+                            width: rememberPassword ? 20 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.bounceInOut,
+                            decoration: const BoxDecoration(
+                              color: Theming.primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Center(
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 150),
+                            opacity: rememberPassword ? 1 : 0,
+                            curve: Curves.bounceInOut,
+                            child: const Icon(
+                              Icons.check_rounded,
+                              color: Theming.whiteTone,
+                              size: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(width: 5),
                   Text(
@@ -106,8 +150,7 @@ class _LoginPageState extends State<LoginPage> {
             Center(
               child: GestureDetector(
                 onTap: () {
-                  if (authCtrl.emailCtrl.text != "" ||
-                      authCtrl.passwordCtrl.text != "") {
+                  if (_userCanLogin) {
                     authCtrl.loginUser();
                   }
                 },
@@ -120,10 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                     vertical: 15,
                   ),
                   decoration: BoxDecoration(
-                    color: authCtrl.emailCtrl.text == "" ||
-                            authCtrl.passwordCtrl.text == ""
-                        ? Theming.whiteTone.withOpacity(0.7)
-                        : Theming.primaryColor,
+                    color: _userCanLogin
+                        ? Theming.primaryColor
+                        : Theming.whiteTone.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
@@ -179,6 +221,7 @@ class _LoginPageState extends State<LoginPage> {
     required String placeholder,
     required TextEditingController ctrl,
     bool isPassword = false,
+    TextInputType? keyboardType,
   }) {
     const double radius = 10;
     const double iconSize = 24;
@@ -193,6 +236,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 60,
             width: double.infinity,
             margin: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(right: 10),
             alignment: Alignment.center,
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
@@ -211,6 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                 setState(() => selectedFieldIndex = index);
               },
               obscureText: isPassword,
+              keyboardType: keyboardType,
               style: TextStyle(
                   color: Theming.whiteTone, letterSpacing: isPassword ? 6 : 0),
               cursorColor: Theming.primaryColor,

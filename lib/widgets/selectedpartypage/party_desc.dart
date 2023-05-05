@@ -5,8 +5,8 @@ import '/utils/theming.dart';
 class PartyDesc extends StatelessWidget {
   final String description;
   const PartyDesc({
-    super.key,
     required this.description,
+    super.key,
   });
 
   @override

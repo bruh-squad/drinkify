@@ -4,8 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
 
-import '../widgets/custom_floating_button.dart';
+import '../widgets/glass_morphism.dart';
 import '/utils/locale_support.dart';
+import '../widgets/dialogs/notification_sheet.dart';
 
 late AppLocalizations transl;
 
@@ -15,54 +16,92 @@ class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     transl = LocaleSupport.appTranslates(context);
+
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      appBar: AppBar(
-        backgroundColor: Theming.bgColor,
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: IconButton(
-            onPressed: () => context.pop(),
-            icon: const Icon(
-              Icons.arrow_back_ios_rounded,
-              color: Theming.whiteTone,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 14, bottom: 15),
+        child: GestureDetector(
+          onTap: () {
+            //TODO mark notifications as read
+          },
+          child: GlassMorphism(
+            blur: 10,
+            opacity: 0.1,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.linearToEaseOut,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 20,
+              ),
+              child: Text(
+                transl.markAsRead,
+                style: const TextStyle(
+                  color: Theming.primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
             ),
-          ),
-        ),
-        title: Text(
-          transl.notificationsNotifications,
-          style: const TextStyle(
-            color: Theming.whiteTone,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
           ),
         ),
       ),
 
       // Notification list
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                for (int i = 0; i < 12; i++) _notificationItem(context),
-                const SizedBox(
-                  height: 150,
-                ),
-              ],
-            ),
-          ),
-          CustomFloatingButton(
-            backgroundColor: Theming.primaryColor,
-            onTap: () {},
-            child: Text(
-              transl.markAsRead,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Theming.bgColor,
+            surfaceTintColor: Theming.bgColor,
+            expandedHeight: 115,
+            pinned: true,
+            centerTitle: true,
+            title: Text(
+              transl.notificationsNotifications,
               style: const TextStyle(
                 color: Theming.whiteTone,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
+                backgroundColor: Theming.bgColor,
               ),
+            ),
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: IconButton(
+                onPressed: () => context.pop(),
+                icon: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Theming.whiteTone,
+                ),
+              ),
+            ),
+            flexibleSpace: const FlexibleSpaceBar(
+              centerTitle: true,
+              title: Text(
+                "5 notifications",
+                style: TextStyle(
+                  color: Theming.primaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (ctx, idx) => _notificationItem(ctx),
+              childCount: 20,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: MediaQuery.of(context).viewPadding.bottom + 65,
             ),
           ),
         ],
@@ -70,15 +109,12 @@ class NotificationsPage extends StatelessWidget {
     );
   }
 
-  ///TODO on click show [Dialog] with information about the notification
   Widget _notificationItem(BuildContext ctx) {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
           context: ctx,
-          builder: (_) {
-            return const Dialog();
-          },
+          builder: (_) => const NotificationSheet(),
         );
       },
       splashColor: Theming.whiteTone.withOpacity(0.05),
@@ -90,11 +126,32 @@ class NotificationsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Row(
             children: [
-              const CircleAvatar(
-                radius: 30,
-                backgroundColor: Theming.bgColorLight,
-                backgroundImage: NetworkImage(
-                    "https://imgs.search.brave.com/lek-f6DrXwq-rOwULco3qjCi9C7IH6nhTo_pySkwVdM/rs:fit:1067:1200:1/g:ce/aHR0cDovLzQuYnAu/YmxvZ3Nwb3QuY29t/Ly1LUjJrSGY2Mjhm/MC9VeERaYlR4UkJC/SS9BQUFBQUFBQUF3/OC8wd0xJbFpLWFow/US9zMTYwMC8oMStv/ZisyKSthLmpwZw"),
+              Stack(
+                children: [
+                  const CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Theming.bgColorLight,
+                    backgroundImage: NetworkImage(
+                        "https://imgs.search.brave.com/lek-f6DrXwq-rOwULco3qjCi9C7IH6nhTo_pySkwVdM/rs:fit:1067:1200:1/g:ce/aHR0cDovLzQuYnAu/YmxvZ3Nwb3QuY29t/Ly1LUjJrSGY2Mjhm/MC9VeERaYlR4UkJC/SS9BQUFBQUFBQUF3/OC8wd0xJbFpLWFow/US9zMTYwMC8oMStv/ZisyKSthLmpwZw"),
+                  ),
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        height: 15,
+                        width: 15,
+                        decoration: BoxDecoration(
+                          color: Theming.primaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theming.bgColor,
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(width: 10),
               Column(
@@ -115,7 +172,7 @@ class NotificationsPage extends StatelessWidget {
                         const TextSpan(
                           text: " @Ziemniak",
                           style: TextStyle(
-                            color: Color(0xFFAEFF00),
+                            color: Theming.greenTone,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -132,12 +189,6 @@ class NotificationsPage extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-              const Spacer(),
-              const Icon(
-                Icons.circle,
-                size: 8,
-                color: Theming.primaryColor,
               ),
             ],
           ),
