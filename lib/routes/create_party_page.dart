@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:location/location.dart';
 
+import '../widgets/glass_morphism.dart';
 import '../utils/locale_support.dart';
 import '../utils/theming.dart';
 
@@ -29,7 +30,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     }
   }
 
-  void _getUserLocation(bool selectLocation) async {
+  ///[selectLocation] must be true if you want to put marker on user's location after collecting coordinates
+  void _getUserLocation({bool selectLocation = false}) async {
     bool serviceEnabled;
     PermissionStatus permissionGranted;
     final Location location = Location();
@@ -96,12 +98,15 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     }
   }
 
+  late bool _isFullyScrolled;
+
   @override
   void initState() {
     super.initState();
+    _isFullyScrolled = false;
     titleCtrl = TextEditingController();
     mapCtrl = MapController();
-    _getUserLocation(false);
+    _getUserLocation(selectLocation: false);
   }
 
   @override
@@ -110,6 +115,42 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 14, bottom: 15),
+        child: AnimatedScale(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOutBack,
+          scale: _isFullyScrolled ? 1 : 0,
+          child: GestureDetector(
+            onTap: () {},
+            child: GlassMorphism(
+              blur: 10,
+              opacity: 0.1,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(100),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.linearToEaseOut,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20,
+                ),
+                child: Text(
+                  transl.createAParty,
+                  style: const TextStyle(
+                    color: Theming.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           FlutterMap(
@@ -205,7 +246,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => _getUserLocation(true),
+                  onTap: () => _getUserLocation(selectLocation: true),
                   child: Container(
                     height: 40,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -234,121 +275,137 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
               ],
             ),
           ),
-          DraggableScrollableSheet(
-            maxChildSize: 1,
-            initialChildSize: 0.16,
-            minChildSize: 0.16,
-            snap: true,
-            builder: (ctx, scrollCtrl) {
-              return Container(
-                decoration: const BoxDecoration(
-                  color: Theming.whiteTone,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+          NotificationListener<DraggableScrollableNotification>(
+            onNotification: (notif) {
+              final double dragRatio = (notif.extent - notif.minExtent) /
+                  (notif.maxExtent - notif.minExtent);
+
+              if (dragRatio >= 0.9 && _isFullyScrolled != true) {
+                setState(() => _isFullyScrolled = true);
+              }
+              if (dragRatio < 0.9 && _isFullyScrolled != false) {
+                setState(() => _isFullyScrolled = false);
+              }
+
+              return true;
+            },
+            child: DraggableScrollableSheet(
+              maxChildSize: 1,
+              initialChildSize: 0.16,
+              minChildSize: 0.16,
+              snap: true,
+              builder: (ctx, scrollCtrl) {
+                return Container(
+                  decoration: const BoxDecoration(
+                    color: Theming.whiteTone,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
                   ),
-                ),
-                child: SingleChildScrollView(
-                  controller: scrollCtrl,
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 5,
-                        width: MediaQuery.of(context).size.width / 5,
-                        margin: const EdgeInsets.only(top: 5),
-                        decoration: BoxDecoration(
-                          color: Theming.bgColor.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.12 - 10,
-                        width: double.infinity,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                              ),
-                              child: Text(
-                                transl.location.toUpperCase(),
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.2),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            Stack(
-                              children: [
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                        ),
-                                        child: Text(
-                                          selLocation ?? transl.unknown,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    _locationShadow(1),
-                                    _locationShadow(-1),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: double.infinity),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.88,
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          color: Theming.bgColor,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
+                  child: SingleChildScrollView(
+                    controller: scrollCtrl,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 5,
+                          width: MediaQuery.of(context).size.width / 5,
+                          margin: const EdgeInsets.only(top: 5),
+                          decoration: BoxDecoration(
+                            color: Theming.bgColor.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 30,
-                            right: 30,
-                            top: 30,
-                          ),
+                        SizedBox(
+                          height:
+                              MediaQuery.of(context).size.height * 0.12 - 10,
+                          width: double.infinity,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _formField(
-                                caption: transl.title,
-                                ctrl: titleCtrl,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                ),
+                                child: Text(
+                                  transl.location.toUpperCase(),
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.2),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
+                              Stack(
+                                children: [
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 30,
+                                          ),
+                                          child: Text(
+                                            selLocation ?? transl.unknown,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      _locationShadow(1),
+                                      _locationShadow(-1),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: double.infinity),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.88,
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            color: Theming.bgColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 30,
+                              right: 30,
+                              top: 30,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _formField(
+                                  caption: transl.title,
+                                  ctrl: titleCtrl,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -362,20 +419,30 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          caption.toUpperCase(),
-          style: TextStyle(
-            color: Theming.whiteTone.withOpacity(0.3),
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
+        Padding(
+          padding: const EdgeInsets.only(left: 15 / 2),
+          child: Text(
+            caption.toUpperCase(),
+            style: TextStyle(
+              color: Theming.whiteTone.withOpacity(0.3),
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
           ),
         ),
         Container(
           height: 50,
           width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 15 / 2),
           decoration: BoxDecoration(
             color: Theming.whiteTone.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: const TextField(
+            cursorColor: Theming.primaryColor,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+            ),
           ),
         ),
       ],

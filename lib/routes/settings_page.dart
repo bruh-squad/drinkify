@@ -48,7 +48,7 @@ class SettingsPage extends StatelessWidget {
               ),
               _settingsItem(
                 caption: transl.editProfile,
-                prefixIcon: Icons.mode_edit_rounded,
+                prefixIcon: Icons.mode_edit_outlined,
                 onTap: () => context.push("/edit-profile"),
               ),
               _settingsItem(

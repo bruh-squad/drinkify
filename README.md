@@ -24,7 +24,7 @@ flutter run
 ## Building and installing
 In order to build the app run:
 ```
-flutter build **[ apk / appbundle / ios ]** --release
+flutter build [apk / appbundle / ios] --release
 ```
 
 Once you've done that, run the following command:
