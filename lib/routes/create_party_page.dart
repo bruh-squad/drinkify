@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:location/location.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../widgets/glass_morphism.dart';
 import '../utils/locale_support.dart';
@@ -17,11 +18,18 @@ class CreatePartyRoute extends StatefulWidget {
 }
 
 class _CreatePartyRouteState extends State<CreatePartyRoute> {
+  LatLng? selPoint;
+  DateTime? startTime;
+  DateTime? endTime;
+
+  late AppLocalizations transl;
+
   late final TextEditingController titleCtrl;
 
-  LatLng? selPoint;
   String? selLocation;
   late final MapController mapCtrl;
+  late bool isFullyScrolled;
+  int? selectedFieldIndex;
 
   @override
   void setState(VoidCallback fn) {
@@ -98,12 +106,10 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     }
   }
 
-  late bool _isFullyScrolled;
-
   @override
   void initState() {
     super.initState();
-    _isFullyScrolled = false;
+    isFullyScrolled = false;
     titleCtrl = TextEditingController();
     mapCtrl = MapController();
     _getUserLocation(selectLocation: false);
@@ -111,7 +117,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
+    transl = LocaleSupport.appTranslates(context);
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
@@ -120,7 +126,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
         child: AnimatedScale(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOutBack,
-          scale: _isFullyScrolled ? 1 : 0,
+          scale: isFullyScrolled ? 1 : 0,
           child: GestureDetector(
             onTap: () {},
             child: GlassMorphism(
@@ -280,11 +286,11 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
               final double dragRatio = (notif.extent - notif.minExtent) /
                   (notif.maxExtent - notif.minExtent);
 
-              if (dragRatio >= 0.9 && _isFullyScrolled != true) {
-                setState(() => _isFullyScrolled = true);
+              if (dragRatio >= 0.9 && isFullyScrolled != true) {
+                setState(() => isFullyScrolled = true);
               }
-              if (dragRatio < 0.9 && _isFullyScrolled != false) {
-                setState(() => _isFullyScrolled = false);
+              if (dragRatio < 0.9 && isFullyScrolled != false) {
+                setState(() => isFullyScrolled = false);
               }
 
               return true;
@@ -393,8 +399,39 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 _formField(
+                                  0,
                                   caption: transl.title,
+                                  placeholder: transl.addPartyTitle,
+                                  prefixIcon: Icons.label_important_outline,
                                   ctrl: titleCtrl,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 30),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      _dateTimeField(
+                                        1,
+                                        caption: transl.partyStart,
+                                        isStart: true,
+                                      ),
+                                      Text(
+                                        "-",
+                                        style: TextStyle(
+                                          fontSize: 42,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theming.whiteTone
+                                              .withOpacity(0.25),
+                                        ),
+                                      ),
+                                      _dateTimeField(
+                                        2,
+                                        caption: transl.partyEnd,
+                                        isStart: false,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -412,10 +449,16 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     );
   }
 
-  Widget _formField({
+  Widget _formField(
+    int index, {
     required String caption,
+    required String placeholder,
+    required IconData prefixIcon,
     required TextEditingController ctrl,
+    bool manyInRow = false,
   }) {
+    bool isSelected = index == selectedFieldIndex;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -424,28 +467,160 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
           child: Text(
             caption.toUpperCase(),
             style: TextStyle(
-              color: Theming.whiteTone.withOpacity(0.3),
+              color: isSelected
+                  ? Theming.primaryColor
+                  : Theming.whiteTone.withOpacity(0.3),
               fontWeight: FontWeight.bold,
               fontSize: 12,
             ),
           ),
         ),
-        Container(
+        AnimatedContainer(
           height: 50,
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 15 / 2),
+          width: manyInRow
+              ? MediaQuery.of(context).size.width / 2 - 30 - 10
+              : double.infinity,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.linearToEaseOut,
+          padding: const EdgeInsets.only(right: 7.5),
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: Theming.whiteTone.withOpacity(0.1),
             borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              width: 1.5,
+              color: isSelected
+                  ? Theming.primaryColor
+                  : Theming.whiteTone.withOpacity(0.2),
+            ),
           ),
-          child: const TextField(
+          child: TextField(
             cursorColor: Theming.primaryColor,
+            onTap: () {
+              setState(() => selectedFieldIndex = index);
+            },
             decoration: InputDecoration(
+              hintText: placeholder,
+              hintStyle: TextStyle(
+                color: Theming.whiteTone.withOpacity(0.3),
+              ),
+              prefixIcon: Icon(
+                prefixIcon,
+                color: isSelected
+                    ? Theming.primaryColor
+                    : Theming.whiteTone.withOpacity(0.25),
+              ),
               border: InputBorder.none,
             ),
           ),
         ),
+        const SizedBox(height: 30),
       ],
+    );
+  }
+
+  Widget _dateTimeField(
+    int index, {
+    required String caption,
+    required bool isStart,
+  }) {
+    bool isSelected = selectedFieldIndex == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() => selectedFieldIndex = index);
+        //TODO make date and time picker
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15 / 2),
+            child: Text(
+              caption.toUpperCase(),
+              style: TextStyle(
+                color: isSelected
+                    ? Theming.primaryColor
+                    : Theming.whiteTone.withOpacity(0.3),
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+          AnimatedContainer(
+            height: 100,
+            width: MediaQuery.of(context).size.width / 2 - 30 * 2,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.linearToEaseOut,
+            decoration: BoxDecoration(
+              color: Theming.whiteTone.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                width: 1.5,
+                color: isSelected
+                    ? Theming.primaryColor
+                    : Theming.whiteTone.withOpacity(0.2),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  children: [
+                    const SizedBox(width: 10),
+                    Icon(
+                      Icons.date_range_outlined,
+                      color: isSelected
+                          ? Theming.primaryColor
+                          : Theming.whiteTone.withOpacity(0.2),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      transl.partyDate,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: isSelected
+                            ? Theming.primaryColor
+                            : Theming.whiteTone.withOpacity(0.3),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 1.5,
+                  width: MediaQuery.of(context).size.width / 2 - 30 * 2,
+                  color: isSelected
+                      ? Theming.primaryColor
+                      : Theming.whiteTone.withOpacity(0.2),
+                ),
+                Row(
+                  children: [
+                    const SizedBox(width: 10),
+                    Icon(
+                      isStart
+                          ? Icons.wb_sunny_outlined
+                          : Icons.nights_stay_rounded,
+                      color: isSelected
+                          ? Theming.primaryColor
+                          : Theming.whiteTone.withOpacity(0.2),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      transl.partyTime,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: isSelected
+                            ? Theming.primaryColor
+                            : Theming.whiteTone.withOpacity(0.3),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

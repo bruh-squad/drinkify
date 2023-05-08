@@ -102,18 +102,15 @@
     "secret": "Secret",
     "location": "Location",
     "description": "Description",
-    "clear": "Clear",
-    "descOptional": "Description (optional)",
-    "pickDateAndTime": "Pick a date and time",
-    "startDate": "Start date",
-    "startTime": "Start time",
+    "partyStart": "Start",
     "to": "to",
-    "completionDate": "Completion date",
-    "completionTime": "Completion time",
+    "partyEnd": "End",
     "searchAFriend": "Search for a friend",
     "invite": "Invite",
     "create": "Create",
     "creatingParty": "Creating party...",
-    "myLocation": "My location"
+    "myLocation": "My location",
+    "partyDate": "Date",
+    "partyTime": "Time"
 
 }

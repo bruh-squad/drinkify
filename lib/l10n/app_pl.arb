@@ -102,17 +102,14 @@
     "secret": "Sekretna",
     "location": "Lokalizacja",
     "description": "Opis imprezy",
-    "clear": "Wyczyść",
-    "descOptional": "Opis imprezy (opcjonalny)",
-    "pickDateAndTime": "Wybierz datę i godzinę",
-    "startDate": "Data rozpoczęcia",
-    "startTime": "Czas rozpoczęcia",
+    "partyStart": "Początek",
     "to": "do",
-    "completionDate": "Data zakończenia",
-    "completionTime": "Czas zakończenia",
+    "partyEnd": "Koniec",
     "searchAFriend": "Wyszukaj znajomego",
     "invite": "Zaproś",
     "create": "Stwórz",
     "creatingParty": "Tworzenie imprezy...",
-    "myLocation": "Moja lokalizacja"
+    "myLocation": "Moja lokalizacja",
+    "partyDate": "Data",
+    "partyTime": "Godzina"
 }
