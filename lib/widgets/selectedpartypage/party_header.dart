@@ -136,8 +136,7 @@ class _PartyHeaderState extends State<PartyHeader> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.yMd(transl.localeName)
-                        .format(widget.party.startTime),
+                    DateFormat.yMd(transl.localeName).format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],
@@ -152,8 +151,7 @@ class _PartyHeaderState extends State<PartyHeader> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.Hm(transl.localeName)
-                        .format(widget.party.startTime),
+                    DateFormat.Hm(transl.localeName).format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],

@@ -3,10 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
-
-import '../widgets/glass_morphism.dart';
-import '/utils/locale_support.dart';
+import '../utils/locale_support.dart';
 import '../widgets/dialogs/notification_sheet.dart';
+import '../widgets/custom_floating_button.dart';
 
 late AppLocalizations transl;
 
@@ -19,40 +18,10 @@ class NotificationsPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(right: 14, bottom: 15),
-        child: GestureDetector(
-          onTap: () {
-            //TODO mark notifications as read
-          },
-          child: GlassMorphism(
-            blur: 10,
-            opacity: 0.1,
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(100),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.linearToEaseOut,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 20,
-              ),
-              child: Text(
-                transl.markAsRead,
-                style: const TextStyle(
-                  color: Theming.primaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ),
-        ),
+      floatingActionButton: CustomFloatingButton(
+        caption: transl.markAsRead,
+        onTap: () {},
       ),
-
       // Notification list
       body: CustomScrollView(
         slivers: [

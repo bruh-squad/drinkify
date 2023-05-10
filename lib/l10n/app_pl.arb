@@ -102,6 +102,7 @@
     "secret": "Sekretna",
     "location": "Lokalizacja",
     "description": "Opis imprezy",
+    "addPartyDescription": "Dodaj opis imprezy",
     "partyStart": "Początek",
     "to": "do",
     "partyEnd": "Koniec",
@@ -111,5 +112,6 @@
     "creatingParty": "Tworzenie imprezy...",
     "myLocation": "Moja lokalizacja",
     "partyDate": "Data",
-    "partyTime": "Godzina"
+    "partyTime": "Godzina",
+    "clearDescription": "Wyczyść"
 }

@@ -1,3 +1,5 @@
+import 'package:drinkify/routes/create_party_routes/description_page.dart';
+import 'package:drinkify/widgets/custom_floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +8,6 @@ import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:location/location.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../widgets/glass_morphism.dart';
 import '../utils/locale_support.dart';
 import '../utils/theming.dart';
 
@@ -18,13 +19,14 @@ class CreatePartyRoute extends StatefulWidget {
 }
 
 class _CreatePartyRouteState extends State<CreatePartyRoute> {
+  //List of elements needed to send in the http request
   LatLng? selPoint;
+  late final TextEditingController titleCtrl;
   DateTime? startTime;
   DateTime? endTime;
+  late TextEditingController descriptionCtrl;
 
   late AppLocalizations transl;
-
-  late final TextEditingController titleCtrl;
 
   String? selLocation;
   late final MapController mapCtrl;
@@ -100,8 +102,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
           posData.latitude!,
           posData.longitude!,
         );
-        selLocation =
-            "${loc[0].country}${addComma ? ", $locArea" : ""}, ${loc[0].street}";
+        selLocation = "${loc[0].country}${addComma ? ", $locArea" : ""}, ${loc[0].street}";
       });
     }
   }
@@ -109,10 +110,11 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
   @override
   void initState() {
     super.initState();
-    isFullyScrolled = false;
-    titleCtrl = TextEditingController();
-    mapCtrl = MapController();
     _getUserLocation(selectLocation: false);
+    isFullyScrolled = false;
+    mapCtrl = MapController();
+    titleCtrl = TextEditingController();
+    descriptionCtrl = TextEditingController();
   }
 
   @override
@@ -121,40 +123,13 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(right: 14, bottom: 15),
-        child: AnimatedScale(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOutBack,
-          scale: isFullyScrolled ? 1 : 0,
-          child: GestureDetector(
-            onTap: () {},
-            child: GlassMorphism(
-              blur: 10,
-              opacity: 0.1,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.linearToEaseOut,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 20,
-                ),
-                child: Text(
-                  transl.createAParty,
-                  style: const TextStyle(
-                    color: Theming.primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
-          ),
+      floatingActionButton: AnimatedScale(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOutBack,
+        scale: isFullyScrolled ? 1 : 0,
+        child: CustomFloatingButton(
+          caption: transl.createAParty,
+          onTap: () {},
         ),
       ),
       body: Stack(
@@ -162,9 +137,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
           FlutterMap(
             mapController: mapCtrl,
             options: MapOptions(
-              interactiveFlags: InteractiveFlag.all -
-                  InteractiveFlag.doubleTapZoom -
-                  InteractiveFlag.rotate,
+              interactiveFlags: InteractiveFlag.all - InteractiveFlag.doubleTapZoom - InteractiveFlag.rotate,
               onTap: (_, pos) async {
                 var loc = <Placemark>[];
                 try {
@@ -195,16 +168,11 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
 
                 setState(() {
                   selPoint = pos;
-                  selLocation =
-                      "${loc[0].country}${addComma ? ", $locArea" : ""}, ${loc[0].street}";
+                  selLocation = "${loc[0].country}${addComma ? ", $locArea" : ""}, ${loc[0].street}";
                 });
               },
             ),
-            children: [
-              TileLayer(
-                urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                userAgentPackageName: "app.drinkify",
-              ),
+            nonRotatedChildren: [
               MarkerLayer(
                 markers: [
                   Marker(
@@ -221,6 +189,12 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                     },
                   ),
                 ],
+              ),
+            ],
+            children: [
+              TileLayer(
+                urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                userAgentPackageName: "app.drinkify",
               ),
             ],
           ),
@@ -283,8 +257,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
           ),
           NotificationListener<DraggableScrollableNotification>(
             onNotification: (notif) {
-              final double dragRatio = (notif.extent - notif.minExtent) /
-                  (notif.maxExtent - notif.minExtent);
+              final double dragRatio = (notif.extent - notif.minExtent) / (notif.maxExtent - notif.minExtent);
 
               if (dragRatio >= 0.9 && isFullyScrolled != true) {
                 setState(() => isFullyScrolled = true);
@@ -323,8 +296,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                           ),
                         ),
                         SizedBox(
-                          height:
-                              MediaQuery.of(context).size.height * 0.12 - 10,
+                          height: MediaQuery.of(context).size.height * 0.12 - 10,
                           width: double.infinity,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -366,8 +338,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                     ),
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       _locationShadow(1),
                                       _locationShadow(-1),
@@ -403,13 +374,13 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                   caption: transl.title,
                                   placeholder: transl.addPartyTitle,
                                   prefixIcon: Icons.label_important_outline,
+                                  borderRadius: BorderRadius.circular(15),
                                   ctrl: titleCtrl,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 30),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       _dateTimeField(
                                         1,
@@ -421,8 +392,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                         style: TextStyle(
                                           fontSize: 42,
                                           fontWeight: FontWeight.bold,
-                                          color: Theming.whiteTone
-                                              .withOpacity(0.25),
+                                          color: Theming.whiteTone.withOpacity(0.25),
                                         ),
                                       ),
                                       _dateTimeField(
@@ -431,6 +401,22 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                         isStart: false,
                                       ),
                                     ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (ctx, _, __) => DescriptionPage(controller: descriptionCtrl),
+                                    ),
+                                  ),
+                                  child: _formField(
+                                    3,
+                                    caption: transl.description,
+                                    placeholder: transl.addPartyDescription,
+                                    prefixIcon: Icons.description_outlined,
+                                    ctrl: descriptionCtrl,
+                                    enabled: false,
                                   ),
                                 ),
                               ],
@@ -456,6 +442,13 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     required IconData prefixIcon,
     required TextEditingController ctrl,
     bool manyInRow = false,
+    bool enabled = true,
+    BorderRadius borderRadius = const BorderRadius.only(
+      topLeft: Radius.circular(15),
+      topRight: Radius.circular(15),
+      bottomLeft: Radius.circular(15),
+      bottomRight: Radius.circular(15),
+    ),
   }) {
     bool isSelected = index == selectedFieldIndex;
 
@@ -467,9 +460,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
           child: Text(
             caption.toUpperCase(),
             style: TextStyle(
-              color: isSelected
-                  ? Theming.primaryColor
-                  : Theming.whiteTone.withOpacity(0.3),
+              color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.3),
               fontWeight: FontWeight.bold,
               fontSize: 12,
             ),
@@ -477,42 +468,62 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
         ),
         AnimatedContainer(
           height: 50,
-          width: manyInRow
-              ? MediaQuery.of(context).size.width / 2 - 30 - 10
-              : double.infinity,
+          width: manyInRow ? MediaQuery.of(context).size.width / 2 - 30 - 10 : double.infinity,
           duration: const Duration(milliseconds: 300),
           curve: Curves.linearToEaseOut,
           padding: const EdgeInsets.only(right: 7.5),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: Theming.whiteTone.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: borderRadius,
             border: Border.all(
               width: 1.5,
-              color: isSelected
-                  ? Theming.primaryColor
-                  : Theming.whiteTone.withOpacity(0.2),
+              color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
             ),
           ),
-          child: TextField(
-            cursorColor: Theming.primaryColor,
-            onTap: () {
-              setState(() => selectedFieldIndex = index);
-            },
-            decoration: InputDecoration(
-              hintText: placeholder,
-              hintStyle: TextStyle(
-                color: Theming.whiteTone.withOpacity(0.3),
-              ),
-              prefixIcon: Icon(
-                prefixIcon,
-                color: isSelected
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.25),
-              ),
-              border: InputBorder.none,
-            ),
-          ),
+          child: enabled
+              ? TextField(
+                  enabled: enabled,
+                  cursorColor: Theming.primaryColor,
+                  maxLines: enabled ? 2 : 1,
+                  onTap: () {
+                    setState(() => selectedFieldIndex = index);
+                  },
+                  decoration: InputDecoration(
+                    hintText: placeholder,
+                    hintStyle: TextStyle(
+                      color: Theming.whiteTone.withOpacity(0.3),
+                    ),
+                    prefixIcon: Icon(
+                      prefixIcon,
+                      color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.25),
+                    ),
+                    border: InputBorder.none,
+                  ),
+                )
+              : SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Icon(
+                          prefixIcon,
+                          color: Theming.whiteTone.withOpacity(0.25),
+                        ),
+                      ),
+                      Text(
+                        descriptionCtrl.text.isEmpty ? transl.addPartyDescription : descriptionCtrl.text,
+                        style: TextStyle(
+                          color: descriptionCtrl.text.isEmpty ? Theming.whiteTone.withOpacity(0.3) : Theming.whiteTone,
+                          fontSize: descriptionCtrl.text.isEmpty ? 16 : 14,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
         ),
         const SizedBox(height: 30),
       ],
@@ -539,9 +550,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             child: Text(
               caption.toUpperCase(),
               style: TextStyle(
-                color: isSelected
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.3),
+                color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.3),
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
@@ -557,9 +566,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
                 width: 1.5,
-                color: isSelected
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.2),
+                color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
               ),
             ),
             child: Column(
@@ -570,18 +577,14 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                     const SizedBox(width: 10),
                     Icon(
                       Icons.date_range_outlined,
-                      color: isSelected
-                          ? Theming.primaryColor
-                          : Theming.whiteTone.withOpacity(0.2),
+                      color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
                     ),
                     const SizedBox(width: 4),
                     Text(
                       transl.partyDate,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: isSelected
-                            ? Theming.primaryColor
-                            : Theming.whiteTone.withOpacity(0.3),
+                        color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.3),
                       ),
                     ),
                   ],
@@ -589,29 +592,21 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                 Container(
                   height: 1.5,
                   width: MediaQuery.of(context).size.width / 2 - 30 * 2,
-                  color: isSelected
-                      ? Theming.primaryColor
-                      : Theming.whiteTone.withOpacity(0.2),
+                  color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
                 ),
                 Row(
                   children: [
                     const SizedBox(width: 10),
                     Icon(
-                      isStart
-                          ? Icons.wb_sunny_outlined
-                          : Icons.nights_stay_rounded,
-                      color: isSelected
-                          ? Theming.primaryColor
-                          : Theming.whiteTone.withOpacity(0.2),
+                      isStart ? Icons.wb_sunny_outlined : Icons.nights_stay_rounded,
+                      color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
                     ),
                     const SizedBox(width: 4),
                     Text(
                       transl.partyTime,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: isSelected
-                            ? Theming.primaryColor
-                            : Theming.whiteTone.withOpacity(0.3),
+                        color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.3),
                       ),
                     ),
                   ],

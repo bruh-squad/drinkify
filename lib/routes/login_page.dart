@@ -165,9 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                     vertical: 15,
                   ),
                   decoration: BoxDecoration(
-                    color: _userCanLogin
-                        ? Theming.primaryColor
-                        : Theming.whiteTone.withOpacity(0.7),
+                    color: _userCanLogin ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
@@ -246,9 +244,7 @@ class _LoginPageState extends State<LoginPage> {
               color: Theming.bgColor,
               border: Border.all(
                 width: 1.5,
-                color: isSelected
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.2),
+                color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
               ),
               borderRadius: BorderRadius.circular(radius),
             ),
@@ -258,8 +254,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               obscureText: isPassword,
               keyboardType: keyboardType,
-              style: TextStyle(
-                  color: Theming.whiteTone, letterSpacing: isPassword ? 6 : 0),
+              style: TextStyle(color: Theming.whiteTone, letterSpacing: isPassword ? 6 : 0),
               cursorColor: Theming.primaryColor,
               controller: ctrl,
               decoration: InputDecoration(
@@ -267,15 +262,11 @@ class _LoginPageState extends State<LoginPage> {
                 hintStyle: TextStyle(
                   fontSize: 14,
                   letterSpacing: 0,
-                  color: isSelected
-                      ? Theming.whiteTone.withOpacity(0.4)
-                      : Colors.transparent,
+                  color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
                 ),
                 prefixIcon: Icon(
                   icon,
-                  color: isSelected
-                      ? Theming.primaryColor
-                      : Theming.whiteTone.withOpacity(0.2),
+                  color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
                   size: iconSize,
                 ),
                 border: InputBorder.none,

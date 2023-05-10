@@ -83,7 +83,6 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
         child: GestureDetector(
           onTap: () {
             if (!showMore) return;
-            //Some code
           },
           child: GlassMorphism(
             blur: showMore ? 10 : 0,
@@ -151,14 +150,11 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                           widget.party.location.longitude,
                         ),
                         zoom: 15,
-                        interactiveFlags: InteractiveFlag.all -
-                            InteractiveFlag.doubleTapZoom -
-                            InteractiveFlag.rotate,
+                        interactiveFlags: InteractiveFlag.all - InteractiveFlag.doubleTapZoom - InteractiveFlag.rotate,
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate:
-                              "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                           userAgentPackageName: "app.drinkify",
                         ),
                         MarkerLayer(
@@ -286,9 +282,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: showMore
-                ? Colors.transparent
-                : Theming.bgColor.withOpacity(0.5),
+            color: showMore ? Colors.transparent : Theming.bgColor.withOpacity(0.5),
           ),
           child: Icon(
             icon,

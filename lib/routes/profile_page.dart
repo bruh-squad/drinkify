@@ -30,10 +30,10 @@ class ProfilePage extends StatelessWidget {
               top: 20,
             ),
             child: Column(
-              children: [
-                UserInfo(user),
-                const SizedBox(height: 30),
-                Parties(user),
+              children: const [
+                UserInfo(),
+                SizedBox(height: 30),
+                Parties(),
               ],
             ),
           ),

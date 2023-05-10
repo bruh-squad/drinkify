@@ -90,8 +90,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.yMd(transl.localeName)
-                                .format(party.startTime),
+                            DateFormat.yMd(transl.localeName).format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],
@@ -106,8 +105,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.Hm(transl.localeName)
-                                .format(party.startTime),
+                            DateFormat.Hm(transl.localeName).format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],

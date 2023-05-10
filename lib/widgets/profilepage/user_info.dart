@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
-import '/models/user.dart';
 import '/utils/locale_support.dart';
 
 class UserInfo extends StatefulWidget {
-  final User user;
-  const UserInfo(this.user, {super.key});
+  const UserInfo({super.key});
 
   @override
   State<UserInfo> createState() => _UserInfoState();

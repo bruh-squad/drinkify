@@ -33,7 +33,7 @@ class SettingsPage extends StatelessWidget {
                     icon: const Icon(
                       Icons.arrow_back_ios_new_rounded,
                       color: Theming.whiteTone,
-                      size: 30,
+                      size: 26,
                     ),
                   ),
                   Text(
@@ -41,7 +41,7 @@ class SettingsPage extends StatelessWidget {
                     style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
-                      fontSize: 38,
+                      fontSize: 30,
                     ),
                   ),
                 ],

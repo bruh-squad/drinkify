@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
-import '/models/user.dart';
 import '/utils/locale_support.dart';
 
 class Parties extends StatelessWidget {
-  final User user;
-  const Parties(this.user, {super.key});
+  const Parties({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -102,6 +102,7 @@
     "secret": "Secret",
     "location": "Location",
     "description": "Description",
+    "addPartyDescription": "Add party description",
     "partyStart": "Start",
     "to": "to",
     "partyEnd": "End",
@@ -111,6 +112,7 @@
     "creatingParty": "Creating party...",
     "myLocation": "My location",
     "partyDate": "Date",
-    "partyTime": "Time"
+    "partyTime": "Time",
+    "clearDescription": "Clear"
 
 }

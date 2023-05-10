@@ -74,178 +74,161 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         centerTitle: true,
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 30,
-                right: 30,
-                top: 20,
-              ),
-              child: Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 30,
+            right: 30,
+            top: 20,
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const CircleAvatar(
-                        minRadius: 20,
-                        maxRadius: 55,
-                        backgroundColor: Theming.bgColorLight,
-                        backgroundImage: NetworkImage(
-                          "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0x9F000E1F),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            transl.changePfp,
-                            style: const TextStyle(
-                              color: Theming.whiteTone,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  _editField(
-                    0,
-                    caption: transl.username,
-                    icon: Icons.verified_user_outlined,
-                    placeholder: transl.usernameField,
-                    ctrl: usernameCtrl,
-                  ),
-                  _editField(
-                    1,
-                    caption: transl.email,
-                    icon: Icons.email_outlined,
-                    placeholder: transl.emailField,
-                    ctrl: emailCtrl,
-                  ),
-                  _editField(
-                    2,
-                    caption: transl.firstName,
-                    icon: Icons.person_pin_rounded,
-                    placeholder: transl.firstNameField,
-                    ctrl: firstNameCtrl,
-                  ),
-                  _editField(
-                    3,
-                    caption: transl.lastName,
-                    icon: Icons.person_pin_rounded,
-                    placeholder: transl.lastNameField,
-                    ctrl: lastNameCtrl,
+                  const CircleAvatar(
+                    minRadius: 20,
+                    maxRadius: 55,
+                    backgroundColor: Theming.bgColorLight,
+                    backgroundImage: NetworkImage(
+                      "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
+                    ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Theming.bgColor,
-                        enableDrag: false,
-                        isScrollControlled: true,
-                        builder: (ctx) {
-                          return SizedBox(
-                            height: MediaQuery.of(ctx).size.height / 1.3,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 30,
-                                right: 30,
-                                top: 30,
-                              ),
-                              child: Column(
-                                children: [
-                                  _editField(
-                                    4,
-                                    caption: transl.oldPassword,
-                                    icon: Icons.lock_outline,
-                                    placeholder: transl.oldPasswordField,
-                                    isPassword: true,
-                                    ctrl: oldPasswordCtrl,
-                                  ),
-                                  _editField(
-                                    5,
-                                    caption: transl.newPassword,
-                                    icon: Icons.lock_outline,
-                                    placeholder: transl.newPasswordField,
-                                    isPassword: true,
-                                    ctrl: newPasswordCtrl,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 30,
-                                        vertical: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Theming.primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                      child: Text(
-                                        transl.changePassword,
-                                        style: const TextStyle(
-                                          color: Theming.whiteTone,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                    onTap: () {},
                     child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0x9F000E1F),
-                        borderRadius: BorderRadius.circular(100),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        transl.changePassword,
+                        transl.changePfp,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 66),
                 ],
               ),
-            ),
-          ),
-          CustomFloatingButton(
-            backgroundColor: Theming.primaryColor,
-            onTap: () {},
-            child: Text(
-              transl.save,
-              style: const TextStyle(
-                color: Theming.whiteTone,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+              const SizedBox(height: 30),
+              _editField(
+                0,
+                caption: transl.username,
+                icon: Icons.verified_user_outlined,
+                placeholder: transl.usernameField,
+                ctrl: usernameCtrl,
               ),
-            ),
+              _editField(
+                1,
+                caption: transl.email,
+                icon: Icons.email_outlined,
+                placeholder: transl.emailField,
+                ctrl: emailCtrl,
+              ),
+              _editField(
+                2,
+                caption: transl.firstName,
+                icon: Icons.person_pin_rounded,
+                placeholder: transl.firstNameField,
+                ctrl: firstNameCtrl,
+              ),
+              _editField(
+                3,
+                caption: transl.lastName,
+                icon: Icons.person_pin_rounded,
+                placeholder: transl.lastNameField,
+                ctrl: lastNameCtrl,
+              ),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Theming.bgColor,
+                    enableDrag: false,
+                    isScrollControlled: true,
+                    builder: (ctx) {
+                      return SizedBox(
+                        height: MediaQuery.of(ctx).size.height / 1.3,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 30,
+                            right: 30,
+                            top: 30,
+                          ),
+                          child: Column(
+                            children: [
+                              _editField(
+                                4,
+                                caption: transl.oldPassword,
+                                icon: Icons.lock_outline,
+                                placeholder: transl.oldPasswordField,
+                                isPassword: true,
+                                ctrl: oldPasswordCtrl,
+                              ),
+                              _editField(
+                                5,
+                                caption: transl.newPassword,
+                                icon: Icons.lock_outline,
+                                placeholder: transl.newPasswordField,
+                                isPassword: true,
+                                ctrl: newPasswordCtrl,
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30,
+                                    vertical: 10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theming.primaryColor,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Text(
+                                    transl.changePassword,
+                                    style: const TextStyle(
+                                      color: Theming.whiteTone,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  decoration: BoxDecoration(
+                    color: const Color(0x9F000E1F),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Text(
+                    transl.changePassword,
+                    style: const TextStyle(
+                      color: Theming.whiteTone,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 66),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -290,9 +273,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               hintText: placeholder,
               hintStyle: TextStyle(
                 fontSize: 14,
-                color: isSelected
-                    ? Theming.whiteTone.withOpacity(0.4)
-                    : Colors.transparent,
+                color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
               ),
               prefixIcon: Icon(
                 icon,
@@ -314,9 +295,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
             child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty
-                  ? Alignment.topLeft
-                  : Alignment.centerLeft,
+              alignment: isSelected || ctrl.text.isNotEmpty ? Alignment.topLeft : Alignment.centerLeft,
               curve: Curves.linearToEaseOut,
               duration: const Duration(milliseconds: 500),
               child: Text(

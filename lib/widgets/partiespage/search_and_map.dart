@@ -150,9 +150,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
         ),
         margin: const EdgeInsets.only(right: 15),
         decoration: BoxDecoration(
-          color: isSelected
-              ? Theming.primaryColor.withOpacity(0.7)
-              : Theming.whiteTone.withOpacity(0.1),
+          color: isSelected ? Theming.primaryColor.withOpacity(0.7) : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(
