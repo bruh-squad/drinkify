@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '/widgets/custom_floating_button.dart';
-
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 
@@ -273,7 +271,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
               hintText: placeholder,
               hintStyle: TextStyle(
                 fontSize: 14,
-                color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
+                color: isSelected
+                    ? Theming.whiteTone.withOpacity(0.4)
+                    : Colors.transparent,
               ),
               prefixIcon: Icon(
                 icon,
@@ -295,7 +295,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
             child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty ? Alignment.topLeft : Alignment.centerLeft,
+              alignment: isSelected || ctrl.text.isNotEmpty
+                  ? Alignment.topLeft
+                  : Alignment.centerLeft,
               curve: Curves.linearToEaseOut,
               duration: const Duration(milliseconds: 500),
               child: Text(

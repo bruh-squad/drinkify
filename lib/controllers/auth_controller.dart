@@ -11,8 +11,8 @@ class AuthController {
   TextEditingController passwordCtrl = TextEditingController();
 
   Future loginUser() async {
-    var url = '$mainUrl/auth/token/';
-    var response = await http.post(
+    final url = '$mainUrl/auth/token/';
+    final response = await http.post(
       Uri.parse(url),
       body: {
         "email": emailCtrl.text,
@@ -32,9 +32,8 @@ class AuthController {
   }
 
   Future registerUser(CreateUser user) async {
-    var url = '$mainUrl/auth/token/';
     // TODO: fix sending data
-    var response = await http.post(
+    final response = await http.post(
       Uri.parse('$mainUrl/users/'),
       body: {
         "username": user.username,
@@ -43,7 +42,7 @@ class AuthController {
         "last_name": user.lastName,
         "date_of_birth":
             '${user.dateOfBirth.year}-${user.dateOfBirth.month}-${user.dateOfBirth.day}',
-        "password": user.password
+        "password": user.password,
       },
     );
     if (response.statusCode == 200) {

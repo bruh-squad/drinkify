@@ -40,13 +40,13 @@ class CreatePartyDialog extends StatelessWidget {
                   size: 50,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
+              const Padding(
+                padding: EdgeInsets.symmetric(
                   horizontal: 2,
                   vertical: 10,
                 ),
                 child: Column(
-                  children: const [
+                  children: [
                     Spacer(),
                     SizedBox(
                       height: 60,

@@ -21,16 +21,16 @@ class ProfilePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               left: 30,
               right: 30,
               top: 20,
             ),
             child: Column(
-              children: const [
+              children: [
                 UserInfo(),
                 SizedBox(height: 30),
                 Parties(),

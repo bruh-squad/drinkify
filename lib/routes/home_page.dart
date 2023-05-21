@@ -17,8 +17,8 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).viewPadding.top + 20,
         ),
-        child: Column(
-          children: const [
+        child: const Column(
+          children: [
             //Had to use many paddings to make the DateRow boxes look better
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),

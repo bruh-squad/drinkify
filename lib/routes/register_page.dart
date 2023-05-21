@@ -112,7 +112,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           const CircleAvatar(
                             radius: 30,
                             backgroundColor: Theming.bgColorLight,
-                            backgroundImage: AssetImage("assets/images/default_pfp.png"),
+                            backgroundImage:
+                                AssetImage("assets/images/default_pfp.png"),
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -226,7 +227,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           Text(
                             dateOfBirthVal == null
                                 ? transl.dateOfBirth
-                                : DateFormat.yMd(transl.localeName).format(dateOfBirthVal!),
+                                : DateFormat.yMd(transl.localeName)
+                                    .format(dateOfBirthVal!),
                             style: const TextStyle(
                               color: Theming.whiteTone,
                               fontWeight: FontWeight.bold,
@@ -247,7 +249,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           email: emailCtrl.text,
                           firstName: firstNameCtrl.text,
                           lastName: lastNameCtrl.text,
-                          dateOfBirth: dateOfBirthVal!, //TODO fix the NULL value
+                          dateOfBirth:
+                              dateOfBirthVal!, //TODO fix the NULL value
                           password: passwordCtrl.text,
                         ),
                       );
@@ -261,7 +264,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         vertical: 15,
                       ),
                       decoration: BoxDecoration(
-                        color: _userCanRegister ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.7),
+                        color: _userCanRegister
+                            ? Theming.primaryColor
+                            : Theming.whiteTone.withOpacity(0.7),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
@@ -332,7 +337,9 @@ class _RegisterPageState extends State<RegisterPage> {
         children: [
           AnimatedContainer(
             height: 60,
-            width: manyInRow ? MediaQuery.of(context).size.width / 2 - 30 - 10 : double.infinity,
+            width: manyInRow
+                ? MediaQuery.of(context).size.width / 2 - 30 - 10
+                : double.infinity,
             margin: const EdgeInsets.only(top: 10),
             padding: const EdgeInsets.only(right: 10),
             alignment: Alignment.center,
@@ -342,7 +349,9 @@ class _RegisterPageState extends State<RegisterPage> {
               color: Theming.bgColor,
               border: Border.all(
                 width: 1.5,
-                color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
+                color: isSelected
+                    ? Theming.primaryColor
+                    : Theming.whiteTone.withOpacity(0.2),
               ),
               borderRadius: BorderRadius.circular(radius),
             ),
@@ -363,11 +372,15 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintStyle: TextStyle(
                   fontSize: 14,
                   letterSpacing: 0,
-                  color: isSelected ? Theming.whiteTone.withOpacity(0.4) : Colors.transparent,
+                  color: isSelected
+                      ? Theming.whiteTone.withOpacity(0.4)
+                      : Colors.transparent,
                 ),
                 prefixIcon: Icon(
                   icon,
-                  color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.2),
+                  color: isSelected
+                      ? Theming.primaryColor
+                      : Theming.whiteTone.withOpacity(0.2),
                   size: iconSize,
                 ),
                 border: InputBorder.none,

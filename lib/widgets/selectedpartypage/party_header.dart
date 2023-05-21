@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/dialogs/no_maps_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
@@ -9,6 +8,7 @@ import '/models/party.dart';
 import '/utils/theming.dart';
 import '/utils/ext.dart' show openMap;
 import '/utils/locale_support.dart';
+import '/widgets/dialogs/no_maps_dialog.dart';
 
 late AppLocalizations transl;
 
@@ -136,7 +136,8 @@ class _PartyHeaderState extends State<PartyHeader> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.yMd(transl.localeName).format(widget.party.startTime),
+                    DateFormat.yMd(transl.localeName)
+                        .format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],
@@ -151,7 +152,8 @@ class _PartyHeaderState extends State<PartyHeader> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.Hm(transl.localeName).format(widget.party.startTime),
+                    DateFormat.Hm(transl.localeName)
+                        .format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
                 ],

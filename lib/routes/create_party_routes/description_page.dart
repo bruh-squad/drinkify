@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/custom_floating_button.dart';
 import 'package:flutter/material.dart';
 
 import '/utils/theming.dart';
@@ -18,20 +17,18 @@ class DescriptionPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      floatingActionButton: CustomFloatingButton(
-        caption: transl.clearDescription,
-        onTap: () => controller.clear(),
-      ),
       appBar: AppBar(
         backgroundColor: Theming.bgColor,
         surfaceTintColor: Theming.bgColor,
-        leading: IconButton(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Theming.whiteTone,
-            size: 24,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            splashColor: Colors.transparent,
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Theming.whiteTone,
+            ),
           ),
         ),
         title: Text(
@@ -54,6 +51,7 @@ class DescriptionPage extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
+                padding: const EdgeInsets.only(right: 5),
                 decoration: BoxDecoration(
                   color: Theming.whiteTone.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(15),
