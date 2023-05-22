@@ -108,11 +108,12 @@
     "partyEnd": "Koniec",
     "searchAFriend": "Wyszukaj znajomego",
     "invite": "Zaproś",
-    "inviteFriends": "Zaproś znajomych",
+    "inviteFriends": "Zaproszeni znajomi",
     "create": "Stwórz",
     "creatingParty": "Tworzenie imprezy...",
     "myLocation": "Moja lokalizacja",
     "partyDate": "Data",
     "partyTime": "Godzina",
-    "clearDescription": "Wyczyść"
+    "noFriendsInvited": "Nie nikogo nie zaproszono"
+
 }

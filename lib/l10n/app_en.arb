@@ -108,12 +108,12 @@
     "partyEnd": "End",
     "searchAFriend": "Search for a friend",
     "invite": "Invite",
-    "inviteFriends": "Invite friends",
+    "invitedFriends": "Invited friends",
     "create": "Create",
     "creatingParty": "Creating party...",
     "myLocation": "My location",
     "partyDate": "Date",
     "partyTime": "Time",
-    "clearDescription": "Clear"
+    "noFriendsInvited": "No friends invited yet"
 
 }

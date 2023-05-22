@@ -14,13 +14,21 @@ class InviteFriends extends StatefulWidget {
 }
 
 class _InviteFriendsState extends State<InviteFriends> {
+  late List<User> invitedUsers;
+
+  @override
+  void initState() {
+    super.initState();
+    invitedUsers = [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.inviteFriends.toUpperCase(),
+          AppLocalizations.of(context)!.invitedFriends.toUpperCase(),
           style: TextStyle(
             color: Theming.whiteTone.withOpacity(0.3),
             fontWeight: FontWeight.bold,
@@ -33,27 +41,40 @@ class _InviteFriendsState extends State<InviteFriends> {
               context,
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) {
-                  return const InviteFriendsPage();
+                  return InviteFriendsPage(
+                    onFinish: (users) {
+                      setState(() => invitedUsers = users);
+                      widget.onFinish(invitedUsers);
+                    },
+                  );
                 },
               ),
             );
           },
           child: SizedBox(
-            height: 50,
+            height: 55,
             width: double.infinity,
-            child: Stack(
-              children: [
-                //TODO
-                for (int i = 0; i < 10; i++)
-                  _userPlaceholder(
-                    i,
-                    userData: User(
-                      dateOfBirth: DateTime.now(),
-                      password: "",
+            child: invitedUsers.isEmpty
+                ? Text(
+                    AppLocalizations.of(context)!.noFriendsInvited,
+                    style: TextStyle(
+                      color: Theming.whiteTone.withOpacity(0.6),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Stack(
+                      children: [
+                        for (int i = 0; i < invitedUsers.length; i++)
+                          _userPlaceholder(
+                            i,
+                            userData: invitedUsers[i],
+                          ),
+                      ],
                     ),
                   ),
-              ],
-            ),
           ),
         ),
       ],

@@ -13,8 +13,8 @@ import '../widgets/custom_floating_button.dart';
 import '../routes/create_party_routes/description_page.dart';
 import '../widgets/createpartypage/party_status.dart';
 import '../widgets/createpartypage/datetime_fields.dart';
+import '../models/user.dart';
 
-//TODO split this page into smaller widgets
 class CreatePartyRoute extends StatefulWidget {
   const CreatePartyRoute({super.key});
 
@@ -28,8 +28,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
   late final TextEditingController titleCtrl;
   DateTime? startTime;
   DateTime? endTime;
-  late TextEditingController descriptionCtrl;
+  late final TextEditingController descriptionCtrl;
   late int partyStatus;
+  late List<User> invitedUsers;
 
   late AppLocalizations transl;
 
@@ -122,6 +123,14 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     titleCtrl = TextEditingController();
     descriptionCtrl = TextEditingController();
     partyStatus = 1;
+    invitedUsers = [];
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    titleCtrl.dispose();
+    descriptionCtrl.dispose();
   }
 
   @override
@@ -136,7 +145,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
         scale: isFullyScrolled ? 1 : 0,
         child: CustomFloatingButton(
           caption: transl.createAParty,
-          onTap: () {},
+          onTap: () {
+            //TODO: create party
+          },
         ),
       ),
       body: Stack(
@@ -441,7 +452,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                       partyStatus = statusNumber,
                                 ),
                                 InviteFriends(
-                                  onFinish: (friends) {},
+                                  onFinish: (friends) {
+                                    invitedUsers = friends;
+                                  },
                                 ),
                               ],
                             ),
@@ -522,8 +535,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
               hintText:
                   !enabled && ctrl.text.isNotEmpty ? ctrl.text : placeholder,
               hintStyle: TextStyle(
-                color: Theming.whiteTone
-                    .withOpacity(!enabled && ctrl.text.isNotEmpty ? 1 : 0.3),
+                color: Theming.whiteTone.withOpacity(
+                  !enabled && ctrl.text.isNotEmpty ? 1 : 0.3,
+                ),
               ),
               prefixIcon: Icon(
                 prefixIcon,

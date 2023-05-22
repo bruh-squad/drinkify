@@ -4,23 +4,31 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '/utils/theming.dart';
 import '/utils/locale_support.dart';
 import '/widgets/glass_morphism.dart';
+import '/models/user.dart';
 
 class InviteFriendsPage extends StatefulWidget {
-  const InviteFriendsPage({super.key});
+  final Function(List<User>) onFinish;
+  const InviteFriendsPage({
+    required this.onFinish,
+    super.key,
+  });
 
   @override
   State<InviteFriendsPage> createState() => _InviteFriendsPageState();
 }
 
 class _InviteFriendsPageState extends State<InviteFriendsPage> {
-  late AppLocalizations transl;
+  late List<User> invitedUsers;
 
   late final TextEditingController searchCtrl;
+
+  late AppLocalizations transl;
 
   @override
   void initState() {
     super.initState();
     searchCtrl = TextEditingController();
+    invitedUsers = [];
   }
 
   @override
@@ -38,6 +46,20 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
         ),
         child: Stack(
           children: [
+            ListView(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).viewPadding.top + 20,
+                ),
+                for (int i = 0; i < 20; i++)
+                  _friendPlaceholder(
+                    User(
+                      dateOfBirth: DateTime.now(),
+                      password: "",
+                    ),
+                  ),
+              ],
+            ),
             GlassMorphism(
               borderRadius: BorderRadius.circular(30),
               blur: 20,
@@ -49,7 +71,10 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        widget.onFinish(invitedUsers);
+                        Navigator.pop(context);
+                      },
                       icon: const Icon(Icons.arrow_back_ios_new),
                     ),
                     Container(
@@ -90,6 +115,54 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  ///TODO use [user]'s parameters in widgets below
+  Widget _friendPlaceholder(User user) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Row(
+        children: [
+          Container(
+            height: 60,
+            width: 60,
+            margin: const EdgeInsets.only(right: 10),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: NetworkImage(
+                  "https://avatars.githubusercontent.com/u/63369072?v=4",
+                ),
+              ),
+            ),
+          ),
+          const Text("Test user"),
+          const Spacer(),
+          GestureDetector(
+            onTap: () => invitedUsers.add(user),
+            child: AnimatedContainer(
+              curve: Curves.linearToEaseOut,
+              duration: const Duration(milliseconds: 300),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 10,
+              ),
+              decoration: BoxDecoration(
+                color: Theming.primaryColor,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.invite,
+                style: const TextStyle(
+                  color: Theming.whiteTone,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
