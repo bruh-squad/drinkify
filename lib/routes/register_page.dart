@@ -1,5 +1,3 @@
-import 'package:drinkify/controllers/auth_controller.dart';
-import 'package:drinkify/models/create_user.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -7,6 +5,9 @@ import 'package:intl/intl.dart';
 
 import '../utils/locale_support.dart';
 import '../utils/theming.dart';
+import '../controllers/auth_controller.dart';
+import '../models/create_user.dart';
+import '../widgets/edit_field.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -18,17 +19,26 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   int? selectedFieldIndex;
 
-  var usernameCtrl = TextEditingController();
-  var emailCtrl = TextEditingController();
-  var firstNameCtrl = TextEditingController();
-  var lastNameCtrl = TextEditingController();
-  var passwordCtrl = TextEditingController();
-  var passwordConfirmCtrl = TextEditingController();
+  late final TextEditingController usernameCtrl;
+  late final TextEditingController emailCtrl;
+  late final TextEditingController firstNameCtrl;
+  late final TextEditingController lastNameCtrl;
+  late final TextEditingController passwordCtrl;
+  late final TextEditingController passwordConfirmCtrl;
   DateTime? dateOfBirthVal;
+
+  late final AuthController authController;
 
   @override
   void initState() {
     super.initState();
+    authController = AuthController();
+    usernameCtrl = TextEditingController();
+    emailCtrl = TextEditingController();
+    firstNameCtrl = TextEditingController();
+    lastNameCtrl = TextEditingController();
+    passwordCtrl = TextEditingController();
+    passwordConfirmCtrl = TextEditingController();
     initializeDateFormatting();
   }
 
@@ -61,10 +71,15 @@ class _RegisterPageState extends State<RegisterPage> {
     return true;
   }
 
+  void _onFieldSelect(int index) {
+    setState(() {
+      selectedFieldIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final transl = LocaleSupport.appTranslates(context);
-    AuthController authController = AuthController();
 
     return Scaffold(
       backgroundColor: Theming.bgColor,
@@ -130,66 +145,73 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                _editField(
-                  0,
+                EditField(
+                  index: 0,
+                  selectedFieldIndex: selectedFieldIndex,
                   caption: transl.username,
                   icon: Icons.alternate_email_rounded,
                   placeholder: transl.usernameField,
                   ctrl: usernameCtrl,
+                  onSelect: (idx) => _onFieldSelect(idx),
                 ),
-                _editField(
-                  1,
+                EditField(
+                  index: 1,
+                  selectedFieldIndex: selectedFieldIndex,
                   caption: transl.email,
                   icon: Icons.email_outlined,
                   placeholder: transl.emailField,
                   ctrl: emailCtrl,
                   keyboardType: TextInputType.emailAddress,
+                  onSelect: (idx) => _onFieldSelect(idx),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _editField(
-                      2,
+                    EditField(
+                      index: 2,
+                      selectedFieldIndex: selectedFieldIndex,
                       caption: transl.firstName,
                       icon: Icons.person_pin_rounded,
                       placeholder: transl.firstNameField,
                       ctrl: firstNameCtrl,
                       manyInRow: true,
                       keyboardType: TextInputType.name,
+                      onSelect: (idx) => _onFieldSelect(idx),
                     ),
-                    _editField(
-                      3,
+                    EditField(
+                      index: 3,
+                      selectedFieldIndex: selectedFieldIndex,
                       caption: transl.lastName,
                       icon: Icons.contact_emergency_rounded,
                       placeholder: transl.lastNameField,
                       ctrl: lastNameCtrl,
                       manyInRow: true,
                       keyboardType: TextInputType.name,
+                      onSelect: (idx) => _onFieldSelect(idx),
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _editField(
-                      4,
-                      caption: transl.password,
-                      icon: Icons.lock_outline,
-                      placeholder: transl.passwordField,
-                      ctrl: passwordCtrl,
-                      isPassword: true,
-                      manyInRow: true,
-                    ),
-                    _editField(
-                      5,
-                      caption: transl.confirmPassword,
-                      icon: Icons.lock_outline,
-                      placeholder: transl.passwordField,
-                      ctrl: passwordConfirmCtrl,
-                      isPassword: true,
-                      manyInRow: true,
-                    ),
-                  ],
+                EditField(
+                  index: 4,
+                  selectedFieldIndex: selectedFieldIndex,
+                  caption: transl.password,
+                  icon: Icons.lock_outline,
+                  placeholder: transl.passwordField,
+                  ctrl: passwordCtrl,
+                  isPassword: true,
+                  manyInRow: false,
+                  onSelect: (idx) => _onFieldSelect(idx),
+                ),
+                EditField(
+                  index: 5,
+                  selectedFieldIndex: selectedFieldIndex,
+                  caption: transl.confirmPassword,
+                  icon: Icons.lock_outline,
+                  placeholder: transl.passwordField,
+                  ctrl: passwordConfirmCtrl,
+                  isPassword: true,
+                  manyInRow: false,
+                  onSelect: (idx) => _onFieldSelect(idx),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -312,103 +334,6 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _editField(
-    int index, {
-    required String caption,
-    required IconData icon,
-    required String placeholder,
-    required TextEditingController ctrl,
-    bool manyInRow = false,
-    bool isPassword = false,
-    TextInputType? keyboardType,
-  }) {
-    const double radius = 10;
-    const double iconSize = 24;
-
-    bool isSelected = index == selectedFieldIndex;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Stack(
-        children: [
-          AnimatedContainer(
-            height: 60,
-            width: manyInRow
-                ? MediaQuery.of(context).size.width / 2 - 30 - 10
-                : double.infinity,
-            margin: const EdgeInsets.only(top: 10),
-            padding: const EdgeInsets.only(right: 10),
-            alignment: Alignment.center,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.linearToEaseOut,
-            decoration: BoxDecoration(
-              color: Theming.bgColor,
-              border: Border.all(
-                width: 1.5,
-                color: isSelected
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.2),
-              ),
-              borderRadius: BorderRadius.circular(radius),
-            ),
-            child: TextField(
-              onTap: () {
-                setState(() => selectedFieldIndex = index);
-              },
-              obscureText: isPassword,
-              keyboardType: keyboardType,
-              style: TextStyle(
-                color: Theming.whiteTone,
-                letterSpacing: isPassword ? 6 : 0,
-              ),
-              cursorColor: Theming.primaryColor,
-              controller: ctrl,
-              decoration: InputDecoration(
-                hintText: placeholder,
-                hintStyle: TextStyle(
-                  fontSize: 14,
-                  letterSpacing: 0,
-                  color: isSelected
-                      ? Theming.whiteTone.withOpacity(0.4)
-                      : Colors.transparent,
-                ),
-                prefixIcon: Icon(
-                  icon,
-                  color: isSelected
-                      ? Theming.primaryColor
-                      : Theming.whiteTone.withOpacity(0.2),
-                  size: iconSize,
-                ),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          AnimatedPadding(
-            padding: EdgeInsets.only(
-              top: isSelected || ctrl.text.isNotEmpty ? 0 : 30,
-              left: iconSize * 2,
-              bottom: isSelected || ctrl.text.isNotEmpty ? 0 : 10,
-            ),
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.linearToEaseOut,
-            child: Container(
-              color: Theming.bgColor,
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Text(
-                caption,
-                style: TextStyle(
-                  color: isSelected ? Theming.primaryColor : Theming.whiteTone,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

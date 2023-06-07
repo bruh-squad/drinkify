@@ -1,9 +1,10 @@
-import 'package:drinkify/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../utils/theming.dart';
 import '../utils/locale_support.dart';
+import '../widgets/edit_field.dart';
+import '../controllers/auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +17,6 @@ class _LoginPageState extends State<LoginPage> {
   late final AuthController authCtrl;
   late final TextEditingController passwordResetEmailCtrl;
   late bool rememberPassword;
-
   late int? selectedFieldIndex;
 
   @override
@@ -72,21 +72,25 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 10),
-            _editField(
-              0,
+            EditField(
+              index: 0,
+              selectedFieldIndex: selectedFieldIndex,
               caption: transl.email,
               icon: Icons.email_outlined,
               placeholder: transl.emailField,
               ctrl: authCtrl.emailCtrl,
               keyboardType: TextInputType.emailAddress,
+              onSelect: (idx) => setState(() => selectedFieldIndex = idx),
             ),
-            _editField(
-              1,
+            EditField(
+              index: 1,
+              selectedFieldIndex: selectedFieldIndex,
               caption: transl.password,
               icon: Icons.lock_outline,
               placeholder: transl.passwordField,
               ctrl: authCtrl.passwordCtrl,
               isPassword: true,
+              onSelect: (idx) => setState(() => selectedFieldIndex = idx),
             ),
             const SizedBox(height: 10),
             GestureDetector(
@@ -212,98 +216,6 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 30),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _editField(
-    int index, {
-    required String caption,
-    required IconData icon,
-    required String placeholder,
-    required TextEditingController ctrl,
-    bool isPassword = false,
-    TextInputType? keyboardType,
-  }) {
-    const double radius = 10;
-    const double iconSize = 24;
-
-    bool isSelected = index == selectedFieldIndex;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Stack(
-        children: [
-          AnimatedContainer(
-            height: 60,
-            width: double.infinity,
-            margin: const EdgeInsets.only(top: 10),
-            padding: const EdgeInsets.only(right: 10),
-            alignment: Alignment.center,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.linearToEaseOut,
-            decoration: BoxDecoration(
-              color: Theming.bgColor,
-              border: Border.all(
-                width: 1.5,
-                color: isSelected
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.2),
-              ),
-              borderRadius: BorderRadius.circular(radius),
-            ),
-            child: TextField(
-              onTap: () {
-                setState(() => selectedFieldIndex = index);
-              },
-              obscureText: isPassword,
-              keyboardType: keyboardType,
-              style: TextStyle(
-                  color: Theming.whiteTone, letterSpacing: isPassword ? 6 : 0),
-              cursorColor: Theming.primaryColor,
-              controller: ctrl,
-              decoration: InputDecoration(
-                hintText: placeholder,
-                hintStyle: TextStyle(
-                  fontSize: 14,
-                  letterSpacing: 0,
-                  color: isSelected
-                      ? Theming.whiteTone.withOpacity(0.4)
-                      : Colors.transparent,
-                ),
-                prefixIcon: Icon(
-                  icon,
-                  color: isSelected
-                      ? Theming.primaryColor
-                      : Theming.whiteTone.withOpacity(0.2),
-                  size: iconSize,
-                ),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          AnimatedPadding(
-            padding: EdgeInsets.only(
-              top: isSelected || ctrl.text.isNotEmpty ? 0 : 30,
-              left: iconSize * 2,
-              bottom: isSelected || ctrl.text.isNotEmpty ? 0 : 10,
-            ),
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.linearToEaseOut,
-            child: Container(
-              color: Theming.bgColor,
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Text(
-                caption,
-                style: TextStyle(
-                  color: isSelected ? Theming.primaryColor : Theming.whiteTone,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -17,7 +17,11 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Theming.bgColor,
         title: const Text(
           "Test User",
-          style: Styles.appBarTitle,
+          style: TextStyle(
+            color: Theming.whiteTone,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),

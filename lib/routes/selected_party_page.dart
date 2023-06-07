@@ -237,8 +237,9 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                   ),
                   icon: Icons.arrow_back_ios_new_rounded,
                   onClick: () {
-                    if (showMore) return;
-                    context.pop();
+                    if (!showMore) {
+                      context.pop();
+                    }
                   },
                 ),
               ],

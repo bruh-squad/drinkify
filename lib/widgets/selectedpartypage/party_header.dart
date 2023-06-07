@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/models/party.dart';
 import '/utils/theming.dart';
-import '/utils/ext.dart' show openMap;
+import '/utils/ext.dart' show MapUtils;
 import '/utils/locale_support.dart';
 import '/widgets/dialogs/no_maps_dialog.dart';
 
@@ -23,7 +23,7 @@ class PartyHeader extends StatefulWidget {
   State<PartyHeader> createState() => _PartyHeaderState();
 }
 
-class _PartyHeaderState extends State<PartyHeader> {
+class _PartyHeaderState extends State<PartyHeader> with MapUtils {
   String partyLocation = "";
 
   void _getActualLocation(LatLng latLng, BuildContext ctx) async {

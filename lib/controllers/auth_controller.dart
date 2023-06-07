@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:drinkify/models/create_user.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/consts.dart';
+import '../models/create_user.dart';
 
 class AuthController {
   TextEditingController emailCtrl = TextEditingController();

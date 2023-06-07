@@ -310,7 +310,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                       children: [
                         Container(
                           height: 5,
-                          width: MediaQuery.of(context).size.width / 5,
+                          width: MediaQuery.of(ctx).size.width / 5,
                           margin: const EdgeInsets.only(top: 5),
                           decoration: BoxDecoration(
                             color: Theming.bgColor.withOpacity(0.2),
@@ -318,8 +318,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                           ),
                         ),
                         SizedBox(
-                          height:
-                              MediaQuery.of(context).size.height * 0.12 - 10,
+                          height: MediaQuery.of(ctx).size.height * 0.12 - 10,
                           width: double.infinity,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -554,7 +553,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     );
   }
 
-  ///[leftRight] must be equal 1 or -1
+  ///[leftRight] must be equal 1 for left or -1 for right.
   StatelessWidget _locationShadow(double leftRight) {
     return Container(
       decoration: BoxDecoration(

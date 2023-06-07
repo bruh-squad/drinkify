@@ -22,6 +22,7 @@ class NotificationsPage extends StatelessWidget {
         caption: transl.markAsRead,
         onTap: () {},
       ),
+
       // Notification list
       body: CustomScrollView(
         slivers: [

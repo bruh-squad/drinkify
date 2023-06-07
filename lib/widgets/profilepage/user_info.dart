@@ -30,11 +30,19 @@ class _UserInfoState extends State<UserInfo> {
                 children: [
                   const Text(
                     "10",
-                    style: Styles.userInfoStatistic,
+                    style: TextStyle(
+                      color: Theming.whiteTone,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     transl.partiesProfile1,
-                    style: Styles.userInfoType,
+                    style: TextStyle(
+                      color: Theming.whiteTone.withOpacity(0.5),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -78,11 +86,19 @@ class _UserInfoState extends State<UserInfo> {
                   children: [
                     const Text(
                       "420",
-                      style: Styles.userInfoStatistic,
+                      style: TextStyle(
+                        color: Theming.whiteTone,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       transl.friendsProfile,
-                      style: Styles.userInfoType,
+                      style: TextStyle(
+                        color: Theming.whiteTone.withOpacity(0.5),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -144,17 +160,20 @@ class _UserInfoState extends State<UserInfo> {
                   backgroundColor: Theming.bgColor,
                   useRootNavigator: true,
                   enableDrag: false,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
                   ),
-                  builder: (context) {
+                  builder: (ctx) {
                     return SizedBox(
                       height: 200,
                       //Show this if user did not provide any social media
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewPadding.bottom,
+                            bottom: MediaQuery.of(ctx).viewPadding.bottom,
                           ),
                           child: Text(
                             transl.emptyHere,

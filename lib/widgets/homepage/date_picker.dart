@@ -26,24 +26,35 @@ class _DatePickerState extends State<DatePicker> {
   late int tempMonthIndex;
   late int tempYearIndex;
 
+  late final FixedExtentScrollController monthCtrl;
+  late final FixedExtentScrollController yearCtrl;
+
   @override
   void initState() {
     super.initState();
     tempMonthIndex = selectedMonthIndex;
     tempYearIndex = selectedYearIndex;
+    monthCtrl = FixedExtentScrollController(
+      initialItem: selectedMonthIndex,
+    );
+    yearCtrl = FixedExtentScrollController(
+      initialItem: selectedYearIndex,
+    );
+
     initializeDateFormatting();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
+  void dispose() {
+    super.dispose();
+    monthCtrl.dispose();
+    yearCtrl.dispose();
+  }
 
-    var monthCtrl = FixedExtentScrollController(
-      initialItem: selectedMonthIndex,
-    );
-    var yearCtrl = FixedExtentScrollController(
-      initialItem: selectedYearIndex,
-    );
+  @override
+  Widget build(BuildContext context) {
+    var transl = LocaleSupport.appTranslates(context);
+
     return SizedBox(
       height: 200 + 8 * 2 + 20 + 40 + MediaQuery.of(context).viewPadding.bottom,
       child: Column(
