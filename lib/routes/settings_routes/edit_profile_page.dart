@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
+import '/widgets/edit_field.dart';
+import '/widgets/custom_floating_button.dart';
+import '/widgets/dialogs/edit_profile_confirmation.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -12,12 +15,12 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  var usernameCtrl = TextEditingController();
-  var emailCtrl = TextEditingController();
-  var firstNameCtrl = TextEditingController();
-  var lastNameCtrl = TextEditingController();
-  var oldPasswordCtrl = TextEditingController();
-  var newPasswordCtrl = TextEditingController();
+  late final TextEditingController usernameCtrl;
+  late final TextEditingController emailCtrl;
+  late final TextEditingController firstNameCtrl;
+  late final TextEditingController lastNameCtrl;
+  late final TextEditingController oldPasswordCtrl;
+  late final TextEditingController newPasswordCtrl;
 
   late int? selectedFieldIndex;
 
@@ -44,10 +47,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     newPasswordCtrl.dispose();
   }
 
+  void _onFieldSelect(int index) {
+    setState(() => selectedFieldIndex = index);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       appBar: AppBar(
@@ -63,7 +68,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
         title: Text(
-          transl.editProfilePage,
+          AppLocalizations.of(context)!.editProfilePage,
           style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
@@ -71,6 +76,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
         centerTitle: true,
+      ),
+      floatingActionButton: CustomFloatingButton(
+        caption: AppLocalizations.of(context)!.save,
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (_) => const EditProfileConfirmation(),
+          );
+          context.pop();
+        },
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -85,15 +100,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CircleAvatar(
-                    minRadius: 20,
-                    maxRadius: 55,
+                    radius: 36,
                     backgroundColor: Theming.bgColorLight,
                     backgroundImage: NetworkImage(
                       "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      ///TODO implement image picking
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
@@ -104,7 +120,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        transl.changePfp,
+                        AppLocalizations.of(context)!.changePfp,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,
@@ -115,34 +131,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ],
               ),
               const SizedBox(height: 30),
-              _editField(
-                0,
-                caption: transl.username,
+              EditField(
+                index: 0,
+                caption: AppLocalizations.of(context)!.username,
                 icon: Icons.verified_user_outlined,
-                placeholder: transl.usernameField,
+                placeholder: AppLocalizations.of(context)!.usernameField,
                 ctrl: usernameCtrl,
+                onSelect: (idx) => _onFieldSelect(idx),
+                selectedFieldIndex: selectedFieldIndex,
               ),
-              _editField(
-                1,
-                caption: transl.email,
+              EditField(
+                index: 1,
+                caption: AppLocalizations.of(context)!.email,
                 icon: Icons.email_outlined,
-                placeholder: transl.emailField,
+                placeholder: AppLocalizations.of(context)!.emailField,
                 ctrl: emailCtrl,
+                onSelect: (idx) => _onFieldSelect(idx),
+                selectedFieldIndex: selectedFieldIndex,
               ),
-              _editField(
-                2,
-                caption: transl.firstName,
+              EditField(
+                index: 2,
+                caption: AppLocalizations.of(context)!.firstName,
                 icon: Icons.person_pin_rounded,
-                placeholder: transl.firstNameField,
+                placeholder: AppLocalizations.of(context)!.firstNameField,
                 ctrl: firstNameCtrl,
+                selectedFieldIndex: selectedFieldIndex,
+                onSelect: (idx) => _onFieldSelect(idx),
               ),
-              _editField(
-                3,
-                caption: transl.lastName,
+              EditField(
+                index: 3,
+                caption: AppLocalizations.of(context)!.lastName,
                 icon: Icons.person_pin_rounded,
-                placeholder: transl.lastNameField,
+                placeholder: AppLocalizations.of(context)!.lastNameField,
                 ctrl: lastNameCtrl,
+                selectedFieldIndex: selectedFieldIndex,
+                onSelect: (idx) => _onFieldSelect(idx),
               ),
+              const SizedBox(height: 15),
               GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
@@ -161,24 +186,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                           child: Column(
                             children: [
-                              _editField(
-                                4,
-                                caption: transl.oldPassword,
+                              EditField(
+                                index: 4,
+                                caption:
+                                    AppLocalizations.of(context)!.oldPassword,
                                 icon: Icons.lock_outline,
-                                placeholder: transl.oldPasswordField,
+                                placeholder: AppLocalizations.of(context)!
+                                    .oldPasswordField,
                                 isPassword: true,
                                 ctrl: oldPasswordCtrl,
+                                onSelect: (idx) => _onFieldSelect(idx),
                               ),
-                              _editField(
-                                5,
-                                caption: transl.newPassword,
+                              EditField(
+                                index: 5,
+                                caption:
+                                    AppLocalizations.of(context)!.newPassword,
                                 icon: Icons.lock_outline,
-                                placeholder: transl.newPasswordField,
+                                placeholder: AppLocalizations.of(context)!
+                                    .newPasswordField,
                                 isPassword: true,
                                 ctrl: newPasswordCtrl,
+                                onSelect: (idx) => _onFieldSelect(idx),
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  //TODO impletment changing password
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 30,
@@ -189,7 +222,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                   child: Text(
-                                    transl.changePassword,
+                                    AppLocalizations.of(context)!
+                                        .changePassword,
                                     style: const TextStyle(
                                       color: Theming.whiteTone,
                                       fontWeight: FontWeight.bold,
@@ -214,7 +248,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Text(
-                    transl.changePassword,
+                    AppLocalizations.of(context)!.changePassword,
                     style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
@@ -228,90 +262,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _editField(
-    int index, {
-    required String caption,
-    required IconData icon,
-    required String placeholder,
-    required TextEditingController ctrl,
-    bool isPassword = false,
-  }) {
-    const double radius = 20;
-    const double iconSize = 24;
-
-    bool isSelected = index == selectedFieldIndex;
-
-    return Stack(
-      children: [
-        Container(
-          height: 70,
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 30),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: const Color(0x9F000E1F),
-            borderRadius: BorderRadius.circular(radius),
-          ),
-          child: TextField(
-            onSubmitted: (_) {
-              setState(() => selectedFieldIndex = null);
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            onTap: () {
-              setState(() => selectedFieldIndex = index);
-            },
-            obscureText: isPassword,
-            style: const TextStyle(color: Theming.whiteTone),
-            cursorColor: Theming.primaryColor,
-            controller: ctrl,
-            decoration: InputDecoration(
-              hintText: placeholder,
-              hintStyle: TextStyle(
-                fontSize: 14,
-                color: isSelected
-                    ? Theming.whiteTone.withOpacity(0.4)
-                    : Colors.transparent,
-              ),
-              prefixIcon: Icon(
-                icon,
-                color: isSelected ? Theming.primaryColor : Theming.whiteTone,
-                size: iconSize,
-              ),
-              border: InputBorder.none,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 80,
-          child: AnimatedPadding(
-            padding: EdgeInsets.only(
-              top: isSelected || ctrl.text.isNotEmpty ? 7 : 0,
-              left: iconSize * 2,
-              bottom: isSelected || ctrl.text.isNotEmpty ? 0 : 10,
-            ),
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.linearToEaseOut,
-            child: AnimatedAlign(
-              alignment: isSelected || ctrl.text.isNotEmpty
-                  ? Alignment.topLeft
-                  : Alignment.centerLeft,
-              curve: Curves.linearToEaseOut,
-              duration: const Duration(milliseconds: 500),
-              child: Text(
-                caption,
-                style: TextStyle(
-                  color: isSelected ? Theming.primaryColor : Theming.whiteTone,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

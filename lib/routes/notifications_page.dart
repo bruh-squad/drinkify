@@ -3,23 +3,18 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
-import '../utils/locale_support.dart';
 import '../widgets/dialogs/notification_sheet.dart';
 import '../widgets/custom_floating_button.dart';
-
-late AppLocalizations transl;
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: CustomFloatingButton(
-        caption: transl.markAsRead,
+        caption: AppLocalizations.of(context)!.markAsRead,
         onTap: () {},
       ),
 
@@ -34,7 +29,7 @@ class NotificationsPage extends StatelessWidget {
             centerTitle: true,
             shadowColor: Theming.bgColor,
             title: Text(
-              transl.notificationsNotifications,
+              AppLocalizations.of(context)!.notificationsNotifications,
               style: const TextStyle(
                 color: Theming.whiteTone,
                 fontWeight: FontWeight.bold,
@@ -142,7 +137,7 @@ class NotificationsPage extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: transl.invitationFrom,
+                        text: AppLocalizations.of(ctx)!.invitationFrom,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,
@@ -161,7 +156,7 @@ class NotificationsPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "12 ${transl.minutesAgo}",
+                  "12 ${AppLocalizations.of(ctx)!.minutesAgo}",
                   style: TextStyle(
                     color: Theming.whiteTone.withOpacity(0.5),
                     fontWeight: FontWeight.bold,

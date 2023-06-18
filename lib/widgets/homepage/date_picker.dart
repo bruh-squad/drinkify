@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/ext.dart' show Capitalize;
-import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 int selectedMonthIndex = DateTime.now().month - 1;
@@ -53,10 +52,8 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    var transl = LocaleSupport.appTranslates(context);
-
     return SizedBox(
-      height: 200 + 8 * 2 + 20 + 40 + MediaQuery.of(context).viewPadding.bottom,
+      height: 276 + MediaQuery.of(context).viewPadding.bottom,
       child: Column(
         children: [
           //Button
@@ -86,7 +83,7 @@ class _DatePickerState extends State<DatePicker> {
                 ),
               ),
               child: Text(
-                transl.select,
+                AppLocalizations.of(context)!.select,
                 style: const TextStyle(
                   color: Theming.bgColor,
                   fontWeight: FontWeight.bold,

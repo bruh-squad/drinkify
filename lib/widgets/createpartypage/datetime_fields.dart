@@ -4,7 +4,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 
 class DateTimeField extends StatefulWidget {
   final bool isStart;
@@ -20,8 +19,6 @@ class DateTimeField extends StatefulWidget {
 }
 
 class _DateTimeFieldState extends State<DateTimeField> {
-  late AppLocalizations transl;
-
   DateTime? date;
   TimeOfDay? time;
 
@@ -34,8 +31,6 @@ class _DateTimeFieldState extends State<DateTimeField> {
 
   @override
   Widget build(BuildContext context) {
-    transl = LocaleSupport.appTranslates(context);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 30),
       child: GestureDetector(
@@ -81,8 +76,8 @@ class _DateTimeFieldState extends State<DateTimeField> {
               padding: const EdgeInsets.only(left: 15 / 2),
               child: Text(
                 widget.isStart
-                    ? transl.partyStart.toUpperCase()
-                    : transl.partyEnd.toUpperCase(),
+                    ? AppLocalizations.of(context)!.partyStart.toUpperCase()
+                    : AppLocalizations.of(context)!.partyEnd.toUpperCase(),
                 style: TextStyle(
                   color: Theming.whiteTone.withOpacity(0.3),
                   fontWeight: FontWeight.bold,
@@ -120,8 +115,10 @@ class _DateTimeFieldState extends State<DateTimeField> {
                       const SizedBox(width: 4),
                       Text(
                         date != null
-                            ? DateFormat.yMd(transl.localeName).format(date!)
-                            : transl.partyDate,
+                            ? DateFormat.yMd(
+                                AppLocalizations.of(context)!.localeName,
+                              ).format(date!)
+                            : AppLocalizations.of(context)!.partyDate,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: date != null
@@ -151,7 +148,7 @@ class _DateTimeFieldState extends State<DateTimeField> {
                       Text(
                         time != null
                             ? "${time!.hour}:${time!.minute} "
-                            : transl.partyTime,
+                            : AppLocalizations.of(context)!.partyTime,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: time != null

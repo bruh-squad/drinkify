@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 import '/utils/ext.dart';
 
 class DescriptionPage extends StatelessWidget {
@@ -13,8 +13,6 @@ class DescriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       appBar: AppBar(
@@ -32,7 +30,7 @@ class DescriptionPage extends StatelessWidget {
           ),
         ),
         title: Text(
-          transl.description.capitalize(),
+          AppLocalizations.of(context)!.description.capitalize(),
           style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
@@ -69,7 +67,7 @@ class DescriptionPage extends StatelessWidget {
                       Icons.description_outlined,
                       color: Theming.primaryColor,
                     ),
-                    hintText: transl.addPartyDescription,
+                    hintText: AppLocalizations.of(context)!.addPartyDescription,
                     hintStyle: TextStyle(
                       color: Theming.whiteTone.withOpacity(0.3),
                     ),

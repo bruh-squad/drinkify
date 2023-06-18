@@ -3,8 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
 
-class NoMapsDialog extends StatelessWidget {
-  const NoMapsDialog({super.key});
+class EditProfileConfirmation extends StatelessWidget {
+  const EditProfileConfirmation({super.key});
 
   Size dialogSize(BuildContext ctx) {
     return Size(
@@ -29,7 +29,7 @@ class NoMapsDialog extends StatelessWidget {
               children: [
                 Container(
                   height: double.infinity,
-                  width: dialogSize(context).width / 4,
+                  width: 10,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(right: 15),
                   decoration: const BoxDecoration(
@@ -38,11 +38,6 @@ class NoMapsDialog extends StatelessWidget {
                       topLeft: Radius.circular(30),
                       bottomLeft: Radius.circular(30),
                     ),
-                  ),
-                  child: const Icon(
-                    Icons.close_rounded,
-                    color: Theming.whiteTone,
-                    size: 50,
                   ),
                 ),
                 Padding(

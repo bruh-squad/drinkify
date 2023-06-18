@@ -1,4 +1,3 @@
-import 'package:drinkify/utils/locale_support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -24,19 +23,15 @@ class _PartyStatusState extends State<PartyStatus> {
     selectedIndex = 1;
   }
 
-  late AppLocalizations transl;
-
   @override
   Widget build(BuildContext context) {
-    transl = LocaleSupport.appTranslates(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 15 / 2),
           child: Text(
-            transl.partyStatus.toUpperCase(),
+            AppLocalizations.of(context)!.partyStatus.toUpperCase(),
             style: TextStyle(
               color: Theming.whiteTone.withOpacity(0.3),
               fontWeight: FontWeight.bold,
@@ -75,9 +70,9 @@ class _PartyStatusState extends State<PartyStatus> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _statusItem(1, transl.private),
-                  _statusItem(2, transl.public),
-                  _statusItem(3, transl.secret),
+                  _statusItem(1, AppLocalizations.of(context)!.private),
+                  _statusItem(2, AppLocalizations.of(context)!.public),
+                  _statusItem(3, AppLocalizations.of(context)!.secret),
                 ],
               ),
             ],

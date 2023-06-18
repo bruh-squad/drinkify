@@ -7,7 +7,10 @@ import '../widgets/profilepage/parties.dart';
 
 class ProfilePage extends StatelessWidget {
   final User user;
-  const ProfilePage(this.user, {super.key});
+  const ProfilePage(
+    this.user, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

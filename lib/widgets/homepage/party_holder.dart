@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class PartyHolder extends StatelessWidget {
-  const PartyHolder({super.key});
+  // final Party party;
+  const PartyHolder({
+    // this.party,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 class WelcomeHeader extends StatelessWidget {
@@ -9,8 +9,6 @@ class WelcomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Column(
       children: [
         Row(
@@ -22,15 +20,15 @@ class WelcomeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${transl.welcomeHeader}Oliwier',
+                    '${AppLocalizations.of(context)!.welcomeHeader}Oliwier',
                     style: const TextStyle(
-                      fontSize: 32,
+                      fontSize: 28,
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    "${transl.youHave} 5 ${transl.notifications}",
+                    "${AppLocalizations.of(context)!.youHave} 5 ${AppLocalizations.of(context)!.notifications}",
                     style: const TextStyle(
                       color: Theming.primaryColor,
                       fontSize: 15,
@@ -47,7 +45,7 @@ class WelcomeHeader extends StatelessWidget {
                   "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
                 ),
                 backgroundColor: Theming.bgColorLight,
-                radius: 36,
+                radius: 28,
               ),
             ),
           ],

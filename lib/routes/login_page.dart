@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
-import '../utils/locale_support.dart';
 import '../widgets/edit_field.dart';
 import '../controllers/auth_controller.dart';
 
@@ -40,10 +40,12 @@ class _LoginPageState extends State<LoginPage> {
     return !(authCtrl.emailCtrl.text == "" || authCtrl.passwordCtrl.text == "");
   }
 
+  void _onFieldSelect(int index) {
+    setState(() => selectedFieldIndex = index);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theming.bgColor,
@@ -57,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              transl.logIn,
+              AppLocalizations.of(context)!.logIn,
               style: const TextStyle(
                 color: Theming.whiteTone,
                 fontWeight: FontWeight.bold,
@@ -65,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Text(
-              transl.fillFieldsBelow,
+              AppLocalizations.of(context)!.fillFieldsBelow,
               style: TextStyle(
                 color: Theming.whiteTone.withOpacity(0.7),
                 fontWeight: FontWeight.bold,
@@ -75,22 +77,22 @@ class _LoginPageState extends State<LoginPage> {
             EditField(
               index: 0,
               selectedFieldIndex: selectedFieldIndex,
-              caption: transl.email,
+              caption: AppLocalizations.of(context)!.email,
               icon: Icons.email_outlined,
-              placeholder: transl.emailField,
+              placeholder: AppLocalizations.of(context)!.emailField,
               ctrl: authCtrl.emailCtrl,
               keyboardType: TextInputType.emailAddress,
-              onSelect: (idx) => setState(() => selectedFieldIndex = idx),
+              onSelect: (idx) => _onFieldSelect(idx),
             ),
             EditField(
               index: 1,
               selectedFieldIndex: selectedFieldIndex,
-              caption: transl.password,
+              caption: AppLocalizations.of(context)!.password,
               icon: Icons.lock_outline,
-              placeholder: transl.passwordField,
+              placeholder: AppLocalizations.of(context)!.passwordField,
               ctrl: authCtrl.passwordCtrl,
               isPassword: true,
-              onSelect: (idx) => setState(() => selectedFieldIndex = idx),
+              onSelect: (idx) => _onFieldSelect(idx),
             ),
             const SizedBox(height: 10),
             GestureDetector(
@@ -144,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    transl.rememberMe,
+                    AppLocalizations.of(context)!.rememberMe,
                     style: TextStyle(
                       color: Theming.whiteTone.withOpacity(0.5),
                     ),
@@ -158,6 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: () {
                   if (_userCanLogin) {
                     authCtrl.loginUser();
+                    //TODO implement remembering user's login and password
                   }
                 },
                 child: AnimatedContainer(
@@ -175,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    transl.logIn,
+                    AppLocalizations.of(context)!.logIn,
                     style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
@@ -194,14 +197,14 @@ class _LoginPageState extends State<LoginPage> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: transl.dontHaveAnAccount,
+                        text: AppLocalizations.of(context)!.dontHaveAnAccount,
                         style: TextStyle(
                           color: Theming.whiteTone.withOpacity(0.5),
                           fontSize: 16,
                         ),
                       ),
                       TextSpan(
-                        text: " ${transl.signUp}",
+                        text: " ${AppLocalizations.of(context)!.signUp}",
                         style: const TextStyle(
                           color: Theming.primaryColor,
                           fontWeight: FontWeight.bold,

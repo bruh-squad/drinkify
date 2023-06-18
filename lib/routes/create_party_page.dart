@@ -7,7 +7,6 @@ import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:location/location.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../utils/locale_support.dart';
 import '../utils/theming.dart';
 import '../widgets/custom_floating_button.dart';
 import '../routes/create_party_routes/description_page.dart';
@@ -31,8 +30,6 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
   late final TextEditingController descriptionCtrl;
   late int partyStatus;
   late List<User> invitedUsers;
-
-  late AppLocalizations transl;
 
   String? selLocation;
   late final MapController mapCtrl;
@@ -94,7 +91,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
       }
     }
 
-    bool addComma = locArea != "";
+    final bool addComma = locArea != "";
 
     if (mounted) {
       mapCtrl.move(
@@ -129,14 +126,13 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
   @override
   void dispose() {
     super.dispose();
+    mapCtrl.dispose();
     titleCtrl.dispose();
     descriptionCtrl.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: AnimatedScale(
@@ -144,7 +140,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
         curve: Curves.easeInOutBack,
         scale: isFullyScrolled ? 1 : 0,
         child: CustomFloatingButton(
-          caption: transl.createAParty,
+          caption: AppLocalizations.of(context)!.createAParty,
           onTap: () {
             //TODO: create party
           },
@@ -263,7 +259,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          transl.myLocation,
+                          AppLocalizations.of(context)!.myLocation,
                           style: const TextStyle(
                             color: Theming.whiteTone,
                             fontWeight: FontWeight.bold,
@@ -296,16 +292,16 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
               minChildSize: 0.16,
               snap: true,
               builder: (ctx, scrollCtrl) {
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: Theming.whiteTone,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
+                return SingleChildScrollView(
+                  controller: scrollCtrl,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Theming.whiteTone,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: SingleChildScrollView(
-                    controller: scrollCtrl,
                     child: Column(
                       children: [
                         Container(
@@ -329,7 +325,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                   horizontal: 30,
                                 ),
                                 child: Text(
-                                  transl.location.toUpperCase(),
+                                  AppLocalizations.of(context)!
+                                      .location
+                                      .toUpperCase(),
                                   style: TextStyle(
                                     color: Colors.black.withOpacity(0.2),
                                     fontWeight: FontWeight.bold,
@@ -348,7 +346,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                             horizontal: 30,
                                           ),
                                           child: Text(
-                                            selLocation ?? transl.unknown,
+                                            selLocation ??
+                                                AppLocalizations.of(context)!
+                                                    .unknown,
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -393,8 +393,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                               children: [
                                 _formField(
                                   0,
-                                  caption: transl.title,
-                                  placeholder: transl.addPartyTitle,
+                                  caption: AppLocalizations.of(context)!.title,
+                                  placeholder: AppLocalizations.of(context)!
+                                      .addPartyTitle,
                                   prefixIcon: Icons.label_important_outline,
                                   borderRadius: BorderRadius.circular(15),
                                   ctrl: titleCtrl,
@@ -439,8 +440,10 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                   ),
                                   child: _formField(
                                     3,
-                                    caption: transl.description,
-                                    placeholder: transl.addPartyDescription,
+                                    caption: AppLocalizations.of(context)!
+                                        .description,
+                                    placeholder: AppLocalizations.of(context)!
+                                        .addPartyDescription,
                                     prefixIcon: Icons.description_outlined,
                                     ctrl: descriptionCtrl,
                                     enabled: false,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../utils/locale_support.dart';
 import '../utils/theming.dart';
 import '../controllers/auth_controller.dart';
 import '../models/create_user.dart';
@@ -72,15 +72,11 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _onFieldSelect(int index) {
-    setState(() {
-      selectedFieldIndex = index;
-    });
+    setState(() => selectedFieldIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       body: SafeArea(
@@ -95,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  transl.signUp,
+                  AppLocalizations.of(context)!.signUp,
                   style: const TextStyle(
                     color: Theming.whiteTone,
                     fontWeight: FontWeight.bold,
@@ -103,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 Text(
-                  transl.fillFieldsBelow,
+                  AppLocalizations.of(context)!.fillFieldsBelow,
                   style: TextStyle(
                     color: Theming.whiteTone.withOpacity(0.5),
                     fontWeight: FontWeight.bold,
@@ -132,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            transl.changePfp,
+                            AppLocalizations.of(context)!.changePfp,
                             style: const TextStyle(
                               color: Theming.whiteTone,
                               fontSize: 12,
@@ -148,18 +144,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 EditField(
                   index: 0,
                   selectedFieldIndex: selectedFieldIndex,
-                  caption: transl.username,
+                  caption: AppLocalizations.of(context)!.username,
                   icon: Icons.alternate_email_rounded,
-                  placeholder: transl.usernameField,
+                  placeholder: AppLocalizations.of(context)!.usernameField,
                   ctrl: usernameCtrl,
                   onSelect: (idx) => _onFieldSelect(idx),
                 ),
                 EditField(
                   index: 1,
                   selectedFieldIndex: selectedFieldIndex,
-                  caption: transl.email,
+                  caption: AppLocalizations.of(context)!.email,
                   icon: Icons.email_outlined,
-                  placeholder: transl.emailField,
+                  placeholder: AppLocalizations.of(context)!.emailField,
                   ctrl: emailCtrl,
                   keyboardType: TextInputType.emailAddress,
                   onSelect: (idx) => _onFieldSelect(idx),
@@ -170,9 +166,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     EditField(
                       index: 2,
                       selectedFieldIndex: selectedFieldIndex,
-                      caption: transl.firstName,
+                      caption: AppLocalizations.of(context)!.firstName,
                       icon: Icons.person_pin_rounded,
-                      placeholder: transl.firstNameField,
+                      placeholder: AppLocalizations.of(context)!.firstNameField,
                       ctrl: firstNameCtrl,
                       manyInRow: true,
                       keyboardType: TextInputType.name,
@@ -181,9 +177,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     EditField(
                       index: 3,
                       selectedFieldIndex: selectedFieldIndex,
-                      caption: transl.lastName,
+                      caption: AppLocalizations.of(context)!.lastName,
                       icon: Icons.contact_emergency_rounded,
-                      placeholder: transl.lastNameField,
+                      placeholder: AppLocalizations.of(context)!.lastNameField,
                       ctrl: lastNameCtrl,
                       manyInRow: true,
                       keyboardType: TextInputType.name,
@@ -194,9 +190,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 EditField(
                   index: 4,
                   selectedFieldIndex: selectedFieldIndex,
-                  caption: transl.password,
+                  caption: AppLocalizations.of(context)!.password,
                   icon: Icons.lock_outline,
-                  placeholder: transl.passwordField,
+                  placeholder: AppLocalizations.of(context)!.passwordField,
                   ctrl: passwordCtrl,
                   isPassword: true,
                   manyInRow: false,
@@ -205,9 +201,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 EditField(
                   index: 5,
                   selectedFieldIndex: selectedFieldIndex,
-                  caption: transl.confirmPassword,
+                  caption: AppLocalizations.of(context)!.confirmPassword,
                   icon: Icons.lock_outline,
-                  placeholder: transl.passwordField,
+                  placeholder: AppLocalizations.of(context)!.passwordField,
                   ctrl: passwordConfirmCtrl,
                   isPassword: true,
                   manyInRow: false,
@@ -218,13 +214,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: GestureDetector(
                     onTap: () async {
                       setState(() => selectedFieldIndex = null);
-                      var dateVal = await showDatePicker(
+                      final dateVal = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(DateTime.now().year - 100),
                         lastDate: DateTime.now(),
                         useRootNavigator: true,
-                        locale: Locale(transl.localeName),
+                        locale:
+                            Locale(AppLocalizations.of(context)!.localeName),
                       );
                       setState(() => dateOfBirthVal = dateVal);
                     },
@@ -248,8 +245,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           const SizedBox(width: 12),
                           Text(
                             dateOfBirthVal == null
-                                ? transl.dateOfBirth
-                                : DateFormat.yMd(transl.localeName)
+                                ? AppLocalizations.of(context)!.dateOfBirth
+                                : DateFormat.yMd(AppLocalizations.of(context)!
+                                        .localeName)
                                     .format(dateOfBirthVal!),
                             style: const TextStyle(
                               color: Theming.whiteTone,
@@ -292,7 +290,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        transl.signUp,
+                        AppLocalizations.of(context)!.signUp,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,
@@ -310,14 +308,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: transl.haveAnAccount,
+                            text: AppLocalizations.of(context)!.haveAnAccount,
                             style: TextStyle(
                               color: Theming.whiteTone.withOpacity(0.5),
                               fontSize: 16,
                             ),
                           ),
                           TextSpan(
-                            text: " ${transl.signIn}",
+                            text: " ${AppLocalizations.of(context)!.signIn}",
                             style: const TextStyle(
                               color: Theming.primaryColor,
                               fontWeight: FontWeight.bold,

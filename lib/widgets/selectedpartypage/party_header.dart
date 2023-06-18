@@ -7,10 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '/models/party.dart';
 import '/utils/theming.dart';
 import '/utils/ext.dart' show MapUtils;
-import '/utils/locale_support.dart';
 import '/widgets/dialogs/no_maps_dialog.dart';
-
-late AppLocalizations transl;
 
 class PartyHeader extends StatefulWidget {
   final Party party;
@@ -27,7 +24,6 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
   String partyLocation = "";
 
   void _getActualLocation(LatLng latLng, BuildContext ctx) async {
-    transl = LocaleSupport.appTranslates(ctx);
     List<Placemark> placemarks = [];
 
     try {
@@ -36,11 +32,11 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
         latLng.longitude,
       );
     } catch (_) {
-      partyLocation = transl.unknown;
+      partyLocation = AppLocalizations.of(context)!.unknown;
       return;
     }
 
-    Placemark place = placemarks[0];
+    final Placemark place = placemarks[0];
 
     final cityFields = <String>[
       place.locality!,
@@ -92,18 +88,16 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
           ),
           GestureDetector(
             onTap: () async {
-              bool succeded = await openMap(
+              final succeded = await openMap(
                 lat: widget.party.location.latitude,
                 lng: widget.party.location.longitude,
               );
 
-              if (!succeded) {
-                if (context.mounted) {
-                  showDialog(
-                    context: context,
-                    builder: (_) => const NoMapsDialog(),
-                  );
-                }
+              if (!succeded && context.mounted) {
+                showDialog(
+                  context: context,
+                  builder: (_) => const NoMapsDialog(),
+                );
               }
             },
             child: Row(
@@ -136,7 +130,7 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.yMd(transl.localeName)
+                    DateFormat.yMd(AppLocalizations.of(context)!.localeName)
                         .format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),
@@ -152,7 +146,7 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    DateFormat.Hm(transl.localeName)
+                    DateFormat.Hm(AppLocalizations.of(context)!.localeName)
                         .format(widget.party.startTime),
                     style: Styles.partyHeaderInfo,
                   ),

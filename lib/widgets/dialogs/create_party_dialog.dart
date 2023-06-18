@@ -5,13 +5,15 @@ import '/utils/theming.dart';
 class CreatePartyDialog extends StatelessWidget {
   const CreatePartyDialog({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final Size dialogSize = Size(
-      MediaQuery.of(context).size.width - 80,
+  Size _dialogSize(BuildContext ctx) {
+    return Size(
+      MediaQuery.of(ctx).size.width - 80,
       200,
     );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Theming.bgColor,
       shape: RoundedRectangleBorder(
@@ -24,7 +26,7 @@ class CreatePartyDialog extends StatelessWidget {
             children: [
               Container(
                 height: double.infinity,
-                width: dialogSize.width / 4,
+                width: _dialogSize(context).width / 4,
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(right: 15),
                 decoration: const BoxDecoration(

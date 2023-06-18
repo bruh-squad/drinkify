@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 
 class LogoutPage extends StatelessWidget {
   const LogoutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return SizedBox(
       height: 250,
       child: Column(
         children: [
           const SizedBox(height: 20),
           Text(
-            transl.doYouWantToLogOut,
+            AppLocalizations.of(context)!.doYouWantToLogOut,
             style: const TextStyle(
               color: Theming.whiteTone,
               fontWeight: FontWeight.bold,
@@ -40,7 +38,7 @@ class LogoutPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    transl.yes,
+                    AppLocalizations.of(context)!.yes,
                     style: const TextStyle(
                       color: Theming.bgColor,
                       fontWeight: FontWeight.bold,
@@ -58,7 +56,7 @@ class LogoutPage extends StatelessWidget {
                     vertical: 5,
                   ),
                   child: Text(
-                    transl.no,
+                    AppLocalizations.of(context)!.no,
                     style: const TextStyle(
                       color: Theming.primaryColor,
                       fontWeight: FontWeight.bold,

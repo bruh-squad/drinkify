@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 
 class SearchAndMap extends StatefulWidget {
   const SearchAndMap({super.key});
@@ -13,17 +13,23 @@ class SearchAndMap extends StatefulWidget {
 
 class _SearchAndMapState extends State<SearchAndMap> {
   late int selectedIndex;
+  late final TextEditingController searchCtrl;
 
   @override
   void initState() {
     super.initState();
     selectedIndex = 0;
+    searchCtrl = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchCtrl.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Container(
       height: 110,
       width: double.infinity,
@@ -96,13 +102,14 @@ class _SearchAndMapState extends State<SearchAndMap> {
                   child: TextField(
                     cursorColor: Theming.primaryColor,
                     textAlign: TextAlign.left,
+                    controller: searchCtrl,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theming.bgColor,
                       fontSize: 16,
                     ),
                     decoration: InputDecoration(
-                      hintText: transl.lookingForAParty,
+                      hintText: AppLocalizations.of(context)!.lookingForAParty,
                       hintStyle: Styles.hintTextSearchBar,
                       border: InputBorder.none,
                       icon: const Icon(
@@ -121,9 +128,18 @@ class _SearchAndMapState extends State<SearchAndMap> {
             //Category roll
             Row(
               children: [
-                _categoryItem(0, caption: transl.parties),
-                _categoryItem(1, caption: transl.friends),
-                _categoryItem(2, caption: transl.inYourArea),
+                _categoryItem(
+                  0,
+                  caption: AppLocalizations.of(context)!.parties,
+                ),
+                _categoryItem(
+                  1,
+                  caption: AppLocalizations.of(context)!.friends,
+                ),
+                _categoryItem(
+                  2,
+                  caption: AppLocalizations.of(context)!.inYourArea,
+                ),
               ],
             ),
           ],

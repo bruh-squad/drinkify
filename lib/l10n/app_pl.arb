@@ -21,7 +21,6 @@
     "addAFriend": "Dodaj znajomego",
     "emptyHere": "Pusto tutaj :(",
     "partiesProfile2": "Imprezy",
-    "sort": "Sortuj",
 
     "notificationsNotifications": "Powiadomienia",
     "invitationFrom": "Zaproszenie od",
@@ -114,6 +113,6 @@
     "myLocation": "Moja lokalizacja",
     "partyDate": "Data",
     "partyTime": "Godzina",
-    "noFriendsInvited": "Nie nikogo nie zaproszono"
+    "noFriendsInvited": "Nikogo nie zaproszono"
 
 }

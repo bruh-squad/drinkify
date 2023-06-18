@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 import '/widgets/glass_morphism.dart';
 import '/models/user.dart';
 
@@ -22,8 +21,6 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
 
   late final TextEditingController searchCtrl;
 
-  late AppLocalizations transl;
-
   @override
   void initState() {
     super.initState();
@@ -32,9 +29,13 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    transl = LocaleSupport.appTranslates(context);
+  void dispose() {
+    super.dispose();
+    searchCtrl.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theming.bgColor,
@@ -93,7 +94,7 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.only(right: 15),
-                          hintText: transl.searchAFriend,
+                          hintText: AppLocalizations.of(context)!.searchAFriend,
                           icon: const Padding(
                             padding: EdgeInsets.only(left: 12),
                             child: Icon(

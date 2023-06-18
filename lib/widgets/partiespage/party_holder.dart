@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/models/party.dart';
 
-import '/utils/locale_support.dart';
 import '/utils/theming.dart';
 
 class PartyHolder extends StatelessWidget {
@@ -14,8 +14,6 @@ class PartyHolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double imageAspectRatio = 16 / 6;
-
-    final transl = LocaleSupport.appTranslates(context);
 
     return GestureDetector(
       onTap: () => context.push(
@@ -90,8 +88,9 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.yMd(transl.localeName)
-                                .format(party.startTime),
+                            DateFormat.yMd(
+                              AppLocalizations.of(context)!.localeName,
+                            ).format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],
@@ -106,8 +105,9 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            DateFormat.Hm(transl.localeName)
-                                .format(party.startTime),
+                            DateFormat.Hm(
+                              AppLocalizations.of(context)!.localeName,
+                            ).format(party.startTime),
                             style: Styles.partyHeaderInfo,
                           ),
                         ],

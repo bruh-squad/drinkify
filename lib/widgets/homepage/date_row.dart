@@ -5,13 +5,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/ext.dart' show Capitalize;
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 
 import './date_picker.dart';
 
 class DateRow extends StatefulWidget {
   final EdgeInsets textPadding;
-  const DateRow({required this.textPadding, super.key});
+  const DateRow({
+    required this.textPadding,
+    super.key,
+  });
 
   @override
   State<DateRow> createState() => _DateRowState();
@@ -37,7 +39,7 @@ class _DateRowState extends State<DateRow> {
     initializeDateFormatting();
   }
 
-  int numOfDaysInMonth(int year, int month) {
+  int _numOfDaysInMonth(int year, int month) {
     return DateTime(
       year,
       month + 1,
@@ -55,10 +57,9 @@ class _DateRowState extends State<DateRow> {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-    String month = toMonthName(DateTime(date[0], date[1]));
+    final String month = toMonthName(DateTime(date[0], date[1]));
 
-    int dateBoxStart =
+    final int dateBoxStart =
         date[1] != DateTime.now().month || date[0] != DateTime.now().year
             ? 1
             : DateTime.now().day;
@@ -107,7 +108,7 @@ class _DateRowState extends State<DateRow> {
                   );
                 },
                 child: Text(
-                  transl.pickADate,
+                  AppLocalizations.of(context)!.pickADate,
                   style: Styles.smallTextButton,
                 ),
               ),
@@ -123,7 +124,7 @@ class _DateRowState extends State<DateRow> {
                 children: [
                   const SizedBox(width: 30),
                   for (int i = dateBoxStart;
-                      i <= numOfDaysInMonth(date[0], date[1]);
+                      i <= _numOfDaysInMonth(date[0], date[1]);
                       i++)
                     _dateBox(
                       i,

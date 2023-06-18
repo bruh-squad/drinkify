@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 
 class UserInfo extends StatefulWidget {
   const UserInfo({super.key});
@@ -16,8 +16,6 @@ class _UserInfoState extends State<UserInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Column(
       children: [
         //Parties attended / Profile pic with username / Friends
@@ -37,7 +35,7 @@ class _UserInfoState extends State<UserInfo> {
                     ),
                   ),
                   Text(
-                    transl.partiesProfile1,
+                    AppLocalizations.of(context)!.partiesProfile1,
                     style: TextStyle(
                       color: Theming.whiteTone.withOpacity(0.5),
                       fontSize: 16,
@@ -93,7 +91,7 @@ class _UserInfoState extends State<UserInfo> {
                       ),
                     ),
                     Text(
-                      transl.friendsProfile,
+                      AppLocalizations.of(context)!.friendsProfile,
                       style: TextStyle(
                         color: Theming.whiteTone.withOpacity(0.5),
                         fontSize: 16,
@@ -144,7 +142,7 @@ class _UserInfoState extends State<UserInfo> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  transl.addAFriend,
+                  AppLocalizations.of(context)!.addAFriend,
                   style: Styles.buttonTextLight,
                 ),
               ),
@@ -176,7 +174,7 @@ class _UserInfoState extends State<UserInfo> {
                             bottom: MediaQuery.of(ctx).viewPadding.bottom,
                           ),
                           child: Text(
-                            transl.emptyHere,
+                            AppLocalizations.of(context)!.emptyHere,
                             style: Styles.emptyListText,
                           ),
                         ),

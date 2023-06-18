@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../utils/locale_support.dart';
 import '../widgets/glass_morphism.dart';
 import '../utils/theming.dart';
 
@@ -34,8 +34,6 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     navBarSize = Size(
       MediaQuery.of(context).size.width - 30 * 2,
       60,
@@ -72,21 +70,21 @@ class _NavBarState extends State<NavBar> {
                     _navItem(
                       0,
                       context,
-                      caption: transl.navbarParties,
+                      caption: AppLocalizations.of(context)!.navbarParties,
                       route: "/parties",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
                       1,
                       context,
-                      caption: transl.navbarHome,
+                      caption: AppLocalizations.of(context)!.navbarHome,
                       route: "/",
                     ),
                     const SizedBox(width: 14),
                     _navItem(
                       2,
                       context,
-                      caption: transl.navbarProfile,
+                      caption: AppLocalizations.of(context)!.navbarProfile,
                       route: "/profile",
                     ),
                   ],

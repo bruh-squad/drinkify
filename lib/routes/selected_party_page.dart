@@ -1,15 +1,15 @@
-import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../widgets/selectedpartypage/party_header.dart';
 import '../widgets/selectedpartypage/party_desc.dart';
 import '../utils/theming.dart';
 import '../models/party.dart';
-import '/utils/locale_support.dart';
+import '../widgets/glass_morphism.dart';
 
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
@@ -60,6 +60,9 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
     }
   }
 
+  double mapFullSize(BuildContext ctx) => MediaQuery.of(ctx).size.height - 120;
+  double get mapShrinkedSize => 140;
+
   @override
   void initState() {
     super.initState();
@@ -71,11 +74,6 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
-    final double mapFullSize = MediaQuery.of(context).size.height - 120;
-    const double mapShrinkedSize = 140;
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
@@ -100,7 +98,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 horizontal: 20,
               ),
               child: Text(
-                transl.join,
+                AppLocalizations.of(context)!.join,
                 style: TextStyle(
                   color: showMore ? Theming.primaryColor : Colors.transparent,
                   fontWeight: FontWeight.bold,
@@ -121,7 +119,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                 //Map
                 AnimatedContainer(
                   width: double.infinity,
-                  height: showMore ? mapShrinkedSize : mapFullSize,
+                  height: showMore ? mapShrinkedSize : mapFullSize(context),
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.linearToEaseOut,
                   decoration: BoxDecoration(
@@ -209,7 +207,9 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linearToEaseOut,
                       margin: EdgeInsets.only(
-                        top: showMore ? mapShrinkedSize - 30 : mapFullSize - 30,
+                        top: showMore
+                            ? mapShrinkedSize - 30
+                            : mapFullSize(context) - 30,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
@@ -217,7 +217,9 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                         borderRadius: BorderRadius.circular(60),
                       ),
                       child: Text(
-                        showMore ? transl.showLess : transl.showMore,
+                        showMore
+                            ? AppLocalizations.of(context)!.showLess
+                            : AppLocalizations.of(context)!.showMore,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.w700,

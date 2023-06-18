@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../routes/settings_routes/log_out_page.dart';
 import '../widgets/glass_morphism.dart';
-import '../utils/locale_support.dart';
 import '../utils/theming.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -11,8 +11,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       body: Padding(
@@ -37,7 +35,7 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    transl.settings,
+                    AppLocalizations.of(context)!.settings,
                     style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
@@ -47,22 +45,22 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
               _settingsItem(
-                caption: transl.editProfile,
+                caption: AppLocalizations.of(context)!.editProfile,
                 prefixIcon: Icons.mode_edit_outlined,
                 onTap: () => context.push("/edit-profile"),
               ),
               _settingsItem(
-                caption: transl.organization,
+                caption: AppLocalizations.of(context)!.organization,
                 prefixIcon: Icons.people_rounded,
                 onTap: () => context.push("/organization"),
               ),
               _settingsItem(
-                caption: transl.privacy,
+                caption: AppLocalizations.of(context)!.privacy,
                 prefixIcon: Icons.privacy_tip_outlined,
                 onTap: () => context.push("/privacy"),
               ),
               _settingsItem(
-                caption: transl.logOut,
+                caption: AppLocalizations.of(context)!.logOut,
                 prefixIcon: Icons.logout_rounded,
                 isLogoutButton: true,
                 onTap: () {

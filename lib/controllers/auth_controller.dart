@@ -10,7 +10,7 @@ class AuthController {
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
 
-  Future loginUser() async {
+  Future<void> loginUser() async {
     final url = '$mainUrl/auth/token/';
     final response = await http.post(
       Uri.parse(url),
@@ -21,18 +21,22 @@ class AuthController {
     );
 
     if (response.statusCode == 200) {
-      var loginArr = json.decode(response.body);
+      final loginArr = json.decode(response.body);
       const storage = FlutterSecureStorage();
-      await storage.write(key: 'access', value: loginArr['access']);
-      await storage.write(key: 'refresh', value: loginArr['refresh']);
-      debugPrint(loginArr);
-    } else {
-      debugPrint("${response.statusCode}");
+      await storage.write(
+        key: 'access',
+        value: loginArr['access'],
+      );
+      await storage.write(
+        key: 'refresh',
+        value: loginArr['refresh'],
+      );
+      return debugPrint(loginArr);
     }
+    debugPrint("${response.statusCode}");
   }
 
-  Future registerUser(CreateUser user) async {
-    // TODO: fix sending data
+  Future<void> registerUser(CreateUser user) async {
     final response = await http.post(
       Uri.parse('$mainUrl/users/'),
       body: {
@@ -46,9 +50,8 @@ class AuthController {
       },
     );
     if (response.statusCode == 200) {
-      debugPrint(json.decode(response.body));
-    } else {
-      debugPrint("${response.statusCode}");
+      return debugPrint(json.decode(response.body));
     }
+    debugPrint("${response.statusCode}");
   }
 }

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/utils/locale_support.dart';
 
 class OrganizationPage extends StatelessWidget {
   const OrganizationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final transl = LocaleSupport.appTranslates(context);
-
     return Scaffold(
       backgroundColor: Theming.bgColor,
       appBar: AppBar(
@@ -26,7 +24,7 @@ class OrganizationPage extends StatelessWidget {
           ),
         ),
         title: Text(
-          transl.yourParties,
+          AppLocalizations.of(context)!.yourParties,
           style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,
