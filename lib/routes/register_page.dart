@@ -263,7 +263,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      authController.registerUser(
+                      AuthController.registerUser(
                         CreateUser(
                           username: usernameCtrl.text,
                           email: emailCtrl.text,

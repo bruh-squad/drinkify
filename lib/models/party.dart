@@ -23,7 +23,7 @@ class Party {
   final DateTime startTime;
   final DateTime stopTime;
 
-  Party({
+  const Party({
     this.publicId,
     this.owner,
     required this.ownerPublicId,

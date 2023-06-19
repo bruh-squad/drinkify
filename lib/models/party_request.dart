@@ -8,7 +8,7 @@ class PartyRequest {
   final String senderPublicId;
   final DateTime? createdAt;
 
-  PartyRequest({
+  const PartyRequest({
     this.party,
     required this.partyPublicId,
     this.sender,

@@ -11,7 +11,7 @@ class CreateUser {
   final List<Friend>? friends;
   final String password;
 
-  CreateUser({
+  const CreateUser({
     this.publicId,
     required this.username,
     required this.email,

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../utils/consts.dart';
 import '../models/user.dart';
 
+///Used for getting information about the user, updating, deleting and searching.
 class UserController {
   ///Returns information about you.
   static Future<User> me() async {
@@ -18,7 +19,6 @@ class UserController {
       },
     );
     final json = jsonDecode(res.body);
-    //TODO remove password from User model
     return User(
       publicId: json["public_id"],
       username: json["username"],
@@ -28,7 +28,12 @@ class UserController {
       dateOfBirth: json["date_of_birth"],
       pfp: json["pfp"],
       friends: json["friends"] as List<Friend>,
-      password: "",
+      password: "", //Do NOT change this value
     );
   }
+
+  ///Deletes user's account
+  static Future<void> deleteMe() async {}
+
+  static Future<void> updateMe() async {}
 }

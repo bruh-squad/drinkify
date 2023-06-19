@@ -11,7 +11,7 @@ class User {
   final List<Friend>? friends;
   final String password;
 
-  User({
+  const User({
     this.publicId,
     this.username,
     this.email,

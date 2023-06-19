@@ -8,7 +8,7 @@ class PartyInvitation {
   final String receiverPublicId;
   final DateTime? createdAt;
 
-  PartyInvitation({
+  const PartyInvitation({
     this.party,
     required this.partyPublicId,
     this.receiver,

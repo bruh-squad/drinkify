@@ -37,7 +37,7 @@ class PartiesPage extends StatelessWidget {
                           privacyStatus: PrivacyStatus.public,
                           description: "Example description of a party",
                           participants: [
-                            Friend(),
+                            const Friend(),
                           ],
                           location: LatLng(52.237049, 21.017532),
                           startTime: DateTime.now(),

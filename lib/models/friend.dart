@@ -6,7 +6,7 @@ class Friend {
   final String? dateOfBirth;
   final String? pfp;
 
-  Friend({
+  const Friend({
     this.publicId,
     this.username,
     this.firstName,

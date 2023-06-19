@@ -6,10 +6,12 @@ import 'package:http/http.dart' as http;
 import '../utils/consts.dart';
 import '../models/create_user.dart';
 
+///Used for logging in and signing up a user
 class AuthController {
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
 
+  ///Handles logging in
   Future<void> loginUser() async {
     final url = '$mainUrl/auth/token/';
     final response = await http.post(
@@ -36,7 +38,8 @@ class AuthController {
     debugPrint("${response.statusCode}");
   }
 
-  Future<void> registerUser(CreateUser user) async {
+  ///Handles the creation of new user
+  static Future<void> registerUser(CreateUser user) async {
     final response = await http.post(
       Uri.parse('$mainUrl/users/'),
       body: {

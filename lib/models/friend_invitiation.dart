@@ -8,7 +8,7 @@ class FriendInvitation {
   final String senderPublicId;
   final String? createdAt;
 
-  FriendInvitation({
+  const FriendInvitation({
     this.id,
     this.sender,
     this.receiver,
