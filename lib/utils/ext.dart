@@ -8,8 +8,8 @@ extension Capitalize on String {
   }
 }
 
-extension ParseFromPOINT on String {
-  ///Converts "POINT(x y)" to LatLng format
+extension POINTtoLatLng on String {
+  ///Converts "POINT(lat lng)" to LatLng format
   LatLng toLatLng() {
     final point = replaceAll("POINT(", "").replaceAll(")", "").split(" ");
     return LatLng(
@@ -17,6 +17,11 @@ extension ParseFromPOINT on String {
       double.parse(point[1]),
     );
   }
+}
+
+extension LatLngToPOINT on LatLng {
+  ///Converts LatLng to "POINT(lat lng)" format
+  String toPOINT() => "POINT($latitude $longitude)";
 }
 
 mixin MapUtils {

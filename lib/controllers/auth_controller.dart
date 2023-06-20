@@ -40,8 +40,9 @@ class AuthController {
 
   ///Handles the creation of new user
   static Future<void> registerUser(CreateUser user) async {
+    final url = "$mainUrl/users/";
     final response = await http.post(
-      Uri.parse('$mainUrl/users/'),
+      Uri.parse(url),
       body: {
         "username": user.username,
         "email": user.email,

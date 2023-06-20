@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../utils/consts.dart' show mainUrl;
 import '../models/friend.dart';
 import '../models/party.dart';
+import '../utils/ext.dart' show POINTtoLatLng;
 
 ///Used by the party creator to control owned parties
 class PartyCreatorController {
@@ -50,7 +51,7 @@ class PartyCreatorController {
                 dateOfBirth: p["date_of_birth"],
               ),
           ],
-          location: e["location"],
+          location: (e["location"] as String).toLatLng(),
           distance: e["distance"],
           startTime: DateTime.parse(e["start_time"]),
           stopTime: DateTime.parse(e["stop_time"]),

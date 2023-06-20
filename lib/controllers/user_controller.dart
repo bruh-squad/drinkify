@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:drinkify/models/friend.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/consts.dart';
@@ -27,13 +26,25 @@ class UserController {
       lastName: json["last_name"],
       dateOfBirth: json["date_of_birth"],
       pfp: json["pfp"],
-      friends: json["friends"] as List<Friend>,
+      friends: json["friends"],
       password: "", //Do NOT change this value
     );
   }
 
   ///Deletes user's account
-  static Future<void> deleteMe() async {}
+  static Future<void> deleteMe() async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/users/";
+    await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
 
+  ///Updates user's account
   static Future<void> updateMe() async {}
 }

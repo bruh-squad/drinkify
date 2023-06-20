@@ -55,11 +55,6 @@ class SettingsPage extends StatelessWidget {
                 onTap: () => context.push("/organization"),
               ),
               _settingsItem(
-                caption: AppLocalizations.of(context)!.privacy,
-                prefixIcon: Icons.privacy_tip_outlined,
-                onTap: () => context.push("/privacy"),
-              ),
-              _settingsItem(
                 caption: AppLocalizations.of(context)!.logOut,
                 prefixIcon: Icons.logout_rounded,
                 isLogoutButton: true,

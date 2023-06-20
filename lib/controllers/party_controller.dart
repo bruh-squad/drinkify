@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'package:drinkify/models/friend.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../utils/consts.dart';
 import '../models/party.dart';
 import '../models/party_invitation.dart';
-import '../utils/ext.dart' show ParseFromPOINT;
+import '../models/friend.dart';
+import '../utils/ext.dart' show POINTtoLatLng;
 
 ///Used by the regular user to join, leave, accept party requests and more
 class PartyController {
@@ -59,12 +59,12 @@ class PartyController {
             name: e["party"]["name"],
             description: e["party"]["description"],
             location: (e["party"]["location"] as String).toLatLng(),
-            startTime: DateTime.parse(e["party"]["start_time"]),
-            stopTime: DateTime.parse(e["party"]["stop_time"]),
             distance: e["party"]["distance"],
             image: e["party"]["image"],
             privacyStatus: e["party"]["privacy_status"],
             privacyStatusDisplay: e["party"]["privacy_status_display"],
+            startTime: DateTime.parse(e["party"]["start_time"]),
+            stopTime: DateTime.parse(e["party"]["stop_time"]),
             participants: [
               for (final p in e["party"]["participants"] as List)
                 Friend(
