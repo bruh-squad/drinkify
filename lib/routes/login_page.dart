@@ -22,6 +22,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    //TODO do the points below
+    // 1. check if JWT access token is still active
+    // 2. if so route user to home page
+    // 3. if access token is not active show regular login page instead of routing
     authCtrl = AuthController();
     passwordResetEmailCtrl = TextEditingController();
     rememberPassword = false;
@@ -157,11 +161,14 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 25),
             Center(
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if (_userCanLogin) {
-                    authCtrl.loginUser();
-                    //TODO implement remembering user's login and password
+                    final canLogin = await authCtrl.loginUser();
+                    if (mounted && canLogin) {
+                      context.go("/");
+                    }
                   }
+                  //TODO implement remembering user's login and password
                 },
                 child: AnimatedContainer(
                   width: double.infinity,

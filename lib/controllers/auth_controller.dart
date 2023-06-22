@@ -12,18 +12,17 @@ class AuthController {
   TextEditingController passwordCtrl = TextEditingController();
 
   ///Handles logging in
-  Future<void> loginUser() async {
+  Future<bool> loginUser() async {
     final url = '$mainUrl/auth/token/';
-    final response = await http.post(
+    final res = await http.post(
       Uri.parse(url),
       body: {
         "email": emailCtrl.text,
         "password": passwordCtrl.text,
       },
     );
-
-    if (response.statusCode == 200) {
-      final loginArr = json.decode(response.body);
+    if (res.statusCode == 200) {
+      final loginArr = json.decode(res.body);
       const storage = FlutterSecureStorage();
       await storage.write(
         key: 'access',
@@ -33,15 +32,16 @@ class AuthController {
         key: 'refresh',
         value: loginArr['refresh'],
       );
-      return debugPrint(loginArr);
+
+      return true;
     }
-    debugPrint("${response.statusCode}");
+    return false;
   }
 
   ///Handles the creation of new user
-  static Future<void> registerUser(CreateUser user) async {
+  static Future<bool> registerUser(CreateUser user) async {
     final url = "$mainUrl/users/";
-    final response = await http.post(
+    final res = await http.post(
       Uri.parse(url),
       body: {
         "username": user.username,
@@ -51,11 +51,10 @@ class AuthController {
         "date_of_birth":
             '${user.dateOfBirth.year}-${user.dateOfBirth.month}-${user.dateOfBirth.day}',
         "password": user.password,
+        "pfp": user.pfp!,
       },
     );
-    if (response.statusCode == 200) {
-      return debugPrint(json.decode(response.body));
-    }
-    debugPrint("${response.statusCode}");
+    print("${res.body}");
+    return res.statusCode == 201;
   }
 }

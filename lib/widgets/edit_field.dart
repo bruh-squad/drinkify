@@ -35,6 +35,8 @@ class EditField extends StatelessWidget {
 
   double get _iconSize => 24;
 
+  double get _borderOpacity => 0.3;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,7 +59,7 @@ class EditField extends StatelessWidget {
                 width: 1.5,
                 color: index == selectedFieldIndex
                     ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.2),
+                    : Theming.whiteTone.withOpacity(_borderOpacity),
               ),
               borderRadius: BorderRadius.circular(_radius),
             ),
@@ -67,7 +69,7 @@ class EditField extends StatelessWidget {
               keyboardType: keyboardType,
               style: TextStyle(
                 color: Theming.whiteTone,
-                letterSpacing: isPassword ? 6 : 0,
+                letterSpacing: isPassword ? 4 : 0,
               ),
               cursorColor: Theming.primaryColor,
               controller: ctrl,
@@ -77,14 +79,14 @@ class EditField extends StatelessWidget {
                   fontSize: 14,
                   letterSpacing: 0,
                   color: index == selectedFieldIndex
-                      ? Theming.whiteTone.withOpacity(0.4)
+                      ? Theming.whiteTone.withOpacity(_borderOpacity + 0.2)
                       : Colors.transparent,
                 ),
                 prefixIcon: Icon(
                   icon,
                   color: index == selectedFieldIndex
                       ? Theming.primaryColor
-                      : Theming.whiteTone.withOpacity(0.2),
+                      : Theming.whiteTone.withOpacity(_borderOpacity),
                   size: _iconSize,
                 ),
                 border: InputBorder.none,
@@ -108,7 +110,7 @@ class EditField extends StatelessWidget {
                 style: TextStyle(
                   color: index == selectedFieldIndex
                       ? Theming.primaryColor
-                      : Theming.whiteTone,
+                      : Theming.whiteTone.withOpacity(_borderOpacity + 0.1),
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),

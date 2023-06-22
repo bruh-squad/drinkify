@@ -14,4 +14,9 @@ class Friend {
     this.dateOfBirth,
     this.pfp,
   });
+
+  @override
+  String toString() {
+    return "$username $firstName $lastName $dateOfBirth";
+  }
 }

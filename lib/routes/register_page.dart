@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../utils/theming.dart';
 import '../controllers/auth_controller.dart';
 import '../models/create_user.dart';
+import '../widgets/image_picker.dart';
 import '../widgets/edit_field.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -19,6 +23,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   int? selectedFieldIndex;
 
+  XFile? pfp;
   late final TextEditingController usernameCtrl;
   late final TextEditingController emailCtrl;
   late final TextEditingController firstNameCtrl;
@@ -109,34 +114,60 @@ class _RegisterPageState extends State<RegisterPage> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      //TODO picking an image from gallery
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Theming.bgColor,
+                        builder: (ctx) => ImagePickerSheet(
+                          onFinish: (img) {
+                            setState(() => pfp = img);
+                          },
+                        ),
+                      );
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: const Color(0x9F000E1F),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Theming.bgColorLight,
-                            backgroundImage:
-                                AssetImage("assets/images/default_pfp.png"),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            AppLocalizations.of(context)!.changePfp,
-                            style: const TextStyle(
-                              color: Theming.whiteTone,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                    child: Stack(
+                      children: [
+                        //I have no idea why I couldn't do image stuff in one line :(
+                        pfp == null
+                            ? const CircleAvatar(
+                                radius: 45,
+                                backgroundColor: Theming.bgColorLight,
+                                backgroundImage: AssetImage(
+                                  "assets/images/default_pfp.png",
+                                ),
+                              )
+                            : CircleAvatar(
+                                radius: 45,
+                                backgroundColor: Theming.bgColorLight,
+                                backgroundImage: FileImage(
+                                  File(pfp!.path),
+                                ),
+                              ),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              height: 20,
+                              width: 20,
+                              decoration: const BoxDecoration(
+                                color: Theming.primaryColor,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theming.bgColor,
+                                    spreadRadius: 4,
+                                  )
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.photo_camera,
+                                color: Theming.whiteTone,
+                                size: 15,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -160,32 +191,25 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.emailAddress,
                   onSelect: (idx) => _onFieldSelect(idx),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    EditField(
-                      index: 2,
-                      selectedFieldIndex: selectedFieldIndex,
-                      caption: AppLocalizations.of(context)!.firstName,
-                      icon: Icons.person_pin_rounded,
-                      placeholder: AppLocalizations.of(context)!.firstNameField,
-                      ctrl: firstNameCtrl,
-                      manyInRow: true,
-                      keyboardType: TextInputType.name,
-                      onSelect: (idx) => _onFieldSelect(idx),
-                    ),
-                    EditField(
-                      index: 3,
-                      selectedFieldIndex: selectedFieldIndex,
-                      caption: AppLocalizations.of(context)!.lastName,
-                      icon: Icons.contact_emergency_rounded,
-                      placeholder: AppLocalizations.of(context)!.lastNameField,
-                      ctrl: lastNameCtrl,
-                      manyInRow: true,
-                      keyboardType: TextInputType.name,
-                      onSelect: (idx) => _onFieldSelect(idx),
-                    ),
-                  ],
+                EditField(
+                  index: 2,
+                  selectedFieldIndex: selectedFieldIndex,
+                  caption: AppLocalizations.of(context)!.firstName,
+                  icon: Icons.person_pin_rounded,
+                  placeholder: AppLocalizations.of(context)!.firstNameField,
+                  ctrl: firstNameCtrl,
+                  keyboardType: TextInputType.name,
+                  onSelect: (idx) => _onFieldSelect(idx),
+                ),
+                EditField(
+                  index: 3,
+                  selectedFieldIndex: selectedFieldIndex,
+                  caption: AppLocalizations.of(context)!.lastName,
+                  icon: Icons.contact_emergency_rounded,
+                  placeholder: AppLocalizations.of(context)!.lastNameField,
+                  ctrl: lastNameCtrl,
+                  keyboardType: TextInputType.name,
+                  onSelect: (idx) => _onFieldSelect(idx),
                 ),
                 EditField(
                   index: 4,
@@ -195,7 +219,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   placeholder: AppLocalizations.of(context)!.passwordField,
                   ctrl: passwordCtrl,
                   isPassword: true,
-                  manyInRow: false,
                   onSelect: (idx) => _onFieldSelect(idx),
                 ),
                 EditField(
@@ -206,7 +229,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   placeholder: AppLocalizations.of(context)!.passwordField,
                   ctrl: passwordConfirmCtrl,
                   isPassword: true,
-                  manyInRow: false,
                   onSelect: (idx) => _onFieldSelect(idx),
                 ),
                 Padding(
@@ -220,8 +242,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         firstDate: DateTime(DateTime.now().year - 100),
                         lastDate: DateTime.now(),
                         useRootNavigator: true,
-                        locale:
-                            Locale(AppLocalizations.of(context)!.localeName),
+                        locale: Locale(
+                          AppLocalizations.of(context)!.localeName,
+                        ),
                       );
                       setState(() => dateOfBirthVal = dateVal);
                     },
@@ -262,18 +285,24 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 Center(
                   child: GestureDetector(
-                    onTap: () {
-                      AuthController.registerUser(
-                        CreateUser(
-                          username: usernameCtrl.text,
-                          email: emailCtrl.text,
-                          firstName: firstNameCtrl.text,
-                          lastName: lastNameCtrl.text,
-                          dateOfBirth:
-                              dateOfBirthVal!, //TODO fix the NULL value
-                          password: passwordCtrl.text,
-                        ),
-                      );
+                    onTap: () async {
+                      if (_userCanRegister) {
+                        final canRegister = await AuthController.registerUser(
+                          CreateUser(
+                            username: usernameCtrl.text,
+                            email: emailCtrl.text,
+                            firstName: firstNameCtrl.text,
+                            lastName: lastNameCtrl.text,
+                            dateOfBirth: dateOfBirthVal!,
+                            password: passwordCtrl.text,
+                            pfp:
+                                Uri.parse(pfp!.path), //TODO send this as a file
+                          ),
+                        );
+                        if (canRegister && mounted) {
+                          context.go("/");
+                        }
+                      }
                     },
                     child: AnimatedContainer(
                       width: double.infinity,

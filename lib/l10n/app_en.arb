@@ -90,6 +90,8 @@
     "signIn": "Sign in",
     "dateOfBirth": "Date of birth",
     "rememberMe": "Remember password",
+    "imgFromGallery": "Choose an image from the gallery",
+    "takeAPhoto": "Use a camera",
 
     "createAParty": "Create a party",
     "title": "Title",

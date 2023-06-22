@@ -14,7 +14,6 @@ class PartyController {
   static Future<void> sendJoinRequest(Party party) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
-
     //TODO implement
     final url = "$mainUrl/";
     await http.post(

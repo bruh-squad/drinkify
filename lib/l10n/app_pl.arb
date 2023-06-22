@@ -90,6 +90,8 @@
     "signIn": "Zaloguj się",
     "dateOfBirth": "Data urodzenia",
     "rememberMe": "Zapamiętaj mnie",
+    "imgFromGallery": "Wybierz zdjęcie z galerii",
+    "takeAPhoto": "Zrób zdjęcie aparatem",
 
     "createAParty": "Stwórz imprezę",
     "title": "Tytuł",
@@ -107,7 +109,7 @@
     "partyEnd": "Koniec",
     "searchAFriend": "Wyszukaj znajomego",
     "invite": "Zaproś",
-    "inviteFriends": "Zaproszeni znajomi",
+    "invitedFriends": "Zaproszeni znajomi",
     "create": "Stwórz",
     "creatingParty": "Tworzenie imprezy...",
     "myLocation": "Moja lokalizacja",

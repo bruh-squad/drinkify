@@ -6,10 +6,10 @@ class User {
   final String? email;
   final String? firstName;
   final String? lastName;
-  final DateTime dateOfBirth;
+  final DateTime? dateOfBirth;
   final String? pfp;
   final List<Friend>? friends;
-  final String password;
+  final String? password;
 
   const User({
     this.publicId,
@@ -17,9 +17,14 @@ class User {
     this.email,
     this.firstName,
     this.lastName,
-    required this.dateOfBirth,
+    this.dateOfBirth,
     this.pfp,
     this.friends,
-    required this.password,
+    this.password,
   });
+
+  @override
+  String toString() {
+    return "$username $email $firstName $lastName $dateOfBirth";
+  }
 }

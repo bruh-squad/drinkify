@@ -38,4 +38,9 @@ class Party {
     required this.startTime,
     required this.stopTime,
   });
+
+  @override
+  String toString() {
+    return "$name ${owner?.username} $privacyStatusDisplay $location $startTime $stopTime";
+  }
 }
