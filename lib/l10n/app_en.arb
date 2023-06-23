@@ -54,6 +54,9 @@
     "password": "Password",
     "passwordField": "Provide a password",
     "save": "Save",
+    "sureDeleteAccount": "Delete your account?",
+    "deleteAccount": "Delete my account",
+    "doNotDeleteAccount": "Don't delete my account",
 
     "chooseATheme": "Choose a theme",
     "darkTheme": "Dark",

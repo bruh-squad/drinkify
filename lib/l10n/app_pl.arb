@@ -54,6 +54,9 @@
     "password": "Hasło",
     "passwordField": "Podaj hasło",
     "save": "Zapisz",
+    "sureDeleteAccount": "Napewno chcesz usunąć konto?",
+    "deleteAccount": "Usuń moje konto",
+    "doNotDeleteAccount": "Nie usuwaj konta",
 
     "chooseATheme": "Wybierz motyw",
     "darkTheme": "Ciemny",

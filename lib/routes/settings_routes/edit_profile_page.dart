@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:drinkify/controllers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,8 +9,10 @@ import 'package:intl/intl.dart';
 import '/utils/theming.dart';
 import '/widgets/edit_field.dart';
 import '/widgets/custom_floating_button.dart';
-import '/widgets/dialogs/edit_profile_confirmation.dart';
+import '/widgets/dialogs/account_delete_confirm.dart';
 import '/widgets/image_picker_sheet.dart';
+import '/controllers/user_controller.dart';
+import '/models/user.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -21,13 +22,16 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  late int? selectedFieldIndex;
+
   XFile? pfp;
   late final TextEditingController firstNameCtrl;
   late final TextEditingController lastNameCtrl;
-  late final TextEditingController birthdayCtrl;
-  late final TextEditingController passwordCtrl;
 
-  late int? selectedFieldIndex;
+  //Display ONLY (don't use for sending HTTP request)
+  late final TextEditingController birthdayCtrl;
+  DateTime? dateOfBirth; //Use this in HTTP request
+  late final TextEditingController passwordCtrl;
 
   @override
   void initState() {
@@ -61,9 +65,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
       floatingActionButton: CustomFloatingButton(
         caption: AppLocalizations.of(context)!.save,
         onTap: () {
-          showDialog(
-            context: context,
-            builder: (_) => const EditProfileConfirmation(),
+          //TODO add password and birthday field checking
+          UserController.updateMe(
+            User(
+              firstName: firstNameCtrl.text,
+              lastName: lastNameCtrl.text,
+              dateOfBirth: dateOfBirth,
+              password: passwordCtrl.text,
+            ),
           );
           context.pop();
         },
@@ -98,12 +107,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(right: 15),
                 child: IconButton(
-                  onPressed: () async {
-                    //TODO add confirmation dialog
-                    final isDeleted = await UserController.deleteMe();
-                    if (mounted && isDeleted) {
-                      context.go("/login");
-                    }
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      useSafeArea: true,
+                      useRootNavigator: true,
+                      isScrollControlled: true,
+                      backgroundColor: Theming.bgColor,
+                      builder: (ctx) => const AccountDeleteConfirm(),
+                    );
                   },
                   icon: const Icon(
                     Icons.delete_outline_rounded,
@@ -226,6 +238,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         AppLocalizations.of(context)!.localeName,
                       ).format(datePickerVal);
                       setState(() => birthdayCtrl.text = formattedDate);
+                      dateOfBirth = datePickerVal;
                     },
                   ),
                   EditField(

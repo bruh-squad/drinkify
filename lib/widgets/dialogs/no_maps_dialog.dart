@@ -16,7 +16,7 @@ class NoMapsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pop(),
+      onTap: () => Navigator.pop(context),
       child: Dialog(
         backgroundColor: Theming.bgColor,
         shape: RoundedRectangleBorder(
