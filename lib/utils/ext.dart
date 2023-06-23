@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:map_launcher/map_launcher.dart';
 
@@ -33,11 +34,15 @@ mixin MapUtils {
     final List<AvailableMap> installedMaps = await MapLauncher.installedMaps;
 
     if (installedMaps.isNotEmpty) {
-      await MapLauncher.showMarker(
-        mapType: installedMaps[0].mapType,
-        coords: Coords(lat, lng),
-        title: "",
-      );
+      try {
+        await MapLauncher.showMarker(
+          mapType: installedMaps[0].mapType,
+          coords: Coords(lat, lng),
+          title: "",
+        );
+      } on PlatformException {
+        return false;
+      }
       return true;
     }
 

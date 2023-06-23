@@ -59,4 +59,7 @@ class PartyCreatorController {
     ];
     return parties;
   }
+
+  ///Creates a party
+  static Future<void> createParty(Party party) async {}
 }

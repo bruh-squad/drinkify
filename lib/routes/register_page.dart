@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../utils/theming.dart';
 import '../controllers/auth_controller.dart';
 import '../models/create_user.dart';
-import '../widgets/image_picker.dart';
+import '../widgets/image_picker_sheet.dart';
 import '../widgets/edit_field.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -21,6 +20,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  late final AuthController authController;
   int? selectedFieldIndex;
 
   XFile? pfp;
@@ -30,9 +30,8 @@ class _RegisterPageState extends State<RegisterPage> {
   late final TextEditingController lastNameCtrl;
   late final TextEditingController passwordCtrl;
   late final TextEditingController passwordConfirmCtrl;
+  late final TextEditingController birthdayCtrl;
   DateTime? dateOfBirthVal;
-
-  late final AuthController authController;
 
   @override
   void initState() {
@@ -44,6 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
     lastNameCtrl = TextEditingController();
     passwordCtrl = TextEditingController();
     passwordConfirmCtrl = TextEditingController();
+    birthdayCtrl = TextEditingController();
     initializeDateFormatting();
   }
 
@@ -56,22 +56,21 @@ class _RegisterPageState extends State<RegisterPage> {
     lastNameCtrl.dispose();
     passwordCtrl.dispose();
     passwordConfirmCtrl.dispose();
+    birthdayCtrl.dispose();
   }
 
   bool get _userCanRegister {
-    final List<dynamic> fieldCtrls = [
-      usernameCtrl.text,
-      emailCtrl.text,
-      firstNameCtrl.text,
-      lastNameCtrl.text,
-      passwordCtrl.text,
-      passwordConfirmCtrl.text,
-      dateOfBirthVal,
+    final List<TextEditingController> fieldCtrls = [
+      usernameCtrl,
+      emailCtrl,
+      firstNameCtrl,
+      lastNameCtrl,
+      passwordCtrl,
+      passwordConfirmCtrl,
+      birthdayCtrl,
     ];
     for (final i in fieldCtrls) {
-      if (i == "" || i == null) {
-        return false;
-      }
+      if (i.text.isEmpty) return false;
     }
     return true;
   }
@@ -121,6 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         builder: (ctx) => ImagePickerSheet(
                           onFinish: (img) {
                             setState(() => pfp = img);
+                            Navigator.pop(ctx);
                           },
                         ),
                       );
@@ -185,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   index: 1,
                   selectedFieldIndex: selectedFieldIndex,
                   caption: AppLocalizations.of(context)!.email,
-                  icon: Icons.email_outlined,
+                  icon: Icons.email_rounded,
                   placeholder: AppLocalizations.of(context)!.emailField,
                   ctrl: emailCtrl,
                   keyboardType: TextInputType.emailAddress,
@@ -195,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   index: 2,
                   selectedFieldIndex: selectedFieldIndex,
                   caption: AppLocalizations.of(context)!.firstName,
-                  icon: Icons.person_pin_rounded,
+                  icon: Icons.sentiment_satisfied_rounded,
                   placeholder: AppLocalizations.of(context)!.firstNameField,
                   ctrl: firstNameCtrl,
                   keyboardType: TextInputType.name,
@@ -215,7 +215,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   index: 4,
                   selectedFieldIndex: selectedFieldIndex,
                   caption: AppLocalizations.of(context)!.password,
-                  icon: Icons.lock_outline,
+                  icon: Icons.password,
                   placeholder: AppLocalizations.of(context)!.passwordField,
                   ctrl: passwordCtrl,
                   isPassword: true,
@@ -225,64 +225,46 @@ class _RegisterPageState extends State<RegisterPage> {
                   index: 5,
                   selectedFieldIndex: selectedFieldIndex,
                   caption: AppLocalizations.of(context)!.confirmPassword,
-                  icon: Icons.lock_outline,
+                  icon: Icons.password,
                   placeholder: AppLocalizations.of(context)!.passwordField,
                   ctrl: passwordConfirmCtrl,
                   isPassword: true,
                   onSelect: (idx) => _onFieldSelect(idx),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: GestureDetector(
-                    onTap: () async {
-                      setState(() => selectedFieldIndex = null);
-                      final dateVal = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(DateTime.now().year - 100),
-                        lastDate: DateTime.now(),
-                        useRootNavigator: true,
-                        locale: Locale(
-                          AppLocalizations.of(context)!.localeName,
-                        ),
-                      );
-                      setState(() => dateOfBirthVal = dateVal);
-                    },
-                    child: Container(
-                      height: 70,
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(bottom: 15),
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: const Color(0x9F000E1F),
-                        borderRadius: BorderRadius.circular(20),
+                EditField(
+                  index: 6,
+                  caption: AppLocalizations.of(context)!.dateOfBirth,
+                  icon: Icons.calendar_month_rounded,
+                  isDate: true,
+                  ctrl: birthdayCtrl,
+                  isDateSelected: birthdayCtrl.text.isNotEmpty,
+                  placeholder: AppLocalizations.of(context)!.dateOfBirth,
+                  keyboardType: TextInputType.none,
+                  selectedFieldIndex: selectedFieldIndex,
+                  // keyboardType: TextInputType.none,
+                  onSelect: (idx) async {
+                    setState(() => selectedFieldIndex = null);
+                    final datePickerVal = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(DateTime.now().year - 100),
+                      lastDate: DateTime.now(),
+                      useRootNavigator: true,
+                      locale: Locale(
+                        AppLocalizations.of(context)!.localeName,
                       ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.date_range_outlined,
-                            color: Theming.whiteTone,
-                            size: 24,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            dateOfBirthVal == null
-                                ? AppLocalizations.of(context)!.dateOfBirth
-                                : DateFormat.yMd(AppLocalizations.of(context)!
-                                        .localeName)
-                                    .format(dateOfBirthVal!),
-                            style: const TextStyle(
-                              color: Theming.whiteTone,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                    );
+                    if (datePickerVal == null || !mounted) return;
+
+                    final formattedDate = DateFormat.yMd(
+                      AppLocalizations.of(context)!.localeName,
+                    ).format(datePickerVal);
+
+                    setState(() => birthdayCtrl.text = formattedDate);
+                    dateOfBirthVal = datePickerVal;
+                  },
                 ),
+                const SizedBox(height: 20),
                 Center(
                   child: GestureDetector(
                     onTap: () async {
@@ -295,8 +277,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             lastName: lastNameCtrl.text,
                             dateOfBirth: dateOfBirthVal!,
                             password: passwordCtrl.text,
-                            pfp:
-                                Uri.parse(pfp!.path), //TODO send this as a file
+                            pfp: Uri.parse(
+                              pfp!.path,
+                            ), //TODO send this as a file and fix null value
                           ),
                         );
                         if (canRegister && mounted) {

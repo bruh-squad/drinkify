@@ -6,9 +6,9 @@ import '../utils/consts.dart';
 import '../models/user.dart';
 import '../models/friend.dart';
 
-///Used for getting information about the user, updating, deleting and searching.
+///Used for getting information about the user, updating, deleting and searching
 class UserController {
-  ///Returns information about you.
+  ///Returns information about you
   static Future<User> me() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -56,9 +56,40 @@ class UserController {
         "Authorization": "Bearer $token",
       },
     );
-    return res.statusCode == 204;
+    if (res.statusCode == 204) {
+      await storage.delete(key: "access");
+      await storage.delete(key: "refresh");
+      return true;
+    }
+    return false;
   }
 
   ///Updates user's account
-  static Future<void> updateMe() async {}
+  static Future<bool> updateMe(User user) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/users/";
+
+    final dOB = user.dateOfBirth!;
+    final Map<String, dynamic> json = {
+      "first_name": user.firstName,
+      "last_name": user.lastName,
+      "date_of_birth": "${dOB.year}-${dOB.month}-${dOB.day}",
+      "password": user.password,
+    };
+    json.removeWhere((k, v) {
+      return v == null && k != "password" && k != "date_of_birth";
+    });
+
+    final res = await http.patch(
+      Uri.parse(url),
+      body: json,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 200;
+  }
 }

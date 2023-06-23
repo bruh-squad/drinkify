@@ -6,24 +6,40 @@ import '../utils/consts.dart';
 import '../models/party.dart';
 import '../models/party_invitation.dart';
 import '../models/friend.dart';
-import '../utils/ext.dart' show POINTtoLatLng;
+import '../utils/ext.dart' show POINTtoLatLng, LatLngToPOINT;
 
 ///Used by the regular user to join, leave, accept party requests and more
 class PartyController {
   ///Sends a join request to the [party]
-  static Future<void> sendJoinRequest(Party party) async {
+  static Future<bool> sendJoinRequest(Party party) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
-    //TODO implement
-    final url = "$mainUrl/";
-    await http.post(
+    //TODO saving user parameters in storage
+    final userPublicId = await storage.read(key: "user_publicId");
+    final url = "$mainUrl/parties/requests/${party.publicId}/";
+    final res = await http.post(
       Uri.parse(url),
-      body: {},
+      body: {
+        "party": {
+          "owner": {},
+          "owner_public_id": party.ownerPublicId,
+          "name": party.name,
+          "privacy_status": party.privacyStatus,
+          "description": party.description,
+          "location": party.location.toPOINT(),
+          "start_time": party.startTime.toIso8601String(),
+          "stop_time": party.stopTime.toIso8601String(),
+        },
+        "party_public_id": party.publicId,
+        "sender": {},
+        "sender_public_id": userPublicId,
+      },
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
     );
+    return res.statusCode == 201;
   }
 
   ///Leaves from the provided [party]

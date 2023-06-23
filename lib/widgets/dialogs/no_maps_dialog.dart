@@ -40,7 +40,7 @@ class NoMapsDialog extends StatelessWidget {
                     ),
                   ),
                   child: const Icon(
-                    Icons.close_rounded,
+                    Icons.sentiment_dissatisfied_rounded,
                     color: Theming.whiteTone,
                     size: 50,
                   ),

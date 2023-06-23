@@ -44,15 +44,20 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              _settingsItem(
-                caption: AppLocalizations.of(context)!.editProfile,
-                prefixIcon: Icons.mode_edit_outlined,
-                onTap: () => context.push("/edit-profile"),
-              ),
-              _settingsItem(
-                caption: AppLocalizations.of(context)!.organization,
-                prefixIcon: Icons.people_rounded,
-                onTap: () => context.push("/organization"),
+              const SizedBox(height: 10),
+              Column(
+                children: [
+                  _settingsItem(
+                    caption: AppLocalizations.of(context)!.editProfile,
+                    prefixIcon: Icons.mode_edit_rounded,
+                    onTap: () => context.push("/edit-profile"),
+                  ),
+                  _settingsItem(
+                    caption: AppLocalizations.of(context)!.organization,
+                    prefixIcon: Icons.people_rounded,
+                    onTap: () => context.push("/organization"),
+                  ),
+                ],
               ),
               _settingsItem(
                 caption: AppLocalizations.of(context)!.logOut,
@@ -62,7 +67,7 @@ class SettingsPage extends StatelessWidget {
                   showModalBottomSheet(
                     context: context,
                     backgroundColor: Theming.bgColor,
-                    enableDrag: false,
+                    isScrollControlled: true,
                     builder: (_) => const LogoutPage(),
                   );
                 },
@@ -81,46 +86,47 @@ class SettingsPage extends StatelessWidget {
     bool isLogoutButton = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: const EdgeInsets.only(top: 20),
       child: GestureDetector(
         onTap: onTap,
         child: GlassMorphism(
-          blur: 20,
-          opacity: 0.15,
+          blur: 0,
+          opacity: 0.1,
           borderRadius: BorderRadius.circular(20),
-          child: AspectRatio(
-            aspectRatio: 16 / 3,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  Icon(
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theming.primaryColor.withOpacity(0.2),
+                  ),
+                  child: Icon(
                     prefixIcon,
-                    color: isLogoutButton ? Colors.red : Theming.whiteTone,
-                    size: 26,
+                    color: Theming.primaryColor,
+                    size: 18,
                   ),
-                  const SizedBox(width: 5),
-                  Text(
-                    caption,
-                    style: TextStyle(
-                      color: isLogoutButton ? Colors.red : Theming.whiteTone,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  caption,
+                  style: const TextStyle(
+                    color: Theming.whiteTone,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
-                  const Spacer(),
-                  Visibility(
-                    visible: !isLogoutButton,
-                    child: const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Theming.whiteTone,
-                    ),
+                ),
+                const Spacer(),
+                Visibility(
+                  visible: !isLogoutButton,
+                  child: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Theming.whiteTone,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

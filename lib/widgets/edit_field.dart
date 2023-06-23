@@ -4,17 +4,18 @@ import '../utils/theming.dart';
 
 typedef Index = int;
 
-///Custom widget as a replacemet for [TextField]
+///Custom widget as a replacement for [TextField]
 class EditField extends StatelessWidget {
   final int index;
   final int? selectedFieldIndex;
   final String caption;
   final IconData icon;
   final String placeholder;
-  final TextEditingController ctrl;
+  final TextEditingController? ctrl;
+  final bool isDateSelected;
+  final bool isDate;
   final bool isPassword;
   final TextInputType? keyboardType;
-  final bool manyInRow;
   final void Function(Index) onSelect;
 
   const EditField({
@@ -23,11 +24,12 @@ class EditField extends StatelessWidget {
     required this.caption,
     required this.icon,
     required this.placeholder,
-    required this.ctrl,
+    this.ctrl,
+    this.isDateSelected = false,
+    this.isDate = false,
     this.isPassword = false,
     this.keyboardType,
     required this.onSelect,
-    this.manyInRow = false,
     super.key,
   });
 
@@ -45,9 +47,7 @@ class EditField extends StatelessWidget {
         children: [
           AnimatedContainer(
             height: 60,
-            width: manyInRow
-                ? MediaQuery.of(context).size.width / 2 - 30 - 10
-                : double.infinity,
+            width: double.infinity,
             margin: const EdgeInsets.only(top: 10),
             padding: const EdgeInsets.only(right: 10),
             alignment: Alignment.center,
@@ -71,7 +71,9 @@ class EditField extends StatelessWidget {
                 color: Theming.whiteTone,
                 letterSpacing: isPassword ? 4 : 0,
               ),
-              cursorColor: Theming.primaryColor,
+              cursorColor: isDate ? Theming.bgColor : Theming.primaryColor,
+              selectionControls: _TextSelectionHandleTheme(),
+              readOnly: isDate,
               controller: ctrl,
               decoration: InputDecoration(
                 hintText: placeholder,
@@ -95,10 +97,17 @@ class EditField extends StatelessWidget {
           ),
           AnimatedPadding(
             padding: EdgeInsets.only(
-              top: index == selectedFieldIndex || ctrl.text.isNotEmpty ? 0 : 30,
+              top: index == selectedFieldIndex ||
+                      (ctrl != null && ctrl!.text.isNotEmpty) ||
+                      isDateSelected
+                  ? 0
+                  : 30,
               left: _iconSize * 2,
-              bottom:
-                  index == selectedFieldIndex || ctrl.text.isNotEmpty ? 0 : 10,
+              bottom: index == selectedFieldIndex ||
+                      (ctrl != null && ctrl!.text.isNotEmpty) ||
+                      isDateSelected
+                  ? 0
+                  : 10,
             ),
             duration: const Duration(milliseconds: 500),
             curve: Curves.linearToEaseOut,
@@ -121,4 +130,38 @@ class EditField extends StatelessWidget {
       ),
     );
   }
+}
+
+class _TextSelectionHandleTheme extends TextSelectionControls {
+  @override
+  Widget buildHandle(
+    BuildContext context,
+    TextSelectionHandleType type,
+    double textLineHeight, [
+    VoidCallback? onTap,
+  ]) {
+    return const SizedBox.shrink();
+  }
+
+  @override
+  Widget buildToolbar(
+    BuildContext context,
+    Rect globalEditableRegion,
+    double textLineHeight,
+    Offset selectionMidpoint,
+    List<TextSelectionPoint> endpoints,
+    TextSelectionDelegate delegate,
+    ClipboardStatusNotifier? clipboardStatus,
+    Offset? lastSecondaryTapDownPosition,
+  ) {
+    return const SizedBox.shrink();
+  }
+
+  @override
+  Offset getHandleAnchor(TextSelectionHandleType type, double textLineHeight) {
+    return Offset.zero;
+  }
+
+  @override
+  Size getHandleSize(double textLineHeight) => Size.zero;
 }
