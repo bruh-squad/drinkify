@@ -84,6 +84,7 @@ class _DateRowState extends State<DateRow> {
                     backgroundColor: Theming.bgColor,
                     useRootNavigator: true,
                     enableDrag: false,
+                    isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(30),

@@ -58,10 +58,6 @@
     "deleteAccount": "Delete my account",
     "doNotDeleteAccount": "Don't delete my account",
 
-    "chooseATheme": "Choose a theme",
-    "darkTheme": "Dark",
-    "lightTheme": "Light",
-
     "yourParties": "Your parties",
 
     "chooseALanguage": "Choose a language",
@@ -118,6 +114,7 @@
     "myLocation": "My location",
     "partyDate": "Date",
     "partyTime": "Time",
-    "noFriendsInvited": "No friends invited yet"
+    "noFriendsInvited": "No friends invited yet",
 
+    "requiredField": "Field required"
 }

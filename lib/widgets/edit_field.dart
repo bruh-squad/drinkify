@@ -8,6 +8,7 @@ typedef Index = int;
 class EditField extends StatelessWidget {
   final int index;
   final int? selectedFieldIndex;
+  final List<int> errorFields;
   final String caption;
   final IconData icon;
   final String placeholder;
@@ -30,6 +31,7 @@ class EditField extends StatelessWidget {
     this.isPassword = false,
     this.keyboardType,
     required this.onSelect,
+    this.errorFields = const [],
     super.key,
   });
 
@@ -57,9 +59,11 @@ class EditField extends StatelessWidget {
               color: Theming.bgColor,
               border: Border.all(
                 width: 1.5,
-                color: index == selectedFieldIndex
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(_borderOpacity),
+                color: errorFields.contains(index)
+                    ? Theming.errorColor
+                    : index == selectedFieldIndex
+                        ? Theming.primaryColor
+                        : Theming.whiteTone.withOpacity(_borderOpacity),
               ),
               borderRadius: BorderRadius.circular(_radius),
             ),
@@ -80,15 +84,20 @@ class EditField extends StatelessWidget {
                 hintStyle: TextStyle(
                   fontSize: 14,
                   letterSpacing: 0,
-                  color: index == selectedFieldIndex
-                      ? Theming.whiteTone.withOpacity(_borderOpacity + 0.2)
-                      : Colors.transparent,
+                  color: errorFields.contains(index) &&
+                          selectedFieldIndex == index
+                      ? Theming.errorColor
+                      : index == selectedFieldIndex
+                          ? Theming.whiteTone.withOpacity(_borderOpacity + 0.2)
+                          : Colors.transparent,
                 ),
                 prefixIcon: Icon(
                   icon,
-                  color: index == selectedFieldIndex
-                      ? Theming.primaryColor
-                      : Theming.whiteTone.withOpacity(_borderOpacity),
+                  color: errorFields.contains(index)
+                      ? Theming.errorColor
+                      : index == selectedFieldIndex
+                          ? Theming.primaryColor
+                          : Theming.whiteTone.withOpacity(_borderOpacity),
                   size: _iconSize,
                 ),
                 border: InputBorder.none,
@@ -117,9 +126,11 @@ class EditField extends StatelessWidget {
               child: Text(
                 caption,
                 style: TextStyle(
-                  color: index == selectedFieldIndex
-                      ? Theming.primaryColor
-                      : Theming.whiteTone.withOpacity(_borderOpacity + 0.1),
+                  color: errorFields.contains(index)
+                      ? Theming.errorColor
+                      : index == selectedFieldIndex
+                          ? Theming.primaryColor
+                          : Theming.whiteTone.withOpacity(_borderOpacity + 0.1),
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),

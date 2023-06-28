@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     //TODO do the points below
     // 1. check if JWT access token is still active
-    // 2. if so route user to home page
+    // 2. if so redirect user to home page
     // 3. if access token is not active show regular login page instead of routing
     authCtrl = AuthController();
     passwordResetEmailCtrl = TextEditingController();

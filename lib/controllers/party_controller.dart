@@ -26,7 +26,7 @@ class PartyController {
           "name": party.name,
           "privacy_status": party.privacyStatus,
           "description": party.description,
-          "location": party.location.toPOINT(),
+          "location": party.location!.toPOINT(),
           "start_time": party.startTime.toIso8601String(),
           "stop_time": party.stopTime.toIso8601String(),
         },
@@ -106,5 +106,22 @@ class PartyController {
         ),
     ];
     return invitations;
+  }
+
+  static Future<bool> createParty(Party party) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/";
+    final res = await http.post(
+      Uri.parse(url),
+      //TODO finish this
+      body: {},
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 201;
   }
 }

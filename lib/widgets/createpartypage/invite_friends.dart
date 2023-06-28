@@ -7,7 +7,10 @@ import '/routes/create_party_routes/invite_friends_page.dart';
 
 class InviteFriends extends StatefulWidget {
   final Function(List<User>) onFinish;
-  const InviteFriends({required this.onFinish, super.key});
+  const InviteFriends({
+    required this.onFinish,
+    super.key,
+  });
 
   @override
   State<InviteFriends> createState() => _InviteFriendsState();

@@ -24,6 +24,8 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   late int? selectedFieldIndex;
 
+  late List<int> errorFields;
+
   XFile? pfp;
   late final TextEditingController firstNameCtrl;
   late final TextEditingController lastNameCtrl;
@@ -36,7 +38,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-
+    errorFields = [];
     firstNameCtrl = TextEditingController();
     lastNameCtrl = TextEditingController();
     birthdayCtrl = TextEditingController();
@@ -65,7 +67,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
       floatingActionButton: CustomFloatingButton(
         caption: AppLocalizations.of(context)!.save,
         onTap: () {
-          //TODO add password and birthday field checking
+          errorFields = [];
+          final allFields = <String>[
+            ".",
+            ".",
+            birthdayCtrl.text,
+            passwordCtrl.text,
+          ];
+          final tempErrorList = <int>[];
+          for (int i = 0; i < allFields.length; i++) {
+            if (allFields[i].isEmpty) tempErrorList.add(i);
+          }
+          setState(() => errorFields = tempErrorList);
+          if (errorFields.isNotEmpty) return;
           UserController.updateMe(
             User(
               firstName: firstNameCtrl.text,
@@ -200,6 +214,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ctrl: firstNameCtrl,
                     onSelect: (idx) => _onFieldSelect(idx),
                     selectedFieldIndex: selectedFieldIndex,
+                    errorFields: errorFields,
                   ),
                   EditField(
                     index: 1,
@@ -209,6 +224,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ctrl: lastNameCtrl,
                     onSelect: (idx) => _onFieldSelect(idx),
                     selectedFieldIndex: selectedFieldIndex,
+                    errorFields: errorFields,
                   ),
                   EditField(
                     index: 2,
@@ -220,6 +236,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     placeholder: AppLocalizations.of(context)!.dateOfBirth,
                     keyboardType: TextInputType.none,
                     selectedFieldIndex: selectedFieldIndex,
+                    errorFields: errorFields,
                     // keyboardType: TextInputType.none,
                     onSelect: (idx) async {
                       setState(() => selectedFieldIndex = null);
@@ -250,6 +267,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     selectedFieldIndex: selectedFieldIndex,
                     onSelect: (idx) => _onFieldSelect(idx),
                     isPassword: true,
+                    errorFields: errorFields,
                   ),
                   const SizedBox(height: 15),
                 ],

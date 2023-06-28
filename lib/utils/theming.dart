@@ -8,6 +8,7 @@ class Theming {
   static const Color bgColor = Color(0xFF011936);
   static const Color whiteTone = Color(0xFFF7F4F3);
   static const Color greenTone = Color(0xFF6bd425);
+  static const Color errorColor = Color(0xFFE53935);
 }
 
 class Styles {

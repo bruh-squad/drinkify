@@ -58,10 +58,6 @@
     "deleteAccount": "Usuń moje konto",
     "doNotDeleteAccount": "Nie usuwaj konta",
 
-    "chooseATheme": "Wybierz motyw",
-    "darkTheme": "Ciemny",
-    "lightTheme": "Jasny",
-
     "yourParties": "Twoje imprezy",
 
     "chooseALanguage": "Wybierz język",
@@ -118,6 +114,7 @@
     "myLocation": "Moja lokalizacja",
     "partyDate": "Data",
     "partyTime": "Godzina",
-    "noFriendsInvited": "Nikogo nie zaproszono"
+    "noFriendsInvited": "Nikogo nie zaproszono",
 
+    "requiredField": "Pole wymagane"
 }

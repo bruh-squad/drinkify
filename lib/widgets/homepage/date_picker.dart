@@ -53,95 +53,96 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 276 + MediaQuery.of(context).viewPadding.bottom,
-      child: Column(
-        children: [
-          //Button
-          GestureDetector(
-            onTap: () {
-              widget.onSelect(
-                yearCtrl.selectedItem,
-                monthCtrl.selectedItem + 1,
-              );
-              selectedMonthIndex = tempMonthIndex;
-              selectedYearIndex = tempYearIndex;
-              Navigator.pop(context);
-            },
-            child: Container(
+      child: SafeArea(
+        child: Wrap(
+          children: [
+            //Button
+            GestureDetector(
+              onTap: () {
+                widget.onSelect(
+                  yearCtrl.selectedItem,
+                  monthCtrl.selectedItem + 1,
+                );
+                selectedMonthIndex = tempMonthIndex;
+                selectedYearIndex = tempYearIndex;
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                ),
+                decoration: const BoxDecoration(
+                  color: Theming.primaryColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.select,
+                  style: const TextStyle(
+                    color: Theming.bgColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+
+            //Month wheel
+            SizedBox(
+              height: 100,
               width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(
-                vertical: 8,
-              ),
-              decoration: const BoxDecoration(
-                color: Theming.primaryColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+              child: RotatedBox(
+                quarterTurns: -1,
+                child: ListWheelScrollView(
+                  controller: monthCtrl,
+                  itemExtent: 160,
+                  physics: const FixedExtentScrollPhysics(),
+                  perspective: 0.00000001,
+                  onSelectedItemChanged: (value) {
+                    setState(() => tempMonthIndex = value);
+                  },
+                  children: [
+                    for (int i = 0; i < 12; i++)
+                      _datePickerItem(
+                        i,
+                        type: "MONTH",
+                      ),
+                  ],
                 ),
               ),
-              child: Text(
-                AppLocalizations.of(context)!.select,
-                style: const TextStyle(
-                  color: Theming.bgColor,
-                  fontWeight: FontWeight.bold,
+            ),
+
+            //Year wheel
+            SizedBox(
+              height: 100,
+              width: double.infinity,
+              child: RotatedBox(
+                quarterTurns: -1,
+                child: ListWheelScrollView(
+                  controller: yearCtrl,
+                  itemExtent: 160,
+                  physics: const FixedExtentScrollPhysics(),
+                  perspective: 0.00000001,
+                  onSelectedItemChanged: (value) {
+                    setState(() => tempYearIndex = value);
+                  },
+                  children: [
+                    for (int i = 0; i < 15; i++)
+                      _datePickerItem(
+                        i,
+                        type: "YEAR",
+                      ),
+                  ],
                 ),
               ),
             ),
-          ),
-
-          //Month wheel
-          SizedBox(
-            height: 100,
-            width: double.infinity,
-            child: RotatedBox(
-              quarterTurns: -1,
-              child: ListWheelScrollView(
-                controller: monthCtrl,
-                itemExtent: 160,
-                physics: const FixedExtentScrollPhysics(),
-                perspective: 0.00000001,
-                onSelectedItemChanged: (value) {
-                  setState(() => tempMonthIndex = value);
-                },
-                children: [
-                  for (int i = 0; i < 12; i++)
-                    _datePickerItem(
-                      i,
-                      type: "MONTH",
-                    ),
-                ],
-              ),
-            ),
-          ),
-
-          //Year wheel
-          SizedBox(
-            height: 100,
-            width: double.infinity,
-            child: RotatedBox(
-              quarterTurns: -1,
-              child: ListWheelScrollView(
-                controller: yearCtrl,
-                itemExtent: 160,
-                physics: const FixedExtentScrollPhysics(),
-                perspective: 0.00000001,
-                onSelectedItemChanged: (value) {
-                  setState(() => tempYearIndex = value);
-                },
-                children: [
-                  for (int i = 0; i < 15; i++)
-                    _datePickerItem(
-                      i,
-                      type: "YEAR",
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

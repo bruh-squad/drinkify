@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/createpartypage/invite_friends.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +12,10 @@ import '../routes/create_party_routes/description_page.dart';
 import '../widgets/createpartypage/party_status.dart';
 import '../widgets/createpartypage/datetime_fields.dart';
 import '../models/user.dart';
+import '../widgets/createpartypage/invite_friends.dart';
+import '../controllers/party_controller.dart';
+import '../models/party.dart';
+import '../widgets/createpartypage/form_field_party.dart';
 
 class CreatePartyRoute extends StatefulWidget {
   const CreatePartyRoute({super.key});
@@ -35,6 +38,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
   late final MapController mapCtrl;
   late bool isFullyScrolled;
   int? selectedFieldIndex;
+  late List<int> errorFields;
 
   @override
   void setState(VoidCallback fn) {
@@ -121,6 +125,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     descriptionCtrl = TextEditingController();
     partyStatus = 1;
     invitedUsers = [];
+    errorFields = [];
   }
 
   @override
@@ -141,8 +146,40 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
         scale: isFullyScrolled ? 1 : 0,
         child: CustomFloatingButton(
           caption: AppLocalizations.of(context)!.createAParty,
-          onTap: () {
-            //TODO: create party
+          onTap: () async {
+            errorFields = [];
+            final allFields = <dynamic>[
+              selPoint,
+              titleCtrl.text,
+              startTime,
+              endTime,
+              descriptionCtrl.text,
+            ];
+            final tempErrorList = <int>[];
+            for (int i = 0; i < allFields.length; i++) {
+              if (allFields[i] == null) {
+                tempErrorList.add(i);
+              } else if (allFields[i] is String && allFields[i].isEmpty) {
+                tempErrorList.add(i);
+              }
+            }
+            //TODO fix title field controller to show a warning only when needed
+            setState(() => errorFields = tempErrorList);
+            if (errorFields.isNotEmpty) return;
+            final isCreated = await PartyController.createParty(
+              Party(
+                ownerPublicId: "", //TODO get this from storage
+                name: titleCtrl.text,
+                description: descriptionCtrl.text,
+                location: selPoint,
+                startTime: endTime!,
+                stopTime: endTime!,
+                privacyStatus: partyStatus,
+              ),
+            );
+            if (isCreated) {
+              //TODO show modal bottom sheet
+            }
           },
         ),
       ),
@@ -321,17 +358,34 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 30,
+                                padding: const EdgeInsets.only(
+                                  left: 30,
                                 ),
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .location
-                                      .toUpperCase(),
-                                  style: TextStyle(
-                                    color: Colors.black.withOpacity(0.2),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .location
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          color: Colors.black.withOpacity(0.2),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      Text(
+                                        " • ${AppLocalizations.of(context)!.requiredField}",
+                                        style: TextStyle(
+                                          color: errorFields.contains(0)
+                                              ? Theming.errorColor
+                                              : Colors.transparent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -391,21 +445,28 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                             ),
                             child: Column(
                               children: [
-                                _formField(
-                                  0,
+                                FormFieldParty(
+                                  index: 1,
                                   caption: AppLocalizations.of(context)!.title,
                                   placeholder: AppLocalizations.of(context)!
                                       .addPartyTitle,
                                   prefixIcon: Icons.label_important_outline,
                                   borderRadius: BorderRadius.circular(15),
                                   ctrl: titleCtrl,
+                                  errorFields: errorFields,
+                                  selectedFieldIndex: selectedFieldIndex,
+                                  onSelect: (idx) {
+                                    setState(() => selectedFieldIndex = idx);
+                                  },
                                 ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     DateTimeField(
+                                      index: 2,
                                       isStart: true,
+                                      errorFields: errorFields,
                                       onFinish: (start) {
                                         startTime = start;
                                       },
@@ -420,7 +481,9 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                       ),
                                     ),
                                     DateTimeField(
+                                      index: 3,
                                       isStart: false,
+                                      errorFields: errorFields,
                                       onFinish: (end) {
                                         endTime = end;
                                       },
@@ -438,8 +501,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                       },
                                     ),
                                   ),
-                                  child: _formField(
-                                    3,
+                                  child: FormFieldParty(
+                                    index: 4,
                                     caption: AppLocalizations.of(context)!
                                         .description,
                                     placeholder: AppLocalizations.of(context)!
@@ -447,12 +510,19 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                     prefixIcon: Icons.description_outlined,
                                     ctrl: descriptionCtrl,
                                     enabled: false,
+                                    errorFields: errorFields,
+                                    selectedFieldIndex: selectedFieldIndex,
+                                    onSelect: (idx) {
+                                      setState(() => selectedFieldIndex = idx);
+                                    },
                                   ),
                                 ),
                                 PartyStatus(
-                                  onSelect: (statusNumber) =>
-                                      partyStatus = statusNumber,
+                                  onSelect: (statusNumber) {
+                                    partyStatus = statusNumber;
+                                  },
                                 ),
+                                //index: 6
                                 InviteFriends(
                                   onFinish: (friends) {
                                     invitedUsers = friends;
@@ -474,90 +544,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     );
   }
 
-  Widget _formField(
-    int index, {
-    required String caption,
-    required String placeholder,
-    required IconData prefixIcon,
-    required TextEditingController ctrl,
-    bool manyInRow = false,
-    bool enabled = true,
-    BorderRadius borderRadius = const BorderRadius.only(
-      topLeft: Radius.circular(15),
-      topRight: Radius.circular(15),
-      bottomLeft: Radius.circular(15),
-      bottomRight: Radius.circular(15),
-    ),
-  }) {
-    bool isSelected = index == selectedFieldIndex;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 15 / 2),
-          child: Text(
-            caption.toUpperCase(),
-            style: TextStyle(
-              color: isSelected
-                  ? Theming.primaryColor
-                  : Theming.whiteTone.withOpacity(0.3),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        AnimatedContainer(
-          height: 50,
-          width: manyInRow
-              ? MediaQuery.of(context).size.width / 2 - 30 - 10
-              : double.infinity,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.linearToEaseOut,
-          padding: const EdgeInsets.only(right: 7.5),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Theming.whiteTone.withOpacity(0.1),
-            borderRadius: borderRadius,
-            border: Border.all(
-              width: 1.5,
-              color: isSelected || ctrl.text.isNotEmpty
-                  ? Theming.primaryColor
-                  : Theming.whiteTone.withOpacity(0.2),
-            ),
-          ),
-          child: TextField(
-            enabled: enabled,
-            cursorColor: Theming.primaryColor,
-            maxLines: 1,
-            onTap: () {
-              setState(() => selectedFieldIndex = index);
-            },
-            decoration: InputDecoration(
-              hintText:
-                  !enabled && ctrl.text.isNotEmpty ? ctrl.text : placeholder,
-              hintStyle: TextStyle(
-                color: Theming.whiteTone.withOpacity(
-                  !enabled && ctrl.text.isNotEmpty ? 1 : 0.3,
-                ),
-              ),
-              prefixIcon: Icon(
-                prefixIcon,
-                color: isSelected || ctrl.text.isNotEmpty
-                    ? Theming.primaryColor
-                    : Theming.whiteTone.withOpacity(0.25),
-              ),
-              border: InputBorder.none,
-            ),
-          ),
-        ),
-        const SizedBox(height: 30),
-      ],
-    );
-  }
-
-  ///[leftRight] must be equal 1 for left or -1 for right.
-  StatelessWidget _locationShadow(double leftRight) {
+  ///[direction] must be equal 1 for left or -1 for right.
+  StatelessWidget _locationShadow(double direction) {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -565,7 +553,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             color: Theming.whiteTone,
             blurRadius: 15,
             spreadRadius: 20,
-            offset: Offset(5 * leftRight, 20),
+            offset: Offset(5 * direction, 20),
           ),
         ],
       ),

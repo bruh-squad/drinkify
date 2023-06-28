@@ -85,7 +85,6 @@ class UserController {
       Uri.parse(url),
       body: json,
       headers: {
-        "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
     );

@@ -144,8 +144,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     child: FlutterMap(
                       options: MapOptions(
                         center: LatLng(
-                          widget.party.location.latitude,
-                          widget.party.location.longitude,
+                          widget.party.location!.latitude,
+                          widget.party.location!.longitude,
                         ),
                         zoom: 15,
                         interactiveFlags: InteractiveFlag.all -
@@ -175,8 +175,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                             ),
                             Marker(
                               point: LatLng(
-                                widget.party.location.latitude,
-                                widget.party.location.longitude,
+                                widget.party.location!.latitude,
+                                widget.party.location!.longitude,
                               ),
                               builder: (_) {
                                 return const Icon(

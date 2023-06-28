@@ -62,7 +62,7 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
 
   @override
   Widget build(BuildContext context) {
-    _getActualLocation(widget.party.location, context);
+    _getActualLocation(widget.party.location!, context);
 
     return Container(
       width: double.infinity,
@@ -89,8 +89,8 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
           GestureDetector(
             onTap: () async {
               final succeded = await openMap(
-                lat: widget.party.location.latitude,
-                lng: widget.party.location.longitude,
+                lat: widget.party.location!.latitude,
+                lng: widget.party.location!.longitude,
               );
 
               if (!succeded && context.mounted) {

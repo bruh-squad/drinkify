@@ -8,8 +8,19 @@ import '../utils/theming.dart';
 import '../models/party.dart';
 import '../models/friend.dart';
 
-class PartiesPage extends StatelessWidget {
+class PartiesPage extends StatefulWidget {
   const PartiesPage({super.key});
+
+  @override
+  State<PartiesPage> createState() => _PartiesPageState();
+}
+
+class _PartiesPageState extends State<PartiesPage> {
+  @override
+  void initState() {
+    super.initState();
+    //TODO get parties based on selected option
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +45,7 @@ class PartiesPage extends StatelessWidget {
                           owner: null,
                           ownerPublicId: "",
                           name: "Example party",
-                          privacyStatus: PrivacyStatus.public,
+                          privacyStatus: 1,
                           description: "Example description of a party",
                           participants: [
                             const Friend(),
