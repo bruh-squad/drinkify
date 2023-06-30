@@ -9,8 +9,8 @@ extension Capitalize on String {
   }
 }
 
-extension POINTtoLatLng on String {
-  ///Converts "POINT(lat lng)" to LatLng format
+extension StrConvert on String {
+  ///Converts **POINT(lat lng)** to LatLng format
   LatLng toLatLng() {
     final point = replaceAll("POINT(", "").replaceAll(")", "").split(" ");
     return LatLng(
@@ -18,9 +18,25 @@ extension POINTtoLatLng on String {
       double.parse(point[1]),
     );
   }
+
+  ///Date bust have a **yyyy-mm-dd** format
+  DateTime toDateTime() {
+    List<String> dateArray = split("-");
+    final convertedDate = DateTime(
+      int.parse(dateArray[0]),
+      int.parse(dateArray[1]),
+      int.parse(dateArray[2]),
+    );
+    return convertedDate;
+  }
 }
 
-extension LatLngToPOINT on LatLng {
+extension DateTimeConvert on DateTime {
+  ///Converts date to **yyyy-mm-dd** format
+  String toYMD() => "$year-$month-$day";
+}
+
+extension LatLngConvert on LatLng {
   ///Converts LatLng to "POINT(lat lng)" format
   String toPOINT() => "POINT($latitude $longitude)";
 }

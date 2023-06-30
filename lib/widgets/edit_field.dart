@@ -84,8 +84,7 @@ class EditField extends StatelessWidget {
                 hintStyle: TextStyle(
                   fontSize: 14,
                   letterSpacing: 0,
-                  color: errorFields.contains(index) &&
-                          selectedFieldIndex == index
+                  color: errorFields.contains(index) && selectedFieldIndex == index
                       ? Theming.errorColor
                       : index == selectedFieldIndex
                           ? Theming.whiteTone.withOpacity(_borderOpacity + 0.2)

@@ -3,7 +3,7 @@ class Friend {
   final String? username;
   final String? firstName;
   final String? lastName;
-  final String? dateOfBirth;
+  final DateTime? dateOfBirth;
   final String? pfp;
 
   const Friend({

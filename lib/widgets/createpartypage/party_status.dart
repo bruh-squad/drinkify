@@ -100,9 +100,7 @@ class _PartyStatusState extends State<PartyStatus> {
             caption,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: isSelected
-                  ? Theming.whiteTone
-                  : Theming.whiteTone.withOpacity(0.6),
+              color: isSelected ? Theming.whiteTone : Theming.whiteTone.withOpacity(0.6),
             ),
           ),
         ),

@@ -154,8 +154,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       ),
                       children: [
                         TileLayer(
-                          urlTemplate:
-                              "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                           userAgentPackageName: "app.drinkify",
                         ),
                         MarkerLayer(
@@ -207,9 +206,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linearToEaseOut,
                       margin: EdgeInsets.only(
-                        top: showMore
-                            ? mapShrinkedSize - 30
-                            : mapFullSize(context) - 30,
+                        top: showMore ? mapShrinkedSize - 30 : mapFullSize(context) - 30,
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
@@ -288,9 +285,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: showMore
-                ? Colors.transparent
-                : Theming.bgColor.withOpacity(0.5),
+            color: showMore ? Colors.transparent : Theming.bgColor.withOpacity(0.5),
           ),
           child: Icon(
             icon,

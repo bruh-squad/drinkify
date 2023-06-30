@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import '../utils/ext.dart' show DateTimeConvert;
 
 import '../utils/consts.dart';
 import '../models/create_user.dart';
@@ -44,7 +45,6 @@ class AuthController {
   ///Handles the creation of new user
   static Future<bool> registerUser(CreateUser user) async {
     final url = "$mainUrl/users/";
-    final dOB = user.dateOfBirth!;
 
     final res = await http.post(
       Uri.parse(url),
@@ -53,7 +53,7 @@ class AuthController {
         "email": user.email,
         "first_name": user.firstName,
         "last_name": user.lastName,
-        "date_of_birth": "${dOB.year}-${dOB.month}-${dOB.day}",
+        "date_of_birth": user.dateOfBirth!.toYMD(),
         "password": user.password,
         "pfp": user.pfp!,
       },

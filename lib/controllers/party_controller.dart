@@ -6,7 +6,7 @@ import '../utils/consts.dart';
 import '../models/party.dart';
 import '../models/party_invitation.dart';
 import '../models/friend.dart';
-import '../utils/ext.dart' show POINTtoLatLng, LatLngToPOINT;
+import '../utils/ext.dart' show StrConvert, LatLngConvert;
 
 ///Used by the regular user to join, leave, accept party requests and more
 class PartyController {
@@ -68,7 +68,7 @@ class PartyController {
               username: e["party"]["owner"]["username"],
               firstName: e["party"]["owner"]["first_name"],
               lastName: e["party"]["owner"]["last_name"],
-              dateOfBirth: e["party"]["owner"]["date_of_birth"],
+              dateOfBirth: (e["party"]["owner"]["date_of_birth"] as String).toDateTime(),
               pfp: e["party"]["owner"]["pfp"],
             ),
             name: e["party"]["name"],
@@ -87,7 +87,7 @@ class PartyController {
                   username: p["username"],
                   firstName: p["first_name"],
                   lastName: p["last_name"],
-                  dateOfBirth: p["date_of_birth"],
+                  dateOfBirth: (p["date_of_birth"] as String).toDateTime(),
                   pfp: p["pfp"],
                 ),
             ],
@@ -100,7 +100,7 @@ class PartyController {
             username: e["receiver"]["username"],
             firstName: e["receiver"]["first_name"],
             lastName: e["receiver"]["last_name"],
-            dateOfBirth: e["receiver"]["date_of_birth"],
+            dateOfBirth: (e["receiver"]["date_of_birth"] as String).toDateTime(),
             pfp: e["receiver"]["pfp"],
           ),
         ),
@@ -115,13 +115,20 @@ class PartyController {
     final url = "$mainUrl/parties/";
     final res = await http.post(
       Uri.parse(url),
-      //TODO finish this
-      body: {},
+      body: {
+        "owner": {},
+        "owner_public_id": party.ownerPublicId,
+        "name": party.name,
+        "privacy_status": party.privacyStatus,
+        "description": party.description,
+        "location": party.location!.toPOINT(),
+        "start_time": party.startTime.toIso8601String(),
+        "stop_time": party.stopTime.toIso8601String(),
+      },
       headers: {
         "Authorization": "Bearer $token",
       },
     );
-
     return res.statusCode == 201;
   }
 

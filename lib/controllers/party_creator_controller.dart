@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../utils/consts.dart' show mainUrl;
 import '../models/friend.dart';
 import '../models/party.dart';
-import '../utils/ext.dart' show POINTtoLatLng;
+import '../utils/ext.dart' show StrConvert;
 
 ///Used by the party creator to control owned parties
 class PartyCreatorController {
@@ -32,7 +32,7 @@ class PartyCreatorController {
             firstName: e["owner"]["first_name"],
             lastName: e["owner"]["last_name"],
             pfp: e["owner"]["pfp"],
-            dateOfBirth: e["owner"]["date_of_birth"],
+            dateOfBirth: (e["owner"]["date_of_birth"] as String).toDateTime(),
           ),
           ownerPublicId: e["owner_public_id"],
           name: e["name"],
@@ -48,7 +48,7 @@ class PartyCreatorController {
                 firstName: p["first_name"],
                 lastName: p["last_name"],
                 pfp: p["pfp"],
-                dateOfBirth: p["date_of_birth"],
+                dateOfBirth: (p["date_of_birth"] as String).toDateTime(),
               ),
           ],
           location: (e["location"] as String).toLatLng(),

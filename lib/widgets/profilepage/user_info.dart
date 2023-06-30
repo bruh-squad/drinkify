@@ -175,7 +175,11 @@ class _UserInfoState extends State<UserInfo> {
                           ),
                           child: Text(
                             AppLocalizations.of(context)!.emptyHere,
-                            style: Styles.emptyListText,
+                            style: TextStyle(
+                              color: Theming.whiteTone.withOpacity(0.7),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

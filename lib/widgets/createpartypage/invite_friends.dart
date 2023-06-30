@@ -1,12 +1,12 @@
+import 'package:drinkify/models/friend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/models/user.dart';
 import '/routes/create_party_routes/invite_friends_page.dart';
 
 class InviteFriends extends StatefulWidget {
-  final Function(List<User>) onFinish;
+  final Function(List<Friend>) onFinish;
   const InviteFriends({
     required this.onFinish,
     super.key,
@@ -17,7 +17,7 @@ class InviteFriends extends StatefulWidget {
 }
 
 class _InviteFriendsState extends State<InviteFriends> {
-  late List<User> invitedUsers;
+  late List<Friend> invitedUsers;
 
   @override
   void initState() {
@@ -73,6 +73,7 @@ class _InviteFriendsState extends State<InviteFriends> {
                         for (int i = 0; i < invitedUsers.length; i++)
                           _userPlaceholder(
                             i,
+                            allUsers: invitedUsers.length,
                             userData: invitedUsers[i],
                           ),
                       ],
@@ -86,26 +87,40 @@ class _InviteFriendsState extends State<InviteFriends> {
 
   Widget _userPlaceholder(
     int index, {
-    required User userData,
+    required int allUsers,
+    required Friend userData,
   }) {
-    return Container(
-      height: 50,
-      width: 50,
-      margin: EdgeInsets.only(left: index * 25),
-      decoration: const BoxDecoration(
-        color: Theming.primaryColor,
-        shape: BoxShape.circle,
-        //Acts like a better border
-        boxShadow: [
-          BoxShadow(
-            color: Theming.bgColor,
-            spreadRadius: 4,
-          ),
-        ],
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(
-            "https://avatars.githubusercontent.com/u/63369072?v=4",
+    return Visibility(
+      visible: index < 9,
+      child: Container(
+        height: 50,
+        width: 50,
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(left: index * 25),
+        decoration: BoxDecoration(
+          color: Theming.primaryColor,
+          shape: BoxShape.circle,
+          //Acts like a better border
+          boxShadow: const [
+            BoxShadow(
+              color: Theming.bgColor,
+              spreadRadius: 4,
+            ),
+          ],
+          image: index < 9
+              ? DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    userData.pfp!,
+                  ),
+                )
+              : null,
+        ),
+        child: Text(
+          "+${allUsers - index + 1}",
+          style: const TextStyle(
+            color: Theming.whiteTone,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

@@ -28,7 +28,11 @@ class PartyList extends StatelessWidget {
               child: SizedBox(
                 child: Text(
                   AppLocalizations.of(context)!.noParties,
-                  style: Styles.emptyListText,
+                  style: TextStyle(
+                    color: Theming.whiteTone.withOpacity(0.7),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

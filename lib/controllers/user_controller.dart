@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../utils/consts.dart';
 import '../models/user.dart';
 import '../models/friend.dart';
+import '../utils/ext.dart' show StrConvert, DateTimeConvert;
 
 ///Used for getting information about the user, updating, deleting and searching
 class UserController {
@@ -21,26 +22,25 @@ class UserController {
       },
     );
     final json = jsonDecode(res.body);
-    final friends = <Friend>[
-      for (final e in json["friends"])
-        Friend(
-          publicId: e["public_id"],
-          username: e["username"],
-          firstName: e["first_name"],
-          lastName: e["last_name"],
-          pfp: e["pfp"],
-          dateOfBirth: e["date_of_birth"],
-        ),
-    ];
     return User(
       publicId: json["public_id"],
       username: json["username"],
       email: json["email"],
       firstName: json["first_name"],
       lastName: json["last_name"],
-      dateOfBirth: DateTime.parse(json["date_of_birth"]),
+      dateOfBirth: (json["date_of_birth"] as String).toDateTime(),
       pfp: json["pfp"],
-      friends: friends,
+      friends: [
+        for (final e in json["friends"])
+          Friend(
+            publicId: e["public_id"],
+            username: e["username"],
+            firstName: e["first_name"],
+            lastName: e["last_name"],
+            dateOfBirth: (e["date_of_birth"] as String).toDateTime(),
+            pfp: e["pfp"],
+          ),
+      ],
     );
   }
 
@@ -70,11 +70,10 @@ class UserController {
     final token = await storage.read(key: "access");
     final url = "$mainUrl/users/";
 
-    final dOB = user.dateOfBirth!;
     final Map<String, dynamic> json = {
       "first_name": user.firstName,
       "last_name": user.lastName,
-      "date_of_birth": "${dOB.year}-${dOB.month}-${dOB.day}",
+      "date_of_birth": user.dateOfBirth!.toYMD(),
       "password": user.password,
     };
     json.removeWhere((k, v) {

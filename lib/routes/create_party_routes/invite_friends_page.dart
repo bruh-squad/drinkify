@@ -3,10 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
 import '/widgets/glass_morphism.dart';
-import '/models/user.dart';
+import '/controllers/user_controller.dart';
+import '/models/friend.dart';
 
 class InviteFriendsPage extends StatefulWidget {
-  final Function(List<User>) onFinish;
+  final Function(List<Friend>) onFinish;
   const InviteFriendsPage({
     required this.onFinish,
     super.key,
@@ -17,7 +18,8 @@ class InviteFriendsPage extends StatefulWidget {
 }
 
 class _InviteFriendsPageState extends State<InviteFriendsPage> {
-  late List<User> invitedUsers;
+  late List<Friend> friends;
+  late List<Friend> invitedUsers;
 
   late final TextEditingController searchCtrl;
 
@@ -26,6 +28,11 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
     super.initState();
     searchCtrl = TextEditingController();
     invitedUsers = [];
+    friends = [];
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final user = await UserController.me();
+      setState(() => friends = user.friends!);
+    });
   }
 
   @override
@@ -47,20 +54,25 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
         ),
         child: Stack(
           children: [
-            ListView(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).viewPadding.top + 20,
-                ),
-                for (int i = 0; i < 20; i++)
-                  _friendPlaceholder(
-                    User(
-                      dateOfBirth: DateTime.now(),
-                      password: "",
+            friends.isNotEmpty
+                ? ListView(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).viewPadding.top + 20,
+                      ),
+                      for (final user in friends) _friendPlaceholder(user),
+                    ],
+                  )
+                : Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.emptyHere,
+                      style: TextStyle(
+                        color: Theming.whiteTone.withOpacity(0.7),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-              ],
-            ),
             GlassMorphism(
               borderRadius: BorderRadius.circular(30),
               blur: 20,
@@ -120,8 +132,7 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
     );
   }
 
-  ///TODO use [user]'s parameters in widgets below
-  Widget _friendPlaceholder(User user) {
+  Widget _friendPlaceholder(Friend user) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: Row(
@@ -130,16 +141,16 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
             height: 60,
             width: 60,
             margin: const EdgeInsets.only(right: 10),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
                 image: NetworkImage(
-                  "https://avatars.githubusercontent.com/u/63369072?v=4",
+                  user.pfp!,
                 ),
               ),
             ),
           ),
-          const Text("Test user"),
+          Text("${user.firstName} ${user.lastName}"),
           const Spacer(),
           GestureDetector(
             onTap: () => invitedUsers.add(user),

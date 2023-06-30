@@ -32,12 +32,6 @@ class Styles {
     fontWeight: FontWeight.bold,
   );
 
-  static final emptyListText = TextStyle(
-    color: Theming.whiteTone.withOpacity(0.7),
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-  );
-
   static final hintTextSearchBar = TextStyle(
     fontWeight: FontWeight.bold,
     color: Theming.bgColor.withOpacity(0.6),
