@@ -27,7 +27,7 @@ class CreatePartyRoute extends StatefulWidget {
 class _CreatePartyRouteState extends State<CreatePartyRoute> {
   //List of elements needed to send in the http request
   LatLng? selPoint;
-  late final TextEditingController titleCtrl;
+  late String partyTitle;
   DateTime? startTime;
   DateTime? endTime;
   late final TextEditingController descriptionCtrl;
@@ -121,7 +121,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     _getUserLocation(selectLocation: false);
     isFullyScrolled = false;
     mapCtrl = MapController();
-    titleCtrl = TextEditingController();
+    partyTitle = "";
     descriptionCtrl = TextEditingController();
     partyStatus = 1;
     invitedUsers = [];
@@ -132,8 +132,12 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
   void dispose() {
     super.dispose();
     mapCtrl.dispose();
-    titleCtrl.dispose();
     descriptionCtrl.dispose();
+  }
+
+  bool get _wrongDate {
+    if (startTime == null || endTime == null) return false;
+    return startTime!.isAfter(endTime!);
   }
 
   @override
@@ -150,7 +154,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             errorFields = [];
             final allFields = <dynamic>[
               selPoint,
-              titleCtrl.text,
+              partyTitle,
               startTime,
               endTime,
               descriptionCtrl.text,
@@ -163,13 +167,13 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                 tempErrorList.add(i);
               }
             }
-            //TODO fix title field controller to show a warning only when needed
             setState(() => errorFields = tempErrorList);
-            if (errorFields.isNotEmpty) return;
+            if (errorFields.isNotEmpty && !_wrongDate) return;
+
             final isCreated = await PartyController.createParty(
               Party(
                 ownerPublicId: "", //TODO get this from storage
-                name: titleCtrl.text,
+                name: partyTitle,
                 description: descriptionCtrl.text,
                 location: selPoint,
                 startTime: endTime!,
@@ -451,43 +455,69 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                   placeholder: AppLocalizations.of(context)!
                                       .addPartyTitle,
                                   prefixIcon: Icons.label_important_outline,
-                                  borderRadius: BorderRadius.circular(15),
-                                  ctrl: titleCtrl,
                                   errorFields: errorFields,
                                   selectedFieldIndex: selectedFieldIndex,
+                                  onType: (val) {
+                                    partyTitle = val;
+                                  },
                                   onSelect: (idx) {
                                     setState(() => selectedFieldIndex = idx);
                                   },
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    DateTimeField(
-                                      index: 2,
-                                      isStart: true,
-                                      errorFields: errorFields,
-                                      onFinish: (start) {
-                                        startTime = start;
-                                      },
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        DateTimeField(
+                                          index: 2,
+                                          isStart: true,
+                                          errorFields: errorFields,
+                                          wrongDate: _wrongDate,
+                                          onFinish: (start) {
+                                            startTime = start;
+                                          },
+                                        ),
+                                        Text(
+                                          "-",
+                                          style: TextStyle(
+                                            fontSize: 42,
+                                            fontWeight: FontWeight.bold,
+                                            color: Theming.whiteTone
+                                                .withOpacity(0.25),
+                                          ),
+                                        ),
+                                        DateTimeField(
+                                          index: 3,
+                                          isStart: false,
+                                          errorFields: errorFields,
+                                          wrongDate: _wrongDate,
+                                          onFinish: (end) {
+                                            endTime = end;
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "-",
-                                      style: TextStyle(
-                                        fontSize: 42,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Theming.whiteTone.withOpacity(0.25),
+                                    Visibility(
+                                      visible: _wrongDate,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 7.5,
+                                          top: 2,
+                                        ),
+                                        child: Text(
+                                          "• ${AppLocalizations.of(context)!.wrongDate}",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10,
+                                            color: Theming.errorColor,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    DateTimeField(
-                                      index: 3,
-                                      isStart: false,
-                                      errorFields: errorFields,
-                                      onFinish: (end) {
-                                        endTime = end;
-                                      },
-                                    ),
+                                    const SizedBox(height: 20),
                                   ],
                                 ),
                                 GestureDetector(
@@ -508,10 +538,13 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                     placeholder: AppLocalizations.of(context)!
                                         .addPartyDescription,
                                     prefixIcon: Icons.description_outlined,
-                                    ctrl: descriptionCtrl,
+                                    value: descriptionCtrl.text,
                                     enabled: false,
                                     errorFields: errorFields,
                                     selectedFieldIndex: selectedFieldIndex,
+                                    onType: (val) {
+                                      descriptionCtrl.text = val;
+                                    },
                                     onSelect: (idx) {
                                       setState(() => selectedFieldIndex = idx);
                                     },

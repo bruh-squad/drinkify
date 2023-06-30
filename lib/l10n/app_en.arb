@@ -116,5 +116,6 @@
     "partyTime": "Time",
     "noFriendsInvited": "No friends invited yet",
 
-    "requiredField": "Field required"
+    "requiredField": "Field required",
+    "wrongDate": "Start date can't be set after end date"
 }

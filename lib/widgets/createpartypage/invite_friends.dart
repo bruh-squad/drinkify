@@ -33,7 +33,7 @@ class _InviteFriendsState extends State<InviteFriends> {
         Text(
           AppLocalizations.of(context)!.invitedFriends.toUpperCase(),
           style: TextStyle(
-            color: Theming.whiteTone.withOpacity(0.3),
+            color: Theming.whiteTone.withOpacity(0.5),
             fontWeight: FontWeight.bold,
             fontSize: 12,
           ),

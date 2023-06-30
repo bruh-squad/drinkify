@@ -33,7 +33,7 @@ class _PartyStatusState extends State<PartyStatus> {
           child: Text(
             AppLocalizations.of(context)!.partyStatus.toUpperCase(),
             style: TextStyle(
-              color: Theming.whiteTone.withOpacity(0.3),
+              color: Theming.whiteTone.withOpacity(0.5),
               fontWeight: FontWeight.bold,
               fontSize: 12,
             ),

@@ -116,5 +116,6 @@
     "partyTime": "Godzina",
     "noFriendsInvited": "Nikogo nie zaproszono",
 
-    "requiredField": "Pole wymagane"
+    "requiredField": "Pole wymagane",
+    "wrongDate": "Data rozpoczęcia ustawiona po końcu imprezy"
 }
