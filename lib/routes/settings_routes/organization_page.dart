@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
-import '/controllers/party_controller.dart';
 import '/models/party.dart';
+import '/controllers/party_creator_controller.dart';
 
 class OrganizationPage extends StatefulWidget {
   const OrganizationPage({super.key});
@@ -19,7 +19,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final parties = await PartyController.myParties();
+      final parties = await PartyCreatorController.ownedParties();
       setState(() => ownedParties = parties);
     });
   }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
 import '../widgets/edit_field.dart';
 import '../controllers/auth_controller.dart';
+import '../controllers/user_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -164,6 +166,9 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: () async {
                   if (_userCanLogin) {
                     final canLogin = await authCtrl.loginUser();
+                    final userData = await UserController.me();
+                    const storage = FlutterSecureStorage();
+                    await storage.write(key: "user_publicId", value: userData.publicId);
                     if (mounted && canLogin) {
                       context.go("/");
                     }

@@ -1,3 +1,4 @@
+import '../utils/ext.dart';
 import './friend.dart';
 
 class User {
@@ -22,6 +23,21 @@ class User {
     this.friends,
     this.password,
   });
+
+  factory User.fromMap(Map<String, dynamic> m) {
+    return User(
+      publicId: m["public_id"],
+      username: m["username"],
+      email: m["email"],
+      firstName: m["first_name"],
+      lastName: m["last_name"],
+      dateOfBirth: (m["date_of_birth"] as String).toDateTime(),
+      pfp: m["pfp"],
+      friends: [
+        for (final f in m["friends"]) Friend.fromMap(f),
+      ],
+    );
+  }
 
   @override
   String toString() {

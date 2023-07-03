@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:drinkify/models/party_invitation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/consts.dart';
+import '../utils/ext.dart' show DateTimeConvert;
 import '../models/user.dart';
-import '../models/friend.dart';
-import '../utils/ext.dart' show StrConvert, DateTimeConvert;
+import '../models/friend_invitiation.dart';
 
 ///Used for getting information about the user, updating, deleting and searching
 class UserController {
@@ -13,6 +14,7 @@ class UserController {
   static Future<User> me() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
+
     final url = "$mainUrl/users/";
     final res = await http.get(
       Uri.parse(url),
@@ -22,26 +24,7 @@ class UserController {
       },
     );
     final json = jsonDecode(res.body);
-    return User(
-      publicId: json["public_id"],
-      username: json["username"],
-      email: json["email"],
-      firstName: json["first_name"],
-      lastName: json["last_name"],
-      dateOfBirth: (json["date_of_birth"] as String).toDateTime(),
-      pfp: json["pfp"],
-      friends: [
-        for (final e in json["friends"])
-          Friend(
-            publicId: e["public_id"],
-            username: e["username"],
-            firstName: e["first_name"],
-            lastName: e["last_name"],
-            dateOfBirth: (e["date_of_birth"] as String).toDateTime(),
-            pfp: e["pfp"],
-          ),
-      ],
-    );
+    return User.fromMap(json);
   }
 
   ///Deletes user's account, returns **true** if succeded and **false** if failed
@@ -89,5 +72,17 @@ class UserController {
     );
 
     return res.statusCode == 200;
+  }
+
+  ///Retrieves a list of friend invitaions
+  static Future<List<FriendInvitation>> friendInvitations() async {
+    final invitations = <FriendInvitation>[];
+    return invitations;
+  }
+
+  ///Retrieves a list of party invitations
+  static Future<List<PartyInvitation>> partyInvitations() async {
+    final invitations = <PartyInvitation>[];
+    return invitations;
   }
 }

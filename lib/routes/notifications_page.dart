@@ -5,9 +5,36 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../utils/theming.dart';
 import '../widgets/dialogs/notification_sheet.dart';
 import '../widgets/custom_floating_button.dart';
+import '../controllers/party_creator_controller.dart';
+import '../controllers/user_controller.dart';
+import '../models/friend_invitiation.dart';
+import '../models/party_invitation.dart';
+import '../models/party_request.dart';
 
-class NotificationsPage extends StatelessWidget {
+class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
+
+  @override
+  State<NotificationsPage> createState() => _NotificationsPageState();
+}
+
+class _NotificationsPageState extends State<NotificationsPage> {
+  late List<FriendInvitation> friendInvs;
+  late List<PartyInvitation> partyInvs;
+  late List<PartyRequest> partyReqs;
+
+  @override
+  void initState() {
+    super.initState();
+    friendInvs = [];
+    partyInvs = [];
+    partyReqs = [];
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      friendInvs = await UserController.friendInvitations();
+      partyInvs = await UserController.partyInvitations();
+      partyReqs = await PartyCreatorController.joinRequests();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +44,6 @@ class NotificationsPage extends StatelessWidget {
         caption: AppLocalizations.of(context)!.markAsRead,
         onTap: () {},
       ),
-
-      // Notification list
       body: CustomScrollView(
         slivers: [
           SliverAppBar(

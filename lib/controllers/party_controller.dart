@@ -14,8 +14,8 @@ class PartyController {
   static Future<bool> sendJoinRequest(Party party) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
-    //TODO saving user parameters in storage
-    final userPublicId = await storage.read(key: "user_publicId");
+    final userId = await storage.read(key: "user_publicId");
+
     final url = "$mainUrl/parties/requests/${party.publicId}/";
     final res = await http.post(
       Uri.parse(url),
@@ -32,7 +32,7 @@ class PartyController {
         },
         "party_public_id": party.publicId,
         "sender": {},
-        "sender_public_id": userPublicId,
+        "sender_public_id": userId,
       },
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +68,8 @@ class PartyController {
               username: e["party"]["owner"]["username"],
               firstName: e["party"]["owner"]["first_name"],
               lastName: e["party"]["owner"]["last_name"],
-              dateOfBirth: (e["party"]["owner"]["date_of_birth"] as String).toDateTime(),
+              dateOfBirth:
+                  (e["party"]["owner"]["date_of_birth"] as String).toDateTime(),
               pfp: e["party"]["owner"]["pfp"],
             ),
             name: e["party"]["name"],
@@ -100,7 +101,8 @@ class PartyController {
             username: e["receiver"]["username"],
             firstName: e["receiver"]["first_name"],
             lastName: e["receiver"]["last_name"],
-            dateOfBirth: (e["receiver"]["date_of_birth"] as String).toDateTime(),
+            dateOfBirth:
+                (e["receiver"]["date_of_birth"] as String).toDateTime(),
             pfp: e["receiver"]["pfp"],
           ),
         ),
@@ -130,55 +132,5 @@ class PartyController {
       },
     );
     return res.statusCode == 201;
-  }
-
-  ///Retrieves a list of parties which are owned by the user
-  static Future<List<Party>> myParties() async {
-    const storage = FlutterSecureStorage();
-    final token = await storage.read(key: "access");
-    final url = "$mainUrl/parties/mine/";
-    final res = await http.get(
-      Uri.parse(url),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
-    );
-    final parties = <Party>[
-      for (final e in jsonDecode(res.body)["results"])
-        Party(
-          publicId: e["public_id"],
-          owner: Friend(
-            publicId: e["owner"]["public_id"],
-            username: e["owner"]["username"],
-            firstName: e["owner"]["first_name"],
-            lastName: e["owner"]["last_name"],
-            dateOfBirth: e["owner"]["date_of_birth"],
-            pfp: e["owner"]["pfp"],
-          ),
-          ownerPublicId: e["owner_public_id"],
-          name: e["name"],
-          privacyStatus: e["privacy_status"],
-          privacyStatusDisplay: e["privacy_status_display"],
-          description: e["description"],
-          image: e["image"],
-          participants: [
-            for (final p in jsonDecode(res.body)["results"]["participants"])
-              Friend(
-                publicId: p["public_id"],
-                username: p["username"],
-                firstName: p["first_name"],
-                lastName: p["last_name"],
-                dateOfBirth: p["date_of_birth"],
-                pfp: p["pfp"],
-              ),
-          ],
-          location: (e["location"] as String).toLatLng(),
-          distance: e["distance"],
-          startTime: DateTime.parse(e["start_time"]),
-          stopTime: DateTime.parse(e["stop_time"]),
-        ),
-    ];
-    return parties;
   }
 }

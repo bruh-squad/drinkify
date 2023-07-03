@@ -3,9 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
+import '/models/search_type.dart';
 
 class SearchAndMap extends StatefulWidget {
-  const SearchAndMap({super.key});
+  final Function(SearchType) onTypeSelect;
+  const SearchAndMap({
+    required this.onTypeSelect,
+    super.key,
+  });
 
   @override
   State<SearchAndMap> createState() => _SearchAndMapState();
@@ -130,15 +135,13 @@ class _SearchAndMapState extends State<SearchAndMap> {
               children: [
                 _categoryItem(
                   0,
-                  caption: AppLocalizations.of(context)!.parties,
+                  searchType: SearchType.nearbyParties,
+                  caption: AppLocalizations.of(context)!.inYourArea,
                 ),
                 _categoryItem(
                   1,
+                  searchType: SearchType.users,
                   caption: AppLocalizations.of(context)!.friends,
-                ),
-                _categoryItem(
-                  2,
-                  caption: AppLocalizations.of(context)!.inYourArea,
                 ),
               ],
             ),
@@ -150,6 +153,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
 
   Widget _categoryItem(
     int index, {
+    required SearchType searchType,
     required String caption,
   }) {
     bool isSelected = selectedIndex == index;
@@ -157,6 +161,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
     return GestureDetector(
       onTap: () {
         setState(() => selectedIndex = index);
+        widget.onTypeSelect(searchType);
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 125),

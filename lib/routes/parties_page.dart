@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchController;
 import 'package:latlong2/latlong.dart';
 
 import '../widgets/partiespage/search_and_map.dart';
 import '../widgets/partiespage/party_holder.dart';
-
 import '../utils/theming.dart';
 import '../models/party.dart';
 import '../models/friend.dart';
+import '../controllers/search_controller.dart';
+import '../models/search_type.dart';
 
 class PartiesPage extends StatefulWidget {
   const PartiesPage({super.key});
@@ -16,10 +17,15 @@ class PartiesPage extends StatefulWidget {
 }
 
 class _PartiesPageState extends State<PartiesPage> {
+  late List<Party> parties;
+  late SearchType searchType;
   @override
   void initState() {
     super.initState();
-    //TODO get parties based on selected option
+    searchType = SearchType.nearbyParties;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      parties = await SearchController.seachPartiesByDistance(1000);
+    });
   }
 
   @override
@@ -62,7 +68,9 @@ class _PartiesPageState extends State<PartiesPage> {
                 ),
               ),
             ),
-            const SearchAndMap(),
+            SearchAndMap(
+              onTypeSelect: (type) {},
+            ),
           ],
         ),
       ),

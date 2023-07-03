@@ -1,6 +1,7 @@
 import 'package:drinkify/models/friend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
@@ -169,10 +170,11 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             }
             setState(() => errorFields = tempErrorList);
             if (errorFields.isNotEmpty && !_wrongDate) return;
-
+            const storage = FlutterSecureStorage();
+            final userId = await storage.read(key: "user_publicId");
             final isCreated = await PartyController.createParty(
               Party(
-                ownerPublicId: "", //TODO get this from storage
+                ownerPublicId: userId!,
                 name: partyTitle,
                 description: descriptionCtrl.text,
                 location: selPoint,
@@ -315,8 +317,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
           ),
           NotificationListener<DraggableScrollableNotification>(
             onNotification: (notif) {
-              final double dragRatio =
-                  (notif.extent - notif.minExtent) / (notif.maxExtent - notif.minExtent);
+              final double dragRatio = (notif.extent - notif.minExtent) /
+                  (notif.maxExtent - notif.minExtent);
 
               if (dragRatio >= 0.9 && isFullyScrolled != true) {
                 setState(() => isFullyScrolled = true);
@@ -405,7 +407,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                           ),
                                           child: Text(
                                             selLocation ??
-                                                AppLocalizations.of(context)!.unknown,
+                                                AppLocalizations.of(context)!
+                                                    .unknown,
                                             style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -417,7 +420,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                     ),
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       _locationShadow(1),
                                       _locationShadow(-1),
@@ -450,8 +454,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                 FormFieldParty(
                                   index: 1,
                                   caption: AppLocalizations.of(context)!.title,
-                                  placeholder:
-                                      AppLocalizations.of(context)!.addPartyTitle,
+                                  placeholder: AppLocalizations.of(context)!
+                                      .addPartyTitle,
                                   prefixIcon: Icons.label_important_outline,
                                   errorFields: errorFields,
                                   selectedFieldIndex: selectedFieldIndex,
@@ -466,7 +470,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         DateTimeField(
                                           index: 2,
@@ -482,7 +487,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                           style: TextStyle(
                                             fontSize: 42,
                                             fontWeight: FontWeight.bold,
-                                            color: Theming.whiteTone.withOpacity(0.25),
+                                            color: Theming.whiteTone
+                                                .withOpacity(0.25),
                                           ),
                                         ),
                                         DateTimeField(
@@ -529,9 +535,10 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                   ),
                                   child: FormFieldParty(
                                     index: 4,
-                                    caption: AppLocalizations.of(context)!.description,
-                                    placeholder:
-                                        AppLocalizations.of(context)!.addPartyDescription,
+                                    caption: AppLocalizations.of(context)!
+                                        .description,
+                                    placeholder: AppLocalizations.of(context)!
+                                        .addPartyDescription,
                                     prefixIcon: Icons.description_outlined,
                                     value: descriptionCtrl.text,
                                     enabled: false,

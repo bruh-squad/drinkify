@@ -1,6 +1,7 @@
 import 'package:latlong2/latlong.dart';
 
 import './friend.dart';
+import '/utils/ext.dart';
 
 class Party {
   final String? publicId;
@@ -32,6 +33,23 @@ class Party {
     required this.startTime,
     required this.stopTime,
   });
+
+  factory Party.fromMap(Map<String, dynamic> m) {
+    return Party(
+      publicId: m["public_id"],
+      owner: Friend.fromMap(m["owner"]),
+      ownerPublicId: m["owner_public_id"],
+      name: m["name"],
+      description: m["description"],
+      startTime: DateTime.parse(m["start_time"] as String),
+      stopTime: DateTime.parse(m["stop_time"] as String),
+      distance: (m["distance"]),
+      location: (m["location"] as String).toLatLng(),
+      privacyStatus: m["privacy_status"],
+      privacyStatusDisplay: m["privacy_status_display"],
+      image: m["image"],
+    );
+  }
 
   @override
   String toString() {

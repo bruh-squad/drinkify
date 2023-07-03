@@ -1,3 +1,5 @@
+import 'package:drinkify/utils/ext.dart';
+
 class Friend {
   final String? publicId;
   final String? username;
@@ -14,6 +16,17 @@ class Friend {
     this.dateOfBirth,
     this.pfp,
   });
+
+  factory Friend.fromMap(Map<String, dynamic> m) {
+    return Friend(
+      publicId: m["public_id"],
+      username: m["username"],
+      firstName: m["first_name"],
+      lastName: m["last_name"],
+      dateOfBirth: (m["date_of_birth"] as String).toDateTime(),
+      pfp: m["pfp"],
+    );
+  }
 
   @override
   String toString() {

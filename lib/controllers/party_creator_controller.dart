@@ -3,9 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/consts.dart' show mainUrl;
-import '../models/friend.dart';
 import '../models/party.dart';
-import '../utils/ext.dart' show StrConvert;
+import '../models/party_request.dart';
 
 ///Used by the party creator to control owned parties
 class PartyCreatorController {
@@ -23,43 +22,17 @@ class PartyCreatorController {
     );
 
     final parties = <Party>[
-      for (final e in jsonDecode(res.body)["results"] as List)
-        Party(
-          publicId: e["public_id"],
-          owner: Friend(
-            publicId: e["owner"]["public_id"],
-            username: e["owner"]["username"],
-            firstName: e["owner"]["first_name"],
-            lastName: e["owner"]["last_name"],
-            pfp: e["owner"]["pfp"],
-            dateOfBirth: (e["owner"]["date_of_birth"] as String).toDateTime(),
-          ),
-          ownerPublicId: e["owner_public_id"],
-          name: e["name"],
-          privacyStatus: e["privacy_status"],
-          privacyStatusDisplay: e["privacy_status_display"],
-          description: e["description"],
-          image: e["image"],
-          participants: [
-            for (final p in jsonDecode(e["participants"]) as List)
-              Friend(
-                publicId: p["public_id"],
-                username: p["username"],
-                firstName: p["first_name"],
-                lastName: p["last_name"],
-                pfp: p["pfp"],
-                dateOfBirth: (p["date_of_birth"] as String).toDateTime(),
-              ),
-          ],
-          location: (e["location"] as String).toLatLng(),
-          distance: e["distance"],
-          startTime: DateTime.parse(e["start_time"]),
-          stopTime: DateTime.parse(e["stop_time"]),
-        ),
+      for (final e in jsonDecode(res.body)["results"]) Party.fromMap(e),
     ];
     return parties;
   }
 
   ///Creates a party
   static Future<void> createParty(Party party) async {}
+
+  ///Retrieves a list of join requests to user's owned parties
+  static Future<List<PartyRequest>> joinRequests() async {
+    final requests = <PartyRequest>[];
+    return requests;
+  }
 }
