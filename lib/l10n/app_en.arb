@@ -15,6 +15,8 @@
     "friends": "Friends",
     "inYourArea": "In your area",
     "lookingForAParty": "Where partying tonight?",
+    "successFriendInvite": "Friend request sent",
+    "failureFriendInvite": "Could not send friend request",
     
     "partiesProfile1": "Parties",
     "friendsProfile": "Friends", 
@@ -115,6 +117,8 @@
     "partyDate": "Date",
     "partyTime": "Time",
     "noFriendsInvited": "No friends invited yet",
+    "createdSuccessfuly": "Party created successfuly",
+    "creationFailed": "Party creation failed",
 
     "requiredField": "Field required",
     "wrongDate": "Start date can't be set after end date"

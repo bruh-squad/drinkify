@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart' hide SearchController;
-import 'package:latlong2/latlong.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../widgets/partiespage/search_and_map.dart';
 import '../widgets/partiespage/party_holder.dart';
-import '../utils/theming.dart';
+import '../widgets/partiespage/user_holder.dart';
+import '../widgets/dialogs/success_sheet.dart';
 import '../models/party.dart';
 import '../models/friend.dart';
-import '../controllers/search_controller.dart';
-import '../models/search_type.dart';
+import '../models/friend_invitiation.dart';
+import '../controllers/user_controller.dart';
+import '../utils/theming.dart';
 
 class PartiesPage extends StatefulWidget {
   const PartiesPage({super.key});
@@ -17,15 +20,17 @@ class PartiesPage extends StatefulWidget {
 }
 
 class _PartiesPageState extends State<PartiesPage> {
+  late String userId;
+
   late List<Party> parties;
+  late List<Friend> users;
   late SearchType searchType;
   @override
   void initState() {
     super.initState();
     searchType = SearchType.nearbyParties;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      parties = await SearchController.seachPartiesByDistance(1000);
-    });
+    const storage = FlutterSecureStorage();
+    storage.read(key: "user_publicId").then((id) => userId = id!);
   }
 
   @override
@@ -42,38 +47,81 @@ class _PartiesPageState extends State<PartiesPage> {
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 130),
-                    for (int i = 0; i < 5; i++)
-                      PartyHolder(
-                        party: Party(
-                          owner: null,
-                          ownerPublicId: "",
-                          name: "Example party",
-                          privacyStatus: 1,
-                          description: "Example description of a party",
-                          participants: [
-                            const Friend(),
-                          ],
-                          location: LatLng(52.237049, 21.017532),
-                          startTime: DateTime.now(),
-                          stopTime: DateTime.now(),
-                        ),
-                      ),
-                    SizedBox(
-                      height: MediaQuery.of(context).viewPadding.bottom + 120,
-                    ),
-                  ],
-                ),
+                child: searchType == SearchType.nearbyParties
+                    ? _resultList<Party>(parties)
+                    : _resultList<Friend>(users),
               ),
             ),
             SearchAndMap(
-              onTypeSelect: (type) {},
+              onPartySearch: (parties) {
+                setState(() {});
+              },
+              onUserSearch: (users) {},
             ),
           ],
         ),
       ),
     );
   }
+
+  Widget _resultList<T>(List<T> iter) {
+    return Column(
+      children: [
+        const SizedBox(height: 130),
+        for (final i in iter)
+          T is Party
+              ? PartyHolder(i as Party)
+              : UserHolder(
+                  i as Friend,
+                  onButtonTap: () async {
+                    final success = await UserController.sendFriendInvitation(
+                      FriendInvitation(
+                        receiverPublicId: i.publicId!,
+                        senderPublicId: userId,
+                      ),
+                    );
+                    if (success && mounted) {
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Theming.bgColor,
+                        isScrollControlled: true,
+                        builder: (ctx) => SuccessSheet(
+                          success: true,
+                          successMsg:
+                              AppLocalizations.of(ctx)!.successFriendInvite,
+                          failureMsg:
+                              AppLocalizations.of(ctx)!.failureFriendInvite,
+                        ),
+                      );
+                    } else {
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Theming.bgColor,
+                        isScrollControlled: true,
+                        builder: (ctx) => SuccessSheet(
+                          success: false,
+                          successMsg:
+                              AppLocalizations.of(ctx)!.successFriendInvite,
+                          failureMsg:
+                              AppLocalizations.of(ctx)!.failureFriendInvite,
+                        ),
+                      );
+                    }
+                  },
+                  buttonChild: const Icon(
+                    Icons.person_add_alt_1_rounded,
+                    color: Theming.whiteTone,
+                  ),
+                ),
+        SizedBox(
+          height: MediaQuery.of(context).viewPadding.bottom + 120,
+        ),
+      ],
+    );
+  }
+}
+
+enum SearchType {
+  nearbyParties,
+  users,
 }

@@ -9,7 +9,7 @@ import '/utils/theming.dart';
 
 class PartyHolder extends StatelessWidget {
   final Party party;
-  const PartyHolder({required this.party, super.key});
+  const PartyHolder(this.party, {super.key});
 
   @override
   Widget build(BuildContext context) {

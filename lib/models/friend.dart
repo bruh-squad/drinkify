@@ -18,6 +18,8 @@ class Friend {
   });
 
   factory Friend.fromMap(Map<String, dynamic> m) {
+    if (m["public_id"] == null) return const Friend();
+
     return Friend(
       publicId: m["public_id"],
       username: m["username"],

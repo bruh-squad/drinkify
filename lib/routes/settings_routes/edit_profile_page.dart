@@ -86,6 +86,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               lastName: lastNameCtrl.text,
               dateOfBirth: dateOfBirth,
               password: passwordCtrl.text,
+              pfp: pfp?.path,
             ),
           );
           context.pop();

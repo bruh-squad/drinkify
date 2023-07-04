@@ -1,19 +1,24 @@
+import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
+import '/models/user.dart';
 
 class UserInfo extends StatefulWidget {
-  const UserInfo({super.key});
+  final User? user;
+  const UserInfo(
+    this.user, {
+    super.key,
+  });
 
   @override
   State<UserInfo> createState() => _UserInfoState();
 }
 
 class _UserInfoState extends State<UserInfo> {
-  bool showMoreDesc = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,13 +54,18 @@ class _UserInfoState extends State<UserInfo> {
             //Profile picture
             Column(
               children: [
-                const CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(
-                    "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
-                  ),
-                  backgroundColor: Theming.bgColorLight,
-                ),
+                widget.user!.pfp != null
+                    ? CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(widget.user!.pfp!),
+                        backgroundColor: Theming.bgColorLight,
+                      )
+                    : const CircleAvatar(
+                        radius: 50,
+                        backgroundImage:
+                            AssetImage("assets/images/default_pfp.png"),
+                        backgroundColor: Theming.bgColorLight,
+                      ),
                 const SizedBox(height: 10),
                 //Username
                 Container(
@@ -67,9 +77,9 @@ class _UserInfoState extends State<UserInfo> {
                     color: Theming.whiteTone.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: const Text(
-                    "@Jumpee",
-                    style: TextStyle(
+                  child: Text(
+                    "@${widget.user!.username}",
+                    style: const TextStyle(
                       color: Theming.greenTone,
                     ),
                   ),
@@ -77,14 +87,17 @@ class _UserInfoState extends State<UserInfo> {
               ],
             ),
             GestureDetector(
-              onTap: () => context.push("/friend-list"),
+              onTap: () => context.push(
+                "/friend-list",
+                extra: widget.user!.friends!,
+              ),
               child: SizedBox(
                 width: 100,
                 child: Column(
                   children: [
-                    const Text(
-                      "420",
-                      style: TextStyle(
+                    Text(
+                      "${widget.user!.friends != null ? widget.user!.friends!.length : 0}",
+                      style: const TextStyle(
                         color: Theming.whiteTone,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -107,35 +120,32 @@ class _UserInfoState extends State<UserInfo> {
 
         const SizedBox(height: 10),
 
-        //Bio
-        GestureDetector(
-          onTap: () {
-            setState(() => showMoreDesc = !showMoreDesc);
-          },
-          child: Text(
-            "Współczesny artysta estradowy, showman, erudyta, omnibus, polihistor, geniusz, muzyk, artysta, filantrop, wizjoner, komentator e-sportowy, osoba nieszablonowa, posiadacz nadzwyczajnie dużego ilorazu inteligencji oraz człowiek sukcesu który przeszedł grę zwaną życiem.",
-            style: const TextStyle(color: Theming.whiteTone),
-            overflow: TextOverflow.ellipsis,
-            maxLines: showMoreDesc ? 10 : 2,
-          ),
-        ),
-
-        const SizedBox(height: 10),
-
         //Add friend / Social media link
         Row(
           children: [
             //Add friend
             GestureDetector(
-              onLongPress: () {
-                //Show modal bottom sheet with full description
-              },
-              onTap: () {
+              onTap: () async {
                 //sending a friend request
+                const storage = FlutterSecureStorage();
+                final userId = await storage.read(key: "user_publicId");
+                if (widget.user!.publicId! == userId && mounted) {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (ctx) {
+                        return SuccessSheet(
+                          success: false,
+                          successMsg:
+                              AppLocalizations.of(context)!.successFriendInvite,
+                          failureMsg:
+                              AppLocalizations.of(context)!.successFriendInvite,
+                        );
+                      });
+                }
               },
               child: Container(
                 height: 50,
-                width: MediaQuery.of(context).size.width - 30 * 2 - 50 - 20,
+                width: MediaQuery.of(context).size.width - 60,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Theming.primaryColor,
@@ -144,63 +154,6 @@ class _UserInfoState extends State<UserInfo> {
                 child: Text(
                   AppLocalizations.of(context)!.addAFriend,
                   style: Styles.buttonTextLight,
-                ),
-              ),
-            ),
-
-            const Spacer(),
-
-            //Social media link
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Theming.bgColor,
-                  useRootNavigator: true,
-                  enableDrag: false,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                  ),
-                  builder: (ctx) {
-                    return SizedBox(
-                      height: 200,
-                      //Show this if user did not provide any social media
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(ctx).viewPadding.bottom,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.emptyHere,
-                            style: TextStyle(
-                              color: Theming.whiteTone.withOpacity(0.7),
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              child: Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    width: 2,
-                    color: Theming.whiteTone.withOpacity(0.2),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.south_america,
-                  color: Theming.whiteTone,
-                  size: 28,
                 ),
               ),
             ),

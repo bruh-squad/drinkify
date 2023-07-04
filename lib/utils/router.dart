@@ -57,14 +57,10 @@ GoRouter router = GoRouter(
           path: "/profile",
           parentNavigatorKey: _navBarKey,
           pageBuilder: (_, state) {
+            final User? user = state.extra as User?;
             return pageTransition(
               state: state,
-              childWidget: ProfilePage(
-                User(
-                  dateOfBirth: DateTime.now(),
-                  password: "",
-                ),
-              ),
+              childWidget: ProfilePage(user),
             );
           },
         ),

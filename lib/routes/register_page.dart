@@ -127,7 +127,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                     child: Stack(
                       children: [
-                        //I have no idea why I couldn't do image stuff in one line :(
                         pfp == null
                             ? const CircleAvatar(
                                 radius: 45,
@@ -277,9 +276,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             lastName: lastNameCtrl.text,
                             dateOfBirth: dateOfBirthVal!,
                             password: passwordCtrl.text,
-                            pfp: Uri.parse(
-                              pfp!.path,
-                            ), //TODO send this as a file and fix null value
+                            pfp: pfp != null ? File(pfp!.path) : null,
                           ),
                         );
                         if (canRegister && mounted) {

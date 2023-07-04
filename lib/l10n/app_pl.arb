@@ -15,6 +15,8 @@
     "friends": "Znajomi",
     "inYourArea": "W okolicy",
     "lookingForAParty": "Gdzie szukasz imprezy?",
+    "successFriendInvite": "Wysłano zaproszenie",
+    "failureFriendInvite": "Nie udało się wysłać zaproszenia",
     
     "partiesProfile1": "Imprez",
     "friendsProfile": "Znajomych", 
@@ -115,6 +117,8 @@
     "partyDate": "Data",
     "partyTime": "Godzina",
     "noFriendsInvited": "Nikogo nie zaproszono",
+    "createdSuccessfuly": "Utworzono imprezę",
+    "creationFailed": "Nie utworzono imprezy",
 
     "requiredField": "Pole wymagane",
     "wrongDate": "Data rozpoczęcia ustawiona po końcu imprezy"

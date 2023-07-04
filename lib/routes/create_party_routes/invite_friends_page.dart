@@ -5,6 +5,7 @@ import '/utils/theming.dart';
 import '/widgets/glass_morphism.dart';
 import '/controllers/user_controller.dart';
 import '/models/friend.dart';
+import '/widgets/partiespage/user_holder.dart';
 
 class InviteFriendsPage extends StatefulWidget {
   final Function(List<Friend>) onFinish;
@@ -60,7 +61,18 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                       SizedBox(
                         height: MediaQuery.of(context).viewPadding.top + 20,
                       ),
-                      for (final user in friends) _friendPlaceholder(user),
+                      for (final user in friends)
+                        UserHolder(
+                          user,
+                          onButtonTap: () => invitedUsers.add(user),
+                          buttonChild: Text(
+                            AppLocalizations.of(context)!.invite,
+                            style: const TextStyle(
+                              color: Theming.whiteTone,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                     ],
                   )
                 : Center(
@@ -128,53 +140,6 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _friendPlaceholder(Friend user) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Row(
-        children: [
-          Container(
-            height: 60,
-            width: 60,
-            margin: const EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: NetworkImage(
-                  user.pfp!,
-                ),
-              ),
-            ),
-          ),
-          Text("${user.firstName} ${user.lastName}"),
-          const Spacer(),
-          GestureDetector(
-            onTap: () => invitedUsers.add(user),
-            child: AnimatedContainer(
-              curve: Curves.linearToEaseOut,
-              duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                color: Theming.primaryColor,
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.invite,
-                style: const TextStyle(
-                  color: Theming.whiteTone,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

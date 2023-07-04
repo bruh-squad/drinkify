@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
 import '../utils/ext.dart' show DateTimeConvert;
 
 import '../utils/consts.dart';
@@ -25,7 +27,6 @@ class AuthController {
         "password": passwordCtrl.text,
       },
     );
-
     if (res.statusCode == 200) {
       final loginArr = json.decode(res.body);
       const storage = FlutterSecureStorage();
@@ -46,18 +47,33 @@ class AuthController {
   static Future<bool> registerUser(CreateUser user) async {
     final url = "$mainUrl/users/";
 
-    final res = await http.post(
+    final req = http.MultipartRequest(
+      "POST",
       Uri.parse(url),
-      body: {
-        "username": user.username,
-        "email": user.email,
-        "first_name": user.firstName,
-        "last_name": user.lastName,
+    );
+    req.headers.addAll({"Content-Type": "multipart/form-data"});
+    req.fields.addAll(
+      {
+        "username": user.username!,
+        "email": user.email!,
+        "first_name": user.firstName!,
+        "last_name": user.lastName!,
         "date_of_birth": user.dateOfBirth!.toYMD(),
-        "password": user.password,
-        "pfp": user.pfp!,
+        "password": user.password!,
       },
     );
+    if (user.pfp != null) {
+      req.files.add(
+        http.MultipartFile(
+          "pfp",
+          user.pfp!.readAsBytes().asStream(),
+          user.pfp!.lengthSync(),
+          filename: user.pfp!.path,
+          contentType: MediaType("image", "jpeg"),
+        ),
+      );
+    }
+    final res = await req.send();
     return res.statusCode == 201;
   }
 }

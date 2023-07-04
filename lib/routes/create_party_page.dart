@@ -1,4 +1,5 @@
 import 'package:drinkify/models/friend.dart';
+import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -183,8 +184,28 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                 privacyStatus: partyStatus,
               ),
             );
-            if (isCreated) {
-              //TODO show modal bottom sheet
+            if (isCreated && mounted) {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Theming.bgColor,
+                builder: (_) => SuccessSheet(
+                  success: true,
+                  successMsg: AppLocalizations.of(context)!.createdSuccessfuly,
+                  failureMsg: AppLocalizations.of(context)!.creationFailed,
+                ),
+              );
+            } else {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Theming.bgColor,
+                builder: (_) => SuccessSheet(
+                  success: false,
+                  successMsg: AppLocalizations.of(context)!.createdSuccessfuly,
+                  failureMsg: AppLocalizations.of(context)!.creationFailed,
+                ),
+              );
             }
           },
         ),

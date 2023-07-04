@@ -8,20 +8,23 @@ import '../models/party.dart';
 
 ///Used for searching parties and users
 class SearchController {
-  ///Retrieves user's data based on provided [publicId]
-  static Future<Friend> searchUser(String publicId) async {
+  ///Retrieves user's data based on provided [username]
+  static Future<List<Friend>> searchUser(String username) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
 
-    final url = "$mainUrl/users/$publicId";
+    final url = "$mainUrl/users/search?q=$username";
     final res = await http.get(
       Uri.parse(url),
       headers: {
         "Authorization": "Bearer $token",
       },
     );
-
-    return Friend.fromMap(jsonDecode(res.body));
+    final users = <Friend>[];
+    for (final u in jsonDecode(res.body)["results"]) {
+      users.add(Friend.fromMap(u));
+    }
+    return users;
   }
 
   static Future<List<Party>> seachPartiesByDistance(double meters) async {
@@ -35,9 +38,10 @@ class SearchController {
         "Authorization": "Bearer $token",
       },
     );
-    final parties = <Party>[
-      for (final p in jsonDecode(res.body)) Party.fromMap(p),
-    ];
+    final parties = <Party>[];
+    for (final p in jsonDecode(res.body)) {
+      parties.add(Party.fromMap(p));
+    }
     return parties;
   }
 }

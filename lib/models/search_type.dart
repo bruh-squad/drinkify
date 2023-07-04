@@ -1,4 +1,0 @@
-enum SearchType {
-  users,
-  nearbyParties,
-}

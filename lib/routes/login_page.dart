@@ -168,7 +168,10 @@ class _LoginPageState extends State<LoginPage> {
                     final canLogin = await authCtrl.loginUser();
                     final userData = await UserController.me();
                     const storage = FlutterSecureStorage();
-                    await storage.write(key: "user_publicId", value: userData.publicId);
+                    await storage.write(
+                      key: "user_publicId",
+                      value: userData.publicId,
+                    );
                     if (mounted && canLogin) {
                       context.go("/");
                     }

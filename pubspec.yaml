@@ -27,6 +27,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   geocoding: ^2.1.0
   image_picker: ^0.8.9
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:

@@ -25,6 +25,8 @@ class User {
   });
 
   factory User.fromMap(Map<String, dynamic> m) {
+    if (m["public_id"] == null) return const User();
+
     return User(
       publicId: m["public_id"],
       username: m["username"],
@@ -36,6 +38,15 @@ class User {
       friends: [
         for (final f in m["friends"]) Friend.fromMap(f),
       ],
+    );
+  }
+
+  factory User.emptyUser() {
+    return const User(
+      username: "",
+      firstName: "",
+      lastName: "",
+      friends: [],
     );
   }
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import './friend.dart';
 
 class CreateUser {
@@ -7,7 +9,7 @@ class CreateUser {
   final String? firstName;
   final String? lastName;
   final DateTime? dateOfBirth;
-  final Uri? pfp;
+  final File? pfp;
   final List<Friend>? friends;
   final String? password;
 

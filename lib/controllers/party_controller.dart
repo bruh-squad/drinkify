@@ -5,8 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../utils/consts.dart';
 import '../models/party.dart';
 import '../models/party_invitation.dart';
-import '../models/friend.dart';
-import '../utils/ext.dart' show StrConvert, LatLngConvert;
+import '../utils/ext.dart' show LatLngConvert;
 
 ///Used by the regular user to join, leave, accept party requests and more
 class PartyController {
@@ -57,56 +56,10 @@ class PartyController {
         "Authorization": "Bearer $token",
       },
     );
-    final invitations = <PartyInvitation>[
-      for (final e in jsonDecode(res.body)["results"] as List)
-        PartyInvitation(
-          party: Party(
-            publicId: e["party"]["public_id"],
-            ownerPublicId: e["party"]["owner_public_id"],
-            owner: Friend(
-              publicId: e["party"]["owner"]["public_id"],
-              username: e["party"]["owner"]["username"],
-              firstName: e["party"]["owner"]["first_name"],
-              lastName: e["party"]["owner"]["last_name"],
-              dateOfBirth:
-                  (e["party"]["owner"]["date_of_birth"] as String).toDateTime(),
-              pfp: e["party"]["owner"]["pfp"],
-            ),
-            name: e["party"]["name"],
-            description: e["party"]["description"],
-            location: (e["party"]["location"] as String).toLatLng(),
-            distance: e["party"]["distance"],
-            image: e["party"]["image"],
-            privacyStatus: e["party"]["privacy_status"],
-            privacyStatusDisplay: e["party"]["privacy_status_display"],
-            startTime: DateTime.parse(e["party"]["start_time"]),
-            stopTime: DateTime.parse(e["party"]["stop_time"]),
-            participants: [
-              for (final p in e["party"]["participants"] as List)
-                Friend(
-                  publicId: p["public_id"],
-                  username: p["username"],
-                  firstName: p["first_name"],
-                  lastName: p["last_name"],
-                  dateOfBirth: (p["date_of_birth"] as String).toDateTime(),
-                  pfp: p["pfp"],
-                ),
-            ],
-          ),
-          partyPublicId: e["party_public_id"],
-          receiverPublicId: e["receiver_public_id"],
-          createdAt: e["created_at"],
-          receiver: Friend(
-            publicId: e["receiver"]["public_id"],
-            username: e["receiver"]["username"],
-            firstName: e["receiver"]["first_name"],
-            lastName: e["receiver"]["last_name"],
-            dateOfBirth:
-                (e["receiver"]["date_of_birth"] as String).toDateTime(),
-            pfp: e["receiver"]["pfp"],
-          ),
-        ),
-    ];
+    final invitations = <PartyInvitation>[];
+    for (final pi in jsonDecode(res.body)["results"]) {
+      invitations.add(PartyInvitation.fromMap(pi));
+    }
     return invitations;
   }
 
