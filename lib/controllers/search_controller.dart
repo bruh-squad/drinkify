@@ -27,7 +27,9 @@ class SearchController {
     return users;
   }
 
-  static Future<List<Party>> seachPartiesByDistance(double meters) async {
+  static Future<List<Party>> seachPartiesByDistance({
+    double meters = 1000,
+  }) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
     final url = "$mainUrl/parties/?range=$meters";
@@ -39,7 +41,7 @@ class SearchController {
       },
     );
     final parties = <Party>[];
-    for (final p in jsonDecode(res.body)) {
+    for (final p in jsonDecode(res.body)["results"]) {
       parties.add(Party.fromMap(p));
     }
     return parties;

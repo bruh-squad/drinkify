@@ -37,9 +37,8 @@ class LogoutPage extends StatelessWidget {
                     const storage = FlutterSecureStorage();
                     await storage.delete(key: "access");
                     await storage.delete(key: "refresh");
-                    if (context.mounted) {
-                      context.go("/login");
-                    }
+                    await storage.write(key: "remember", value: "false");
+                    if (context.mounted) context.go("/login");
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(

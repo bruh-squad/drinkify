@@ -16,7 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final AuthController authCtrl;
+  late String email;
+  late String password;
   late final TextEditingController passwordResetEmailCtrl;
   late bool rememberPassword;
   late int? selectedFieldIndex;
@@ -24,26 +25,30 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    //TODO do the points below
-    // 1. check if JWT access token is still active
-    // 2. if so redirect user to home page
-    // 3. if access token is not active show regular login page instead of routing
-    authCtrl = AuthController();
-    passwordResetEmailCtrl = TextEditingController();
+    email = "";
+    password = "";
     rememberPassword = false;
     selectedFieldIndex = null;
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
-    authCtrl.emailCtrl.dispose();
-    authCtrl.passwordCtrl.dispose();
-    passwordResetEmailCtrl.dispose();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      const storage = FlutterSecureStorage();
+      final storageEmail = await storage.read(key: "user_email");
+      final storagePassword = await storage.read(key: "user_password");
+      final storageRemember = await storage.read(key: "remember");
+      if (storageRemember != "true" ||
+          storageEmail == null ||
+          storagePassword == null) return;
+      final loggedIn = await AuthController.loginUser(
+        storageEmail,
+        storagePassword,
+        true,
+      );
+      if (loggedIn && mounted) context.go("/");
+    });
   }
 
   bool get _userCanLogin {
-    return !(authCtrl.emailCtrl.text == "" || authCtrl.passwordCtrl.text == "");
+    return !(email.isEmpty || password.isEmpty);
   }
 
   void _onFieldSelect(int index) {
@@ -86,9 +91,10 @@ class _LoginPageState extends State<LoginPage> {
               caption: AppLocalizations.of(context)!.email,
               icon: Icons.email_rounded,
               placeholder: AppLocalizations.of(context)!.emailField,
-              ctrl: authCtrl.emailCtrl,
+              additionalValue: email,
               keyboardType: TextInputType.emailAddress,
               onSelect: (idx) => _onFieldSelect(idx),
+              onType: (val) => email = val,
             ),
             EditField(
               index: 1,
@@ -96,9 +102,10 @@ class _LoginPageState extends State<LoginPage> {
               caption: AppLocalizations.of(context)!.password,
               icon: Icons.password,
               placeholder: AppLocalizations.of(context)!.passwordField,
-              ctrl: authCtrl.passwordCtrl,
               isPassword: true,
+              additionalValue: password,
               onSelect: (idx) => _onFieldSelect(idx),
+              onType: (val) => password = val,
             ),
             const SizedBox(height: 10),
             GestureDetector(
@@ -165,18 +172,34 @@ class _LoginPageState extends State<LoginPage> {
               child: GestureDetector(
                 onTap: () async {
                   if (_userCanLogin) {
-                    final canLogin = await authCtrl.loginUser();
+                    final loggedIn = await AuthController.loginUser(
+                      email,
+                      password,
+                      rememberPassword,
+                    );
                     final userData = await UserController.me();
                     const storage = FlutterSecureStorage();
                     await storage.write(
                       key: "user_publicId",
                       value: userData.publicId,
                     );
-                    if (mounted && canLogin) {
-                      context.go("/");
+                    if (loggedIn) {
+                      if (rememberPassword) {
+                        await storage.write(
+                          key: "user_email",
+                          value: email,
+                        );
+                        await storage.write(
+                          key: "user_password",
+                          value: password,
+                        );
+                      } else {
+                        await storage.delete(key: "user_email");
+                        await storage.delete(key: "user_password");
+                      }
+                      if (mounted) context.go("/");
                     }
                   }
-                  //TODO implement remembering user's login and password
                 },
                 child: AnimatedContainer(
                   width: double.infinity,

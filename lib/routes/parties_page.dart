@@ -28,9 +28,14 @@ class _PartiesPageState extends State<PartiesPage> {
   @override
   void initState() {
     super.initState();
+    parties = [];
+    users = [];
     searchType = SearchType.nearbyParties;
-    const storage = FlutterSecureStorage();
-    storage.read(key: "user_publicId").then((id) => userId = id!);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      const storage = FlutterSecureStorage();
+      final id = await storage.read(key: "user_publicId");
+      userId = id!;
+    });
   }
 
   @override
@@ -65,59 +70,71 @@ class _PartiesPageState extends State<PartiesPage> {
   }
 
   Widget _resultList<T>(List<T> iter) {
-    return Column(
-      children: [
-        const SizedBox(height: 130),
-        for (final i in iter)
-          T is Party
-              ? PartyHolder(i as Party)
-              : UserHolder(
-                  i as Friend,
-                  onButtonTap: () async {
-                    final success = await UserController.sendFriendInvitation(
-                      FriendInvitation(
-                        receiverPublicId: i.publicId!,
-                        senderPublicId: userId,
+    return iter.isEmpty
+        ? Center(
+            child: Text(
+              AppLocalizations.of(context)!.emptyHere,
+              style: TextStyle(
+                color: Theming.whiteTone.withOpacity(0.7),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        : Column(
+            children: [
+              const SizedBox(height: 130),
+              for (final i in iter)
+                T is Party
+                    ? PartyHolder(i as Party)
+                    : UserHolder(
+                        i as Friend,
+                        onButtonTap: () async {
+                          final success =
+                              await UserController.sendFriendInvitation(
+                            FriendInvitation(
+                              receiverPublicId: i.publicId!,
+                              senderPublicId: userId,
+                            ),
+                          );
+                          if (success && mounted) {
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Theming.bgColor,
+                              isScrollControlled: true,
+                              builder: (ctx) => SuccessSheet(
+                                success: true,
+                                successMsg: AppLocalizations.of(ctx)!
+                                    .successFriendInvite,
+                                failureMsg: AppLocalizations.of(ctx)!
+                                    .failureFriendInvite,
+                              ),
+                            );
+                          } else {
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Theming.bgColor,
+                              isScrollControlled: true,
+                              builder: (ctx) => SuccessSheet(
+                                success: false,
+                                successMsg: AppLocalizations.of(ctx)!
+                                    .successFriendInvite,
+                                failureMsg: AppLocalizations.of(ctx)!
+                                    .failureFriendInvite,
+                              ),
+                            );
+                          }
+                        },
+                        buttonChild: const Icon(
+                          Icons.person_add_alt_1_rounded,
+                          color: Theming.whiteTone,
+                        ),
                       ),
-                    );
-                    if (success && mounted) {
-                      showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Theming.bgColor,
-                        isScrollControlled: true,
-                        builder: (ctx) => SuccessSheet(
-                          success: true,
-                          successMsg:
-                              AppLocalizations.of(ctx)!.successFriendInvite,
-                          failureMsg:
-                              AppLocalizations.of(ctx)!.failureFriendInvite,
-                        ),
-                      );
-                    } else {
-                      showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Theming.bgColor,
-                        isScrollControlled: true,
-                        builder: (ctx) => SuccessSheet(
-                          success: false,
-                          successMsg:
-                              AppLocalizations.of(ctx)!.successFriendInvite,
-                          failureMsg:
-                              AppLocalizations.of(ctx)!.failureFriendInvite,
-                        ),
-                      );
-                    }
-                  },
-                  buttonChild: const Icon(
-                    Icons.person_add_alt_1_rounded,
-                    color: Theming.whiteTone,
-                  ),
-                ),
-        SizedBox(
-          height: MediaQuery.of(context).viewPadding.bottom + 120,
-        ),
-      ],
-    );
+              SizedBox(
+                height: MediaQuery.of(context).viewPadding.bottom + 120,
+              ),
+            ],
+          );
   }
 }
 

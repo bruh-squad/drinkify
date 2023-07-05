@@ -34,7 +34,7 @@ flutter install
 
 ## API
 
-Drinkify uses [liquor-lovers](https://github.com/Kawaii-Addicts/liquor-lovers). Make sure to install it and run in order to use all the features provided by the app.
+Drinkify uses [liquor-lovers](https://github.com/Kawaii-Addicts/liquor-lovers). Without it, app won't be able to work properly.
 
 ## Contributing
 

@@ -30,8 +30,8 @@ class _SearchAndMapState extends State<SearchAndMap> {
     selectedIndex = 0;
     searchCtrl = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final tempParties = await SearchController.seachPartiesByDistance(1000);
-      widget.onPartySearch(tempParties);
+      final parties = await SearchController.seachPartiesByDistance();
+      widget.onPartySearch(parties);
     });
   }
 
@@ -103,14 +103,29 @@ class _SearchAndMapState extends State<SearchAndMap> {
                 const Spacer(),
 
                 //Search bar
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Theming.primaryColor,
+                GestureDetector(
+                  onTap: () {
+                    //TODO implement searching
+                  },
+                  child: Container(
+                    height: 55,
+                    width: 55,
+                    decoration: const BoxDecoration(
+                      color: Theming.primaryColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.search_rounded,
+                      color: Theming.whiteTone,
+                    ),
                   ),
                 ),
                 Container(
                   height: 55,
-                  width: MediaQuery.of(context).size.width - 55 - 60 - 20,
+                  width: MediaQuery.of(context).size.width - 180,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(

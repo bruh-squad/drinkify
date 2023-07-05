@@ -279,7 +279,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             pfp: pfp != null ? File(pfp!.path) : null,
                           ),
                         );
-                        if (canRegister && mounted) {
+                        if (!canRegister) return;
+                        final loggedIn = await AuthController.loginUser(
+                          emailCtrl.text,
+                          passwordCtrl.text,
+                          false,
+                        );
+                        if (loggedIn && mounted) {
                           context.go("/");
                         }
                       }

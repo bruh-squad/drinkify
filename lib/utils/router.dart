@@ -27,7 +27,7 @@ final GlobalKey<NavigatorState> _navBarKey = GlobalKey<NavigatorState>();
 
 GoRouter router = GoRouter(
   navigatorKey: _rootKey,
-  initialLocation: "/",
+  initialLocation: "/login",
   routes: [
     ShellRoute(
       navigatorKey: _navBarKey,

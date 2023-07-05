@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -11,20 +10,18 @@ import '../models/create_user.dart';
 
 ///Used for logging in and signing up a user
 class AuthController {
-  ///Used only for logging in
-  TextEditingController emailCtrl = TextEditingController();
-
-  ///Used only for logging in
-  TextEditingController passwordCtrl = TextEditingController();
-
   ///Handles logging in
-  Future<bool> loginUser() async {
+  static Future<bool> loginUser(
+    String email,
+    String password,
+    bool rememberMe,
+  ) async {
     final url = "$mainUrl/auth/token/";
     final res = await http.post(
       Uri.parse(url),
       body: {
-        "email": emailCtrl.text,
-        "password": passwordCtrl.text,
+        "email": email,
+        "password": password,
       },
     );
     if (res.statusCode == 200) {
@@ -37,6 +34,10 @@ class AuthController {
       await storage.write(
         key: "refresh",
         value: loginArr["refresh"],
+      );
+      await storage.write(
+        key: "remember",
+        value: "$rememberMe",
       );
       return true;
     }
