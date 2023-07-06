@@ -87,8 +87,9 @@ class FormFieldParty extends StatelessWidget {
               onType!(val);
             },
             decoration: InputDecoration(
-              hintText:
-                  !enabled && value != null && value!.isNotEmpty ? value : placeholder,
+              hintText: !enabled && value != null && value!.isNotEmpty
+                  ? value
+                  : placeholder,
               hintStyle: TextStyle(
                 color: Theming.whiteTone.withOpacity(
                   !enabled && value != null && value!.isNotEmpty ? 1 : 0.3,
@@ -116,8 +117,9 @@ class FormFieldParty extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 10,
-              color:
-                  errorFields.contains(index) ? Theming.errorColor : Colors.transparent,
+              color: errorFields.contains(index)
+                  ? Theming.errorColor
+                  : Colors.transparent,
             ),
           ),
         ),

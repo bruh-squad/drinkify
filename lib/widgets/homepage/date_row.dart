@@ -189,7 +189,9 @@ class _DateRowState extends State<DateRow> {
         curve: Curves.linearToEaseOut,
         margin: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: isSelected ? Theming.primaryColor : Theming.whiteTone.withOpacity(0.1),
+          color: isSelected
+              ? Theming.primaryColor
+              : Theming.whiteTone.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -197,7 +199,9 @@ class _DateRowState extends State<DateRow> {
           child: Column(
             children: [
               Text(
-                dayOfWeek.length > 4 ? dayOfWeek.replaceRange(4, null, ".") : dayOfWeek,
+                dayOfWeek.length > 4
+                    ? dayOfWeek.replaceRange(4, null, ".")
+                    : dayOfWeek,
                 style: Styles.dateBoxText,
               ),
               const SizedBox(height: 4),

@@ -14,7 +14,7 @@
     "parties": "Parties",
     "friends": "Friends",
     "inYourArea": "In your area",
-    "lookingForAParty": "Where partying tonight?",
+    "howFar": "How far? (m)",
     "successFriendInvite": "Friend request sent",
     "failureFriendInvite": "Could not send friend request",
     

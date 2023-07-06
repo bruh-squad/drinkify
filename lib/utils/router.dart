@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../routes/login_page.dart';
 import '../routes/register_page.dart';
 import '../routes/home_page.dart';
-import '../routes/parties_page.dart';
+import '../routes/parties_users_page.dart';
 import '../routes/profile_page.dart';
 import '../routes/selected_party_page.dart';
 import '../routes/notifications_page.dart';
@@ -49,7 +49,7 @@ GoRouter router = GoRouter(
           pageBuilder: (_, state) {
             return pageTransition(
               state: state,
-              childWidget: const PartiesPage(),
+              childWidget: const PartiesUsersPage(),
             );
           },
         ),

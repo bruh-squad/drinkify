@@ -1,3 +1,4 @@
+import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,6 +7,8 @@ import '/utils/theming.dart';
 import '/models/friend.dart';
 import '/controllers/search_controller.dart';
 import '/models/party.dart';
+import '/utils/ext.dart';
+import '/models/search_type.dart';
 
 class SearchAndMap extends StatefulWidget {
   final Function(List<Party>) onPartySearch;
@@ -20,17 +23,23 @@ class SearchAndMap extends StatefulWidget {
   State<SearchAndMap> createState() => _SearchAndMapState();
 }
 
-class _SearchAndMapState extends State<SearchAndMap> {
+class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
   late int selectedIndex;
   late final TextEditingController searchCtrl;
+  late SearchType searchType;
 
   @override
   void initState() {
     super.initState();
     selectedIndex = 0;
     searchCtrl = TextEditingController();
+    searchType = SearchType.nearbyParties;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final parties = await SearchController.seachPartiesByDistance();
+      final location = await userLocation();
+      if (location == null) return;
+      final parties = await SearchController.seachPartiesByDistance(
+        location: location,
+      );
       widget.onPartySearch(parties);
     });
   }
@@ -39,6 +48,15 @@ class _SearchAndMapState extends State<SearchAndMap> {
   void dispose() {
     super.dispose();
     searchCtrl.dispose();
+  }
+
+  String _getSearchBarText(BuildContext ctx, SearchType type) {
+    switch (type) {
+      case SearchType.nearbyParties:
+        return AppLocalizations.of(context)!.howFar;
+      case SearchType.users:
+        return AppLocalizations.of(context)!.searchAFriend;
+    }
   }
 
   @override
@@ -64,12 +82,12 @@ class _SearchAndMapState extends State<SearchAndMap> {
             //Searchbar and add party button
             Row(
               children: [
-                //Map button
+                //Create party button
                 GestureDetector(
                   onTap: () => context.push("/create-party"),
                   child: Container(
-                    height: 55,
-                    width: 55,
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       color: Theming.whiteTone.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10),
@@ -94,7 +112,7 @@ class _SearchAndMapState extends State<SearchAndMap> {
                       },
                       child: const Icon(
                         Icons.nightlife_rounded,
-                        size: 32,
+                        size: 30,
                       ),
                     ),
                   ),
@@ -103,51 +121,57 @@ class _SearchAndMapState extends State<SearchAndMap> {
                 const Spacer(),
 
                 //Search bar
-                GestureDetector(
-                  onTap: () {
-                    //TODO implement searching
-                  },
-                  child: Container(
-                    height: 55,
-                    width: 55,
-                    decoration: const BoxDecoration(
-                      color: Theming.primaryColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.search_rounded,
-                      color: Theming.whiteTone,
-                    ),
-                  ),
-                ),
                 Container(
-                  height: 55,
+                  height: 50,
                   width: MediaQuery.of(context).size.width - 180,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Theming.whiteTone,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextField(
                     cursorColor: Theming.primaryColor,
-                    textAlign: TextAlign.left,
+                    textAlign: TextAlign.center,
                     controller: searchCtrl,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theming.bgColor,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.lookingForAParty,
-                      hintStyle: Styles.hintTextSearchBar,
+                      prefixIconConstraints: const BoxConstraints(
+                        minWidth: 45,
+                        minHeight: 0,
+                      ),
+                      hintText: _getSearchBarText(context, searchType),
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theming.bgColor.withOpacity(0.6),
+                      ),
                       border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+
+                //Seach button
+                GestureDetector(
+                  onTap: () {
+                    //TODO implement searching
+                  },
+                  child: GlassMorphism(
+                    blur: 0,
+                    opacity: 0.1,
+                    borderRadius: BorderRadius.circular(10),
+                    child: const SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Icon(
+                        Icons.search_rounded,
+                        color: Theming.primaryColor,
+                        size: 30,
+                      ),
                     ),
                   ),
                 ),
@@ -161,10 +185,12 @@ class _SearchAndMapState extends State<SearchAndMap> {
               children: [
                 _categoryItem(
                   0,
+                  type: SearchType.nearbyParties,
                   caption: AppLocalizations.of(context)!.inYourArea,
                 ),
                 _categoryItem(
                   1,
+                  type: SearchType.users,
                   caption: AppLocalizations.of(context)!.friends,
                 ),
               ],
@@ -177,13 +203,17 @@ class _SearchAndMapState extends State<SearchAndMap> {
 
   Widget _categoryItem(
     int index, {
+    required SearchType type,
     required String caption,
   }) {
     bool isSelected = selectedIndex == index;
 
     return GestureDetector(
       onTap: () {
-        setState(() => selectedIndex = index);
+        setState(() {
+          selectedIndex = index;
+          searchType = type;
+        });
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 125),

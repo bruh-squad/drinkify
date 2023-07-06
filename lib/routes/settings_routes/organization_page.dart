@@ -14,10 +14,11 @@ class OrganizationPage extends StatefulWidget {
 }
 
 class _OrganizationPageState extends State<OrganizationPage> {
-  late final List<Party> ownedParties;
+  late List<Party> ownedParties;
   @override
   void initState() {
     super.initState();
+    ownedParties = [];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final parties = await PartyCreatorController.ownedParties();
       setState(() => ownedParties = parties);

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
 
 extension Capitalize on String {
@@ -63,5 +64,37 @@ mixin MapUtils {
     }
 
     return false;
+  }
+}
+
+mixin LocationUtils {
+  Future<LatLng?> userLocation() async {
+    LatLng selPoint;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    final Location location = Location();
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return null;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+    final LocationData posData = await location.getLocation();
+
+    selPoint = LatLng(
+      posData.latitude!,
+      posData.longitude!,
+    );
+    return selPoint;
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:drinkify/utils/ext.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 
 import '../utils/consts.dart';
 import '../models/friend.dart';
@@ -29,6 +31,7 @@ class SearchController {
 
   static Future<List<Party>> seachPartiesByDistance({
     double meters = 1000,
+    required LatLng location,
   }) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -36,6 +39,7 @@ class SearchController {
     final res = await http.get(
       Uri.parse(url),
       headers: {
+        "Point": location.toPOINT(),
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },

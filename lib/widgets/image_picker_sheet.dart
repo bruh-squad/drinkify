@@ -50,7 +50,9 @@ class ImagePickerSheet extends StatelessWidget {
                 color: Theming.primaryColor.withOpacity(0.2),
               ),
               child: Icon(
-                source == ImageSource.camera ? Icons.photo_camera : Icons.photo_library,
+                source == ImageSource.camera
+                    ? Icons.photo_camera
+                    : Icons.photo_library,
                 color: Theming.primaryColor,
               ),
             ),

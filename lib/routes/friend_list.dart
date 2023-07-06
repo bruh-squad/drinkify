@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
 
@@ -10,6 +11,27 @@ class FriendListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theming.bgColor,
+      appBar: AppBar(
+        backgroundColor: Theming.bgColor,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Theming.whiteTone,
+            ),
+          ),
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.friends,
+          style: const TextStyle(
+            color: Theming.whiteTone,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: CustomScrollView(

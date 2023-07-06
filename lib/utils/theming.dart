@@ -32,12 +32,6 @@ class Styles {
     fontWeight: FontWeight.bold,
   );
 
-  static final hintTextSearchBar = TextStyle(
-    fontWeight: FontWeight.bold,
-    color: Theming.bgColor.withOpacity(0.6),
-    fontSize: 16,
-  );
-
   static const dateSaveText = TextStyle(
     color: Theming.bgColor,
     fontSize: 16,
