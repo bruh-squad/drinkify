@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
+import '/models/user.dart';
 
 class PartyList extends StatelessWidget {
-  const PartyList({super.key});
+  final User user;
+  const PartyList(
+    this.user, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

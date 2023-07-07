@@ -11,7 +11,7 @@ flutter pub get
 
 ## Example .env
 ```
-URL = "http://127.0.0.1:8000"
+URL = "http://0.0.0.0:8000"
 ```
 
 ## Running the App
@@ -24,7 +24,7 @@ flutter run
 ## Building and installing
 In order to build the app run:
 ```
-flutter build [apk / appbundle / ios] --release
+flutter build [apk / appbundle / ios]
 ```
 
 Once you've done that, run the following command:
@@ -35,6 +35,7 @@ flutter install
 ## API
 
 Drinkify uses [liquor-lovers](https://github.com/Kawaii-Addicts/liquor-lovers). Without it, app won't be able to work properly.
+
 
 ## Contributing
 

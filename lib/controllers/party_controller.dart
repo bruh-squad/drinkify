@@ -68,6 +68,7 @@ class PartyController {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
     final url = "$mainUrl/parties/";
+    //TODO add party participants
     final res = await http.post(
       Uri.parse(url),
       body: {

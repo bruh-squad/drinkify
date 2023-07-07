@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 
-import '/utils/theming.dart';
-
+import '../utils/theming.dart';
 import '../widgets/homepage/welcome_header.dart';
 import '../widgets/homepage/date_row.dart';
 import '../widgets/homepage/party_list.dart';
+import '../controllers/user_controller.dart';
+import '../models/user.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late User user;
+  @override
+  void initState() {
+    super.initState();
+    user = User.emptyUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final userData = await UserController.me();
+      setState(() => user = userData);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +34,20 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).viewPadding.top + 20,
         ),
-        child: const Column(
+        child: Column(
           children: [
             //Had to use many paddings to make the DateRow boxes look better
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: WelcomeHeader(),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: WelcomeHeader(user),
             ),
             DateRow(
-              textPadding: EdgeInsets.symmetric(horizontal: 30),
+              user,
+              textPadding: const EdgeInsets.symmetric(horizontal: 30),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: PartyList(),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: PartyList(user),
             ),
           ],
         ),

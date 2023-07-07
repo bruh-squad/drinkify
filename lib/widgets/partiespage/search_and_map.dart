@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/glass_morphism.dart';
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,6 +8,7 @@ import '/controllers/search_controller.dart';
 import '/models/party.dart';
 import '/utils/ext.dart';
 import '/models/search_type.dart';
+import '/widgets/glass_morphism.dart';
 
 class SearchAndMap extends StatefulWidget {
   final Function(List<Party>) onPartySearch;
@@ -134,6 +134,9 @@ class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
                     cursorColor: Theming.primaryColor,
                     textAlign: TextAlign.center,
                     controller: searchCtrl,
+                    keyboardType: searchType == SearchType.nearbyParties
+                        ? TextInputType.number
+                        : TextInputType.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theming.bgColor,
@@ -157,8 +160,26 @@ class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
 
                 //Seach button
                 GestureDetector(
-                  onTap: () {
-                    //TODO implement searching
+                  onTap: () async {
+                    switch (searchType) {
+                      case SearchType.nearbyParties:
+                        if (searchCtrl.text.isEmpty) return;
+                        final coords = await userLocation();
+                        if (coords == null) return;
+                        final p = await SearchController.seachPartiesByDistance(
+                          location: coords,
+                          meters: double.parse(searchCtrl.text),
+                        );
+                        widget.onPartySearch(p);
+                        return;
+                      case SearchType.users:
+                        if (searchCtrl.text.isEmpty) return;
+                        final u = await SearchController.searchUser(
+                          searchCtrl.text,
+                        );
+                        widget.onUserSearch(u);
+                        return;
+                    }
                   },
                   child: GlassMorphism(
                     blur: 0,
@@ -210,6 +231,7 @@ class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
 
     return GestureDetector(
       onTap: () {
+        searchCtrl.text = "";
         setState(() {
           selectedIndex = index;
           searchType = type;

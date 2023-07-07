@@ -120,44 +120,41 @@ class _UserInfoState extends State<UserInfo> {
 
         const SizedBox(height: 10),
 
-        //Add friend / Social media link
-        Row(
-          children: [
-            //Add friend
-            GestureDetector(
-              onTap: () async {
-                //sending a friend request
-                const storage = FlutterSecureStorage();
-                final userId = await storage.read(key: "user_publicId");
-                if (widget.user!.publicId! == userId && mounted) {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (ctx) {
-                        return SuccessSheet(
-                          success: false,
-                          successMsg:
-                              AppLocalizations.of(context)!.successFriendInvite,
-                          failureMsg:
-                              AppLocalizations.of(context)!.successFriendInvite,
-                        );
-                      });
-                }
-              },
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width - 60,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Theming.primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.addAFriend,
-                  style: Styles.buttonTextLight,
-                ),
-              ),
+        //Add friend
+        GestureDetector(
+          onTap: () async {
+            //sending a friend request
+            const storage = FlutterSecureStorage();
+            final userId = await storage.read(key: "user_publicId");
+            if (widget.user!.publicId! == userId && mounted) {
+              showModalBottomSheet(
+                  context: context,
+                  useRootNavigator: true,
+                  backgroundColor: Theming.bgColor,
+                  builder: (ctx) {
+                    return SuccessSheet(
+                      success: false,
+                      successMsg:
+                          AppLocalizations.of(context)!.successFriendInvite,
+                      failureMsg:
+                          AppLocalizations.of(context)!.failureFriendInvite,
+                    );
+                  });
+            }
+          },
+          child: Container(
+            height: 50,
+            width: MediaQuery.of(context).size.width - 60,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Theming.primaryColor,
+              borderRadius: BorderRadius.circular(10),
             ),
-          ],
+            child: Text(
+              AppLocalizations.of(context)!.addAFriend,
+              style: Styles.buttonTextLight,
+            ),
+          ),
         ),
       ],
     );

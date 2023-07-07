@@ -49,6 +49,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
     }
   }
 
+  //TODO use userLocation() from LocationUtils instead
   ///[selectLocation] must be true if you want to put marker on user's location after collecting coordinates
   void _getUserLocation({bool selectLocation = false}) async {
     bool serviceEnabled;
@@ -182,6 +183,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                 startTime: endTime!,
                 stopTime: endTime!,
                 privacyStatus: partyStatus,
+                participants: invitedUsers,
               ),
             );
             if (isCreated && mounted) {

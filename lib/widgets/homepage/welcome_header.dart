@@ -3,9 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
+import '/models/user.dart';
 
 class WelcomeHeader extends StatelessWidget {
-  const WelcomeHeader({super.key});
+  final User user;
+  const WelcomeHeader(this.user, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class WelcomeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${AppLocalizations.of(context)!.welcomeHeader}Oliwier',
+                    '${AppLocalizations.of(context)!.welcomeHeader}${user.firstName ?? "..."}',
                     style: const TextStyle(
                       fontSize: 28,
                       color: Theming.whiteTone,
@@ -40,13 +42,18 @@ class WelcomeHeader extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () => context.push("/settings"),
-              child: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                  "https://imgs.search.brave.com/Sh1KvzTzy10m30RShyompgGbNefsark8-QTMfC19svY/rs:fit:370:225:1/g:ce/aHR0cHM6Ly90c2Uz/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC54/MWpmLWJTdGJlbkFo/U0poYXdKMmNRSGFK/ZSZwaWQ9QXBp",
-                ),
-                backgroundColor: Theming.bgColorLight,
-                radius: 28,
-              ),
+              child: user.pfp != null
+                  ? CircleAvatar(
+                      radius: 28,
+                      backgroundImage: NetworkImage(user.pfp!),
+                      backgroundColor: Theming.bgColorLight,
+                    )
+                  : const CircleAvatar(
+                      radius: 28,
+                      backgroundImage:
+                          AssetImage("assets/images/default_pfp.png"),
+                      backgroundColor: Theming.bgColorLight,
+                    ),
             ),
           ],
         ),

@@ -5,12 +5,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/ext.dart' show Capitalize;
 import '/utils/theming.dart';
-
+import '/models/user.dart';
 import './date_picker.dart';
 
 class DateRow extends StatefulWidget {
+  final User user;
   final EdgeInsets textPadding;
-  const DateRow({
+  const DateRow(
+    this.user, {
     required this.textPadding,
     super.key,
   });
