@@ -474,6 +474,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                             ),
                             child: Column(
                               children: [
+                                //TODO implement image picking
                                 FormFieldParty(
                                   index: 1,
                                   caption: AppLocalizations.of(context)!.title,

@@ -11,10 +11,10 @@ class PartyHolder extends StatelessWidget {
   final Party party;
   const PartyHolder(this.party, {super.key});
 
+  double get _imageAspectRatio => 16 / 6;
+
   @override
   Widget build(BuildContext context) {
-    const double imageAspectRatio = 16 / 6;
-
     return GestureDetector(
       onTap: () => context.push(
         '/party',
@@ -58,14 +58,14 @@ class PartyHolder extends StatelessWidget {
             child: Column(
               children: [
                 AspectRatio(
-                  aspectRatio: imageAspectRatio,
+                  aspectRatio: _imageAspectRatio,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
+                      image: DecorationImage(
                         fit: BoxFit.fill,
                         image: NetworkImage(
-                          "https://getwallpapers.com/wallpaper/full/b/6/f/101128.jpg",
+                          party.image!,
                         ),
                       ),
                     ),
@@ -122,7 +122,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            "${party.participants?.length}",
+                            "${party.participants?.length ?? 1}",
                             style: Styles.partyHeaderInfo,
                           ),
                         ],

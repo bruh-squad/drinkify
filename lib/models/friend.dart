@@ -30,6 +30,17 @@ class Friend {
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      "public_id": publicId,
+      "username": username,
+      "first_name": firstName,
+      "last_name": lastName,
+      "date_of_birth": dateOfBirth!.toYMD(),
+      "pfp": pfp,
+    };
+  }
+
   @override
   String toString() {
     return "$username $firstName $lastName $dateOfBirth";

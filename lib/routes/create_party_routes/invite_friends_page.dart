@@ -111,6 +111,7 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                       ),
                       child: TextField(
                         controller: searchCtrl,
+                        cursorColor: Theming.primaryColor,
                         style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,

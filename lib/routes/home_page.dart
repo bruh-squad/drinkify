@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
     user = User.emptyUser();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final userData = await UserController.me();
+      if (!mounted) return;
       setState(() => user = userData);
     });
   }

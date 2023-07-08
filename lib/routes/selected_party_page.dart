@@ -81,6 +81,7 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
         child: GestureDetector(
           onTap: () {
             if (!showMore) return;
+            //TODO implement joining party
           },
           child: GlassMorphism(
             blur: showMore ? 10 : 0,

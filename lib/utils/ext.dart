@@ -11,12 +11,22 @@ extension Capitalize on String {
 }
 
 extension StrConvert on String {
-  ///Converts **POINT(lat lng)** to LatLng format
-  LatLng toLatLng() {
-    final point = replaceAll("POINT(", "").replaceAll(")", "").split(" ");
+  ///Converts **POINT(lat lng)** to LatLng format. Used while sending data
+  LatLng toLatLngSend() {
+    final arr = replaceAll("POINT(", "").replaceAll(")", "").split(" ");
     return LatLng(
-      double.parse(point[0]),
-      double.parse(point[1]),
+      double.parse(arr[0]),
+      double.parse(arr[1]),
+    );
+  }
+
+  //Converts
+  LatLng toLatLngReceive() {
+    final arr =
+        split(";")[1].replaceAll("POINT (", "").replaceAll(")", "").split(" ");
+    return LatLng(
+      double.parse(arr[0]),
+      double.parse(arr[1]),
     );
   }
 

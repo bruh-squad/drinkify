@@ -1,12 +1,14 @@
 import 'package:drinkify/controllers/user_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:drinkify/models/user.dart';
+import 'package:flutter/material.dart' hide SearchController;
 
 import '../utils/theming.dart';
-import '../models/user.dart';
 import '../widgets/profilepage/user_info.dart';
+import '../models/friend.dart';
+import 'package:drinkify/controllers/search_controller.dart';
 
 class ProfilePage extends StatefulWidget {
-  final User? user;
+  final Friend? user;
   const ProfilePage(
     this.user, {
     super.key,
@@ -17,21 +19,31 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late User user;
+  late User? user;
+  late Friend? friend;
 
   @override
   void initState() {
     super.initState();
     user = User.emptyUser();
-    if (widget.user != null) return;
-    late final User myProfile;
-    UserController.me().then((val) {
-      myProfile = val;
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        setState(() => user = myProfile);
-      });
+    friend = const Friend();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (_isMyProfile) {
+        final myProfileData = await UserController.me();
+        if (!mounted) return;
+        setState(() => user = myProfileData);
+        return;
+      }
+
+      final data = await SearchController.searchUserByPublicId(
+        widget.user!.publicId!,
+      );
+      if (!mounted) return;
+      setState(() => friend = data);
     });
   }
+
+  bool get _isMyProfile => widget.user == null;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +52,9 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         backgroundColor: Theming.bgColor,
         title: Text(
-          "${user.firstName} ${user.lastName}",
+          _isMyProfile
+              ? "${user!.firstName} ${user!.lastName}"
+              : "${friend!.firstName} ${friend!.lastName}",
           style: const TextStyle(
             color: Theming.whiteTone,
             fontSize: 18,
@@ -57,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
               right: 30,
               top: 20,
             ),
-            child: UserInfo(user),
+            child: UserInfo(user, friend),
           ),
         ),
       ),

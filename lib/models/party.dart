@@ -6,7 +6,7 @@ import '/utils/ext.dart';
 class Party {
   final String? publicId;
   final Friend? owner;
-  final String ownerPublicId;
+  final String? ownerPublicId;
   final String name;
   final int? privacyStatus;
   final String? privacyStatusDisplay;
@@ -14,14 +14,14 @@ class Party {
   final String? image;
   final List<Friend>? participants;
   final LatLng? location;
-  final String? distance;
+  final int? distance;
   final DateTime startTime;
   final DateTime stopTime;
 
   const Party({
     this.publicId,
     this.owner,
-    required this.ownerPublicId,
+    this.ownerPublicId,
     required this.name,
     this.privacyStatus,
     this.privacyStatusDisplay,
@@ -43,8 +43,8 @@ class Party {
       description: m["description"],
       startTime: DateTime.parse(m["start_time"] as String),
       stopTime: DateTime.parse(m["stop_time"] as String),
-      distance: (m["distance"]),
-      location: (m["location"] as String).toLatLng(),
+      distance: m["distance"],
+      location: (m["location"] as String).toLatLngReceive(),
       privacyStatus: m["privacy_status"],
       privacyStatusDisplay: m["privacy_status_display"],
       image: m["image"],

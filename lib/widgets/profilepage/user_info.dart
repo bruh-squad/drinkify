@@ -1,16 +1,18 @@
-import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
+import '/widgets/dialogs/success_sheet.dart';
+import '/models/friend.dart';
 import '/models/user.dart';
 
 class UserInfo extends StatefulWidget {
   final User? user;
+  final Friend? friend;
   const UserInfo(
-    this.user, {
+    this.user,
+    this.friend, {
     super.key,
   });
 
@@ -19,42 +21,18 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
+  bool get _isMyProfile => widget.user != null;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        //Parties attended / Profile pic with username / Friends
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //Profile picture
+        Column(
           children: [
-            SizedBox(
-              width: 100,
-              child: Column(
-                children: [
-                  const Text(
-                    "10",
-                    style: TextStyle(
-                      color: Theming.whiteTone,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.partiesProfile1,
-                    style: TextStyle(
-                      color: Theming.whiteTone.withOpacity(0.5),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            //Profile picture
-            Column(
-              children: [
-                widget.user!.pfp != null
+            //TODO fix friend pfp loading
+            _isMyProfile
+                ? widget.user!.pfp != null
                     ? CircleAvatar(
                         radius: 50,
                         backgroundImage: NetworkImage(widget.user!.pfp!),
@@ -65,53 +43,38 @@ class _UserInfoState extends State<UserInfo> {
                         backgroundImage:
                             AssetImage("assets/images/default_pfp.png"),
                         backgroundColor: Theming.bgColorLight,
+                      )
+                : widget.friend!.pfp != null
+                    ? CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(widget.friend!.pfp!),
+                        backgroundColor: Theming.bgColorLight,
+                      )
+                    : const CircleAvatar(
+                        radius: 50,
+                        backgroundImage:
+                            AssetImage("assets/images/default_pfp.png"),
+                        backgroundColor: Theming.bgColorLight,
                       ),
-                const SizedBox(height: 10),
-                //Username
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theming.whiteTone.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Text(
-                    "@${widget.user!.username}",
-                    style: const TextStyle(
-                      color: Theming.greenTone,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () => context.push(
-                "/friend-list",
-                extra: widget.user!.friends!,
+
+            const SizedBox(height: 10),
+
+            //Username
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 7,
+                vertical: 2,
               ),
-              child: SizedBox(
-                width: 100,
-                child: Column(
-                  children: [
-                    Text(
-                      "${widget.user!.friends != null ? widget.user!.friends!.length : 0}",
-                      style: const TextStyle(
-                        color: Theming.whiteTone,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.friendsProfile,
-                      style: TextStyle(
-                        color: Theming.whiteTone.withOpacity(0.5),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+              decoration: BoxDecoration(
+                color: Theming.whiteTone.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Text(
+                _isMyProfile
+                    ? "@${widget.user!.username}"
+                    : "@${widget.friend!.username}",
+                style: const TextStyle(
+                  color: Theming.greenTone,
                 ),
               ),
             ),

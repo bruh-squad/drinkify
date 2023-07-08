@@ -57,15 +57,16 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
                   : _resultList<Friend>(users),
             ),
             SearchAndMap(
-              onPartySearch: (parties) {
-                if (mounted) {
-                  //...
-                }
+              onTypeChange: (t) {
+                setState(() => searchType = t);
               },
-              onUserSearch: (users) {
-                if (mounted) {
-                  //...
-                }
+              onPartySearch: (p) {
+                if (!mounted) return;
+                setState(() => parties = p);
+              },
+              onUserSearch: (u) {
+                if (!mounted) return;
+                setState(() => users = u);
               },
             ),
           ],
@@ -91,7 +92,7 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
               children: [
                 const SizedBox(height: 130),
                 for (final i in iter)
-                  T is Party
+                  T == Party
                       ? PartyHolder(i as Party)
                       : UserHolder(
                           i as Friend,
@@ -103,6 +104,7 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
                                 senderPublicId: userId,
                               ),
                             );
+
                             if (success && mounted) {
                               showModalBottomSheet(
                                 context: context,

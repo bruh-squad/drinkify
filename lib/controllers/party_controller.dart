@@ -14,7 +14,6 @@ class PartyController {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
     final userId = await storage.read(key: "user_publicId");
-
     final url = "$mainUrl/parties/requests/${party.publicId}/";
     final res = await http.post(
       Uri.parse(url),
@@ -56,6 +55,7 @@ class PartyController {
         "Authorization": "Bearer $token",
       },
     );
+    if (res.statusCode != 200) return [];
     final invitations = <PartyInvitation>[];
     for (final pi in jsonDecode(res.body)["results"]) {
       invitations.add(PartyInvitation.fromMap(pi));
@@ -68,11 +68,10 @@ class PartyController {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
     final url = "$mainUrl/parties/";
-    //TODO add party participants
     final res = await http.post(
       Uri.parse(url),
-      body: {
-        "owner": {},
+      body: jsonEncode({
+        "owner": <String, String>{},
         "owner_public_id": party.ownerPublicId,
         "name": party.name,
         "privacy_status": party.privacyStatus,
@@ -80,8 +79,10 @@ class PartyController {
         "location": party.location!.toPOINT(),
         "start_time": party.startTime.toIso8601String(),
         "stop_time": party.stopTime.toIso8601String(),
-      },
+        "participants": [for (final p in party.participants!) p.toMap()],
+      }),
       headers: {
+        "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
     );

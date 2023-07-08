@@ -51,6 +51,17 @@ class _OrganizationPageState extends State<OrganizationPage> {
         ),
         centerTitle: true,
       ),
+      body: Column(
+        children: [
+          for (final p in ownedParties)
+            Text(
+              p.name,
+              style: const TextStyle(
+                color: Theming.whiteTone,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

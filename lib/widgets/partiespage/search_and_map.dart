@@ -11,9 +11,11 @@ import '/models/search_type.dart';
 import '/widgets/glass_morphism.dart';
 
 class SearchAndMap extends StatefulWidget {
+  final Function(SearchType) onTypeChange;
   final Function(List<Party>) onPartySearch;
   final Function(List<Friend>) onUserSearch;
   const SearchAndMap({
+    required this.onTypeChange,
     required this.onPartySearch,
     required this.onUserSearch,
     super.key,
@@ -69,7 +71,7 @@ class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
         boxShadow: [
           BoxShadow(
             color: Theming.bgColor,
-            offset: Offset(0, 5),
+            offset: Offset(0, 3),
             spreadRadius: 15,
             blurRadius: 15,
           ),
@@ -174,7 +176,7 @@ class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
                         return;
                       case SearchType.users:
                         if (searchCtrl.text.isEmpty) return;
-                        final u = await SearchController.searchUser(
+                        final u = await SearchController.searchUserByUsername(
                           searchCtrl.text,
                         );
                         widget.onUserSearch(u);
@@ -236,6 +238,7 @@ class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
           selectedIndex = index;
           searchType = type;
         });
+        widget.onTypeChange(type);
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 125),

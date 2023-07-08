@@ -11,7 +11,7 @@ import '../models/party.dart';
 ///Used for searching parties and users
 class SearchController {
   ///Retrieves user's data based on provided [username]
-  static Future<List<Friend>> searchUser(String username) async {
+  static Future<List<Friend>> searchUserByUsername(String username) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
 
@@ -27,6 +27,19 @@ class SearchController {
       users.add(Friend.fromMap(u));
     }
     return users;
+  }
+
+  static Future<Friend> searchUserByPublicId(String id) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/users/$id/";
+    final res = await http.get(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+    return Friend.fromMap(jsonDecode(res.body));
   }
 
   static Future<List<Party>> seachPartiesByDistance({

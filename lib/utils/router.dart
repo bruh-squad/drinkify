@@ -13,11 +13,9 @@ import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/organization_page.dart';
 import '../routes/friend_list.dart';
 import '../routes/create_party_page.dart';
-
 import '../widgets/navbar.dart';
-
 import '../models/party.dart';
-import '../models/user.dart';
+import '../models/friend.dart';
 
 //Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
@@ -57,7 +55,7 @@ GoRouter router = GoRouter(
           path: "/profile",
           parentNavigatorKey: _navBarKey,
           pageBuilder: (_, state) {
-            final User? user = state.extra as User?;
+            final Friend? user = state.extra as Friend?;
             return pageTransition(
               state: state,
               childWidget: ProfilePage(user),

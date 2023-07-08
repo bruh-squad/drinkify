@@ -54,8 +54,13 @@ class SettingsPage extends StatelessWidget {
                   ),
                   _settingsItem(
                     caption: AppLocalizations.of(context)!.organization,
-                    prefixIcon: Icons.people_rounded,
+                    prefixIcon: Icons.campaign,
                     onTap: () => context.push("/organization"),
+                  ),
+                  _settingsItem(
+                    caption: AppLocalizations.of(context)!.friends,
+                    prefixIcon: Icons.people_rounded,
+                    onTap: () => context.push("/friend-list"),
                   ),
                 ],
               ),
