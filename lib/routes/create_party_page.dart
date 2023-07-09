@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:drinkify/models/friend.dart';
+import 'package:drinkify/widgets/dialogs/image_picker_sheet.dart';
 import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:location/location.dart';
@@ -29,6 +33,7 @@ class CreatePartyRoute extends StatefulWidget {
 class _CreatePartyRouteState extends State<CreatePartyRoute> {
   //List of elements needed to send in the http request
   LatLng? selPoint;
+  XFile? thumbnail;
   late String partyTitle;
   DateTime? startTime;
   DateTime? endTime;
@@ -44,9 +49,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
 
   @override
   void setState(VoidCallback fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
+    if (!mounted) return;
+    super.setState(fn);
   }
 
   //TODO use userLocation() from LocationUtils instead
@@ -98,7 +102,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
       }
     }
 
-    final bool addComma = locArea != "";
+    final addComma = locArea != "";
 
     if (mounted) {
       mapCtrl.move(
@@ -184,6 +188,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                 stopTime: endTime!,
                 privacyStatus: partyStatus,
                 participants: invitedUsers,
+                image: thumbnail?.path,
               ),
             );
             if (isCreated && mounted) {
@@ -217,6 +222,8 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
           FlutterMap(
             mapController: mapCtrl,
             options: MapOptions(
+              maxZoom: 18,
+              minZoom: 2.5,
               interactiveFlags: InteractiveFlag.all -
                   InteractiveFlag.doubleTapZoom -
                   InteractiveFlag.rotate,
@@ -472,9 +479,54 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                               right: 30,
                               top: 30,
                             ),
-                            child: Column(
+                            child: ListView(
                               children: [
-                                //TODO implement image picking
+                                GestureDetector(
+                                  onTap: () async {
+                                    await showModalBottomSheet(
+                                      context: context,
+                                      backgroundColor: Theming.bgColor,
+                                      builder: (ctx) {
+                                        return ImagePickerSheet(
+                                          onFinish: (img) {
+                                            setState(() => thumbnail = img);
+                                            Navigator.pop(ctx);
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: AspectRatio(
+                                    aspectRatio: 16 / 6,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        image: thumbnail != null
+                                            ? DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: FileImage(
+                                                  File(thumbnail!.path),
+                                                ),
+                                              )
+                                            : null,
+                                        color: Theming.bgColor,
+                                        borderRadius: BorderRadius.circular(15),
+                                        border: Border.all(
+                                          color: Theming.whiteTone
+                                              .withOpacity(0.3),
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: thumbnail == null
+                                          ? Icon(
+                                              Icons.image_outlined,
+                                              color: Theming.whiteTone
+                                                  .withOpacity(0.3),
+                                            )
+                                          : null,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 30),
                                 FormFieldParty(
                                   index: 1,
                                   caption: AppLocalizations.of(context)!.title,
@@ -587,6 +639,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                                     invitedUsers = friends;
                                   },
                                 ),
+                                const SizedBox(height: 100),
                               ],
                             ),
                           ),

@@ -10,7 +10,7 @@ import '/utils/theming.dart';
 import '/widgets/edit_field.dart';
 import '/widgets/custom_floating_button.dart';
 import '/widgets/dialogs/account_delete_confirm.dart';
-import '/widgets/image_picker_sheet.dart';
+import '../../widgets/dialogs/image_picker_sheet.dart';
 import '/controllers/user_controller.dart';
 import '/models/user.dart';
 

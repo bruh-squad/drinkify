@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../utils/theming.dart';
 import '../controllers/auth_controller.dart';
 import '../models/create_user.dart';
-import '../widgets/image_picker_sheet.dart';
+import '../widgets/dialogs/image_picker_sheet.dart';
 import '../widgets/edit_field.dart';
 
 class RegisterPage extends StatefulWidget {
