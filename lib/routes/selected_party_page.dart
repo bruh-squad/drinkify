@@ -1,3 +1,5 @@
+import 'package:drinkify/controllers/party_controller.dart';
+import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -79,9 +81,20 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 14, bottom: 25),
         child: GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (!showMore) return;
-            //TODO implement joining party
+            final success = await PartyController.sendJoinRequest(widget.party);
+            if (!mounted) return;
+            showModalBottomSheet(
+              context: context,
+              builder: (ctx) {
+                return SuccessSheet(
+                  success: success,
+                  successMsg: AppLocalizations.of(context)!.joinRequestSuccess,
+                  failureMsg: AppLocalizations.of(context)!.joinRequestFailure,
+                );
+              },
+            );
           },
           child: GlassMorphism(
             blur: showMore ? 10 : 0,

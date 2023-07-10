@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -66,7 +67,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       backgroundColor: Theming.bgColor,
       floatingActionButton: CustomFloatingButton(
         caption: AppLocalizations.of(context)!.save,
-        onTap: () {
+        onTap: () async {
           errorFields = [];
           final allFields = <String>[
             ".",
@@ -80,7 +81,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           }
           setState(() => errorFields = tempErrorList);
           if (errorFields.isNotEmpty) return;
-          UserController.updateMe(
+          final success = await UserController.updateMe(
             User(
               firstName: firstNameCtrl.text,
               lastName: lastNameCtrl.text,
@@ -89,7 +90,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
               pfp: pfp?.path,
             ),
           );
-          context.pop();
+          if (!mounted) return;
+          showModalBottomSheet(
+            context: context,
+            builder: (ctx) {
+              return SuccessSheet(
+                success: success,
+                successMsg: AppLocalizations.of(context)!.updatedSuccess,
+                failureMsg: AppLocalizations.of(context)!.updatedFailure,
+              );
+            },
+          );
         },
       ),
       body: CustomScrollView(

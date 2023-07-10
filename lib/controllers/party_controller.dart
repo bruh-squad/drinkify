@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../utils/consts.dart';
 import '../models/party.dart';
@@ -68,25 +70,34 @@ class PartyController {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
     final url = "$mainUrl/parties/";
-    //TODO send image in HTTP request
-    final res = await http.post(
-      Uri.parse(url),
-      body: jsonEncode({
-        "owner": <String, String>{},
-        "owner_public_id": party.ownerPublicId,
-        "name": party.name,
-        "privacy_status": party.privacyStatus,
-        "description": party.description,
-        "location": party.location!.toPOINT(),
-        "start_time": party.startTime.toIso8601String(),
-        "stop_time": party.stopTime.toIso8601String(),
-        "participants": [for (final p in party.participants!) p.toMap()],
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
-    );
+    final req = http.MultipartRequest("POST", Uri.parse(url));
+    req.fields.addAll(<String, String>{
+      "owner_public_id": party.ownerPublicId!,
+      "name": party.name,
+      "privacy_status": party.privacyStatus.toString(),
+      "description": party.description,
+      "location": party.location!.toPOINT(),
+      "start_time": party.startTime.toIso8601String(),
+      "stop_time": party.stopTime.toIso8601String(),
+      "participants":
+          jsonEncode([for (final p in party.participants!) p.toMap()]),
+    });
+    req.headers.addAll({
+      "Content-Type": "multipart/form-data",
+      "Authorization": "Bearer $token",
+    });
+    if (party.image != null) {
+      req.files.add(
+        http.MultipartFile(
+          "image",
+          File(party.image!).readAsBytes().asStream(),
+          File(party.image!).lengthSync(),
+          filename: party.image!,
+          contentType: MediaType("image", "jpeg"),
+        ),
+      );
+    }
+    final res = await req.send();
     return res.statusCode == 201;
   }
 }

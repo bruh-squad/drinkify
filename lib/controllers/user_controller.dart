@@ -91,14 +91,20 @@ class UserController {
   }
 
   static Future<bool> sendFriendInvitation(FriendInvitation inv) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
     final url = "$mainUrl/friends/invitations/";
     final res = await http.post(
       Uri.parse(url),
-      body: {
+      body: jsonEncode({
         "sender": {},
         "receiver": {},
         "receiver_public_id": inv.receiverPublicId,
         "sender_public_id": inv.senderPublicId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
       },
     );
 

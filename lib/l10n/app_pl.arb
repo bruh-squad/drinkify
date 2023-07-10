@@ -25,17 +25,17 @@
     "partiesProfile2": "Imprezy",
 
     "notificationsNotifications": "Powiadomienia",
-    "invitationFrom": "Zaproszenie od",
+    "notificationFrom": "Od",
     "secondsAgo": "sekund temu",
     "minutesAgo": "minut temu",
     "hoursAgo": "godzin temu",
-    "markAsRead": "Oznacz jako przeczytane",
+    "friendInvitations": "Zaproszenia do znajomych",
+    "partyInvitations": "Zaproszenia na imprezę",
+    "joinRequests": "Prośby o dołączenie",
 
     "settings": "Ustawienia",
     "editProfile": "Edytuj profil",
     "organization": "Organizacja",
-    "language": "Język",
-    "privacy": "Prywatność",
     "logOut": "Wyloguj się",
     
     "editProfilePage": "Edytuj profil",
@@ -59,12 +59,10 @@
     "sureDeleteAccount": "Napewno chcesz usunąć konto?",
     "deleteAccount": "Usuń moje konto",
     "doNotDeleteAccount": "Nie usuwaj konta",
+    "updatedSuccess": "Pomyślnie zaaktualizowano profil",
+    "updatedFailure": "Nie zaaktualizowano profilu ",
 
     "yourParties": "Twoje imprezy",
-
-    "chooseALanguage": "Wybierz język",
-    "polish": "Polski",
-    "english": "English",
 
     "privacyPolicy": "Polityka prywatności",
 
@@ -78,6 +76,8 @@
     "join": "Dołącz",
     "error": "Błąd!",
     "mapError": "Wygląda na to, że nie masz zainstalowanych map na swoim urzadzeniu.",
+    "joinRequestSuccess": "Wysłano prośbę o dołączenie",
+    "joinRequestFailure": "Nie wysłano prośby",
     
     "logIn": "Zaloguj się",
     "fillFieldsBelow": "Wypełnij poniższe pola, aby kontynuować.",

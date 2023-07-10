@@ -1,3 +1,4 @@
+import 'package:drinkify/models/friend_invitiation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,6 +7,7 @@ import '/utils/theming.dart';
 import '/widgets/dialogs/success_sheet.dart';
 import '/models/friend.dart';
 import '/models/user.dart';
+import '/controllers/user_controller.dart';
 
 class UserInfo extends StatefulWidget {
   final User? user;
@@ -86,24 +88,30 @@ class _UserInfoState extends State<UserInfo> {
         //Add friend
         GestureDetector(
           onTap: () async {
-            //sending a friend request
             const storage = FlutterSecureStorage();
             final userId = await storage.read(key: "user_publicId");
-            if (widget.user!.publicId! == userId && mounted) {
-              showModalBottomSheet(
-                  context: context,
-                  useRootNavigator: true,
-                  backgroundColor: Theming.bgColor,
-                  builder: (ctx) {
-                    return SuccessSheet(
-                      success: false,
-                      successMsg:
-                          AppLocalizations.of(context)!.successFriendInvite,
-                      failureMsg:
-                          AppLocalizations.of(context)!.failureFriendInvite,
-                    );
-                  });
-            }
+            if (widget.user!.publicId == userId) return;
+            final success = await UserController.sendFriendInvitation(
+              FriendInvitation(
+                receiverPublicId: widget.friend!.publicId!,
+                senderPublicId: userId!,
+                createdAt: DateTime.now(),
+              ),
+            );
+            if (!mounted) return;
+            showModalBottomSheet(
+                context: context,
+                useRootNavigator: true,
+                backgroundColor: Theming.bgColor,
+                builder: (ctx) {
+                  return SuccessSheet(
+                    success: success,
+                    successMsg:
+                        AppLocalizations.of(context)!.successFriendInvite,
+                    failureMsg:
+                        AppLocalizations.of(context)!.failureFriendInvite,
+                  );
+                });
           },
           child: Container(
             height: 50,

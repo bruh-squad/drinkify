@@ -25,17 +25,17 @@
     "partiesProfile2": "Parties",
 
     "notificationsNotifications": "Notifications",
-    "invitationFrom": "Invitation from",
+    "notificationFrom": "From",
     "secondsAgo": "seconds ago",
     "minutesAgo": "minutes ago",
     "hoursAgo": "hours ago",
-    "markAsRead": "Mark as read",
+    "friendInvitations": "Friend invitations",
+    "partyInvitations": "Party invitations",
+    "joinRequests": "Join requests",
 
     "settings": "Settings",
     "editProfile": "Edit profile",
     "organization": "Organization",
-    "language": "Language",
-    "privacy": "Privacy",
     "logOut": "Log out",
     
     "editProfilePage": "Edit profile",
@@ -59,12 +59,10 @@
     "sureDeleteAccount": "Delete your account?",
     "deleteAccount": "Delete my account",
     "doNotDeleteAccount": "Don't delete my account",
+    "updatedSuccess": "Account updated successfully",
+    "updatedFailure": "Could not update profile",
 
     "yourParties": "Your parties",
-
-    "chooseALanguage": "Choose a language",
-    "polish": "Polski",
-    "english": "English",
 
     "privacyPolicy": "Privacy policy",
 
@@ -78,6 +76,8 @@
     "join": "Join",
     "error": "Error!",
     "mapError": "It seems like you don't have any maps installed on your device.",
+    "joinRequestSuccess": "Join request sent",
+    "joinRequestFailure": "Could not send join request",
     
     "logIn": "Log in",
     "fillFieldsBelow": "Fill the fields below to continue.",

@@ -3,13 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
-import '../widgets/dialogs/notification_sheet.dart';
-import '../widgets/custom_floating_button.dart';
+import '../widgets/dialogs/invitation_sheet.dart';
 import '../controllers/party_creator_controller.dart';
 import '../controllers/user_controller.dart';
 import '../models/friend_invitiation.dart';
 import '../models/party_invitation.dart';
 import '../models/party_request.dart';
+import '../widgets/notificationspage/category_row.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
@@ -18,7 +18,10 @@ class NotificationsPage extends StatefulWidget {
   State<NotificationsPage> createState() => _NotificationsPageState();
 }
 
-class _NotificationsPageState extends State<NotificationsPage> {
+class _NotificationsPageState extends State<NotificationsPage>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabCtrl;
+
   late List<FriendInvitation> friendInvs;
   late List<PartyInvitation> partyInvs;
   late List<PartyRequest> partyReqs;
@@ -26,6 +29,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   void initState() {
     super.initState();
+    _tabCtrl = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: 0,
+    );
     friendInvs = [];
     partyInvs = [];
     partyReqs = [];
@@ -37,19 +45,21 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _tabCtrl.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      floatingActionButton: CustomFloatingButton(
-        caption: AppLocalizations.of(context)!.markAsRead,
-        onTap: () {},
-      ),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             backgroundColor: Theming.bgColor,
             surfaceTintColor: Theming.bgColor,
-            expandedHeight: 115,
+            expandedHeight: 150,
             pinned: true,
             centerTitle: true,
             shadowColor: Theming.bgColor,
@@ -72,16 +82,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 ),
               ),
             ),
-            flexibleSpace: const FlexibleSpaceBar(
-              centerTitle: true,
-              title: Text(
-                "5 notifications",
-                style: TextStyle(
-                  color: Theming.primaryColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(54),
+              child: CategoryRow(_tabCtrl),
             ),
           ),
           SliverList(
@@ -100,12 +103,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
     );
   }
 
-  Widget _notificationItem(BuildContext ctx) {
+  Widget _notificationItem(/*Friend friend, */ BuildContext ctx) {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
           context: ctx,
-          builder: (_) => const NotificationSheet(),
+          builder: (_) => const InvitationSheet(),
         );
       },
       splashColor: Theming.whiteTone.withOpacity(0.05),
@@ -162,7 +165,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: AppLocalizations.of(ctx)!.invitationFrom,
+                        text: AppLocalizations.of(ctx)!.notificationFrom,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,

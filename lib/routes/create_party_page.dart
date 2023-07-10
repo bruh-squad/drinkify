@@ -191,29 +191,17 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
                 image: thumbnail?.path,
               ),
             );
-            if (isCreated && mounted) {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Theming.bgColor,
-                builder: (_) => SuccessSheet(
-                  success: true,
-                  successMsg: AppLocalizations.of(context)!.createdSuccessfuly,
-                  failureMsg: AppLocalizations.of(context)!.creationFailed,
-                ),
-              );
-            } else {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Theming.bgColor,
-                builder: (_) => SuccessSheet(
-                  success: false,
-                  successMsg: AppLocalizations.of(context)!.createdSuccessfuly,
-                  failureMsg: AppLocalizations.of(context)!.creationFailed,
-                ),
-              );
-            }
+            if (!mounted) return;
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: isCreated,
+              backgroundColor: Theming.bgColor,
+              builder: (_) => SuccessSheet(
+                success: false,
+                successMsg: AppLocalizations.of(context)!.createdSuccessfuly,
+                failureMsg: AppLocalizations.of(context)!.creationFailed,
+              ),
+            );
           },
         ),
       ),
