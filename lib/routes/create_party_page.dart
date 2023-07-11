@@ -1,8 +1,4 @@
 import 'dart:io';
-
-import 'package:drinkify/models/friend.dart';
-import 'package:drinkify/widgets/dialogs/image_picker_sheet.dart';
-import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -19,9 +15,12 @@ import '../routes/create_party_routes/description_page.dart';
 import '../widgets/createpartypage/party_status.dart';
 import '../widgets/createpartypage/datetime_fields.dart';
 import '../widgets/createpartypage/invite_friends.dart';
-import '../controllers/party_controller.dart';
 import '../models/party.dart';
 import '../widgets/createpartypage/form_field_party.dart';
+import '../controllers/party_creator_controller.dart';
+import '../models/friend.dart';
+import '../widgets/dialogs/image_picker_sheet.dart';
+import '../widgets/dialogs/success_sheet.dart';
 
 class CreatePartyRoute extends StatefulWidget {
   const CreatePartyRoute({super.key});
@@ -178,7 +177,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             if (errorFields.isNotEmpty && !_wrongDate) return;
             const storage = FlutterSecureStorage();
             final userId = await storage.read(key: "user_publicId");
-            final isCreated = await PartyController.createParty(
+            final isCreated = await PartyCreatorController.createParty(
               Party(
                 ownerPublicId: userId!,
                 name: partyTitle,
@@ -194,11 +193,11 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             if (!mounted) return;
             showModalBottomSheet(
               context: context,
-              isScrollControlled: isCreated,
+              isScrollControlled: true,
               backgroundColor: Theming.bgColor,
               builder: (_) => SuccessSheet(
-                success: false,
-                successMsg: AppLocalizations.of(context)!.createdSuccessfuly,
+                success: isCreated,
+                successMsg: AppLocalizations.of(context)!.createdSuccessfully,
                 failureMsg: AppLocalizations.of(context)!.creationFailed,
               ),
             );

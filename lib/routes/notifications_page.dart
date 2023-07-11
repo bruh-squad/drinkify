@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
-import '../widgets/dialogs/invitation_sheet.dart';
+import '../widgets/dialogs/notification_sheet.dart';
 import '../controllers/party_creator_controller.dart';
 import '../controllers/user_controller.dart';
 import '../models/friend_invitiation.dart';
@@ -108,7 +108,7 @@ class _NotificationsPageState extends State<NotificationsPage>
       onTap: () {
         showModalBottomSheet(
           context: ctx,
-          builder: (_) => const InvitationSheet(),
+          builder: (_) => const NotificationSheet(),
         );
       },
       splashColor: Theming.whiteTone.withOpacity(0.05),

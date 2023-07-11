@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-class OrganizationElement extends StatelessWidget {
-  const OrganizationElement({super.key});
+import '/models/party.dart';
 
-  //TODO finish this
+class OrganizationElement extends StatelessWidget {
+  final Party party;
+  const OrganizationElement(
+    this.party, {
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
     return const Placeholder();

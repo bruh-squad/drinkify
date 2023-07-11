@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import '../utils/consts.dart' show mainUrl;
 import '../models/party.dart';
@@ -29,26 +31,6 @@ class PartyCreatorController {
     return parties;
   }
 
-  ///Creates a party
-  static Future<bool> createParty(Party p) async {
-    final url = "$mainUrl/parties/";
-    final res = await http.post(
-      Uri.parse(url),
-      body: {
-        "owner": {},
-        "owner_public_id": p.ownerPublicId,
-        "name": p.name,
-        "privacy_status": p.privacyStatus,
-        "description": p.description,
-        "location": p.location!.toPOINT(),
-        "start_time": p.startTime.toIso8601String(),
-        "stop_time": p.stopTime.toIso8601String(),
-      },
-    );
-
-    return res.statusCode == 201;
-  }
-
   ///Retrieves a list of join requests to user's owned parties
   static Future<List<PartyRequest>> joinRequests() async {
     const storage = FlutterSecureStorage();
@@ -66,5 +48,57 @@ class PartyCreatorController {
       requests.add(PartyRequest.fromMap(pr));
     }
     return requests;
+  }
+
+  ///Creates a party using information provided in [party]
+  static Future<bool> createParty(Party party) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/";
+    final req = http.MultipartRequest("POST", Uri.parse(url));
+    req.fields.addAll(<String, String>{
+      "owner_public_id": party.ownerPublicId!,
+      "name": party.name,
+      "privacy_status": party.privacyStatus.toString(),
+      "description": party.description,
+      "location": party.location!.toPOINT(),
+      "start_time": party.startTime.toIso8601String(),
+      "stop_time": party.stopTime.toIso8601String(),
+      "participants":
+          jsonEncode([for (final p in party.participants!) p.toMap()]),
+    });
+    req.headers.addAll({
+      "Content-Type": "multipart/form-data",
+      "Authorization": "Bearer $token",
+    });
+    //FIXME creating party without image
+    if (party.image != null) {
+      req.files.add(
+        http.MultipartFile(
+          "image",
+          File(party.image!).readAsBytes().asStream(),
+          File(party.image!).lengthSync(),
+          filename: party.image!,
+          contentType: MediaType("image", "jpeg"),
+        ),
+      );
+    }
+    final res = await req.send();
+    return res.statusCode == 201;
+  }
+
+  ///Deletes party with the provided [id]
+  static Future<bool> deleteParty(String id) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/$id/";
+    final res = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 204;
   }
 }

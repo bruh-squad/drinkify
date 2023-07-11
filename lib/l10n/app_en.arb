@@ -37,6 +37,10 @@
     "editProfile": "Edit profile",
     "organization": "Organization",
     "logOut": "Log out",
+    "editParty": "Edit party",
+    "deleteParty": "Delete party",
+    "deleteSuccess": "Party deleted successfully",
+    "deleteFailure": "Could not delete party",
     
     "editProfilePage": "Edit profile",
     "changePfp": "Change profile picture",
@@ -117,7 +121,7 @@
     "partyDate": "Date",
     "partyTime": "Time",
     "noFriendsInvited": "No friends invited yet",
-    "createdSuccessfuly": "Party created successfuly",
+    "createdSuccessfully": "Party created successfully",
     "creationFailed": "Party creation failed",
 
     "requiredField": "Field required",

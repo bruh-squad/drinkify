@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/partiespage/search_and_map.dart';
 import '../widgets/partiespage/party_holder.dart';
@@ -9,9 +10,9 @@ import '../widgets/dialogs/success_sheet.dart';
 import '../models/party.dart';
 import '../models/friend.dart';
 import '../models/friend_invitiation.dart';
+import '../models/search_type.dart';
 import '../controllers/user_controller.dart';
 import '../utils/theming.dart';
-import '../models/search_type.dart';
 
 class PartiesUsersPage extends StatefulWidget {
   const PartiesUsersPage({super.key});
@@ -93,7 +94,13 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
                 const SizedBox(height: 130),
                 for (final i in iter)
                   T == Party
-                      ? PartyHolder(i as Party)
+                      ? PartyHolder(
+                          i as Party,
+                          () => context.push(
+                            '/party',
+                            extra: i,
+                          ),
+                        )
                       : UserHolder(
                           i as Friend,
                           onButtonTap: () async {

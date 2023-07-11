@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/models/party.dart';
@@ -9,17 +8,19 @@ import '/utils/theming.dart';
 
 class PartyHolder extends StatelessWidget {
   final Party party;
-  const PartyHolder(this.party, {super.key});
+  final VoidCallback onTap;
+  const PartyHolder(
+    this.party,
+    this.onTap, {
+    super.key,
+  });
 
   double get _imageAspectRatio => 16 / 6;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(
-        '/party',
-        extra: party,
-      ),
+      onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
