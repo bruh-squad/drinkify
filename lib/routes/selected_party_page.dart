@@ -1,5 +1,3 @@
-import 'package:drinkify/controllers/party_controller.dart';
-import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -12,6 +10,8 @@ import '../widgets/selectedpartypage/party_desc.dart';
 import '../utils/theming.dart';
 import '../models/party.dart';
 import '../widgets/glass_morphism.dart';
+import '../controllers/party_controller.dart';
+import '../widgets/dialogs/success_sheet.dart';
 
 class SelectedPartyPage extends StatefulWidget {
   final Party party;

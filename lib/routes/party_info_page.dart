@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:drinkify/models/party.dart';
+import '../models/party.dart';
 
 class PartyInfoPage extends StatelessWidget {
   final Party party;
-  const PartyInfoPage(this.party, {super.key});
+  const PartyInfoPage(
+    this.party, {
+    super.key,
+  });
 
   //TODO finish this page
   @override

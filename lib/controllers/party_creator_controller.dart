@@ -55,21 +55,21 @@ class PartyCreatorController {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
     final url = "$mainUrl/parties/";
-    final req = http.MultipartRequest("POST", Uri.parse(url));
+    final req = http.MultipartRequest(
+      "POST",
+      Uri.parse(url),
+    );
+    req.headers.addAll({
+      "Content-Type": "multipart/form-data",
+      "Authorization": "Bearer $token",
+    });
     req.fields.addAll(<String, String>{
-      "owner_public_id": party.ownerPublicId!,
       "name": party.name,
       "privacy_status": party.privacyStatus.toString(),
       "description": party.description,
       "location": party.location!.toPOINT(),
       "start_time": party.startTime.toIso8601String(),
       "stop_time": party.stopTime.toIso8601String(),
-      "participants":
-          jsonEncode([for (final p in party.participants!) p.toMap()]),
-    });
-    req.headers.addAll({
-      "Content-Type": "multipart/form-data",
-      "Authorization": "Bearer $token",
     });
     //FIXME creating party without image
     if (party.image != null) {

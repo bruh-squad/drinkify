@@ -6,7 +6,7 @@ import '/utils/theming.dart';
 import '/models/friend.dart';
 import '/controllers/search_controller.dart';
 import '/models/party.dart';
-import '/utils/ext.dart';
+import '/utils/ext.dart' show MapUtils;
 import '/models/search_type.dart';
 import '/widgets/glass_morphism.dart';
 
@@ -25,7 +25,7 @@ class SearchAndMap extends StatefulWidget {
   State<SearchAndMap> createState() => _SearchAndMapState();
 }
 
-class _SearchAndMapState extends State<SearchAndMap> with LocationUtils {
+class _SearchAndMapState extends State<SearchAndMap> with MapUtils {
   late int selectedIndex;
   late final TextEditingController searchCtrl;
   late SearchType searchType;

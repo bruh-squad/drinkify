@@ -1,4 +1,3 @@
-import 'package:drinkify/models/friend_invitiation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +6,7 @@ import '/utils/theming.dart';
 import '/widgets/dialogs/success_sheet.dart';
 import '/models/friend.dart';
 import '/models/user.dart';
+import '/models/friend_invitiation.dart';
 import '/controllers/user_controller.dart';
 
 class UserInfo extends StatefulWidget {
@@ -23,7 +23,7 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
-  bool get _isMyProfile => widget.user != null;
+  bool get _isMyProfile => widget.friend == null;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +32,8 @@ class _UserInfoState extends State<UserInfo> {
         //Profile picture
         Column(
           children: [
-            //TODO fix friend pfp loading
             _isMyProfile
-                ? widget.user!.pfp != null
+                ? widget.user?.pfp != null
                     ? CircleAvatar(
                         radius: 50,
                         backgroundImage: NetworkImage(widget.user!.pfp!),
@@ -46,7 +45,7 @@ class _UserInfoState extends State<UserInfo> {
                             AssetImage("assets/images/default_pfp.png"),
                         backgroundColor: Theming.bgColorLight,
                       )
-                : widget.friend!.pfp != null
+                : widget.friend?.pfp != null
                     ? CircleAvatar(
                         radius: 50,
                         backgroundImage: NetworkImage(widget.friend!.pfp!),
@@ -73,8 +72,8 @@ class _UserInfoState extends State<UserInfo> {
               ),
               child: Text(
                 _isMyProfile
-                    ? "@${widget.user!.username}"
-                    : "@${widget.friend!.username}",
+                    ? "@${widget.user?.username ?? ""}"
+                    : "@${widget.friend?.username ?? ""}",
                 style: const TextStyle(
                   color: Theming.greenTone,
                 ),
@@ -90,7 +89,7 @@ class _UserInfoState extends State<UserInfo> {
           onTap: () async {
             const storage = FlutterSecureStorage();
             final userId = await storage.read(key: "user_publicId");
-            if (widget.user!.publicId == userId) return;
+            if (widget.user?.publicId == userId) return;
             final success = await UserController.sendFriendInvitation(
               FriendInvitation(
                 receiverPublicId: widget.friend!.publicId!,

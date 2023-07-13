@@ -1,11 +1,11 @@
-import 'package:drinkify/controllers/user_controller.dart';
-import 'package:drinkify/models/user.dart';
 import 'package:flutter/material.dart' hide SearchController;
 
 import '../utils/theming.dart';
 import '../widgets/profilepage/user_info.dart';
 import '../models/friend.dart';
-import 'package:drinkify/controllers/search_controller.dart';
+import '../models/user.dart';
+import '../controllers/search_controller.dart';
+import '../controllers/user_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   final Friend? user;
@@ -19,27 +19,26 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late User? user;
-  late Friend? friend;
+  User? user;
+  Friend? friend;
 
   @override
   void initState() {
     super.initState();
-    user = User.emptyUser();
-    friend = const Friend();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (_isMyProfile) {
         final myProfileData = await UserController.me();
+
         if (!mounted) return;
         setState(() => user = myProfileData);
-        return;
-      }
+      } else {
+        final data = await SearchController.searchUserByPublicId(
+          widget.user!.publicId!,
+        );
 
-      final data = await SearchController.searchUserByPublicId(
-        widget.user!.publicId!,
-      );
-      if (!mounted) return;
-      setState(() => friend = data);
+        if (!mounted) return;
+        setState(() => friend = data);
+      }
     });
   }
 
@@ -53,8 +52,8 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Theming.bgColor,
         title: Text(
           _isMyProfile
-              ? "${user!.firstName} ${user!.lastName}"
-              : "${friend!.firstName} ${friend!.lastName}",
+              ? "${user?.firstName ?? ""} ${user?.lastName ?? ""}"
+              : "${friend?.firstName ?? ""} ${friend?.lastName}",
           style: const TextStyle(
             color: Theming.whiteTone,
             fontSize: 18,

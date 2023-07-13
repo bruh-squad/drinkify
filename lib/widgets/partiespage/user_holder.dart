@@ -15,7 +15,7 @@ class UserHolder extends StatelessWidget {
     super.key,
   });
 
-  void _goToProfile(BuildContext ctx) => ctx.go("/profile", extra: user);
+  void _goToProfile(BuildContext ctx) => ctx.push("/profile", extra: user);
 
   @override
   Widget build(BuildContext context) {

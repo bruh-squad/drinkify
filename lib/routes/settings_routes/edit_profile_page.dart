@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,9 +10,10 @@ import '/utils/theming.dart';
 import '/widgets/edit_field.dart';
 import '/widgets/custom_floating_button.dart';
 import '/widgets/dialogs/account_delete_confirm.dart';
-import '../../widgets/dialogs/image_picker_sheet.dart';
+import '/widgets/dialogs/image_picker_sheet.dart';
 import '/controllers/user_controller.dart';
 import '/models/user.dart';
+import '/widgets/dialogs/success_sheet.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});

@@ -75,9 +75,7 @@ mixin MapUtils {
 
     return false;
   }
-}
 
-mixin LocationUtils {
   Future<LatLng?> userLocation() async {
     LatLng selPoint;
     bool serviceEnabled;

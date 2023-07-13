@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
@@ -10,6 +9,7 @@ import 'package:location/location.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
+import '../utils/ext.dart';
 import '../widgets/custom_floating_button.dart';
 import '../routes/create_party_routes/description_page.dart';
 import '../widgets/createpartypage/party_status.dart';
@@ -29,7 +29,7 @@ class CreatePartyRoute extends StatefulWidget {
   State<CreatePartyRoute> createState() => _CreatePartyRouteState();
 }
 
-class _CreatePartyRouteState extends State<CreatePartyRoute> {
+class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
   //List of elements needed to send in the http request
   LatLng? selPoint;
   XFile? thumbnail;
@@ -175,18 +175,14 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> {
             }
             setState(() => errorFields = tempErrorList);
             if (errorFields.isNotEmpty && !_wrongDate) return;
-            const storage = FlutterSecureStorage();
-            final userId = await storage.read(key: "user_publicId");
             final isCreated = await PartyCreatorController.createParty(
               Party(
-                ownerPublicId: userId!,
                 name: partyTitle,
                 description: descriptionCtrl.text,
                 location: selPoint,
                 startTime: endTime!,
                 stopTime: endTime!,
                 privacyStatus: partyStatus,
-                participants: invitedUsers,
                 image: thumbnail?.path,
               ),
             );

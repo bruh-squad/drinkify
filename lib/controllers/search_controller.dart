@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:drinkify/utils/ext.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
@@ -7,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import '../utils/consts.dart';
 import '../models/friend.dart';
 import '../models/party.dart';
+import '../utils/ext.dart';
 
 ///Used for searching parties and users
 class SearchController {

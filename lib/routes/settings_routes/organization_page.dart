@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/dialogs/party_options_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +6,7 @@ import '/utils/theming.dart';
 import '/models/party.dart';
 import '/controllers/party_creator_controller.dart';
 import '/widgets/partiespage/party_holder.dart';
+import '/widgets/dialogs/party_options_sheet.dart';
 
 class OrganizationPage extends StatefulWidget {
   const OrganizationPage({super.key});

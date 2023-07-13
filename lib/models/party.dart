@@ -1,7 +1,7 @@
 import 'package:latlong2/latlong.dart';
 
 import './friend.dart';
-import '/utils/ext.dart';
+import '../utils/ext.dart';
 
 class Party {
   final String? publicId;

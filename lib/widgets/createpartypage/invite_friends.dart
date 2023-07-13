@@ -1,9 +1,9 @@
-import 'package:drinkify/models/friend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
 import '/routes/create_party_routes/invite_friends_page.dart';
+import '/models/friend.dart';
 
 class InviteFriends extends StatefulWidget {
   final Function(List<Friend>) onFinish;

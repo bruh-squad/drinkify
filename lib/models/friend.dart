@@ -1,4 +1,4 @@
-import 'package:drinkify/utils/ext.dart';
+import '../utils/ext.dart';
 
 class Friend {
   final String? publicId;
