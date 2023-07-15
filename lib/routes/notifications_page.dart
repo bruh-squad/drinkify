@@ -50,6 +50,7 @@ class _NotificationsPageState extends State<NotificationsPage>
     _tabCtrl.dispose();
   }
 
+  // Divide different notifications on categories
   @override
   Widget build(BuildContext context) {
     return Scaffold(

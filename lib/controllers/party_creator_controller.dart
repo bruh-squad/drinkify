@@ -71,7 +71,7 @@ class PartyCreatorController {
       "start_time": party.startTime.toIso8601String(),
       "stop_time": party.stopTime.toIso8601String(),
     });
-    //FIXME creating party without image
+
     if (party.image != null) {
       req.files.add(
         http.MultipartFile(

@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
-import 'package:location/location.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../utils/theming.dart';
@@ -52,37 +52,17 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
     super.setState(fn);
   }
 
-  //TODO use userLocation() from LocationUtils instead
   ///[selectLocation] must be true if you want to put marker on user's location after collecting coordinates
   void _getUserLocation({bool selectLocation = false}) async {
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    final Location location = Location();
-
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-    final LocationData posData = await location.getLocation();
+    final posData = await userLocation();
 
     var loc = <Placemark>[];
     try {
       loc = await placemarkFromCoordinates(
-        posData.latitude!,
-        posData.longitude!,
+        posData!.latitude,
+        posData.longitude,
       );
-    } catch (_) {
+    } on PlatformException {
       return;
     }
 
@@ -105,15 +85,15 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
 
     if (mounted) {
       mapCtrl.move(
-        LatLng(posData.latitude!, posData.longitude!),
+        LatLng(posData.latitude, posData.longitude),
         14,
       );
     }
     if (selectLocation) {
       setState(() {
         selPoint = LatLng(
-          posData.latitude!,
-          posData.longitude!,
+          posData.latitude,
+          posData.longitude,
         );
         selLocation =
             "${loc[0].country}${addComma ? ", $locArea" : ""}, ${loc[0].street}";
@@ -160,6 +140,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
             errorFields = [];
             final allFields = <dynamic>[
               selPoint,
+              thumbnail,
               partyTitle,
               startTime,
               endTime,
@@ -494,16 +475,20 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                         color: Theming.bgColor,
                                         borderRadius: BorderRadius.circular(15),
                                         border: Border.all(
-                                          color: Theming.whiteTone
-                                              .withOpacity(0.3),
+                                          color: errorFields.contains(1)
+                                              ? Theming.errorColor
+                                              : Theming.whiteTone
+                                                  .withOpacity(0.3),
                                           width: 2,
                                         ),
                                       ),
                                       child: thumbnail == null
                                           ? Icon(
                                               Icons.image_outlined,
-                                              color: Theming.whiteTone
-                                                  .withOpacity(0.3),
+                                              color: errorFields.contains(1)
+                                                  ? Theming.errorColor
+                                                  : Theming.whiteTone
+                                                      .withOpacity(0.3),
                                             )
                                           : null,
                                     ),
@@ -511,7 +496,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                 ),
                                 const SizedBox(height: 30),
                                 FormFieldParty(
-                                  index: 1,
+                                  index: 2,
                                   caption: AppLocalizations.of(context)!.title,
                                   placeholder: AppLocalizations.of(context)!
                                       .addPartyTitle,
@@ -533,7 +518,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         DateTimeField(
-                                          index: 2,
+                                          index: 3,
                                           isStart: true,
                                           errorFields: errorFields,
                                           wrongDate: _wrongDate,
@@ -551,7 +536,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                           ),
                                         ),
                                         DateTimeField(
-                                          index: 3,
+                                          index: 4,
                                           isStart: false,
                                           errorFields: errorFields,
                                           wrongDate: _wrongDate,
@@ -593,7 +578,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                     ),
                                   ),
                                   child: FormFieldParty(
-                                    index: 4,
+                                    index: 5,
                                     caption: AppLocalizations.of(context)!
                                         .description,
                                     placeholder: AppLocalizations.of(context)!
@@ -616,6 +601,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                     partyStatus = statusNumber;
                                   },
                                 ),
+
                                 //index: 6
                                 InviteFriends(
                                   onFinish: (friends) {

@@ -77,7 +77,6 @@ mixin MapUtils {
   }
 
   Future<LatLng?> userLocation() async {
-    LatLng selPoint;
     bool serviceEnabled;
     PermissionStatus permissionGranted;
     final Location location = Location();
@@ -99,7 +98,7 @@ mixin MapUtils {
     }
     final LocationData posData = await location.getLocation();
 
-    selPoint = LatLng(
+    final selPoint = LatLng(
       posData.latitude!,
       posData.longitude!,
     );
