@@ -22,8 +22,8 @@ class FriendInvitation {
       id: m["id"],
       receiver: Friend.fromMap(m["receiver"]),
       sender: Friend.fromMap(m["sender"]),
-      receiverPublicId: m["receiver_public_id"],
-      senderPublicId: m["sender_public_id"],
+      receiverPublicId: m["receiver_public_id"] ?? "",
+      senderPublicId: m["sender_public_id"] ?? "",
       createdAt: DateTime.parse(m["created_at"]),
     );
   }

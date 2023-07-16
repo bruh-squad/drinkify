@@ -88,12 +88,14 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
             visible: showMore,
             child: GestureDetector(
               onTap: () async {
-                if (!showMore) return;
-                final success =
-                    await PartyController.sendJoinRequest(widget.party);
+                final success = await PartyController.sendJoinRequest(
+                  widget.party,
+                );
                 if (!mounted) return;
                 showModalBottomSheet(
                   context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Theming.bgColor,
                   builder: (ctx) {
                     return SuccessSheet(
                       success: success,

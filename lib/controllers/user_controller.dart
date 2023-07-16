@@ -131,6 +131,43 @@ class UserController {
     return invitations;
   }
 
+  // FIXME url
+  static Future<bool> acceptFriendInvitation(FriendInvitation inv) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/friends/invitations/${inv.id}/";
+    final res = await http.post(
+      Uri.parse(url),
+      body: jsonEncode({
+        "sender": {},
+        "receiver": {},
+        "receiver_public_id": inv.receiverPublicId,
+        "sender_public_id": inv.senderPublicId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 201;
+  }
+
+  // FIXME url
+  static Future<bool> rejectFriendInvitation(FriendInvitation inv) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/friends/invitations/${inv.id}/";
+    final res = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 201;
+  }
+
   ///Retrieves a list of party invitations
   static Future<List<PartyInvitation>> partyInvitations() async {
     const storage = FlutterSecureStorage();

@@ -2,6 +2,7 @@ import './friend.dart';
 import './party.dart';
 
 class PartyRequest {
+  final int? id;
   final Party? party;
   final String partyPublicId;
   final Friend? sender;
@@ -9,6 +10,7 @@ class PartyRequest {
   final DateTime? createdAt;
 
   const PartyRequest({
+    this.id,
     this.party,
     required this.partyPublicId,
     this.sender,
@@ -18,11 +20,15 @@ class PartyRequest {
 
   factory PartyRequest.fromMap(Map<String, dynamic> m) {
     return PartyRequest(
+      id: m["id"],
       party: Party.fromMap(m["party"]),
-      partyPublicId: m["party_public_id"],
+      partyPublicId: m["party_public_id"] ?? "",
       sender: Friend.fromMap(m["sender"]),
-      senderPublicId: m["sender_public_id"],
+      senderPublicId: m["sender_public_id"] ?? "",
       createdAt: DateTime.parse(m["created_at"]),
     );
   }
+
+  @override
+  String toString() => "$id $partyPublicId $senderPublicId $createdAt";
 }

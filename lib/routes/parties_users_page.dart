@@ -112,33 +112,20 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
                               ),
                             );
 
-                            if (success && mounted) {
-                              showModalBottomSheet(
-                                context: context,
-                                backgroundColor: Theming.bgColor,
-                                isScrollControlled: true,
-                                builder: (ctx) => SuccessSheet(
-                                  success: true,
-                                  successMsg: AppLocalizations.of(ctx)!
-                                      .successFriendInvite,
-                                  failureMsg: AppLocalizations.of(ctx)!
-                                      .failureFriendInvite,
-                                ),
-                              );
-                            } else {
-                              showModalBottomSheet(
-                                context: context,
-                                backgroundColor: Theming.bgColor,
-                                isScrollControlled: true,
-                                builder: (ctx) => SuccessSheet(
-                                  success: false,
-                                  successMsg: AppLocalizations.of(ctx)!
-                                      .successFriendInvite,
-                                  failureMsg: AppLocalizations.of(ctx)!
-                                      .failureFriendInvite,
-                                ),
-                              );
-                            }
+                            if (!mounted) return;
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Theming.bgColor,
+                              isScrollControlled: true,
+                              useRootNavigator: true,
+                              builder: (ctx) => SuccessSheet(
+                                success: success,
+                                successMsg: AppLocalizations.of(ctx)!
+                                    .successFriendInvite,
+                                failureMsg: AppLocalizations.of(ctx)!
+                                    .failureFriendInvite,
+                              ),
+                            );
                           },
                           buttonChild: const Icon(
                             Icons.person_add_alt_1_rounded,

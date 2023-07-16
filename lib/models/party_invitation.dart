@@ -2,6 +2,7 @@ import './friend.dart';
 import './party.dart';
 
 class PartyInvitation {
+  final int? id;
   final Party? party;
   final String partyPublicId;
   final Friend? receiver;
@@ -9,6 +10,7 @@ class PartyInvitation {
   final DateTime? createdAt;
 
   const PartyInvitation({
+    this.id,
     this.party,
     required this.partyPublicId,
     this.receiver,
@@ -18,6 +20,7 @@ class PartyInvitation {
 
   factory PartyInvitation.fromMap(Map<String, dynamic> m) {
     return PartyInvitation(
+      id: m["id"],
       party: Party.fromMap(m["party"]),
       partyPublicId: m["party_public_id"],
       receiver: Friend.fromMap(m["receiver"]),

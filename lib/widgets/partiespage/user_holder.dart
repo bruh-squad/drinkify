@@ -43,7 +43,7 @@ class UserHolder extends StatelessWidget {
           ),
           const Spacer(),
           GestureDetector(
-            onTap: () {},
+            onTap: onButtonTap,
             child: AnimatedContainer(
               curve: Curves.linearToEaseOut,
               duration: const Duration(milliseconds: 300),

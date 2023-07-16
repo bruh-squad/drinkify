@@ -17,7 +17,7 @@ class PartyController {
     final url = "$mainUrl/parties/requests/${party.publicId}/";
     final res = await http.post(
       Uri.parse(url),
-      body: {
+      body: jsonEncode({
         "party": {
           "owner": {},
           "owner_public_id": party.ownerPublicId,
@@ -31,16 +31,14 @@ class PartyController {
         "party_public_id": party.publicId,
         "sender": {},
         "sender_public_id": userId,
-      },
+      }),
       headers: {
+        "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
     );
     return res.statusCode == 201;
   }
-
-  ///Leaves from the provided [party]
-  static Future<void> leaveParty(Party party) async {}
 
   ///Returns all party invitation user has got
   static Future<List<PartyInvitation>> invitations() async {
@@ -76,5 +74,50 @@ class PartyController {
       for (final p in jsonDecode(res.body)["results"]) Party.fromMap(p),
     ];
     return parties;
+  }
+
+  // FIXME url
+  static Future<bool> acceptPartyInvitation(PartyInvitation inv) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/invitations/${inv.partyPublicId}/${inv.id}";
+    final res = await http.post(
+      Uri.parse(url),
+      body: {
+        "party": {
+          "owner": {},
+          "owner_public_id": inv.party!.ownerPublicId,
+          "name": inv.party!.name,
+          "privacy_status": inv.party!.privacyStatus,
+          "description": inv.party!.description,
+          "location": inv.party!.location!.toPOINT(),
+          "start_time": inv.party!.startTime.toIso8601String(),
+          "stop_time": inv.party!.stopTime.toIso8601String(),
+        },
+        "party_public_id": inv.partyPublicId,
+        "receiver": {},
+        "receiver_public_id": inv.receiverPublicId,
+      },
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 201;
+  }
+
+  // FIXME url
+  static Future<bool> rejectPartyInvitation(PartyInvitation inv) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/invitations/${inv.partyPublicId}/${inv.id}";
+    final res = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 204;
   }
 }

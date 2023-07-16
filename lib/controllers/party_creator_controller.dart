@@ -101,4 +101,50 @@ class PartyCreatorController {
 
     return res.statusCode == 204;
   }
+
+  //FIXME url
+  static Future<bool> acceptPartyRequest(PartyRequest req) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/requests/${req.partyPublicId}/${req.id}/";
+    final res = await http.post(
+      Uri.parse(url),
+      body: jsonEncode({
+        "party": {
+          "owner": {},
+          "owner_public_id": req.party!.ownerPublicId,
+          "name": req.party!.name,
+          "privacy_status": req.party!.privacyStatus,
+          "description": req.party!.description,
+          "location": req.party!.location!.toPOINT(),
+          "start_time": req.party!.startTime.toIso8601String(),
+          "stop_time": req.party!.stopTime.toIso8601String(),
+        },
+        "party_public_id": req.partyPublicId,
+        "sender": {},
+        "sender_public_id": req.senderPublicId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 201;
+  }
+
+  //FIXME url
+  static Future<bool> rejectPartyRequest(PartyRequest req) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/requests/${req.partyPublicId}/${req.id}/";
+    final res = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 204;
+  }
 }

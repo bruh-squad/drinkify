@@ -175,7 +175,7 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    "${widget.party.participants?.length}",
+                    "${widget.party.participants?.length ?? "1"}",
                     style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,
