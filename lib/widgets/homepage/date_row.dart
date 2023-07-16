@@ -10,9 +10,11 @@ import './date_picker.dart';
 
 class DateRow extends StatefulWidget {
   final User user;
+  final Function(DateTime) onDateSelect;
   final EdgeInsets textPadding;
   const DateRow(
-    this.user, {
+    this.user,
+    this.onDateSelect, {
     required this.textPadding,
     super.key,
   });
@@ -77,7 +79,11 @@ class _DateRowState extends State<DateRow> {
             children: [
               Text(
                 "$month ${date[0]}",
-                style: Styles.categoryText,
+                style: const TextStyle(
+                  color: Theming.whiteTone,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               TextButton(
                 onPressed: () {
@@ -112,7 +118,11 @@ class _DateRowState extends State<DateRow> {
                 },
                 child: Text(
                   AppLocalizations.of(context)!.pickADate,
-                  style: Styles.smallTextButton,
+                  style: TextStyle(
+                    color: Theming.whiteTone.withOpacity(0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
@@ -183,6 +193,7 @@ class _DateRowState extends State<DateRow> {
     return GestureDetector(
       onTap: () {
         setState(() => selectedDayIndex = index);
+        widget.onDateSelect(boxDate);
       },
       child: AnimatedContainer(
         height: 90,
@@ -204,12 +215,20 @@ class _DateRowState extends State<DateRow> {
                 dayOfWeek.length > 4
                     ? dayOfWeek.replaceRange(4, null, ".")
                     : dayOfWeek,
-                style: Styles.dateBoxText,
+                style: const TextStyle(
+                  color: Theming.whiteTone,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 "${boxDate.day}",
-                style: Styles.dateBoxText,
+                style: const TextStyle(
+                  color: Theming.whiteTone,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),

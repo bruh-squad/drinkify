@@ -172,11 +172,27 @@ class _DatePickerState extends State<DatePicker> {
                 ),
           style: isMonth
               ? isMonthSelected
-                  ? Styles.dateTextSelected
-                  : Styles.dateTextUnselected
+                  ? const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Theming.primaryColor,
+                    )
+                  : const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Theming.whiteTone,
+                    )
               : isYearSelected
-                  ? Styles.dateTextSelected
-                  : Styles.dateTextUnselected,
+                  ? const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Theming.primaryColor,
+                    )
+                  : const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Theming.whiteTone,
+                    ),
         ),
       ),
     );

@@ -92,7 +92,10 @@ class PartyHolder extends StatelessWidget {
                             DateFormat.yMd(
                               AppLocalizations.of(context)!.localeName,
                             ).format(party.startTime),
-                            style: Styles.partyHeaderInfo,
+                            style: const TextStyle(
+                              color: Theming.whiteTone,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -109,7 +112,10 @@ class PartyHolder extends StatelessWidget {
                             DateFormat.Hm(
                               AppLocalizations.of(context)!.localeName,
                             ).format(party.startTime),
-                            style: Styles.partyHeaderInfo,
+                            style: const TextStyle(
+                              color: Theming.whiteTone,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -124,7 +130,10 @@ class PartyHolder extends StatelessWidget {
                           const SizedBox(width: 5),
                           Text(
                             "${party.participants?.length ?? 1}",
-                            style: Styles.partyHeaderInfo,
+                            style: const TextStyle(
+                              color: Theming.whiteTone,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),

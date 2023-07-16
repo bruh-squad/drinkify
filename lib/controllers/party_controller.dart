@@ -62,4 +62,20 @@ class PartyController {
     }
     return invitations;
   }
+
+  static Future<List<Party>> myParties() async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/";
+    final res = await http.get(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+    final parties = <Party>[
+      for (final p in jsonDecode(res.body)["results"]) Party.fromMap(p),
+    ];
+    return parties;
+  }
 }

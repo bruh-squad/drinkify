@@ -161,7 +161,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                 name: partyTitle,
                 description: descriptionCtrl.text,
                 location: selPoint,
-                startTime: endTime!,
+                startTime: startTime!,
                 stopTime: endTime!,
                 privacyStatus: partyStatus,
                 image: thumbnail?.path,

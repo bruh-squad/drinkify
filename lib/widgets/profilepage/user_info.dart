@@ -122,7 +122,11 @@ class _UserInfoState extends State<UserInfo> {
             ),
             child: Text(
               AppLocalizations.of(context)!.addAFriend,
-              style: Styles.buttonTextLight,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theming.whiteTone,
+                fontSize: 18,
+              ),
             ),
           ),
         ),

@@ -83,7 +83,11 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
         children: [
           Text(
             widget.party.name,
-            style: Styles.partyHeaderTitle,
+            style: const TextStyle(
+              color: Theming.whiteTone,
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
             maxLines: 1,
           ),
           GestureDetector(
@@ -104,7 +108,10 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
               children: [
                 Text(
                   partyLocation,
-                  style: Styles.partyHeaderLocation,
+                  style: const TextStyle(
+                    color: Theming.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(width: 5),
                 Icon(
@@ -132,7 +139,10 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
                   Text(
                     DateFormat.yMd(AppLocalizations.of(context)!.localeName)
                         .format(widget.party.startTime),
-                    style: Styles.partyHeaderInfo,
+                    style: const TextStyle(
+                      color: Theming.whiteTone,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -148,7 +158,10 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
                   Text(
                     DateFormat.Hm(AppLocalizations.of(context)!.localeName)
                         .format(widget.party.startTime),
-                    style: Styles.partyHeaderInfo,
+                    style: const TextStyle(
+                      color: Theming.whiteTone,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -163,7 +176,10 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
                   const SizedBox(width: 5),
                   Text(
                     "${widget.party.participants?.length}",
-                    style: Styles.partyHeaderInfo,
+                    style: const TextStyle(
+                      color: Theming.whiteTone,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
