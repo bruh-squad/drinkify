@@ -98,7 +98,7 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
                           i as Party,
                           () => context.push(
                             '/party',
-                            extra: i,
+                            extra: [i, true],
                           ),
                         )
                       : UserHolder(

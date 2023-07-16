@@ -11,53 +11,56 @@ class WelcomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: () => context.push("/notifications"),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${AppLocalizations.of(context)!.welcomeHeader}${user.firstName ?? "..."}',
-                    style: const TextStyle(
-                      fontSize: 28,
-                      color: Theming.whiteTone,
-                      fontWeight: FontWeight.bold,
+    return SizedBox(
+      height: 56,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () => context.push("/notifications"),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.welcomeHeader}${user.firstName ?? "..."}',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        color: Theming.whiteTone,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "${AppLocalizations.of(context)!.youHave} 5 ${AppLocalizations.of(context)!.notifications}",
-                    style: const TextStyle(
-                      color: Theming.primaryColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () => context.push("/settings"),
-              child: user.pfp != null
-                  ? CircleAvatar(
-                      radius: 28,
-                      backgroundImage: NetworkImage(user.pfp!),
-                      backgroundColor: Theming.bgColorLight,
+                    Text(
+                      "${AppLocalizations.of(context)!.youHave} 5 ${AppLocalizations.of(context)!.notifications}",
+                      style: const TextStyle(
+                        color: Theming.primaryColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     )
-                  : const CircleAvatar(
-                      radius: 28,
-                      backgroundImage:
-                          AssetImage("assets/images/default_pfp.png"),
-                      backgroundColor: Theming.bgColorLight,
-                    ),
-            ),
-          ],
-        ),
-      ],
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => context.push("/settings"),
+                child: user.pfp != null
+                    ? CircleAvatar(
+                        radius: 28,
+                        backgroundImage: NetworkImage(user.pfp!),
+                        backgroundColor: Theming.bgColorLight,
+                      )
+                    : const CircleAvatar(
+                        radius: 28,
+                        backgroundImage:
+                            AssetImage("assets/images/default_pfp.png"),
+                        backgroundColor: Theming.bgColorLight,
+                      ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

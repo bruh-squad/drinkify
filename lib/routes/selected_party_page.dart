@@ -15,8 +15,10 @@ import '../widgets/dialogs/success_sheet.dart';
 
 class SelectedPartyPage extends StatefulWidget {
   final Party party;
+  final bool ableToJoin;
   const SelectedPartyPage({
     required this.party,
+    required this.ableToJoin,
     super.key,
   });
 
@@ -80,43 +82,51 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
       backgroundColor: Theming.bgColor,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 14, bottom: 25),
-        child: GestureDetector(
-          onTap: () async {
-            if (!showMore) return;
-            final success = await PartyController.sendJoinRequest(widget.party);
-            if (!mounted) return;
-            showModalBottomSheet(
-              context: context,
-              builder: (ctx) {
-                return SuccessSheet(
-                  success: success,
-                  successMsg: AppLocalizations.of(context)!.joinRequestSuccess,
-                  failureMsg: AppLocalizations.of(context)!.joinRequestFailure,
+        child: Visibility(
+          visible: widget.ableToJoin,
+          child: Visibility(
+            visible: showMore,
+            child: GestureDetector(
+              onTap: () async {
+                if (!showMore) return;
+                final success =
+                    await PartyController.sendJoinRequest(widget.party);
+                if (!mounted) return;
+                showModalBottomSheet(
+                  context: context,
+                  builder: (ctx) {
+                    return SuccessSheet(
+                      success: success,
+                      successMsg:
+                          AppLocalizations.of(context)!.joinRequestSuccess,
+                      failureMsg:
+                          AppLocalizations.of(context)!.joinRequestFailure,
+                    );
+                  },
                 );
               },
-            );
-          },
-          child: GlassMorphism(
-            blur: showMore ? 10 : 0,
-            opacity: showMore ? 0.1 : 0.0,
-            color: showMore ? Colors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(100),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.linearToEaseOut,
-              decoration: BoxDecoration(
+              child: GlassMorphism(
+                blur: showMore ? 10 : 0,
+                opacity: showMore ? 0.1 : 0.0,
+                color: showMore ? Colors.white : Colors.transparent,
                 borderRadius: BorderRadius.circular(100),
-              ),
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 20,
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.join,
-                style: TextStyle(
-                  color: showMore ? Theming.primaryColor : Colors.transparent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 20,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.join,
+                    style: TextStyle(
+                      color:
+                          showMore ? Theming.primaryColor : Colors.transparent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -157,6 +167,8 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                     ),
                     child: FlutterMap(
                       options: MapOptions(
+                        maxZoom: 18,
+                        minZoom: 2.5,
                         center: LatLng(
                           widget.party.location!.latitude,
                           widget.party.location!.longitude,

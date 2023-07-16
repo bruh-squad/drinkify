@@ -68,10 +68,15 @@ GoRouter router = GoRouter(
       path: "/party",
       parentNavigatorKey: _rootKey,
       pageBuilder: (_, state) {
-        Party p = state.extra as Party;
+        List<dynamic> params = state.extra as List<dynamic>;
+        Party p = params[0];
+        bool ableToJoin = params[1];
         return pageTransition(
           state: state,
-          childWidget: SelectedPartyPage(party: p),
+          childWidget: SelectedPartyPage(
+            party: p,
+            ableToJoin: ableToJoin,
+          ),
         );
       },
     ),

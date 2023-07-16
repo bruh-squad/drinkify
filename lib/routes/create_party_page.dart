@@ -463,6 +463,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                   child: AspectRatio(
                                     aspectRatio: 16 / 6,
                                     child: Container(
+                                      alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         image: thumbnail != null
                                             ? DecorationImage(
@@ -483,12 +484,30 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                         ),
                                       ),
                                       child: thumbnail == null
-                                          ? Icon(
-                                              Icons.image_outlined,
-                                              color: errorFields.contains(1)
-                                                  ? Theming.errorColor
-                                                  : Theming.whiteTone
-                                                      .withOpacity(0.3),
+                                          ? Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.image_outlined,
+                                                  color: errorFields.contains(1)
+                                                      ? Theming.errorColor
+                                                      : Theming.whiteTone
+                                                          .withOpacity(0.3),
+                                                ),
+                                                Text(
+                                                  AppLocalizations.of(context)!
+                                                      .pickAnImage,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: errorFields
+                                                            .contains(1)
+                                                        ? Theming.errorColor
+                                                        : Theming.whiteTone
+                                                            .withOpacity(0.3),
+                                                  ),
+                                                )
+                                              ],
                                             )
                                           : null,
                                     ),

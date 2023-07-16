@@ -68,93 +68,98 @@ class _DateRowState extends State<DateRow> {
             ? 1
             : DateTime.now().day;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 50),
-        Padding(
-          padding: widget.textPadding,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "$month ${date[0]}",
-                style: const TextStyle(
-                  color: Theming.whiteTone,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Theming.bgColor,
-                    useRootNavigator: true,
-                    enableDrag: false,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      ),
-                    ),
-                    builder: (_) => DatePicker(
-                      onSelect: (year, month) {
-                        setState(() {
-                          date[0] = year + DateTime.now().year;
-                          date[1] = month;
-                        });
-
-                        if (date[0] == DateTime.now().year &&
-                            date[1] == DateTime.now().month) {
-                          setState(() => selectedDayIndex = DateTime.now().day);
-                        } else {
-                          setState(() => selectedDayIndex = 1);
-                        }
-                      },
-                    ),
-                  );
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.pickADate,
-                  style: TextStyle(
-                    color: Theming.whiteTone.withOpacity(0.7),
-                    fontSize: 14,
+    return SizedBox(
+      height: 210,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 50),
+          Padding(
+            padding: widget.textPadding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "$month ${date[0]}",
+                  style: const TextStyle(
+                    color: Theming.whiteTone,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Theming.bgColor,
+                      useRootNavigator: true,
+                      enableDrag: false,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      builder: (_) => DatePicker(
+                        onSelect: (year, month) {
+                          setState(() {
+                            date[0] = year + DateTime.now().year;
+                            date[1] = month;
+                          });
+
+                          if (date[0] == DateTime.now().year &&
+                              date[1] == DateTime.now().month) {
+                            setState(
+                                () => selectedDayIndex = DateTime.now().day);
+                          } else {
+                            setState(() => selectedDayIndex = 1);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.pickADate,
+                    style: TextStyle(
+                      color: Theming.whiteTone.withOpacity(0.7),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 15),
+          Stack(
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 30),
+                    for (int i = dateBoxStart;
+                        i <= _numOfDaysInMonth(date[0], date[1]);
+                        i++)
+                      _dateBox(
+                        i,
+                        boxDate: DateTime(
+                          date[0],
+                          date[1],
+                          i,
+                        ),
+                      ),
+                  ],
+                ),
               ),
+              _sideShadow(Alignment.centerLeft),
+              _sideShadow(Alignment.centerRight),
             ],
           ),
-        ),
-        const SizedBox(height: 15),
-        Stack(
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  const SizedBox(width: 30),
-                  for (int i = dateBoxStart;
-                      i <= _numOfDaysInMonth(date[0], date[1]);
-                      i++)
-                    _dateBox(
-                      i,
-                      boxDate: DateTime(
-                        date[0],
-                        date[1],
-                        i,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            _sideShadow(Alignment.centerLeft),
-            _sideShadow(Alignment.centerRight),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 

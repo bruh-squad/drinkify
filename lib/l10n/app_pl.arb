@@ -10,7 +10,7 @@
     "youHave": "Masz",
     "notifications": "powiadomień!",
     "select": "Wybierz",
-    
+
     "parties": "Imprezy",
     "friends": "Znajomi",
     "inYourArea": "W okolicy",
@@ -26,12 +26,11 @@
 
     "notificationsNotifications": "Powiadomienia",
     "notificationFrom": "Od",
-    "secondsAgo": "sekund temu",
-    "minutesAgo": "minut temu",
-    "hoursAgo": "godzin temu",
     "friendInvitations": "Zaproszenia do znajomych",
     "partyInvitations": "Zaproszenia na imprezę",
     "joinRequests": "Prośby o dołączenie",
+    "acceptNotif": "Zaakceptuj",
+    "rejectNotif": "Odrzuć",
 
     "settings": "Ustawienia",
     "editProfile": "Edytuj profil",
@@ -123,6 +122,7 @@
     "noFriendsInvited": "Nikogo nie zaproszono",
     "createdSuccessfully": "Utworzono imprezę",
     "creationFailed": "Nie utworzono imprezy",
+    "pickAnImage": "Wybierz zdjęcie",
 
     "requiredField": "Pole wymagane",
     "wrongDate": "Data rozpoczęcia ustawiona po końcu imprezy"

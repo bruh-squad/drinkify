@@ -45,25 +45,23 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.only(
           top: MediaQuery.of(context).viewPadding.top + 20,
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              //Had to use many paddings to make the DateRow boxes look better
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: WelcomeHeader(user),
-              ),
-              DateRow(
-                user,
-                (dt) => setState(() => selectedDate = dt),
-                textPadding: const EdgeInsets.symmetric(horizontal: 30),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: PartyList(selectedDate, parties),
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            //Had to use many paddings to make the DateRow boxes look better
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: WelcomeHeader(user),
+            ),
+            DateRow(
+              user,
+              (dt) => setState(() => selectedDate = dt),
+              textPadding: const EdgeInsets.symmetric(horizontal: 30),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: PartyList(selectedDate, parties),
+            ),
+          ],
         ),
       ),
     );

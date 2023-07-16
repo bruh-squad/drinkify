@@ -33,7 +33,6 @@ class PartyController {
         "sender_public_id": userId,
       },
       headers: {
-        "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
     );

@@ -26,12 +26,11 @@
 
     "notificationsNotifications": "Notifications",
     "notificationFrom": "From",
-    "secondsAgo": "seconds ago",
-    "minutesAgo": "minutes ago",
-    "hoursAgo": "hours ago",
     "friendInvitations": "Friend invitations",
     "partyInvitations": "Party invitations",
     "joinRequests": "Join requests",
+    "acceptNotif": "Accept",
+    "rejectNotif": "Reject",
 
     "settings": "Settings",
     "editProfile": "Edit profile",
@@ -123,6 +122,7 @@
     "noFriendsInvited": "No friends invited yet",
     "createdSuccessfully": "Party created successfully",
     "creationFailed": "Party creation failed",
+    "pickAnImage": "Pick an image",
 
     "requiredField": "Field required",
     "wrongDate": "Start date can't be set after end date"
