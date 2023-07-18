@@ -153,7 +153,6 @@ class UserController {
     return res.statusCode == 201;
   }
 
-  // FIXME url
   static Future<bool> rejectFriendInvitation(FriendInvitation inv) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");

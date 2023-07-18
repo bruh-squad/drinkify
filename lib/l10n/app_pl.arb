@@ -26,11 +26,15 @@
 
     "notificationsNotifications": "Powiadomienia",
     "notificationFrom": "Od",
+    "notificationTo": "Do",
     "friendInvitations": "Zaproszenia do znajomych",
     "partyInvitations": "Zaproszenia na imprezę",
-    "joinRequests": "Prośby o dołączenie",
+    "sentJoinRequests": "Wysłane prośby o dołączenie",
     "acceptNotif": "Zaakceptuj",
     "rejectNotif": "Odrzuć",
+    "acceptedNotif": "Zaakceptowano",
+    "rejectedNotif": "Odrzucono",
+    "acceptRejectError": "Wystąpił błąd",
 
     "settings": "Ustawienia",
     "editProfile": "Edytuj profil",

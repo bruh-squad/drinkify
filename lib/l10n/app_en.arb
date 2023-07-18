@@ -26,11 +26,15 @@
 
     "notificationsNotifications": "Notifications",
     "notificationFrom": "From",
+    "notificationTo": "To",
     "friendInvitations": "Friend invitations",
     "partyInvitations": "Party invitations",
-    "joinRequests": "Join requests",
+    "sentJoinRequests": "Sent join requests",
     "acceptNotif": "Accept",
     "rejectNotif": "Reject",
+    "acceptedNotif": "Accepted",
+    "rejectedNotif": "Rejected",
+    "acceptRejectError": "An error occurred",
 
     "settings": "Settings",
     "editProfile": "Edit profile",

@@ -98,7 +98,7 @@ class PartyRequestsPage extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: AppLocalizations.of(ctx)!.notificationFrom,
+                        text: AppLocalizations.of(ctx)!.notificationTo,
                         style: const TextStyle(
                           color: Theming.whiteTone,
                           fontWeight: FontWeight.bold,

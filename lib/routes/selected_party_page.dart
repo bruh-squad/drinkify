@@ -53,15 +53,14 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
     }
 
     final LocationData posData = await location.getLocation();
-    if (context.mounted) {
-      setState(() {
-        userLocation = LatLng(
-          posData.latitude!,
-          posData.longitude!,
-        );
-        showUserLocation = true;
-      });
-    }
+    if (!mounted) return;
+    setState(() {
+      userLocation = LatLng(
+        posData.latitude!,
+        posData.longitude!,
+      );
+      showUserLocation = true;
+    });
   }
 
   double mapFullSize(BuildContext ctx) => MediaQuery.of(ctx).size.height - 120;

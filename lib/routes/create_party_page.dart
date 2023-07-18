@@ -156,7 +156,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
             }
             setState(() => errorFields = tempErrorList);
             if (errorFields.isNotEmpty && !_wrongDate) return;
-            final isCreated = await PartyCreatorController.createParty(
+            final createdParty = await PartyCreatorController.createParty(
               Party(
                 name: partyTitle,
                 description: descriptionCtrl.text,
@@ -167,13 +167,18 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                 image: thumbnail?.path,
               ),
             );
+            if (createdParty != null) {
+              for (final p in invitedUsers) {
+                PartyCreatorController.sendPartyInvitation(createdParty, p);
+              }
+            }
             if (!mounted) return;
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               backgroundColor: Theming.bgColor,
               builder: (_) => SuccessSheet(
-                success: isCreated,
+                success: createdParty != null,
                 successMsg: AppLocalizations.of(context)!.createdSuccessfully,
                 failureMsg: AppLocalizations.of(context)!.creationFailed,
               ),

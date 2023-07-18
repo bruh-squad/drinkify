@@ -26,7 +26,7 @@ class CategoryRow extends StatelessWidget {
           tabs: [
             _category(0, AppLocalizations.of(context)!.friendInvitations),
             _category(1, AppLocalizations.of(context)!.partyInvitations),
-            _category(2, AppLocalizations.of(context)!.joinRequests),
+            _category(2, AppLocalizations.of(context)!.sentJoinRequests),
           ],
         ),
       ),
