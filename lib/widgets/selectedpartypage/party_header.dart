@@ -32,7 +32,7 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
         latLng.longitude,
       );
     } catch (_) {
-      partyLocation = AppLocalizations.of(context)!.unknown;
+      partyLocation = AppLocalizations.of(ctx)!.unknown;
       return;
     }
 
@@ -61,9 +61,15 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _getActualLocation(widget.party.location!, context);
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getActualLocation(widget.party.location!, context);
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       constraints: const BoxConstraints(minHeight: 110),
@@ -175,7 +181,7 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    "${widget.party.participants?.length ?? "1"}",
+                    "${widget.party.participants?.length}",
                     style: const TextStyle(
                       color: Theming.whiteTone,
                       fontWeight: FontWeight.bold,

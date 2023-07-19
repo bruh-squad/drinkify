@@ -9,6 +9,7 @@ import '../utils/ext.dart' show DateTimeConvert;
 import '../models/user.dart';
 import '../models/friend_invitiation.dart';
 import '../models/party_invitation.dart';
+import '../models/party_request.dart';
 
 ///Used for getting information about the user, updating, deleting and searching
 class UserController {
@@ -184,5 +185,24 @@ class UserController {
     }
 
     return invitations;
+  }
+
+  ///Retrieves a list of join requests to user's owned parties
+  static Future<List<PartyRequest>> joinRequests() async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/requests/";
+    final res = await http.get(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    final requests = <PartyRequest>[];
+    for (final pr in jsonDecode(res.body)["results"]) {
+      requests.add(PartyRequest.fromMap(pr));
+    }
+    return requests;
   }
 }

@@ -91,7 +91,7 @@ class _InviteFriendsState extends State<InviteFriends> {
     required Friend userData,
   }) {
     return Visibility(
-      visible: index < 9,
+      visible: index <= 9,
       child: Container(
         height: 50,
         width: 50,
@@ -117,7 +117,7 @@ class _InviteFriendsState extends State<InviteFriends> {
               : null,
         ),
         child: Text(
-          "+${allUsers - index + 1}",
+          index < 9 ? "" : "+${allUsers - index}",
           style: const TextStyle(
             color: Theming.whiteTone,
             fontWeight: FontWeight.bold,

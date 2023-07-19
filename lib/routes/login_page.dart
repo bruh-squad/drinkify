@@ -7,6 +7,7 @@ import '../utils/theming.dart';
 import '../widgets/edit_field.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/user_controller.dart';
+import '../widgets/dialogs/success_sheet.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -198,7 +199,19 @@ class _LoginPageState extends State<LoginPage> {
                         await storage.delete(key: "user_password");
                       }
                       if (mounted) context.go("/");
+                      return;
                     }
+                    if (!mounted) return;
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Theming.bgColor,
+                      builder: (ctx) => SuccessSheet(
+                        success: false,
+                        successMsg: AppLocalizations.of(context)!.loginFailed,
+                        failureMsg: AppLocalizations.of(context)!.loginFailed,
+                      ),
+                    );
                   }
                 },
                 child: AnimatedContainer(

@@ -63,13 +63,16 @@ class _FriendListPageState extends State<FriendListPage> {
               friends.isEmpty ? const SliverToBoxAdapter() : _friendList(),
             ],
           ),
-          Center(
-            child: Text(
-              AppLocalizations.of(context)!.emptyHere,
-              style: TextStyle(
-                color: Theming.whiteTone.withOpacity(0.7),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+          Visibility(
+            visible: friends.isEmpty,
+            child: Center(
+              child: Text(
+                AppLocalizations.of(context)!.emptyHere,
+                style: TextStyle(
+                  color: Theming.whiteTone.withOpacity(0.7),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

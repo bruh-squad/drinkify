@@ -31,54 +31,71 @@ class _OrganizationPageState extends State<OrganizationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theming.bgColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Theming.bgColor,
-            surfaceTintColor: Theming.bgColor,
-            shadowColor: Theming.bgColor,
-            pinned: true,
-            title: Text(
-              AppLocalizations.of(context)!.yourParties,
-              style: const TextStyle(
-                color: Theming.whiteTone,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            centerTitle: true,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: IconButton(
-                onPressed: () => context.pop(),
-                icon: const Icon(
-                  Icons.arrow_back_ios_rounded,
-                  color: Theming.whiteTone,
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                backgroundColor: Theming.bgColor,
+                surfaceTintColor: Theming.bgColor,
+                shadowColor: Theming.bgColor,
+                pinned: true,
+                title: Text(
+                  AppLocalizations.of(context)!.yourParties,
+                  style: const TextStyle(
+                    color: Theming.whiteTone,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                centerTitle: true,
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: IconButton(
+                    onPressed: () => context.pop(),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_rounded,
+                      color: Theming.whiteTone,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          for (final p in ownedParties)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: PartyHolder(
-                  p,
-                  () {
-                    showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Theming.bgColor,
-                      builder: (ctx) {
-                        return PartyOptionsSheet(p);
+              for (final p in ownedParties)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: PartyHolder(
+                      p,
+                      () {
+                        showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Theming.bgColor,
+                          builder: (ctx) {
+                            return PartyOptionsSheet(p);
+                          },
+                        );
                       },
-                    );
-                  },
+                    ),
+                  ),
+                ),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: MediaQuery.of(context).viewPadding.bottom + 20,
                 ),
               ),
-            ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: MediaQuery.of(context).viewPadding.bottom + 20,
+            ],
+          ),
+          Visibility(
+            visible: ownedParties.isEmpty,
+            child: Center(
+              child: Text(
+                AppLocalizations.of(context)!.emptyHere,
+                style: TextStyle(
+                  color: Theming.whiteTone.withOpacity(0.7),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],

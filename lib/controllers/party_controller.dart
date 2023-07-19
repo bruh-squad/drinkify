@@ -59,9 +59,11 @@ class PartyController {
     return invitations;
   }
 
+  // Retrieves a list of all parties user takes part in
   static Future<List<Party>> myParties() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
+    // TODO wait for backend update in order to change the URL
     final url = "$mainUrl/parties/";
     final res = await http.get(
       Uri.parse(url),

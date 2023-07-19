@@ -11,6 +11,7 @@ import '../controllers/auth_controller.dart';
 import '../models/create_user.dart';
 import '../widgets/dialogs/image_picker_sheet.dart';
 import '../widgets/edit_field.dart';
+import '../widgets/dialogs/success_sheet.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -128,11 +129,21 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Stack(
                       children: [
                         pfp == null
-                            ? const CircleAvatar(
-                                radius: 45,
-                                backgroundColor: Theming.bgColorLight,
-                                backgroundImage: AssetImage(
-                                  "assets/images/default_pfp.png",
+                            ? Container(
+                                height: 90,
+                                width: 90,
+                                decoration: BoxDecoration(
+                                  color: Theming.bgColor,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    width: 2,
+                                    color: Theming.whiteTone.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.person_rounded,
+                                  size: 50,
+                                  color: Theming.whiteTone.withOpacity(0.3),
                                 ),
                               )
                             : CircleAvatar(
@@ -279,15 +290,44 @@ class _RegisterPageState extends State<RegisterPage> {
                             pfp: pfp != null ? File(pfp!.path) : null,
                           ),
                         );
-                        if (!canRegister) return;
-                        final loggedIn = await AuthController.loginUser(
-                          emailCtrl.text,
-                          passwordCtrl.text,
-                          false,
-                        );
-                        if (loggedIn && mounted) {
-                          context.go("/");
+                        if (canRegister) {
+                          final loggedIn = await AuthController.loginUser(
+                            emailCtrl.text,
+                            passwordCtrl.text,
+                            false,
+                          );
+                          if (!mounted) return;
+                          if (loggedIn) {
+                            context.go("/");
+                          } else {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Theming.bgColor,
+                              builder: (ctx) => SuccessSheet(
+                                success: false,
+                                successMsg:
+                                    AppLocalizations.of(context)!.loginFailed,
+                                failureMsg:
+                                    AppLocalizations.of(context)!.loginFailed,
+                              ),
+                            );
+                          }
+                          return;
                         }
+                        if (!mounted) return;
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Theming.bgColor,
+                          builder: (ctx) => SuccessSheet(
+                            success: false,
+                            successMsg: AppLocalizations.of(context)!
+                                .registrationFailed,
+                            failureMsg: AppLocalizations.of(context)!
+                                .registrationFailed,
+                          ),
+                        );
                       }
                     },
                     child: AnimatedContainer(

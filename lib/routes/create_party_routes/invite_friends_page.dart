@@ -64,7 +64,10 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                       for (final user in friends)
                         UserHolder(
                           user,
-                          onButtonTap: () => invitedUsers.add(user),
+                          onButtonTap: () {
+                            if (invitedUsers.contains(user)) return;
+                            invitedUsers.add(user);
+                          },
                           buttonChild: Text(
                             AppLocalizations.of(context)!.invite,
                             style: const TextStyle(

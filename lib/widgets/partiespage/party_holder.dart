@@ -129,7 +129,7 @@ class PartyHolder extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            "${party.participants?.length ?? 1}",
+                            "${party.participants!.length}",
                             style: const TextStyle(
                               color: Theming.whiteTone,
                               fontWeight: FontWeight.bold,

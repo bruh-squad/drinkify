@@ -35,6 +35,7 @@ class Party {
   });
 
   factory Party.fromMap(Map<String, dynamic> m) {
+    // print(m["participants"]);
     return Party(
       publicId: m["public_id"],
       owner: Friend.fromMap(m["owner"]),
@@ -48,6 +49,7 @@ class Party {
       privacyStatus: m["privacy_status"],
       privacyStatusDisplay: m["privacy_status_display"],
       image: m["image"],
+      participants: [for (final p in m["participants"]) Friend.fromMap(p)],
     );
   }
 

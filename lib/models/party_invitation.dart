@@ -22,9 +22,9 @@ class PartyInvitation {
     return PartyInvitation(
       id: m["id"],
       party: Party.fromMap(m["party"]),
-      partyPublicId: m["party_public_id"],
+      partyPublicId: m["party_public_id"] ?? "",
       receiver: Friend.fromMap(m["receiver"]),
-      receiverPublicId: m["receiver_public_id"],
+      receiverPublicId: m["receiver_public_id"] ?? "",
       createdAt: DateTime.parse(m["created_at"]),
     );
   }

@@ -32,25 +32,6 @@ class PartyCreatorController {
     return parties;
   }
 
-  ///Retrieves a list of join requests to user's owned parties
-  static Future<List<PartyRequest>> joinRequests() async {
-    const storage = FlutterSecureStorage();
-    final token = await storage.read(key: "access");
-    final url = "$mainUrl/parties/requests/";
-    final res = await http.get(
-      Uri.parse(url),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
-    );
-
-    final requests = <PartyRequest>[];
-    for (final pr in jsonDecode(res.body)["results"]) {
-      requests.add(PartyRequest.fromMap(pr));
-    }
-    return requests;
-  }
-
   ///Creates a party using information provided in [party]
   static Future<Party?> createParty(Party party) async {
     const storage = FlutterSecureStorage();
@@ -117,7 +98,7 @@ class PartyCreatorController {
     return res.statusCode == 201;
   }
 
-  //FIXME
+  //FIXME sending request
   static Future<bool> rejectPartyRequest(PartyRequest req) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -134,13 +115,26 @@ class PartyCreatorController {
   static Future<bool> sendPartyInvitation(Party p, Friend f) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
-    final url = "$mainUrl/parties/invitations/${p.publicId}";
+    final url = "$mainUrl/parties/invitations/${p.publicId}/";
     final res = await http.post(
       Uri.parse(url),
-      body: {
-        //TODO implement those fields
-      },
+      body: jsonEncode({
+        "party": {
+          "owner": {},
+          "owner_public_id": p.ownerPublicId,
+          "name": p.name,
+          "privacy_status": p.privacyStatus,
+          "description": p.description,
+          "location": p.location!.toPOINT(),
+          "start_time": p.startTime.toIso8601String(),
+          "stop_time": p.stopTime.toIso8601String(),
+        },
+        "party_public_id": p.publicId,
+        "receiver": {},
+        "receiver_public_id": f.publicId,
+      }),
       headers: {
+        "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
     );

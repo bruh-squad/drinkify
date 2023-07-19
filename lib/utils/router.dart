@@ -16,6 +16,9 @@ import '../routes/create_party_page.dart';
 import '../widgets/navbar.dart';
 import '../models/party.dart';
 import '../models/friend.dart';
+import '../models/friend_invitiation.dart';
+import '../models/party_invitation.dart';
+import '../models/party_request.dart';
 
 //Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
@@ -104,9 +107,17 @@ GoRouter router = GoRouter(
       path: "/notifications",
       parentNavigatorKey: _rootKey,
       pageBuilder: (_, state) {
+        final notifs = state.extra as List<List<Object>>;
+        final friendInvs = notifs[0] as List<FriendInvitation>;
+        final partyInvs = notifs[1] as List<PartyInvitation>;
+        final partyReqs = notifs[2] as List<PartyRequest>;
         return pageTransition(
           state: state,
-          childWidget: const NotificationsPage(),
+          childWidget: NotificationsPage(
+            friendInvs,
+            partyInvs,
+            partyReqs,
+          ),
         );
       },
     ),

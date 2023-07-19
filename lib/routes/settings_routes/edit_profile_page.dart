@@ -46,6 +46,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
     passwordCtrl = TextEditingController();
     selectedFieldIndex = null;
     initializeDateFormatting();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final me = await UserController.me();
+      setState(() {
+        firstNameCtrl.text = me.firstName!;
+        lastNameCtrl.text = me.lastName!;
+        dateOfBirth = me.dateOfBirth!;
+        birthdayCtrl.text =
+            DateFormat.yMd(AppLocalizations.of(context)!.localeName).format(
+          me.dateOfBirth!,
+        );
+      });
+    });
   }
 
   @override
@@ -93,6 +106,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           if (!mounted) return;
           showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
+            backgroundColor: Theming.bgColor,
             builder: (ctx) {
               return SuccessSheet(
                 success: success,
@@ -176,13 +191,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     },
                     child: Stack(
                       children: [
-                        //I have no idea why I couldn't do image stuff in one line :(
                         pfp == null
-                            ? const CircleAvatar(
-                                radius: 45,
-                                backgroundColor: Theming.bgColorLight,
-                                backgroundImage: AssetImage(
-                                  "assets/images/default_pfp.png",
+                            ? Container(
+                                height: 90,
+                                width: 90,
+                                decoration: BoxDecoration(
+                                  color: Theming.bgColor,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    width: 2,
+                                    color: Theming.whiteTone.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.person_rounded,
+                                  size: 50,
+                                  color: Theming.whiteTone.withOpacity(0.3),
                                 ),
                               )
                             : CircleAvatar(

@@ -39,11 +39,22 @@ class _UserInfoState extends State<UserInfo> {
                         backgroundImage: NetworkImage(widget.user!.pfp!),
                         backgroundColor: Theming.bgColorLight,
                       )
-                    : const CircleAvatar(
-                        radius: 50,
-                        backgroundImage:
-                            AssetImage("assets/images/default_pfp.png"),
-                        backgroundColor: Theming.bgColorLight,
+                    : Container(
+                        height: 90,
+                        width: 90,
+                        decoration: BoxDecoration(
+                          color: Theming.bgColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 2,
+                            color: Theming.whiteTone.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.person_rounded,
+                          size: 50,
+                          color: Theming.whiteTone.withOpacity(0.3),
+                        ),
                       )
                 : widget.friend?.pfp != null
                     ? CircleAvatar(
@@ -51,11 +62,22 @@ class _UserInfoState extends State<UserInfo> {
                         backgroundImage: NetworkImage(widget.friend!.pfp!),
                         backgroundColor: Theming.bgColorLight,
                       )
-                    : const CircleAvatar(
-                        radius: 50,
-                        backgroundImage:
-                            AssetImage("assets/images/default_pfp.png"),
-                        backgroundColor: Theming.bgColorLight,
+                    : Container(
+                        height: 90,
+                        width: 90,
+                        decoration: BoxDecoration(
+                          color: Theming.bgColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 2,
+                            color: Theming.whiteTone.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.person_rounded,
+                          size: 50,
+                          color: Theming.whiteTone.withOpacity(0.3),
+                        ),
                       ),
 
             const SizedBox(height: 10),

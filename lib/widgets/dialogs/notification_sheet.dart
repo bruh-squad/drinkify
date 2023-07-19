@@ -1,14 +1,14 @@
-import 'package:drinkify/controllers/party_controller.dart';
-import 'package:drinkify/controllers/party_creator_controller.dart';
-import 'package:drinkify/controllers/user_controller.dart';
-import 'package:drinkify/models/friend_invitiation.dart';
-import 'package:drinkify/models/party_invitation.dart';
-import 'package:drinkify/models/party_request.dart';
-import 'package:drinkify/widgets/dialogs/success_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
+import '/controllers/party_controller.dart';
+import '/controllers/party_creator_controller.dart';
+import '/controllers/user_controller.dart';
+import '/models/friend_invitiation.dart';
+import '/models/party_invitation.dart';
+import '/models/party_request.dart';
+import '/widgets/dialogs/success_sheet.dart';
 
 ///Used for displaying all information about a notification
 class NotificationSheet extends StatefulWidget {

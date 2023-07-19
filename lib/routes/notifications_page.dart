@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../widgets/notificationspage/category_row.dart';
 import '../utils/theming.dart';
-import '../controllers/party_creator_controller.dart';
-import '../controllers/user_controller.dart';
 import '../models/friend_invitiation.dart';
 import '../models/party_invitation.dart';
 import '../models/party_request.dart';
-import '../widgets/notificationspage/category_row.dart';
-import './notification_routes/friend_invitations_page.dart';
 import '../routes/notification_routes/party_invitations_page.dart';
 import '../routes/notification_routes/party_requests_page.dart';
+import './notification_routes/friend_invitations_page.dart';
 
 class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({super.key});
+  final List<FriendInvitation> friendInvs;
+  final List<PartyInvitation> partyInvs;
+  final List<PartyRequest> partyReqs;
+
+  const NotificationsPage(
+    this.friendInvs,
+    this.partyInvs,
+    this.partyReqs, {
+    super.key,
+  });
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
@@ -24,10 +31,6 @@ class _NotificationsPageState extends State<NotificationsPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabCtrl;
 
-  late List<FriendInvitation> friendInvs;
-  late List<PartyInvitation> partyInvs;
-  late List<PartyRequest> partyReqs;
-
   @override
   void initState() {
     super.initState();
@@ -36,19 +39,6 @@ class _NotificationsPageState extends State<NotificationsPage>
       vsync: this,
       initialIndex: 0,
     );
-    friendInvs = [];
-    partyInvs = [];
-    partyReqs = [];
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final friendInvsTemp = await UserController.friendInvitations();
-      final partyInvsTemp = await UserController.partyInvitations();
-      final partyReqsTemp = await PartyCreatorController.joinRequests();
-      setState(() {
-        friendInvs = friendInvsTemp;
-        partyInvs = partyInvsTemp;
-        partyReqs = partyReqsTemp;
-      });
-    });
   }
 
   @override
@@ -100,9 +90,9 @@ class _NotificationsPageState extends State<NotificationsPage>
         body: TabBarView(
           controller: _tabCtrl,
           children: [
-            FriendInvitationsPage(friendInvs),
-            PartyInvitationsPage(partyInvs),
-            PartyRequestsPage(partyReqs),
+            FriendInvitationsPage(widget.friendInvs),
+            PartyInvitationsPage(widget.partyInvs),
+            PartyRequestsPage(widget.partyReqs),
           ],
         ),
       ),
