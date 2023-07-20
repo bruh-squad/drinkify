@@ -66,15 +66,47 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                           user,
                           onButtonTap: () {
                             if (invitedUsers.contains(user)) return;
-                            invitedUsers.add(user);
+                            setState(() => invitedUsers.add(user));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: const Duration(seconds: 2),
+                                behavior: SnackBarBehavior.floating,
+                                elevation: 0,
+                                backgroundColor:
+                                    Theming.whiteTone.withOpacity(0.1),
+                                content: Row(
+                                  children: [
+                                    Text(
+                                      "${AppLocalizations.of(context)!.invitedUser} ",
+                                      style: const TextStyle(
+                                        color: Theming.whiteTone,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "@${user.username}",
+                                      style: const TextStyle(
+                                        color: Theming.greenTone,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           },
-                          buttonChild: Text(
-                            AppLocalizations.of(context)!.invite,
-                            style: const TextStyle(
-                              color: Theming.whiteTone,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          buttonChild: invitedUsers.contains(user)
+                              ? const Icon(
+                                  Icons.check_rounded,
+                                  color: Theming.primaryColor,
+                                )
+                              : Text(
+                                  AppLocalizations.of(context)!.invite,
+                                  style: const TextStyle(
+                                    color: Theming.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                     ],
                   )
@@ -88,6 +120,8 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                       ),
                     ),
                   ),
+
+            //TODO implement searching
             GlassMorphism(
               borderRadius: BorderRadius.circular(30),
               blur: 20,

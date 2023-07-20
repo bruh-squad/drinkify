@@ -13,8 +13,11 @@ import '/widgets/dialogs/success_sheet.dart';
 ///Used for displaying all information about a notification
 class NotificationSheet extends StatefulWidget {
   final Object notif;
+  // Passing an object in order to check its type when receiving
+  final Function(Object) onAction;
   const NotificationSheet(
-    this.notif, {
+    this.notif,
+    this.onAction, {
     super.key,
   });
 
@@ -42,29 +45,36 @@ class _NotificationSheetState extends State<NotificationSheet> {
     );
   }
 
+  Widget get _content {
+    if (widget.notif is FriendInvitation) return _friendInvContent();
+    if (widget.notif is PartyInvitation) return _partyInvContent();
+    return _partyReqContent();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Stack(
-            children: [
-              const Wrap(
-                children: [
-                  //TODO implement info about notification
-                ],
-              ),
-              SizedBox(
+        height: MediaQuery.of(context).size.height - 200,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              //TODO implement info about notification
+              child: _content,
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
                 height: 50,
+                width: double.infinity,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Visibility(
                       visible: widget.notif is! PartyRequest,
                       child: GestureDetector(
                         onTap: () async {
-                          //TODO
                           if (widget.notif is FriendInvitation) {
                             final success =
                                 await UserController.acceptFriendInvitation(
@@ -81,6 +91,7 @@ class _NotificationSheetState extends State<NotificationSheet> {
                             if (!mounted) return;
                             _modalSheet(context, success, true);
                           }
+                          widget.onAction(widget.notif);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width / 2 - 40,
@@ -102,7 +113,6 @@ class _NotificationSheetState extends State<NotificationSheet> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        //TODO
                         if (widget.notif is FriendInvitation) {
                           final success =
                               await UserController.rejectFriendInvitation(
@@ -127,6 +137,7 @@ class _NotificationSheetState extends State<NotificationSheet> {
                           if (!mounted) return;
                           _modalSheet(context, success, false);
                         }
+                        widget.onAction(widget.notif);
                       },
                       child: Container(
                         width: widget.notif is PartyRequest
@@ -150,10 +161,24 @@ class _NotificationSheetState extends State<NotificationSheet> {
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _friendInvContent() {
+    return const Wrap();
+  }
+
+  Widget _partyInvContent() {
+    return const Wrap();
+  }
+
+  Widget _partyReqContent() {
+    return const Wrap(
+      children: [],
     );
   }
 }

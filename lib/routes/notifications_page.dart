@@ -10,6 +10,7 @@ import '../models/party_request.dart';
 import '../routes/notification_routes/party_invitations_page.dart';
 import '../routes/notification_routes/party_requests_page.dart';
 import './notification_routes/friend_invitations_page.dart';
+import '../controllers/user_controller.dart';
 
 class NotificationsPage extends StatefulWidget {
   final List<FriendInvitation> friendInvs;
@@ -31,9 +32,16 @@ class _NotificationsPageState extends State<NotificationsPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabCtrl;
 
+  late List<FriendInvitation> friendInvs;
+  late List<PartyInvitation> partyInvs;
+  late List<PartyRequest> partyReqs;
+
   @override
   void initState() {
     super.initState();
+    friendInvs = widget.friendInvs;
+    partyInvs = widget.partyInvs;
+    partyReqs = widget.partyReqs;
     _tabCtrl = TabController(
       length: 3,
       vsync: this,
@@ -90,9 +98,27 @@ class _NotificationsPageState extends State<NotificationsPage>
         body: TabBarView(
           controller: _tabCtrl,
           children: [
-            FriendInvitationsPage(widget.friendInvs),
-            PartyInvitationsPage(widget.partyInvs),
-            PartyRequestsPage(widget.partyReqs),
+            FriendInvitationsPage(
+              friendInvs,
+              () async {
+                final fi = await UserController.friendInvitations();
+                setState(() => friendInvs = fi);
+              },
+            ),
+            PartyInvitationsPage(
+              partyInvs,
+              () async {
+                final pi = await UserController.partyInvitations();
+                setState(() => partyInvs = pi);
+              },
+            ),
+            PartyRequestsPage(
+              partyReqs,
+              () async {
+                final pr = await UserController.joinRequests();
+                setState(() => partyReqs = pr);
+              },
+            ),
           ],
         ),
       ),

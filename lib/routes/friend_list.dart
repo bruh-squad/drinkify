@@ -1,3 +1,4 @@
+import 'package:drinkify/widgets/dialogs/friend_option_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -90,13 +91,17 @@ class _FriendListPageState extends State<FriendListPage> {
             for (final f in friends)
               UserHolder(
                 f,
-                onButtonTap: () => context.go("/profile", extra: f),
-                buttonChild: Text(
-                  AppLocalizations.of(context)!.navbarProfile,
-                  style: const TextStyle(
-                    color: Theming.whiteTone,
-                    fontWeight: FontWeight.bold,
-                  ),
+                onButtonTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Theming.bgColor,
+                    isScrollControlled: true,
+                    builder: (_) => FriendOptionSheet(f),
+                  );
+                },
+                buttonChild: const Icon(
+                  Icons.more_vert,
+                  color: Theming.primaryColor,
                 ),
               ),
           ],

@@ -7,8 +7,10 @@ import '/widgets/dialogs/notification_sheet.dart';
 
 class PartyRequestsPage extends StatelessWidget {
   final List<PartyRequest> notif;
+  final VoidCallback onAction;
   const PartyRequestsPage(
-    this.notif, {
+    this.notif,
+    this.onAction, {
     super.key,
   });
 
@@ -42,7 +44,13 @@ class PartyRequestsPage extends StatelessWidget {
           context: ctx,
           backgroundColor: Theming.bgColor,
           isScrollControlled: true,
-          builder: (_) => NotificationSheet(inv),
+          builder: (_) => NotificationSheet(
+            inv,
+            (obj) {
+              if (obj is! PartyRequest) return;
+              onAction();
+            },
+          ),
         );
       },
       splashColor: Theming.whiteTone.withOpacity(0.05),

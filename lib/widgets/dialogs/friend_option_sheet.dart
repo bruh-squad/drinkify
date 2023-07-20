@@ -3,22 +3,22 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
-import '/models/party.dart';
-import '/controllers/party_creator_controller.dart';
 import '/widgets/dialogs/success_sheet.dart';
+import '/controllers/user_controller.dart';
+import '/models/friend.dart';
 
-class PartyOptionsSheet extends StatefulWidget {
-  final Party party;
-  const PartyOptionsSheet(
-    this.party, {
+class FriendOptionSheet extends StatefulWidget {
+  final Friend friend;
+  const FriendOptionSheet(
+    this.friend, {
     super.key,
   });
 
   @override
-  State<PartyOptionsSheet> createState() => _PartyOptionsSheetState();
+  State<FriendOptionSheet> createState() => _FriendOptionSheetState();
 }
 
-class _PartyOptionsSheetState extends State<PartyOptionsSheet> {
+class _FriendOptionSheetState extends State<FriendOptionSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -27,25 +27,25 @@ class _PartyOptionsSheetState extends State<PartyOptionsSheet> {
         child: Wrap(
           children: [
             _option(
-              Icons.edit_rounded,
-              AppLocalizations.of(context)!.editParty,
-              () => context.push("/edit-party", extra: widget.party),
+              Icons.person_rounded,
+              AppLocalizations.of(context)!.showProfile,
+              () => context.push("/profile", extra: widget.friend),
             ),
             _option(
               Icons.delete_rounded,
-              AppLocalizations.of(context)!.deleteParty,
+              AppLocalizations.of(context)!.removeFriend,
               () async {
-                final isDeleted = await PartyCreatorController.deleteParty(
-                  widget.party.publicId!,
+                final isRemoved = await UserController.removeFriend(
+                  widget.friend,
                 );
                 if (!mounted) return;
                 showModalBottomSheet(
                   context: context,
                   backgroundColor: Theming.bgColor,
                   builder: (ctx) => SuccessSheet(
-                    success: isDeleted,
-                    successMsg: AppLocalizations.of(ctx)!.deleteSuccess,
-                    failureMsg: AppLocalizations.of(ctx)!.deleteFailure,
+                    success: isRemoved,
+                    successMsg: AppLocalizations.of(ctx)!.removeFriendSuccess,
+                    failureMsg: AppLocalizations.of(ctx)!.removeFriendFailure,
                   ),
                 );
               },

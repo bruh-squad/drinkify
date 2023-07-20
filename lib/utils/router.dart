@@ -13,12 +13,13 @@ import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/organization_page.dart';
 import '../routes/friend_list.dart';
 import '../routes/create_party_page.dart';
-import '../widgets/navbar.dart';
+import '../routes/settings_routes/edit_party_page.dart';
 import '../models/party.dart';
 import '../models/friend.dart';
 import '../models/friend_invitiation.dart';
 import '../models/party_invitation.dart';
 import '../models/party_request.dart';
+import '../widgets/navbar.dart';
 
 //Use this for all routes that does not need NavBar
 final GlobalKey<NavigatorState> _rootKey = GlobalKey<NavigatorState>();
@@ -158,6 +159,16 @@ GoRouter router = GoRouter(
         return pageTransition(
           state: state,
           childWidget: const CreatePartyRoute(),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/edit-party",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: EditPartyPage(state.extra as Party),
         );
       },
     ),

@@ -188,28 +188,77 @@ class _SelectedPartyPage extends State<SelectedPartyPage> {
                         MarkerLayer(
                           markers: [
                             Marker(
+                              height: 76,
+                              width: 100,
                               point: userLocation,
                               builder: (_) {
                                 return Visibility(
                                   visible: showUserLocation,
-                                  child: const Icon(
-                                    Icons.person_pin_circle,
-                                    color: Theming.primaryColor,
-                                    size: 36,
+                                  child: Column(
+                                    children: [
+                                      const Icon(
+                                        Icons.person_pin_circle,
+                                        color: Theming.primaryColor,
+                                        size: 36,
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 7,
+                                          vertical: 2,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color:
+                                              Theming.bgColor.withOpacity(0.5),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.of(context)!.you,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 );
                               },
                             ),
                             Marker(
+                              height: 76,
+                              width: 100,
                               point: LatLng(
                                 widget.party.location!.latitude,
                                 widget.party.location!.longitude,
                               ),
                               builder: (_) {
-                                return const Icon(
-                                  Icons.location_pin,
-                                  color: Theming.primaryColor,
-                                  size: 36,
+                                return Column(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_pin,
+                                      color: Theming.primaryColor,
+                                      size: 36,
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 7,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Theming.bgColor.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .selectedParty,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 );
                               },
                             ),

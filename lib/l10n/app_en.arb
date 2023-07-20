@@ -23,6 +23,10 @@
     "addAFriend": "Add a friend",
     "emptyHere": "Empty here :(",
     "partiesProfile2": "Parties",
+    "showProfile": "Show profile",
+    "removeFriend": "Remove friend",
+    "removeFriendSuccess": "Friend removed successfully",
+    "removeFriendFailure": "Could not remove friend",
 
     "notificationsNotifications": "Notifications",
     "notificationFrom": "From",
@@ -85,6 +89,8 @@
     "mapError": "It seems like you don't have any maps installed on your device.",
     "joinRequestSuccess": "Join request sent",
     "joinRequestFailure": "Could not send join request",
+    "selectedParty": "Party",
+    "you": "You",
     
     "logIn": "Log in",
     "loginFailed": "Login failed",
@@ -119,6 +125,7 @@
     "partyEnd": "End",
     "searchAFriend": "Search for a friend",
     "invite": "Invite",
+    "invitedUser": "Invited",
     "invitedFriends": "Invited friends",
     "create": "Create",
     "creatingParty": "Creating party...",

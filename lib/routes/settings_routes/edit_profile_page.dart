@@ -158,9 +158,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       builder: (ctx) => const AccountDeleteConfirm(),
                     );
                   },
-                  icon: const Icon(
-                    Icons.delete_outline_rounded,
-                    color: Theming.primaryColor,
+                  icon: Icon(
+                    Icons.delete_rounded,
+                    color: Theming.whiteTone.withOpacity(0.2),
                   ),
                 ),
               ),

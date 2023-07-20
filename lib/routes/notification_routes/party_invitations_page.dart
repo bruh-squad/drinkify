@@ -7,8 +7,10 @@ import '/widgets/dialogs/notification_sheet.dart';
 
 class PartyInvitationsPage extends StatelessWidget {
   final List<PartyInvitation> notif;
+  final VoidCallback onAction;
   const PartyInvitationsPage(
-    this.notif, {
+    this.notif,
+    this.onAction, {
     super.key,
   });
 
@@ -42,7 +44,13 @@ class PartyInvitationsPage extends StatelessWidget {
           context: ctx,
           backgroundColor: Theming.bgColor,
           isScrollControlled: true,
-          builder: (_) => NotificationSheet(inv),
+          builder: (_) => NotificationSheet(
+            inv,
+            (obj) {
+              if (obj is! PartyInvitation) return;
+              onAction();
+            },
+          ),
         );
       },
       splashColor: Theming.whiteTone.withOpacity(0.05),

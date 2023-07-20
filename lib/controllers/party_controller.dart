@@ -71,9 +71,10 @@ class PartyController {
         "Authorization": "Bearer $token",
       },
     );
-    final parties = <Party>[
-      for (final p in jsonDecode(res.body)["results"]) Party.fromMap(p),
-    ];
+    final parties = <Party>[];
+    for (final p in jsonDecode(res.body)["results"]) {
+      parties.add(Party.fromMap(p));
+    }
     return parties;
   }
 

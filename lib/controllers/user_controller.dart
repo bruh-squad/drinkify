@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:drinkify/models/friend.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -11,9 +12,9 @@ import '../models/friend_invitiation.dart';
 import '../models/party_invitation.dart';
 import '../models/party_request.dart';
 
-///Used for getting information about the user, updating, deleting and searching
+/// Used for getting information about the user, updating, deleting and searching
 class UserController {
-  ///Returns information about you
+  /// Returns information about you
   static Future<User> me() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -91,6 +92,7 @@ class UserController {
     return res.statusCode == 200;
   }
 
+  // Sends a friend invitation
   static Future<bool> sendFriendInvitation(FriendInvitation inv) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -112,7 +114,7 @@ class UserController {
     return res.statusCode == 201;
   }
 
-  ///Retrieves a list of friend invitaions
+  /// Retrieves a list of friend invitaions
   static Future<List<FriendInvitation>> friendInvitations() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -132,7 +134,7 @@ class UserController {
     return invitations;
   }
 
-  // FIXME url
+  /// Accepts friend invitation
   static Future<bool> acceptFriendInvitation(FriendInvitation inv) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -154,6 +156,7 @@ class UserController {
     return res.statusCode == 201;
   }
 
+  /// Rejects friend invitation
   static Future<bool> rejectFriendInvitation(FriendInvitation inv) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -168,7 +171,7 @@ class UserController {
     return res.statusCode == 201;
   }
 
-  ///Retrieves a list of party invitations
+  /// Retrieves a list of party invitations
   static Future<List<PartyInvitation>> partyInvitations() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -187,7 +190,7 @@ class UserController {
     return invitations;
   }
 
-  ///Retrieves a list of join requests to user's owned parties
+  /// Retrieves a list of join requests to user's owned parties
   static Future<List<PartyRequest>> joinRequests() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -204,5 +207,20 @@ class UserController {
       requests.add(PartyRequest.fromMap(pr));
     }
     return requests;
+  }
+
+  /// Removes friend from user's friend list
+  static Future<bool> removeFriend(Friend f) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/friends/${f.publicId}/";
+    final res = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 204;
   }
 }

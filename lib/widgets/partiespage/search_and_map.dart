@@ -64,7 +64,7 @@ class _SearchAndMapState extends State<SearchAndMap> with MapUtils {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 110,
+      height: 100,
       width: double.infinity,
       decoration: const BoxDecoration(
         color: Theming.bgColor,

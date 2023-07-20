@@ -23,6 +23,10 @@
     "addAFriend": "Dodaj znajomego",
     "emptyHere": "Pusto tutaj :(",
     "partiesProfile2": "Imprezy",
+    "showProfile": "Pokaż profil",
+    "removeFriend": "Usuń znajomego",
+    "removeFriendSuccess": "Usunięto znajomego",
+    "removeFriendFailure": "Nie udało się usunąć znajomego",
 
     "notificationsNotifications": "Powiadomienia",
     "notificationFrom": "Od",
@@ -85,6 +89,8 @@
     "mapError": "Wygląda na to, że nie masz zainstalowanych map na swoim urządzeniu.",
     "joinRequestSuccess": "Wysłano prośbę o dołączenie",
     "joinRequestFailure": "Nie wysłano prośby",
+    "selectedParty": "Impreza",
+    "you": "Ty",
     
     "logIn": "Zaloguj się",
     "loginFailed": "Nie udało się zalogować",
@@ -119,6 +125,7 @@
     "partyEnd": "Koniec",
     "searchAFriend": "Wyszukaj znajomego",
     "invite": "Zaproś",
+    "invitedUser": "Zaproszono",
     "invitedFriends": "Zaproszeni znajomi",
     "create": "Stwórz",
     "creatingParty": "Tworzenie imprezy...",

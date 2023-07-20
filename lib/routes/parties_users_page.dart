@@ -129,7 +129,7 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
                           },
                           buttonChild: const Icon(
                             Icons.person_add_alt_1_rounded,
-                            color: Theming.whiteTone,
+                            color: Theming.primaryColor,
                           ),
                         ),
                 SizedBox(

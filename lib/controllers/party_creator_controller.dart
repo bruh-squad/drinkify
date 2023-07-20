@@ -10,9 +10,9 @@ import '../models/party.dart';
 import '../models/party_request.dart';
 import '../utils/ext.dart' show LatLngConvert;
 
-///Used by the party creator to control owned parties
+/// Used by the party creator to control owned parties
 class PartyCreatorController {
-  ///Returns a list of all parties created by the user
+  /// Returns a list of all parties created by the user
   static Future<List<Party>> ownedParties() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -32,7 +32,7 @@ class PartyCreatorController {
     return parties;
   }
 
-  ///Creates a party using information provided in [party]
+  /// Creates a party using information provided in [party]
   static Future<Party?> createParty(Party party) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -69,7 +69,7 @@ class PartyCreatorController {
     return Party.fromMap(jsonDecode(await res.stream.bytesToString()));
   }
 
-  ///Deletes party with the provided [id]
+  /// Deletes party with the provided [id]
   static Future<bool> deleteParty(String id) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -84,7 +84,7 @@ class PartyCreatorController {
     return res.statusCode == 204;
   }
 
-  //FIXME sending request
+  /// Accepts incoming party join request
   static Future<bool> acceptPartyRequest(PartyRequest req) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -98,7 +98,7 @@ class PartyCreatorController {
     return res.statusCode == 201;
   }
 
-  //FIXME sending request
+  /// Rejects incoming party join request
   static Future<bool> rejectPartyRequest(PartyRequest req) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
@@ -112,6 +112,7 @@ class PartyCreatorController {
     return res.statusCode == 204;
   }
 
+  /// Sends party invitation to provided user [f]
   static Future<bool> sendPartyInvitation(Party p, Friend f) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");

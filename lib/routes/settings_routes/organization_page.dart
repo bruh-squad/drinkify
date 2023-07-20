@@ -70,9 +70,8 @@ class _OrganizationPageState extends State<OrganizationPage> {
                         showModalBottomSheet(
                           context: context,
                           backgroundColor: Theming.bgColor,
-                          builder: (ctx) {
-                            return PartyOptionsSheet(p);
-                          },
+                          isScrollControlled: true,
+                          builder: (ctx) => PartyOptionsSheet(p),
                         );
                       },
                     ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '/models/friend.dart';
-import '/utils/theming.dart';
+import '/widgets/glass_morphism.dart';
 
 class UserHolder extends StatelessWidget {
   final Friend user;
@@ -15,6 +15,7 @@ class UserHolder extends StatelessWidget {
     super.key,
   });
 
+  // FIXME routing doesnt work
   void _goToProfile(BuildContext ctx) => ctx.push("/profile", extra: user);
 
   @override
@@ -39,23 +40,23 @@ class UserHolder extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => _goToProfile(context),
-            child: Text("${user.firstName} ${user.lastName}"),
+            child: Text(
+              "${user.firstName} ${user.lastName}",
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
           ),
           const Spacer(),
           GestureDetector(
             onTap: onButtonTap,
-            child: AnimatedContainer(
-              curve: Curves.linearToEaseOut,
-              duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
+            child: GlassMorphism(
+              blur: 0,
+              opacity: 0.1,
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: buttonChild,
               ),
-              decoration: BoxDecoration(
-                color: Theming.primaryColor,
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: buttonChild,
             ),
           ),
         ],

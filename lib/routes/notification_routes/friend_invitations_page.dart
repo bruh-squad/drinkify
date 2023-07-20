@@ -6,9 +6,11 @@ import '/utils/theming.dart';
 import '/widgets/dialogs/notification_sheet.dart';
 
 class FriendInvitationsPage extends StatelessWidget {
+  final VoidCallback onAction;
   final List<FriendInvitation> notif;
   const FriendInvitationsPage(
-    this.notif, {
+    this.notif,
+    this.onAction, {
     super.key,
   });
 
@@ -42,7 +44,13 @@ class FriendInvitationsPage extends StatelessWidget {
           context: ctx,
           backgroundColor: Theming.bgColor,
           isScrollControlled: true,
-          builder: (_) => NotificationSheet(inv),
+          builder: (_) => NotificationSheet(
+            inv,
+            (obj) {
+              if (obj is! FriendInvitation) return;
+              onAction();
+            },
+          ),
         );
       },
       splashColor: Theming.whiteTone.withOpacity(0.05),
