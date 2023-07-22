@@ -96,7 +96,13 @@ class _FriendListPageState extends State<FriendListPage> {
                     context: context,
                     backgroundColor: Theming.bgColor,
                     isScrollControlled: true,
-                    builder: (_) => FriendOptionSheet(f),
+                    builder: (_) => FriendOptionSheet(
+                      f,
+                      () async {
+                        final refreshFriends = await UserController.me();
+                        setState(() => friends = refreshFriends.friends!);
+                      },
+                    ),
                   );
                 },
                 buttonChild: const Icon(

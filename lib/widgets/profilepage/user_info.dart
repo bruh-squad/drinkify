@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 import '/widgets/dialogs/success_sheet.dart';
@@ -111,7 +112,11 @@ class _UserInfoState extends State<UserInfo> {
           onTap: () async {
             const storage = FlutterSecureStorage();
             final userId = await storage.read(key: "user_publicId");
-            if (widget.user?.publicId == userId) return;
+            if (_isMyProfile) {
+              if (!mounted) return;
+              context.push("/edit-profile");
+              return;
+            }
             final success = await UserController.sendFriendInvitation(
               FriendInvitation(
                 receiverPublicId: widget.friend!.publicId!,
@@ -143,7 +148,9 @@ class _UserInfoState extends State<UserInfo> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
-              AppLocalizations.of(context)!.addAFriend,
+              _isMyProfile
+                  ? AppLocalizations.of(context)!.editProfile
+                  : AppLocalizations.of(context)!.addAFriend,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Theming.whiteTone,

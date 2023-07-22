@@ -71,7 +71,16 @@ class _OrganizationPageState extends State<OrganizationPage> {
                           context: context,
                           backgroundColor: Theming.bgColor,
                           isScrollControlled: true,
-                          builder: (ctx) => PartyOptionsSheet(p),
+                          builder: (ctx) {
+                            return PartyOptionsSheet(
+                              p,
+                              () async {
+                                final parties =
+                                    await PartyCreatorController.ownedParties();
+                                setState(() => ownedParties = parties);
+                              },
+                            );
+                          },
                         );
                       },
                     ),

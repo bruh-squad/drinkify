@@ -34,6 +34,7 @@ class _WelcomeHeaderState extends State<WelcomeHeader> {
       final friendInvsTemp = await UserController.friendInvitations();
       final partyInvsTemp = await UserController.partyInvitations();
       final partyReqsTemp = await UserController.joinRequests();
+      if (!mounted) return;
       setState(() {
         friendInvs = friendInvsTemp;
         partyInvs = partyInvsTemp;

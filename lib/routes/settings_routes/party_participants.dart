@@ -4,13 +4,9 @@ import 'package:go_router/go_router.dart';
 import '/models/party.dart';
 import '/utils/theming.dart';
 
-//TODO implement this
-class PartyJoinRequstsPage extends StatelessWidget {
+class PartyParticipantsPage extends StatelessWidget {
   final Party party;
-  const PartyJoinRequstsPage(
-    this.party, {
-    super.key,
-  });
+  const PartyParticipantsPage(this.party, {super.key});
 
   @override
   Widget build(BuildContext context) {

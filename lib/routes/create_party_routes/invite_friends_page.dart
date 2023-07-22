@@ -19,6 +19,7 @@ class InviteFriendsPage extends StatefulWidget {
 }
 
 class _InviteFriendsPageState extends State<InviteFriendsPage> {
+  List<Friend> friendList = [];
   late List<Friend> friends;
   late List<Friend> invitedUsers;
 
@@ -32,7 +33,8 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
     friends = [];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final user = await UserController.me();
-      setState(() => friends = user.friends!);
+      friendList = user.friends!;
+      setState(() => friends = friendList);
     });
   }
 
@@ -120,8 +122,6 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                       ),
                     ),
                   ),
-
-            //TODO implement searching
             GlassMorphism(
               borderRadius: BorderRadius.circular(30),
               blur: 20,
@@ -147,6 +147,19 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: TextField(
+                        onChanged: (val) {
+                          // TODO test if seaching works
+                          friends.clear();
+                          final List<Friend> tempFriends = [];
+                          for (final f in friendList) {
+                            if (f.username!.contains(val) ||
+                                f.firstName!.contains(val) ||
+                                f.lastName!.contains(val)) {
+                              tempFriends.add(f);
+                            }
+                          }
+                          setState(() => friends = tempFriends);
+                        },
                         controller: searchCtrl,
                         cursorColor: Theming.primaryColor,
                         style: const TextStyle(

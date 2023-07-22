@@ -22,14 +22,20 @@ import '../models/friend.dart';
 import '../widgets/dialogs/image_picker_sheet.dart';
 import '../widgets/dialogs/success_sheet.dart';
 
-class CreatePartyRoute extends StatefulWidget {
-  const CreatePartyRoute({super.key});
+class CreatePartyPage extends StatefulWidget {
+  final bool isEdit;
+  final Party? pageToEdit;
+  const CreatePartyPage({
+    this.isEdit = false,
+    this.pageToEdit,
+    super.key,
+  });
 
   @override
-  State<CreatePartyRoute> createState() => _CreatePartyRouteState();
+  State<CreatePartyPage> createState() => _CreatePartyPageState();
 }
 
-class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
+class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
   //List of elements needed to send in the http request
   LatLng? selPoint;
   XFile? thumbnail;
@@ -112,6 +118,19 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
     partyStatus = 1;
     invitedUsers = [];
     errorFields = [];
+    if (widget.isEdit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        //FIXME fix loading parameters
+        setState(() {
+          partyTitle = widget.pageToEdit!.name;
+          descriptionCtrl.text = widget.pageToEdit!.description;
+          startTime = widget.pageToEdit!.startTime;
+          endTime = widget.pageToEdit!.stopTime;
+          partyStatus = widget.pageToEdit!.privacyStatus!;
+          selPoint = widget.pageToEdit!.location!;
+        });
+      });
+    }
   }
 
   @override
@@ -126,6 +145,59 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
     return startTime!.isAfter(endTime!);
   }
 
+  void _createParty() async {
+    errorFields = [];
+    final allFields = <dynamic>[
+      selPoint,
+      thumbnail,
+      partyTitle,
+      startTime,
+      endTime,
+      descriptionCtrl.text,
+    ];
+    final tempErrorList = <int>[];
+    for (int i = 0; i < allFields.length; i++) {
+      if (allFields[i] == null) {
+        tempErrorList.add(i);
+      } else if (allFields[i] is String && allFields[i].isEmpty) {
+        tempErrorList.add(i);
+      }
+    }
+    setState(() => errorFields = tempErrorList);
+    if (errorFields.isNotEmpty && !_wrongDate) return;
+    final createdParty = await PartyCreatorController.createParty(
+      Party(
+        name: partyTitle,
+        description: descriptionCtrl.text,
+        location: selPoint,
+        startTime: startTime!,
+        stopTime: endTime!,
+        privacyStatus: partyStatus,
+        image: thumbnail?.path,
+      ),
+    );
+    if (createdParty != null) {
+      for (final p in invitedUsers) {
+        PartyCreatorController.sendPartyInvitation(createdParty, p);
+      }
+    }
+    if (!mounted) return;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theming.bgColor,
+      builder: (_) => SuccessSheet(
+        success: createdParty != null,
+        successMsg: AppLocalizations.of(context)!.createdSuccessfully,
+        failureMsg: AppLocalizations.of(context)!.creationFailed,
+      ),
+    );
+  }
+
+  void _editParty() async {
+    //TODO implement
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,53 +208,12 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
         scale: isFullyScrolled ? 1 : 0,
         child: CustomFloatingButton(
           caption: AppLocalizations.of(context)!.createAParty,
-          onTap: () async {
-            errorFields = [];
-            final allFields = <dynamic>[
-              selPoint,
-              thumbnail,
-              partyTitle,
-              startTime,
-              endTime,
-              descriptionCtrl.text,
-            ];
-            final tempErrorList = <int>[];
-            for (int i = 0; i < allFields.length; i++) {
-              if (allFields[i] == null) {
-                tempErrorList.add(i);
-              } else if (allFields[i] is String && allFields[i].isEmpty) {
-                tempErrorList.add(i);
-              }
+          onTap: () {
+            if (!widget.isEdit) {
+              _createParty();
+              return;
             }
-            setState(() => errorFields = tempErrorList);
-            if (errorFields.isNotEmpty && !_wrongDate) return;
-            final createdParty = await PartyCreatorController.createParty(
-              Party(
-                name: partyTitle,
-                description: descriptionCtrl.text,
-                location: selPoint,
-                startTime: startTime!,
-                stopTime: endTime!,
-                privacyStatus: partyStatus,
-                image: thumbnail?.path,
-              ),
-            );
-            if (createdParty != null) {
-              for (final p in invitedUsers) {
-                PartyCreatorController.sendPartyInvitation(createdParty, p);
-              }
-            }
-            if (!mounted) return;
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Theming.bgColor,
-              builder: (_) => SuccessSheet(
-                success: createdParty != null,
-                successMsg: AppLocalizations.of(context)!.createdSuccessfully,
-                failureMsg: AppLocalizations.of(context)!.creationFailed,
-              ),
-            );
+            _editParty();
           },
         ),
       ),
@@ -450,75 +481,85 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                             ),
                             child: ListView(
                               children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    await showModalBottomSheet(
-                                      context: context,
-                                      backgroundColor: Theming.bgColor,
-                                      builder: (ctx) {
-                                        return ImagePickerSheet(
-                                          onFinish: (img) {
-                                            setState(() => thumbnail = img);
-                                            Navigator.pop(ctx);
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: AspectRatio(
-                                    aspectRatio: 16 / 6,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        image: thumbnail != null
-                                            ? DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: FileImage(
-                                                  File(thumbnail!.path),
-                                                ),
-                                              )
-                                            : null,
-                                        color: Theming.bgColor,
-                                        borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(
-                                          color: errorFields.contains(1)
-                                              ? Theming.errorColor
-                                              : Theming.whiteTone
-                                                  .withOpacity(0.3),
-                                          width: 2,
+                                Visibility(
+                                  visible: !widget.isEdit,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await showModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Theming.bgColor,
+                                        builder: (ctx) {
+                                          return ImagePickerSheet(
+                                            onFinish: (img) {
+                                              setState(() => thumbnail = img);
+                                              Navigator.pop(ctx);
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: AspectRatio(
+                                      aspectRatio: 16 / 6,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          image: thumbnail != null
+                                              ? DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: FileImage(
+                                                    File(thumbnail!.path),
+                                                  ),
+                                                )
+                                              : null,
+                                          color: Theming.bgColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: errorFields.contains(1)
+                                                ? Theming.errorColor
+                                                : Theming.whiteTone
+                                                    .withOpacity(0.3),
+                                            width: 2,
+                                          ),
                                         ),
-                                      ),
-                                      child: thumbnail == null
-                                          ? Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.image_outlined,
-                                                  color: errorFields.contains(1)
-                                                      ? Theming.errorColor
-                                                      : Theming.whiteTone
-                                                          .withOpacity(0.3),
-                                                ),
-                                                Text(
-                                                  AppLocalizations.of(context)!
-                                                      .pickAnImage,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                        child: thumbnail == null
+                                            ? Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.image_outlined,
                                                     color: errorFields
                                                             .contains(1)
                                                         ? Theming.errorColor
                                                         : Theming.whiteTone
                                                             .withOpacity(0.3),
                                                   ),
-                                                )
-                                              ],
-                                            )
-                                          : null,
+                                                  Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .pickAnImage,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: errorFields
+                                                              .contains(1)
+                                                          ? Theming.errorColor
+                                                          : Theming.whiteTone
+                                                              .withOpacity(0.3),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            : null,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 30),
+                                Visibility(
+                                  visible: !widget.isEdit,
+                                  child: const SizedBox(height: 30),
+                                ),
                                 FormFieldParty(
                                   index: 2,
                                   caption: AppLocalizations.of(context)!.title,
@@ -527,9 +568,7 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                   prefixIcon: Icons.label_important_outline,
                                   errorFields: errorFields,
                                   selectedFieldIndex: selectedFieldIndex,
-                                  onType: (val) {
-                                    partyTitle = val;
-                                  },
+                                  onType: (val) => partyTitle = val,
                                   onSelect: (idx) {
                                     setState(() => selectedFieldIndex = idx);
                                   },
@@ -627,10 +666,13 @@ class _CreatePartyRouteState extends State<CreatePartyRoute> with MapUtils {
                                 ),
 
                                 //index: 6
-                                InviteFriends(
-                                  onFinish: (friends) {
-                                    invitedUsers = friends;
-                                  },
+                                Visibility(
+                                  visible: !widget.isEdit,
+                                  child: InviteFriends(
+                                    onFinish: (friends) {
+                                      invitedUsers = friends;
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(height: 100),
                               ],

@@ -48,6 +48,9 @@
     "deleteParty": "Delete party",
     "deleteSuccess": "Party deleted successfully",
     "deleteFailure": "Could not delete party",
+    "partyJoinRequests": "Join requests",
+    "partyParticipants": "Participants",
+
     
     "editProfilePage": "Edit profile",
     "changePfp": "Change profile picture",

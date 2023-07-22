@@ -48,6 +48,8 @@
     "deleteParty": "Usuń imprezę",
     "deleteSuccess": "Usunięto imprezę",
     "deleteFailure": "Nie udało się usunąć imprezy",
+    "partyJoinRequests": "Prośby o dołączenie",
+    "partyParticipants": "Uczestnicy",
     
     "editProfilePage": "Edytuj profil",
     "changePfp": "Zmień zdjęcie profilowe",

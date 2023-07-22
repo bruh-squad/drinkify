@@ -9,8 +9,10 @@ import '/widgets/dialogs/success_sheet.dart';
 
 class PartyOptionsSheet extends StatefulWidget {
   final Party party;
+  final VoidCallback onDelete;
   const PartyOptionsSheet(
-    this.party, {
+    this.party,
+    this.onDelete, {
     super.key,
   });
 
@@ -32,6 +34,16 @@ class _PartyOptionsSheetState extends State<PartyOptionsSheet> {
               () => context.push("/edit-party", extra: widget.party),
             ),
             _option(
+              Icons.mail_rounded,
+              AppLocalizations.of(context)!.partyJoinRequests,
+              () => context.push("/party-join-requests", extra: widget.party),
+            ),
+            _option(
+              Icons.people_rounded,
+              AppLocalizations.of(context)!.partyParticipants,
+              () => context.push("/party-participants", extra: widget.party),
+            ),
+            _option(
               Icons.delete_rounded,
               AppLocalizations.of(context)!.deleteParty,
               () async {
@@ -48,6 +60,7 @@ class _PartyOptionsSheetState extends State<PartyOptionsSheet> {
                     failureMsg: AppLocalizations.of(ctx)!.deleteFailure,
                   ),
                 );
+                widget.onDelete();
               },
             ),
           ],

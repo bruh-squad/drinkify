@@ -9,8 +9,10 @@ import '/models/friend.dart';
 
 class FriendOptionSheet extends StatefulWidget {
   final Friend friend;
+  final VoidCallback onAction;
   const FriendOptionSheet(
-    this.friend, {
+    this.friend,
+    this.onAction, {
     super.key,
   });
 
@@ -48,6 +50,7 @@ class _FriendOptionSheetState extends State<FriendOptionSheet> {
                     failureMsg: AppLocalizations.of(ctx)!.removeFriendFailure,
                   ),
                 );
+                if (isRemoved) widget.onAction();
               },
             ),
           ],

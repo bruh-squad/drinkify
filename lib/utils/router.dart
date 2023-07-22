@@ -13,7 +13,8 @@ import '../routes/settings_routes/edit_profile_page.dart';
 import '../routes/settings_routes/organization_page.dart';
 import '../routes/friend_list.dart';
 import '../routes/create_party_page.dart';
-import '../routes/settings_routes/edit_party_page.dart';
+import '../routes/settings_routes/party_join_requests_page.dart';
+import '../routes/settings_routes/party_participants.dart';
 import '../models/party.dart';
 import '../models/friend.dart';
 import '../models/friend_invitiation.dart';
@@ -158,7 +159,7 @@ GoRouter router = GoRouter(
       pageBuilder: (_, state) {
         return pageTransition(
           state: state,
-          childWidget: const CreatePartyRoute(),
+          childWidget: const CreatePartyPage(),
         );
       },
     ),
@@ -168,7 +169,30 @@ GoRouter router = GoRouter(
       pageBuilder: (_, state) {
         return pageTransition(
           state: state,
-          childWidget: EditPartyPage(state.extra as Party),
+          childWidget: CreatePartyPage(
+            isEdit: true,
+            pageToEdit: state.extra as Party,
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/party-join-requests",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: PartyJoinRequstsPage(state.extra as Party),
+        );
+      },
+    ),
+    GoRoute(
+      path: "/party-participants",
+      parentNavigatorKey: _rootKey,
+      pageBuilder: (_, state) {
+        return pageTransition(
+          state: state,
+          childWidget: PartyParticipantsPage(state.extra as Party),
         );
       },
     ),
