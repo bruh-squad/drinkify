@@ -39,6 +39,7 @@
     "acceptedNotif": "Accepted",
     "rejectedNotif": "Rejected",
     "acceptRejectError": "An error occurred",
+    "notificationSent": "Sent",
 
     "settings": "Settings",
     "editProfile": "Edit profile",
@@ -139,6 +140,8 @@
     "createdSuccessfully": "Party created successfully",
     "creationFailed": "Party creation failed",
     "pickAnImage": "Pick an image",
+    "updatedPartySuccess": "Party updated successfully",
+    "updatedPartyFailure": "Could not update party",
 
     "requiredField": "Field required",
     "wrongDate": "Start date can't be set after end date"

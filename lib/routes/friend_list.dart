@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/dialogs/friend_option_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +6,7 @@ import '../widgets/partiespage/user_holder.dart';
 import '../utils/theming.dart';
 import '../models/friend.dart';
 import '../controllers/user_controller.dart';
+import '../widgets/dialogs/friend_option_sheet.dart';
 
 class FriendListPage extends StatefulWidget {
   const FriendListPage({super.key});

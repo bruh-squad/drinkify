@@ -4,8 +4,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '/utils/theming.dart';
 
 class PartyStatus extends StatefulWidget {
+  final int? initialValue;
   final Function(int) onSelect;
+
   const PartyStatus({
+    this.initialValue,
     required this.onSelect,
     super.key,
   });
@@ -20,7 +23,7 @@ class _PartyStatusState extends State<PartyStatus> {
   @override
   void initState() {
     super.initState();
-    selectedIndex = 1;
+    selectedIndex = widget.initialValue ?? 1;
   }
 
   @override

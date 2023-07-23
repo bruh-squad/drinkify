@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:drinkify/models/friend.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -9,9 +8,12 @@ import '../utils/consts.dart' show mainUrl;
 import '../models/party.dart';
 import '../models/party_request.dart';
 import '../utils/ext.dart' show LatLngConvert;
+import '../models/friend.dart';
 
 /// Used by the party creator to control owned parties
 class PartyCreatorController {
+  PartyCreatorController._();
+
   /// Returns a list of all parties created by the user
   static Future<List<Party>> ownedParties() async {
     const storage = FlutterSecureStorage();
@@ -69,6 +71,30 @@ class PartyCreatorController {
     return Party.fromMap(jsonDecode(await res.stream.bytesToString()));
   }
 
+  static Future<bool> updateParty(Party p) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/${p.publicId}/";
+    final res = await http.patch(
+      Uri.parse(url),
+      body: jsonEncode({
+        "owner": {},
+        "name": p.name,
+        "privacy_status": p.privacyStatus,
+        "description": p.description,
+        "location": p.location!.toPOINT(),
+        "start_time": p.startTime.toIso8601String(),
+        "stop_time": p.stopTime.toIso8601String(),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 200;
+  }
+
   /// Deletes party with the provided [id]
   static Future<bool> deleteParty(String id) async {
     const storage = FlutterSecureStorage();
@@ -82,6 +108,27 @@ class PartyCreatorController {
     );
 
     return res.statusCode == 204;
+  }
+
+  /// Retrieves all join requests for the party
+  static Future<List<PartyRequest>> partyJoinRequests(Party p) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/requests/${p.publicId}/";
+    final res = await http.get(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (res.statusCode == 200) {
+      final requests = <PartyRequest>[];
+      for (final pr in jsonDecode(res.body)["results"]) {
+        requests.add(PartyRequest.fromMap(pr));
+      }
+      return requests;
+    }
+    return [];
   }
 
   /// Accepts incoming party join request

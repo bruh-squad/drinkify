@@ -53,11 +53,10 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
         break;
       }
     }
-    if (mounted) {
-      setState(
-        () => partyLocation = "${place.country}, $locArea, ${place.street}",
-      );
-    }
+    if (!mounted) return;
+    setState(
+      () => partyLocation = "${place.country}, $locArea, ${place.street}",
+    );
   }
 
   @override
@@ -112,11 +111,15 @@ class _PartyHeaderState extends State<PartyHeader> with MapUtils {
             },
             child: Row(
               children: [
-                Text(
-                  partyLocation,
-                  style: const TextStyle(
-                    color: Theming.primaryColor,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    partyLocation,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      color: Theming.primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 5),

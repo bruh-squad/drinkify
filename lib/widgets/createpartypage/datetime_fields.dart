@@ -11,12 +11,15 @@ class DateTimeField extends StatefulWidget {
   final Function(DateTime) onFinish;
   final List<int> errorFields;
   final bool wrongDate;
+  final DateTime? initialValue;
+
   const DateTimeField({
     required this.index,
     required this.isStart,
     required this.onFinish,
     required this.errorFields,
     required this.wrongDate,
+    this.initialValue,
     super.key,
   });
 
@@ -32,6 +35,16 @@ class _DateTimeFieldState extends State<DateTimeField> {
   void initState() {
     super.initState();
     initializeDateFormatting();
+    if (widget.initialValue == null) return;
+    date = DateTime(
+      widget.initialValue!.year,
+      widget.initialValue!.month,
+      widget.initialValue!.day,
+    );
+    time = TimeOfDay(
+      hour: widget.initialValue!.hour,
+      minute: widget.initialValue!.minute,
+    );
   }
 
   bool get _notFilled => widget.errorFields.contains(widget.index);

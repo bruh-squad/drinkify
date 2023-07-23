@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -76,6 +77,7 @@ mixin MapUtils {
     return false;
   }
 
+  /// Returns user's current location
   Future<LatLng?> userLocation() async {
     bool serviceEnabled;
     PermissionStatus permissionGranted;
@@ -103,5 +105,37 @@ mixin MapUtils {
       posData.longitude!,
     );
     return selPoint;
+  }
+
+  /// Converts latitude-longtitude data to human-readable address
+  Future<String> latLngToAdress(LatLng pos) async {
+    var loc = <Placemark>[];
+    try {
+      loc = await placemarkFromCoordinates(
+        pos.latitude,
+        pos.longitude,
+      );
+    } catch (_) {
+      return "";
+    }
+
+    final cityFields = <String>[
+      loc[0].locality!,
+      loc[0].administrativeArea!,
+      loc[0].subAdministrativeArea!,
+      loc[0].subLocality!,
+    ];
+    String locArea = "";
+
+    for (final i in cityFields) {
+      if (i != "") {
+        locArea = i;
+        break;
+      }
+    }
+
+    bool addComma = locArea != "";
+
+    return "${loc[0].country}${addComma ? ", $locArea" : ""}, ${loc[0].street}";
   }
 }

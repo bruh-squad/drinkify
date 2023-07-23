@@ -30,6 +30,7 @@ dependencies:
   http_parser: ^4.0.2
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
   flutter_test:
     sdk: flutter
 
@@ -52,3 +53,9 @@ flutter:
         - asset: assets/fonts/Nunito-Bold.ttf
           weight: 700
 
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/drinkify-logo.png"
+  min_sdk_android: 21

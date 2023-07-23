@@ -39,6 +39,8 @@
     "acceptedNotif": "Zaakceptowano",
     "rejectedNotif": "Odrzucono",
     "acceptRejectError": "Wystąpił błąd",
+    "notificationSent": "Wysłano",
+
 
     "settings": "Ustawienia",
     "editProfile": "Edytuj profil",
@@ -138,6 +140,8 @@
     "createdSuccessfully": "Utworzono imprezę",
     "creationFailed": "Nie utworzono imprezy",
     "pickAnImage": "Wybierz zdjęcie",
+    "updatedPartySuccess": "Zaaktualizowano imprezę",
+    "updatedPartyFailure": "Nie zaaktualizowano imprezy",
 
     "requiredField": "Pole wymagane",
     "wrongDate": "Data rozpoczęcia ustawiona po końcu imprezy"

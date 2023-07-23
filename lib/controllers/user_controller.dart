@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:drinkify/models/friend.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -11,9 +10,12 @@ import '../models/user.dart';
 import '../models/friend_invitiation.dart';
 import '../models/party_invitation.dart';
 import '../models/party_request.dart';
+import '../models/friend.dart';
 
 /// Used for getting information about the user, updating, deleting and searching
 class UserController {
+  UserController._();
+
   /// Returns information about you
   static Future<User> me() async {
     const storage = FlutterSecureStorage();
@@ -141,14 +143,7 @@ class UserController {
     final url = "$mainUrl/friends/invitations/${inv.id}/";
     final res = await http.post(
       Uri.parse(url),
-      body: jsonEncode({
-        "sender": {},
-        "receiver": {},
-        "receiver_public_id": inv.receiverPublicId,
-        "sender_public_id": inv.senderPublicId,
-      }),
       headers: {
-        "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
     );

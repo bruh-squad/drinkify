@@ -19,29 +19,21 @@ class InviteFriendsPage extends StatefulWidget {
 }
 
 class _InviteFriendsPageState extends State<InviteFriendsPage> {
-  List<Friend> friendList = [];
+  late List<Friend> friendList;
   late List<Friend> friends;
   late List<Friend> invitedUsers;
-
-  late final TextEditingController searchCtrl;
 
   @override
   void initState() {
     super.initState();
-    searchCtrl = TextEditingController();
     invitedUsers = [];
     friends = [];
+    friendList = [];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final user = await UserController.me();
       friendList = user.friends!;
       setState(() => friends = friendList);
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    searchCtrl.dispose();
   }
 
   @override
@@ -150,17 +142,26 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                         onChanged: (val) {
                           // TODO test if seaching works
                           friends.clear();
-                          final List<Friend> tempFriends = [];
+                          final tempFriends = <Friend>[];
                           for (final f in friendList) {
-                            if (f.username!.contains(val) ||
-                                f.firstName!.contains(val) ||
-                                f.lastName!.contains(val)) {
+                            if (f.username!
+                                    .toLowerCase()
+                                    .contains(val.toLowerCase()) ||
+                                f.firstName!
+                                    .toLowerCase()
+                                    .contains(val.toLowerCase()) ||
+                                f.lastName!
+                                    .toLowerCase()
+                                    .contains(val.toLowerCase())) {
                               tempFriends.add(f);
                             }
                           }
+                          if (val.isEmpty) {
+                            setState(() => friends = friendList);
+                            return;
+                          }
                           setState(() => friends = tempFriends);
                         },
-                        controller: searchCtrl,
                         cursorColor: Theming.primaryColor,
                         style: const TextStyle(
                           color: Colors.black,

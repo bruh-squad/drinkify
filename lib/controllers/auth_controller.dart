@@ -10,6 +10,8 @@ import '../models/create_user.dart';
 
 ///Used for logging in and signing up a user
 class AuthController {
+  AuthController._();
+
   ///Handles logging in
   static Future<bool> loginUser(
     String email,

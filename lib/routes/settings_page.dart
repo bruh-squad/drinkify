@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../routes/settings_routes/log_out_page.dart';
+import 'settings_routes/log_out_sheet.dart';
 import '../widgets/glass_morphism.dart';
 import '../utils/theming.dart';
 
@@ -73,7 +73,7 @@ class SettingsPage extends StatelessWidget {
                     context: context,
                     backgroundColor: Theming.bgColor,
                     isScrollControlled: true,
-                    builder: (_) => const LogoutPage(),
+                    builder: (_) => const LogoutSheet(),
                   );
                 },
               ),

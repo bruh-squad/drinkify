@@ -9,6 +9,8 @@ import '../utils/ext.dart' show LatLngConvert;
 
 ///Used by the regular user to join, leave, accept party requests and more
 class PartyController {
+  PartyController._();
+
   ///Sends a join request to the [party]
   static Future<bool> sendJoinRequest(Party party) async {
     const storage = FlutterSecureStorage();

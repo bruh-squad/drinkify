@@ -10,6 +10,8 @@ import '../utils/ext.dart';
 
 ///Used for searching parties and users
 class SearchController {
+  SearchController._();
+
   ///Retrieves user's data based on provided [username]
   static Future<List<Friend>> searchUserByUsername(String username) async {
     const storage = FlutterSecureStorage();

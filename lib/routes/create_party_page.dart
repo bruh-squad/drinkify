@@ -25,6 +25,7 @@ import '../widgets/dialogs/success_sheet.dart';
 class CreatePartyPage extends StatefulWidget {
   final bool isEdit;
   final Party? pageToEdit;
+
   const CreatePartyPage({
     this.isEdit = false,
     this.pageToEdit,
@@ -119,15 +120,16 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
     invitedUsers = [];
     errorFields = [];
     if (widget.isEdit) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        //FIXME fix loading parameters
+      partyTitle = widget.pageToEdit!.name;
+      startTime = widget.pageToEdit!.startTime;
+      endTime = widget.pageToEdit!.stopTime;
+      partyStatus = widget.pageToEdit!.privacyStatus!;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final address = await latLngToAdress(widget.pageToEdit!.location!);
         setState(() {
-          partyTitle = widget.pageToEdit!.name;
-          descriptionCtrl.text = widget.pageToEdit!.description;
-          startTime = widget.pageToEdit!.startTime;
-          endTime = widget.pageToEdit!.stopTime;
-          partyStatus = widget.pageToEdit!.privacyStatus!;
           selPoint = widget.pageToEdit!.location!;
+          descriptionCtrl.text = widget.pageToEdit!.description;
+          selLocation = address;
         });
       });
     }
@@ -146,7 +148,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
   }
 
   void _createParty() async {
-    errorFields = [];
+    errorFields.clear();
     final allFields = <dynamic>[
       selPoint,
       thumbnail,
@@ -195,7 +197,47 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
   }
 
   void _editParty() async {
-    //TODO implement
+    errorFields.clear();
+    final allFields = <dynamic>[
+      selPoint,
+      "Placeholder (do not leave this field empty)",
+      partyTitle,
+      startTime,
+      endTime,
+      descriptionCtrl.text,
+    ];
+    final tempErrorList = <int>[];
+    for (int i = 0; i < allFields.length; i++) {
+      if (allFields[i] == null) {
+        tempErrorList.add(i);
+      } else if (allFields[i] is String && allFields[i].isEmpty) {
+        tempErrorList.add(i);
+      }
+    }
+    setState(() => errorFields = tempErrorList);
+    if (errorFields.isNotEmpty && !_wrongDate) return;
+    final isUpdated = await PartyCreatorController.updateParty(
+      Party(
+        publicId: widget.pageToEdit!.publicId,
+        ownerPublicId: widget.pageToEdit!.ownerPublicId,
+        privacyStatus: partyStatus,
+        name: partyTitle,
+        description: descriptionCtrl.text,
+        location: selPoint,
+        startTime: startTime!,
+        stopTime: endTime!,
+      ),
+    );
+    if (!mounted) return;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Theming.bgColor,
+      builder: (ctx) => SuccessSheet(
+        success: isUpdated,
+        successMsg: AppLocalizations.of(context)!.updatedPartySuccess,
+        failureMsg: AppLocalizations.of(context)!.updatedPartyFailure,
+      ),
+    );
   }
 
   @override
@@ -228,37 +270,10 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
                   InteractiveFlag.doubleTapZoom -
                   InteractiveFlag.rotate,
               onTap: (_, pos) async {
-                var loc = <Placemark>[];
-                try {
-                  loc = await placemarkFromCoordinates(
-                    pos.latitude,
-                    pos.longitude,
-                  );
-                } catch (_) {
-                  return;
-                }
-
-                final cityFields = <String>[
-                  loc[0].locality!,
-                  loc[0].administrativeArea!,
-                  loc[0].subAdministrativeArea!,
-                  loc[0].subLocality!,
-                ];
-                String locArea = "";
-
-                for (final i in cityFields) {
-                  if (i != "") {
-                    locArea = i;
-                    break;
-                  }
-                }
-
-                bool addComma = locArea != "";
-
+                final address = await latLngToAdress(pos);
                 setState(() {
                   selPoint = pos;
-                  selLocation =
-                      "${loc[0].country}${addComma ? ", $locArea" : ""}, ${loc[0].street}";
+                  selLocation = address;
                 });
               },
             ),
@@ -569,6 +584,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
                                   errorFields: errorFields,
                                   selectedFieldIndex: selectedFieldIndex,
                                   onType: (val) => partyTitle = val,
+                                  value: partyTitle,
                                   onSelect: (idx) {
                                     setState(() => selectedFieldIndex = idx);
                                   },
@@ -585,6 +601,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
                                           isStart: true,
                                           errorFields: errorFields,
                                           wrongDate: _wrongDate,
+                                          initialValue: startTime,
                                           onFinish: (start) {
                                             startTime = start;
                                           },
@@ -603,6 +620,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
                                           isStart: false,
                                           errorFields: errorFields,
                                           wrongDate: _wrongDate,
+                                          initialValue: endTime,
                                           onFinish: (end) {
                                             endTime = end;
                                           },
@@ -660,6 +678,7 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
                                   ),
                                 ),
                                 PartyStatus(
+                                  initialValue: partyStatus,
                                   onSelect: (statusNumber) {
                                     partyStatus = statusNumber;
                                   },

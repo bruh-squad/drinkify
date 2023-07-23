@@ -133,7 +133,7 @@ class _PartiesUsersPageState extends State<PartiesUsersPage> {
                           ),
                         ),
                 SizedBox(
-                  height: MediaQuery.of(context).viewPadding.bottom + 120,
+                  height: MediaQuery.of(context).viewPadding.bottom + 100,
                 ),
               ],
             ),

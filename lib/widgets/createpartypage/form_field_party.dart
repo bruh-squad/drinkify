@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
 
-class FormFieldParty extends StatelessWidget {
+class FormFieldParty extends StatefulWidget {
   final int index;
   final int? selectedFieldIndex;
   final String caption;
@@ -15,6 +15,7 @@ class FormFieldParty extends StatelessWidget {
   final BorderRadius borderRadius;
   final void Function(String)? onType;
   final void Function(int) onSelect;
+
   const FormFieldParty({
     required this.index,
     required this.selectedFieldIndex,
@@ -35,9 +36,28 @@ class FormFieldParty extends StatelessWidget {
     super.key,
   });
 
-  bool get _isSelected => index == selectedFieldIndex;
+  @override
+  State<FormFieldParty> createState() => _FormFieldPartyState();
+}
 
-  bool get _notFilled => errorFields.contains(index);
+class _FormFieldPartyState extends State<FormFieldParty> {
+  late final TextEditingController ctrl;
+
+  bool get _isSelected => widget.index == widget.selectedFieldIndex;
+
+  bool get _notFilled => widget.errorFields.contains(widget.index);
+
+  @override
+  void initState() {
+    super.initState();
+    ctrl = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    ctrl.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +67,7 @@ class FormFieldParty extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 15 / 2),
           child: Text(
-            caption.toUpperCase(),
+            widget.caption.toUpperCase(),
             style: TextStyle(
               color: _notFilled
                   ? Theming.errorColor
@@ -68,38 +88,47 @@ class FormFieldParty extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: Theming.whiteTone.withOpacity(0.1),
-            borderRadius: borderRadius,
+            borderRadius: widget.borderRadius,
             border: Border.all(
               width: 1.5,
               color: _notFilled
                   ? Theming.errorColor
-                  : _isSelected || value != null && value!.isNotEmpty
+                  : _isSelected ||
+                          widget.value != null && widget.value!.isNotEmpty
                       ? Theming.primaryColor
                       : Theming.whiteTone.withOpacity(0.2),
             ),
           ),
           child: TextField(
-            enabled: enabled,
+            controller: ctrl,
+            enabled: widget.enabled,
             cursorColor: Theming.primaryColor,
-            onTap: () => onSelect(index),
+            onTap: () => widget.onSelect(widget.index),
             onChanged: (val) {
-              if (onType == null) return;
-              onType!(val);
+              if (widget.onType == null) return;
+              widget.onType!(val);
             },
             decoration: InputDecoration(
-              hintText: !enabled && value != null && value!.isNotEmpty
-                  ? value
-                  : placeholder,
+              hintText: !widget.enabled &&
+                      widget.value != null &&
+                      widget.value!.isNotEmpty
+                  ? widget.value
+                  : widget.placeholder,
               hintStyle: TextStyle(
                 color: Theming.whiteTone.withOpacity(
-                  !enabled && value != null && value!.isNotEmpty ? 1 : 0.3,
+                  !widget.enabled &&
+                          widget.value != null &&
+                          widget.value!.isNotEmpty
+                      ? 1
+                      : 0.3,
                 ),
               ),
               prefixIcon: Icon(
-                prefixIcon,
+                widget.prefixIcon,
                 color: _notFilled
                     ? Theming.errorColor
-                    : _isSelected || value != null && value!.isNotEmpty
+                    : _isSelected ||
+                            widget.value != null && widget.value!.isNotEmpty
                         ? Theming.primaryColor
                         : Theming.whiteTone.withOpacity(0.25),
               ),
@@ -117,7 +146,7 @@ class FormFieldParty extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 10,
-              color: errorFields.contains(index)
+              color: widget.errorFields.contains(widget.index)
                   ? Theming.errorColor
                   : Colors.transparent,
             ),

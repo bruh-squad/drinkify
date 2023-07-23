@@ -1,3 +1,4 @@
+import 'package:drinkify/utils/theming.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -6,16 +7,15 @@ import '/widgets/glass_morphism.dart';
 
 class UserHolder extends StatelessWidget {
   final Friend user;
-  final Widget buttonChild;
-  final VoidCallback onButtonTap;
+  final Widget? buttonChild;
+  final VoidCallback? onButtonTap;
   const UserHolder(
     this.user, {
-    required this.buttonChild,
-    required this.onButtonTap,
+    this.buttonChild,
+    this.onButtonTap,
     super.key,
   });
 
-  // FIXME routing doesnt work
   void _goToProfile(BuildContext ctx) => ctx.push("/profile", extra: user);
 
   @override
@@ -40,22 +40,40 @@ class UserHolder extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => _goToProfile(context),
-            child: Text(
-              "${user.firstName} ${user.lastName}",
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${user.firstName} ${user.lastName}",
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "@${user.username}",
+                  style: const TextStyle(
+                    color: Theming.greenTone,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
           ),
           const Spacer(),
-          GestureDetector(
-            onTap: onButtonTap,
-            child: GlassMorphism(
-              blur: 0,
-              opacity: 0.1,
-              borderRadius: BorderRadius.circular(8),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: buttonChild,
+          Visibility(
+            visible: buttonChild != null,
+            child: GestureDetector(
+              onTap: onButtonTap,
+              child: GlassMorphism(
+                blur: 0,
+                opacity: 0.1,
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: buttonChild,
+                ),
               ),
             ),
           ),

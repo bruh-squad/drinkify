@@ -35,7 +35,6 @@ class Party {
   });
 
   factory Party.fromMap(Map<String, dynamic> m) {
-    // print(m["participants"]);
     return Party(
       publicId: m["public_id"],
       owner: Friend.fromMap(m["owner"]),

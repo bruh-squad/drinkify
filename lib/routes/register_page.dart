@@ -21,7 +21,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  late final AuthController authController;
   int? selectedFieldIndex;
 
   XFile? pfp;
@@ -37,7 +36,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    authController = AuthController();
     usernameCtrl = TextEditingController();
     emailCtrl = TextEditingController();
     firstNameCtrl = TextEditingController();

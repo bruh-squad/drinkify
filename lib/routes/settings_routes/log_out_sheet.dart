@@ -5,8 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '/utils/theming.dart';
 
-class LogoutPage extends StatelessWidget {
-  const LogoutPage({super.key});
+class LogoutSheet extends StatelessWidget {
+  const LogoutSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
