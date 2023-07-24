@@ -23,6 +23,7 @@ class _OrganizationPageState extends State<OrganizationPage> {
     ownedParties = [];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final parties = await PartyCreatorController.ownedParties();
+      if (!mounted) return;
       setState(() => ownedParties = parties);
     });
   }

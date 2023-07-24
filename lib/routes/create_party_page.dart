@@ -249,7 +249,9 @@ class _CreatePartyPageState extends State<CreatePartyPage> with MapUtils {
         curve: Curves.easeInOutBack,
         scale: isFullyScrolled ? 1 : 0,
         child: CustomFloatingButton(
-          caption: AppLocalizations.of(context)!.createAParty,
+          caption: widget.isEdit
+              ? AppLocalizations.of(context)!.save
+              : AppLocalizations.of(context)!.createAParty,
           onTap: () {
             if (!widget.isEdit) {
               _createParty();

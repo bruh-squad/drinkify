@@ -131,22 +131,8 @@ class PartyCreatorController {
     return [];
   }
 
-  /// Accepts incoming party join request
-  static Future<bool> acceptPartyRequest(PartyRequest req) async {
-    const storage = FlutterSecureStorage();
-    final token = await storage.read(key: "access");
-    final url = "$mainUrl/parties/requests/${req.party!.publicId}/${req.id}/";
-    final res = await http.post(
-      Uri.parse(url),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
-    );
-    return res.statusCode == 201;
-  }
-
-  /// Rejects incoming party join request
-  static Future<bool> rejectPartyRequest(PartyRequest req) async {
+  /// Cancels user's party request
+  static Future<bool> cancelPartyRequest(PartyRequest req) async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
     final url = "$mainUrl/parties/requests/${req.party!.publicId}/${req.id}/";
@@ -188,5 +174,34 @@ class PartyCreatorController {
     );
 
     return res.statusCode == 201;
+  }
+
+  /// Accepts incoming party join request
+  static Future<bool> acceptPartyRequest(PartyRequest req) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/requests/${req.party!.publicId}/${req.id}/";
+    final res = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+    return res.statusCode == 201;
+  }
+
+  /// Rejects incoming party request
+  static Future<bool> rejectPartyRequest(PartyRequest p) async {
+    const storage = FlutterSecureStorage();
+    final token = await storage.read(key: "access");
+    final url = "$mainUrl/parties/requests/${p.party!.publicId}/${p.id}/";
+    final res = await http.delete(
+      Uri.parse(url),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    return res.statusCode == 204;
   }
 }

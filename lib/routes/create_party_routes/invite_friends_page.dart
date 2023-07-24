@@ -31,8 +31,8 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
     friendList = [];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final user = await UserController.me();
-      friendList = user.friends!;
-      setState(() => friends = friendList);
+      friends = user.friends!;
+      setState(() => friendList = friends);
     });
   }
 
@@ -55,7 +55,7 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                       SizedBox(
                         height: MediaQuery.of(context).viewPadding.top + 20,
                       ),
-                      for (final user in friends)
+                      for (final user in friendList)
                         UserHolder(
                           user,
                           onButtonTap: () {
@@ -140,10 +140,9 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                       ),
                       child: TextField(
                         onChanged: (val) {
-                          // TODO test if seaching works
-                          friends.clear();
+                          friendList = [];
                           final tempFriends = <Friend>[];
-                          for (final f in friendList) {
+                          for (final f in friends) {
                             if (f.username!
                                     .toLowerCase()
                                     .contains(val.toLowerCase()) ||
@@ -157,10 +156,10 @@ class _InviteFriendsPageState extends State<InviteFriendsPage> {
                             }
                           }
                           if (val.isEmpty) {
-                            setState(() => friends = friendList);
+                            setState(() => friendList = friends);
                             return;
                           }
-                          setState(() => friends = tempFriends);
+                          setState(() => friendList = tempFriends);
                         },
                         cursorColor: Theming.primaryColor,
                         style: const TextStyle(

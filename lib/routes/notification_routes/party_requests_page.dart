@@ -46,6 +46,7 @@ class PartyRequestsPage extends StatelessWidget {
           isScrollControlled: true,
           builder: (_) => NotificationSheet(
             inv,
+            true,
             (obj) {
               if (obj is! PartyRequest) return;
               onAction();

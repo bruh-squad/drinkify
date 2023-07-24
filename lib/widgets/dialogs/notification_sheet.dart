@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 import '/utils/theming.dart';
 import '/controllers/party_controller.dart';
@@ -13,10 +14,12 @@ import '/widgets/dialogs/success_sheet.dart';
 ///Used for displaying all information about a notification
 class NotificationSheet extends StatefulWidget {
   final Object notif;
+  final bool hideAcceptPartyRequest;
   // Passing an object in order to check its type when receiving
   final Function(Object) onAction;
   const NotificationSheet(
     this.notif,
+    this.hideAcceptPartyRequest,
     this.onAction, {
     super.key,
   });
@@ -58,7 +61,6 @@ class _NotificationSheetState extends State<NotificationSheet> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            //TODO implement info about notification
             child: _content,
           ),
           Align(
@@ -70,7 +72,7 @@ class _NotificationSheetState extends State<NotificationSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Visibility(
-                    visible: widget.notif is! PartyRequest,
+                    visible: !widget.hideAcceptPartyRequest,
                     child: GestureDetector(
                       onTap: () async {
                         if (widget.notif is FriendInvitation) {
@@ -85,6 +87,15 @@ class _NotificationSheetState extends State<NotificationSheet> {
                           final success =
                               await PartyController.acceptPartyInvitation(
                             widget.notif as PartyInvitation,
+                          );
+                          if (!mounted) return;
+                          _modalSheet(context, success, true);
+                        }
+
+                        if (widget.notif is PartyRequest) {
+                          final success =
+                              await PartyCreatorController.acceptPartyRequest(
+                            widget.notif as PartyRequest,
                           );
                           if (!mounted) return;
                           _modalSheet(context, success, true);
@@ -119,6 +130,7 @@ class _NotificationSheetState extends State<NotificationSheet> {
                         if (!mounted) return;
                         _modalSheet(context, success, false);
                       }
+
                       if (widget.notif is PartyInvitation) {
                         final success =
                             await PartyController.rejectPartyInvitation(
@@ -127,7 +139,19 @@ class _NotificationSheetState extends State<NotificationSheet> {
                         if (!mounted) return;
                         _modalSheet(context, success, false);
                       }
-                      if (widget.notif is PartyRequest) {
+
+                      if (widget.notif is PartyRequest &&
+                          widget.hideAcceptPartyRequest) {
+                        final success =
+                            await PartyCreatorController.cancelPartyRequest(
+                          widget.notif as PartyRequest,
+                        );
+                        if (!mounted) return;
+                        _modalSheet(context, success, false);
+                      }
+
+                      if (widget.notif is PartyRequest &&
+                          !widget.hideAcceptPartyRequest) {
                         final success =
                             await PartyCreatorController.rejectPartyRequest(
                           widget.notif as PartyRequest,
@@ -135,10 +159,11 @@ class _NotificationSheetState extends State<NotificationSheet> {
                         if (!mounted) return;
                         _modalSheet(context, success, false);
                       }
+
                       widget.onAction(widget.notif);
                     },
                     child: Container(
-                      width: widget.notif is PartyRequest
+                      width: widget.hideAcceptPartyRequest
                           ? MediaQuery.of(context).size.width - 60
                           : MediaQuery.of(context).size.width / 2 - 40,
                       alignment: Alignment.center,
@@ -185,11 +210,14 @@ class _NotificationSheetState extends State<NotificationSheet> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              "@${(widget.notif as FriendInvitation).sender!.username!}",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theming.greenTone,
+            GestureDetector(
+              onTap: () => context.go("/profile", extra: notif.sender),
+              child: Text(
+                "@${notif.sender!.username!}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theming.greenTone,
+                ),
               ),
             ),
           ],
@@ -204,7 +232,7 @@ class _NotificationSheetState extends State<NotificationSheet> {
               ),
             ),
             Text(
-              "@${(widget.notif as FriendInvitation).receiver!.username!}",
+              "@${notif.receiver!.username!}",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Theming.greenTone,
@@ -242,69 +270,71 @@ class _NotificationSheetState extends State<NotificationSheet> {
         "${notifDate.year}-${notifDate.month}-${notifDate.day} ${notifDate.hour}:${notifDate.minute}:${notifDate.second}";
     return Wrap(
       children: [
+        const SizedBox(
+          height: 20,
+          width: double.infinity,
+        ),
         Row(
           children: [
-            const SizedBox(
-              height: 20,
-              width: double.infinity,
+            Text(
+              "${AppLocalizations.of(context)!.selectedParty.toLowerCase()}: ",
+              style: TextStyle(
+                color: Theming.whiteTone.withOpacity(0.6),
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            Row(
-              children: [
-                Text(
-                  "${AppLocalizations.of(context)!.notificationFrom}: ",
-                  style: TextStyle(
-                    color: Theming.whiteTone.withOpacity(0.6),
-                    fontWeight: FontWeight.bold,
-                  ),
+            GestureDetector(
+              onTap: () => context.push(
+                "/party",
+                extra: [notif.party, false],
+              ),
+              child: Text(
+                notif.party!.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theming.greenTone,
                 ),
-                Text(
-                  "@${(widget.notif as FriendInvitation).sender!.username!}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theming.greenTone,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "${AppLocalizations.of(context)!.notificationTo}: ",
-                  style: TextStyle(
-                    color: Theming.whiteTone.withOpacity(0.6),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "@${(widget.notif as FriendInvitation).receiver!.username!}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theming.greenTone,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "${AppLocalizations.of(context)!.notificationSent}: ",
-                  style: TextStyle(
-                    color: Theming.whiteTone.withOpacity(0.6),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  timeOfCreation,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-              width: double.infinity,
+              ),
             ),
           ],
-        )
+        ),
+        Row(
+          children: [
+            Text(
+              "${AppLocalizations.of(context)!.notificationTo}: ",
+              style: TextStyle(
+                color: Theming.whiteTone.withOpacity(0.6),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "@${notif.receiver!.username!}",
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theming.greenTone,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              "${AppLocalizations.of(context)!.notificationSent}: ",
+              style: TextStyle(
+                color: Theming.whiteTone.withOpacity(0.6),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              timeOfCreation,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+          width: double.infinity,
+        ),
       ],
     );
   }
@@ -330,7 +360,7 @@ class _NotificationSheetState extends State<NotificationSheet> {
               ),
             ),
             Text(
-              "@${(widget.notif as FriendInvitation).sender!.username!}",
+              "@${notif.sender!.username!}",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Theming.greenTone,
@@ -341,17 +371,23 @@ class _NotificationSheetState extends State<NotificationSheet> {
         Row(
           children: [
             Text(
-              "${AppLocalizations.of(context)!.notificationTo}: ",
+              "${AppLocalizations.of(context)!.selectedParty.toLowerCase()}: ",
               style: TextStyle(
                 color: Theming.whiteTone.withOpacity(0.6),
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              "@${(widget.notif as FriendInvitation).receiver!.username!}",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theming.greenTone,
+            GestureDetector(
+              onTap: () => context.push(
+                "/party",
+                extra: [notif.party!, false],
+              ),
+              child: Text(
+                "@${notif.party!.name}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theming.greenTone,
+                ),
               ),
             ),
           ],

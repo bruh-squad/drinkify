@@ -46,6 +46,7 @@ class FriendInvitationsPage extends StatelessWidget {
           isScrollControlled: true,
           builder: (_) => NotificationSheet(
             inv,
+            false,
             (obj) {
               if (obj is! FriendInvitation) return;
               onAction();

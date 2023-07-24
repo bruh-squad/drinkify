@@ -1,4 +1,3 @@
-import 'package:drinkify/widgets/dialogs/notification_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,8 +6,8 @@ import '/models/party.dart';
 import '/utils/theming.dart';
 import '/models/party_request.dart';
 import '/controllers/party_creator_controller.dart';
+import '/widgets/dialogs/notification_sheet.dart';
 
-//TODO implement this
 class PartyJoinRequstsPage extends StatefulWidget {
   final Party party;
   const PartyJoinRequstsPage(
@@ -101,6 +100,7 @@ class _PartyJoinRequstsPageState extends State<PartyJoinRequstsPage> {
           isScrollControlled: true,
           builder: (_) => NotificationSheet(
             inv,
+            false,
             (obj) {},
           ),
         );
