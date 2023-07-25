@@ -65,8 +65,7 @@ class PartyController {
   static Future<List<Party>> myParties() async {
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: "access");
-    // TODO wait for backend update in order to change the URL
-    final url = "$mainUrl/parties/";
+    final url = "$mainUrl/parties/participant/";
     final res = await http.get(
       Uri.parse(url),
       headers: {
