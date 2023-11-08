@@ -1,6 +1,6 @@
 
 # Drinkify - Party Planning App
-Drinkify is a Flutter-based party planning app that communicates with a Django API to help you organize and plan the perfect party with your friends. With Drinkify, you can search for and find the best parties in your area, create a guest list and plan your party with ease.
+Drinkify is a Flutter party planning app which helps you organize and plan the perfect party with your friends. With Drinkify, you can search for and find the best parties in your area, create a guest list and plan your party with ease.
 
 ## Installation
 
